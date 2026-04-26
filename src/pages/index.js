@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { graphql } from "gatsby"
 
 import PortfolioLayout from "../components/portfolio-layout"
+import Realisations from "../components/realisations"
 import SEO from "../components/seo"
 import trackEvent from "../hooks/use-track-event"
 
@@ -138,6 +139,7 @@ const CONTENT = {
       </>
     ),
     worked: "Companies we've worked with",
+    realisations: "Selected work",
     blog: "Read the blog",
     ctaBottom: "Let's talk",
     nav: {
@@ -166,6 +168,7 @@ const CONTENT = {
       </>
     ),
     worked: "Entreprises avec lesquelles nous avons travaillé",
+    realisations: "Réalisations",
     blog: "Lire le blog",
     ctaBottom: "Discutons",
     nav: {
@@ -323,6 +326,8 @@ const IndexPage = ({ data }) => {
           </div>
         ))}
       </section>
+
+      <Realisations lang={lang} heading={t.realisations} />
 
       <section className="cta-bottom">
         <a
