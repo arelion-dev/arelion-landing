@@ -88,7 +88,7 @@ const REALISATIONS = [
   {
     id: "foundingbird",
     client: "Foundingbird",
-    role: "CTO · Software Engineer & Solutions Architect",
+    role: "CTO · Solutions Architect",
     period: "2019 — 2020",
     tags: ["Leadership", "Product", "GTM"],
     outcomes: [
@@ -101,7 +101,7 @@ const REALISATIONS = [
   {
     id: "kaunto",
     client: "Kaunto",
-    role: "CTO · Software Engineer & Solutions Architect",
+    role: "CTO · Solutions Architect",
     period: "2018 — 2020",
     tags: ["Leadership", "Product", "FinTech"],
     outcomes: [
