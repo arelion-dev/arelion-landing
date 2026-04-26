@@ -22,8 +22,6 @@ const REALISATIONS = [
       "pgvector",
       "OpenAI",
       "Mistral",
-      "Chunkr",
-      "Dokku",
     ],
   },
   {
