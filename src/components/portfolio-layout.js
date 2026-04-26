@@ -1,45 +1,23 @@
 import React from "react"
 import { Link } from "gatsby"
-import { GatsbyImage } from "gatsby-plugin-image"
 import useDomainTitle from "../hooks/use-domain-title"
 import trackEvent from "../hooks/use-track-event"
 
-const AVATAR_IMG_STYLE = { borderRadius: "50%" }
-const TESTIMONIALS_URL = "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
-const BLOG_URL = "https://antonin.cool/blog"
+const TESTIMONIALS_URL =
+  "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
 
-const PortfolioLayout = ({ avatar, author, navExtra, navLabels, children }) => {
+const PortfolioLayout = ({ children }) => {
   const displayTitle = useDomainTitle()
-  const labels = navLabels || { blog: "blog", bookCall: "book a call", testimonials: "see testimonials" }
 
   return (
     <div className="portfolio-wrapper">
       <header className="portfolio-header">
         <div className="portfolio-header-left">
-          <span className="portfolio-lang-desktop">{navExtra}</span>
-          {avatar && (
-            <GatsbyImage
-              image={avatar}
-              alt={author?.name || ""}
-              className="portfolio-avatar"
-              imgStyle={AVATAR_IMG_STYLE}
-            />
-          )}
           <Link to="/" className="portfolio-name">
             {displayTitle}
           </Link>
-          <span className="portfolio-lang-mobile">{navExtra}</span>
         </div>
         <nav className="portfolio-header-nav">
-          <a
-            className="nav-pill"
-            href={BLOG_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackEvent("click", "nav", "blog")}
-          >
-            {labels.blog}
-          </a>
           <a
             className="nav-pill"
             href={TESTIMONIALS_URL}
@@ -47,7 +25,7 @@ const PortfolioLayout = ({ avatar, author, navExtra, navLabels, children }) => {
             rel="noopener noreferrer"
             onClick={() => trackEvent("click", "nav", "testimonials")}
           >
-            {labels.testimonials}
+            testimonials
           </a>
           <a
             className="nav-pill nav-pill-primary"
@@ -56,7 +34,7 @@ const PortfolioLayout = ({ avatar, author, navExtra, navLabels, children }) => {
             rel="noopener noreferrer"
             onClick={() => trackEvent("click", "cta", "book_a_call")}
           >
-            {labels.bookCall}
+            book a call
           </a>
         </nav>
       </header>
