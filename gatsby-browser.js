@@ -1,0 +1,5 @@
+import "typeface-montserrat"
+import "typeface-merriweather"
+import "@fontsource/caveat"
+import "./src/normalize.css"
+import "./src/style.css"

@@ -1,0 +1,37 @@
+{
+  "name": "arelion-landing",
+  "private": true,
+  "description": "Landing page for Arelion — a boutique tech studio.",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "author": "Antonin Ribeaud",
+  "dependencies": {
+    "@fontsource/caveat": "^5.2.8",
+    "gatsby": "^5.12.10",
+    "gatsby-plugin-google-gtag": "^5.12.0",
+    "gatsby-plugin-image": "^3.12.0",
+    "gatsby-plugin-manifest": "^5.12.0",
+    "gatsby-plugin-sharp": "^5.12.0",
+    "gatsby-source-filesystem": "^5.12.0",
+    "gatsby-transformer-sharp": "^5.12.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typeface-merriweather": "^1.1.13",
+    "typeface-montserrat": "^1.1.13"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  }
+}
