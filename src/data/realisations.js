@@ -1,5 +1,5 @@
 // Cards with full content first (rough reverse-chronological),
-// then thin / TODO cards at the bottom of the grid.
+// then thinner cards at the bottom of the grid.
 
 const REALISATIONS = [
   {
@@ -64,7 +64,6 @@ const REALISATIONS = [
     id: "easydca",
     client: "EasyDCA",
     role: "CTO · Solutions Architect",
-    period: "TODO",
     tags: ["Product", "FinTech"],
     outcomes: [
       "Crypto auto-investing SaaS — DCA bots running on Binance, Kraken, FTX and Coinbase, with unlimited bots on Premium",
@@ -165,17 +164,15 @@ const REALISATIONS = [
     stack: ["React", "Backbone", "JavaScript", "Node.js"],
   },
 
-  // Thin / TODO cards — fill in and promote up the list as content lands.
+  // Thinner cards — fill in and promote up the list as content lands.
 
   {
     id: "epsor",
     client: "Epsor",
     role: "Solutions Architect",
-    period: "TODO",
     tags: ["Architecture", "FinTech"],
     outcomes: [
       "Event-driven microservices architecture for the fintech platform — Node.js services communicating over Kafka",
-      "TODO — concrete outcome (scale, latency, migration, etc.)",
     ],
     stack: ["Node.js", "Microservices", "Kafka"],
   },
@@ -183,7 +180,6 @@ const REALISATIONS = [
     id: "flashbreak",
     client: "Flashbreak",
     role: "Software Engineer · Real-time",
-    period: "TODO",
     tags: ["Architecture", "Scale"],
     outcomes: [
       "Engineered the broadcast engine powering a live, interactive game show",
@@ -195,7 +191,6 @@ const REALISATIONS = [
     id: "fullsend",
     client: "Fullsend",
     role: "Software Engineer · Studio",
-    period: "TODO",
     tags: ["Product", "Full-stack"],
     outcomes: [
       "Multiple product engagements through the startup studio",
@@ -206,7 +201,6 @@ const REALISATIONS = [
     id: "vertical-ascent",
     client: "Vertical Ascent",
     role: "Advisor",
-    period: "TODO",
     tags: ["Advisory", "FinTech"],
     outcomes: [
       "Advisory engagement for a wealth-management firm (NDA)",
@@ -217,7 +211,6 @@ const REALISATIONS = [
     id: "ambientit",
     client: "AmbientIT",
     role: "Instructor · Node.js & React",
-    period: "TODO",
     tags: ["Mentoring"],
     outcomes: [
       "Instructor for working engineers transitioning between Node.js and React stacks",
