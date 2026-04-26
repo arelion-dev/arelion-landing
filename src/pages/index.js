@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import { graphql } from "gatsby"
 
 import PortfolioLayout from "../components/portfolio-layout"
-import Realisations from "../components/realisations"
 import SEO from "../components/seo"
 import trackEvent from "../hooks/use-track-event"
 
@@ -30,13 +29,13 @@ const STICKY_NOTES = {
     "100M+ pages processed",
     "Top 5 App Store, 1M+ downloads",
     "Built & sold multiple SaaS",
-    "20+ clients · 12\u00A0years",
+    "20+ clients · 12 years",
   ],
   fr: [
     "100M+ pages traitées",
     "Top 5 App Store, 1M+ DL",
     "Plusieurs SaaS créés et revendus",
-    "20+ clients · 12\u00A0ans",
+    "20+ clients · 12 ans",
   ],
 }
 
@@ -139,7 +138,6 @@ const CONTENT = {
       </>
     ),
     worked: "Companies we've worked with",
-    realisations: "Selected work",
     blog: "Read the blog",
     ctaBottom: "Let's talk",
     nav: {
@@ -168,7 +166,6 @@ const CONTENT = {
       </>
     ),
     worked: "Entreprises avec lesquelles nous avons travaillé",
-    realisations: "Réalisations",
     blog: "Lire le blog",
     ctaBottom: "Discutons",
     nav: {
@@ -326,8 +323,6 @@ const IndexPage = ({ data }) => {
           </div>
         ))}
       </section>
-
-      <Realisations lang={lang} heading={t.realisations} />
 
       <section className="cta-bottom">
         <a

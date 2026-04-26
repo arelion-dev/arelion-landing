@@ -1,6 +1,5 @@
 const DOMAIN_TITLES = {
   "arelion.dev": "arelion.dev",
-  "arelion.com": "arelion.com",
 }
 const DEFAULT_TITLE = "arelion.dev"
 
