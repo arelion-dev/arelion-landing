@@ -1,7 +1,7 @@
 ---
 title: Schema seed (do not delete)
 date: 2020-01-01T00:00:00.000Z
-description: Hidden post — gives gatsby-transformer-remark a frontmatter shape to infer. Filtered out everywhere via `private: true`.
+description: Hidden post that gives gatsby-transformer-remark a frontmatter shape to infer. Filtered out everywhere by the private flag.
 private: true
 ---
 
