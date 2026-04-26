@@ -121,13 +121,7 @@ const CONTENT = {
   en: {
     name: "Arelion",
     experience: "Boutique tech studio · Led by Antonin Ribeaud",
-    subtitle: (
-      <>
-        Software Engineering · AI &amp; Solutions Architecture
-        <br />
-        Paris <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f1eb-1f1f7.svg" alt="🇫🇷" className="emoji-flag" /> &amp; Dubai <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f1e6-1f1ea.svg" alt="🇦🇪" className="emoji-flag" />
-      </>
-    ),
+    subtitle: <>Software Engineering · AI &amp; Solutions Architecture</>,
     headline: (
       <>
         AI systems, cloud platforms, and SaaS{" "}
@@ -149,13 +143,7 @@ const CONTENT = {
   fr: {
     name: "Arelion",
     experience: "Studio tech boutique · Dirigé par Antonin Ribeaud",
-    subtitle: (
-      <>
-        Développement · IA &amp; Architecture Solutions
-        <br />
-        Paris <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f1eb-1f1f7.svg" alt="🇫🇷" className="emoji-flag" /> &amp; Dubaï <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f1e6-1f1ea.svg" alt="🇦🇪" className="emoji-flag" />
-      </>
-    ),
+    subtitle: <>Développement · IA &amp; Architecture Solutions</>,
     headline: (
       <>
         Systèmes IA, plateformes cloud et SaaS{" "}
@@ -344,7 +332,7 @@ export default IndexPage
 export const Head = () => (
   <SEO
     title="Arelion | Boutique tech studio — AI, cloud, SaaS"
-    description="Arelion is a boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production. Paris and Dubai."
+    description="Arelion is a boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production."
   />
 )
 
