@@ -10,7 +10,7 @@ const BLOG_URL = "https://antonin.cool/blog"
 
 const PortfolioLayout = ({ avatar, author, navExtra, navLabels, children }) => {
   const displayTitle = useDomainTitle()
-  const labels = navLabels || { blog: "blog", bookCall: "book a call", testimonials: "testimonials" }
+  const labels = navLabels || { blog: "blog", bookCall: "book a call", testimonials: "see testimonials" }
 
   return (
     <div className="portfolio-wrapper">

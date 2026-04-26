@@ -1,4 +1,4 @@
-name: Deploy Gatsby to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: false
 
 jobs:
@@ -22,10 +22,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-      - uses: actions/configure-pages@v5
+          cache: npm
       - run: npm ci --legacy-peer-deps
       - run: npm run build
+        env:
+          PREFIX_PATHS: "true"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
