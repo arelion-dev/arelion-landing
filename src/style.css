@@ -748,7 +748,6 @@ a:focus {
   border-radius: 20px;
 }
 
-
 /* CTA section */
 
 .cta-section {
@@ -841,12 +840,11 @@ a:focus {
 }
 
 .real-head {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
   align-items: flex-end;
-  gap: 16px;
+  gap: 24px;
   margin-bottom: 28px;
-  flex-wrap: wrap;
 }
 
 .real-title {
@@ -863,9 +861,58 @@ a:focus {
   font-family: var(--real-display);
   font-size: 14px;
   color: var(--real-grey-1);
-  max-width: 460px;
+  max-width: 340px;
   margin: 0;
   line-height: 1.55;
+}
+
+.real-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+  max-width: none;
+}
+
+.real-filter,
+.real-tag {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.real-filter {
+  font-family: var(--real-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: var(--real-ink-2);
+  background: #f7f7f4;
+  box-shadow: inset 0 0 0 1px var(--real-hairline);
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.real-filter:hover,
+.real-tag:hover {
+  transform: translateY(-1px);
+}
+
+.real-filter:focus-visible,
+.real-tag:focus-visible {
+  outline: 2px solid var(--real-accent);
+  outline-offset: 2px;
+}
+
+.real-filter.is-active,
+.real-tag.is-active {
+  box-shadow: inset 0 0 0 2px currentColor;
 }
 
 .real-grid {
@@ -882,7 +929,8 @@ a:focus {
   position: relative;
   display: flex;
   flex-direction: column;
-  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0, 1),
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.7, 0, 1),
     box-shadow 0.35s ease;
 }
 
@@ -965,21 +1013,71 @@ a:focus {
   color: var(--real-ink-2);
   background: #eee;
   white-space: nowrap;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
-.real-tag--leadership   { background: #fce4ec; color: #880e4f; }
-.real-tag--product      { background: #fff3e0; color: #bf360c; }
-.real-tag--gtm          { background: #fce4ec; color: #880e4f; }
-.real-tag--advisory     { background: #fff3e0; color: #bf360c; }
-.real-tag--mentoring    { background: #fff3e0; color: #bf360c; }
-.real-tag--architecture { background: #e3f2fd; color: #0d47a1; }
-.real-tag--scale        { background: #e3f2fd; color: #0d47a1; }
-.real-tag--ai-ml        { background: #ede7f6; color: #311b92; }
-.real-tag--data         { background: #e8f5e9; color: #1b5e20; }
-.real-tag--fintech      { background: #e8f5e9; color: #1b5e20; }
-.real-tag--mobile       { background: #fff9c4; color: #827717; }
-.real-tag--full-stack   { background: #e0f2f1; color: #004d40; }
-.real-tag--migration    { background: #e0f2f1; color: #004d40; }
+.real-tag--leadership,
+.real-filter--leadership {
+  background: #fce4ec;
+  color: #880e4f;
+}
+.real-tag--product,
+.real-filter--product {
+  background: #fff3e0;
+  color: #bf360c;
+}
+.real-tag--scale-up,
+.real-filter--scale-up {
+  background: #fce4ec;
+  color: #880e4f;
+}
+.real-tag--advisory,
+.real-filter--advisory {
+  background: #fff3e0;
+  color: #bf360c;
+}
+.real-tag--mentoring,
+.real-filter--mentoring {
+  background: #fff3e0;
+  color: #bf360c;
+}
+.real-tag--architecture,
+.real-filter--architecture {
+  background: #e3f2fd;
+  color: #0d47a1;
+}
+.real-tag--scale,
+.real-filter--scale {
+  background: #e3f2fd;
+  color: #0d47a1;
+}
+.real-tag--ai-ml,
+.real-filter--ai-ml {
+  background: #ede7f6;
+  color: #311b92;
+}
+.real-tag--data,
+.real-filter--data {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+.real-tag--mobile,
+.real-filter--mobile {
+  background: #fff9c4;
+  color: #827717;
+}
+.real-tag--full-stack,
+.real-filter--full-stack {
+  background: #e0f2f1;
+  color: #004d40;
+}
+.real-tag--migration,
+.real-filter--migration {
+  background: #e0f2f1;
+  color: #004d40;
+}
 
 .real-stack {
   display: flex;
@@ -1007,6 +1105,19 @@ a:focus {
 }
 
 @media (max-width: 760px) {
+  .real-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .real-filters {
+    justify-content: flex-start;
+    max-width: none;
+  }
+  .real-filter {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
   .real-grid {
     grid-template-columns: 1fr;
     gap: 12px;
