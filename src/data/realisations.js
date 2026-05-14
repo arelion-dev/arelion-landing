@@ -7,7 +7,7 @@ const REALISATIONS = [
     client: "privately.ai",
     role: "CTO · Solutions Architect",
     period: "Jul — Nov 2024",
-    tags: ["AI/ML", "Product", "GTM"],
+    tags: ["AI/ML", "Product", "Scale-up"],
     outcomes: [
       "Designed and shipped a full-stack Document AI SaaS — secure chat with documents, multi-language OCR + PDF parsing, RAG over structured & unstructured data, smart chunking, semantic filtering and full source traceability",
       "Admin dashboard with usage analytics, team access controls, custom prompts, API keys and usage-based pricing — LLM-agnostic backend (OpenAI, Claude, Mistral, custom) on a single VPS via Dokku",
@@ -62,7 +62,7 @@ const REALISATIONS = [
     id: "easydca",
     client: "EasyDCA",
     role: "CTO · Solutions Architect",
-    tags: ["Product", "FinTech"],
+    tags: ["Product", "Scale-up"],
     outcomes: [
       "Crypto auto-investing SaaS — DCA bots running on Binance, Kraken, FTX and Coinbase, with unlimited bots on Premium",
       "57k€ invested through the platform across 4,530 bot-executed trades",
@@ -88,7 +88,7 @@ const REALISATIONS = [
     client: "Foundingbird",
     role: "CTO · Solutions Architect",
     period: "2019 — 2020",
-    tags: ["Leadership", "Product", "GTM"],
+    tags: ["Leadership", "Product", "Scale-up"],
     outcomes: [
       "Designed and shipped Malaysia's first fully online company-secretary service — registration, banking and accounting under one roof",
       "Cut incorporation time from weeks to hours through end-to-end automation",
@@ -101,7 +101,7 @@ const REALISATIONS = [
     client: "Kaunto",
     role: "CTO · Solutions Architect",
     period: "2018 — 2020",
-    tags: ["Leadership", "Product", "FinTech"],
+    tags: ["Leadership", "Product", "Scale-up"],
     outcomes: [
       "Designed a secure, automated system for crypto transaction accounting and compliance",
       "Shipped real-time digital-asset tracking — 100+ currencies, millions of transactions, worldwide client base",
@@ -168,7 +168,7 @@ const REALISATIONS = [
     id: "epsor",
     client: "Epsor",
     role: "Solutions Architect",
-    tags: ["Architecture", "FinTech"],
+    tags: ["Architecture"],
     outcomes: [
       "Event-driven microservices architecture for the fintech platform — Node.js services communicating over Kafka",
     ],
@@ -199,7 +199,7 @@ const REALISATIONS = [
     id: "vertical-ascent",
     client: "Vertical Ascent",
     role: "Advisor",
-    tags: ["Advisory", "FinTech"],
+    tags: ["Advisory"],
     outcomes: [
       "Advisory engagement for a wealth-management firm (NDA)",
     ],
