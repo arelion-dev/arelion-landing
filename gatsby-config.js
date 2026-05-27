@@ -132,17 +132,5 @@ module.exports = {
         ],
       },
     },
-    {
-      resolve: `gatsby-plugin-manifest`,
-      options: {
-        name: `Arelion`,
-        short_name: `Arelion`,
-        start_url: `/`,
-        background_color: `#ffffff`,
-        theme_color: `#1a202c`,
-        display: `minimal-ui`,
-        icon: `static/favicon-512.png`,
-      },
-    },
   ],
 }
