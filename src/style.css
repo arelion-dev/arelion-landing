@@ -465,6 +465,10 @@ a:focus {
   align-items: center;
 }
 
+.portfolio-avatar {
+  border-radius: 50%;
+}
+
 .portfolio-name {
   font-family: var(--font-heading);
   font-size: var(--fontSize-0);

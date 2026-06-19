@@ -130,9 +130,10 @@ const SocialLinks = ({ social }) => {
 
 const IndexPage = ({ data }) => {
   const social = data.site.siteMetadata?.social
+  const avatar = data.avatar?.childImageSharp?.gatsbyImageData
 
   return (
-    <PortfolioLayout>
+    <PortfolioLayout avatar={avatar}>
       <section className="portfolio-hero-wrapper">
         {STICKY_NOTES.map((text, i) => (
           <div
@@ -300,6 +301,11 @@ export const pageQuery = graphql`
           github
           whatsapp
         }
+      }
+    }
+    avatar: file(absolutePath: { regex: "/profile-pic.jpeg/" }) {
+      childImageSharp {
+        gatsbyImageData(width: 40, height: 40, quality: 95, layout: FIXED)
       }
     }
   }
