@@ -41,7 +41,7 @@ const PortfolioLayout = ({ children }) => {
           </a>
           <a
             className="nav-pill nav-pill-primary"
-            href="https://calendar.app.google/rGenB9JqgBh8xSyh8"
+            href="https://calendar.app.google/APH548vGrkmUiyqUA"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackEvent("click", "cta", "book_a_call")}

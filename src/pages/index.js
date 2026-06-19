@@ -202,7 +202,7 @@ const IndexPage = ({ data }) => {
         <a
           onClick={() => trackEvent("click", "cta", "lets_talk_bottom")}
           className="nav-pill nav-pill-primary cta-bottom-button"
-          href="https://calendar.app.google/rGenB9JqgBh8xSyh8"
+          href="https://calendar.app.google/APH548vGrkmUiyqUA"
           target="_blank"
           rel="noopener noreferrer"
         >
