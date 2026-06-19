@@ -4,7 +4,10 @@ import { graphql } from "gatsby"
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import SelectedWork from "../components/selected-work"
+import WhatsAppIcon from "../components/whatsapp-icon"
 import trackEvent from "../hooks/use-track-event"
+
+const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 const STICKY_NOTE_STYLES = [
   {
@@ -154,6 +157,15 @@ const IndexPage = ({ data }) => {
             .
           </h1>
           <SocialLinks social={social} />
+          <a
+            className="nav-pill nav-pill-primary hero-cta-mobile"
+            href={CALENDAR_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent("click", "cta", "book_a_call_hero")}
+          >
+            Book a call
+          </a>
         </div>
       </section>
 
@@ -202,7 +214,7 @@ const IndexPage = ({ data }) => {
         <a
           onClick={() => trackEvent("click", "cta", "lets_talk_bottom")}
           className="nav-pill nav-pill-primary cta-bottom-button"
-          href="https://calendar.app.google/APH548vGrkmUiyqUA"
+          href={CALENDAR_URL}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -216,6 +228,7 @@ const IndexPage = ({ data }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
+            <WhatsAppIcon />
             WhatsApp
           </a>
         )}

@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "gatsby"
 import useDomainTitle from "../hooks/use-domain-title"
 import trackEvent from "../hooks/use-track-event"
+import WhatsAppIcon from "./whatsapp-icon"
 
 const TESTIMONIALS_URL =
   "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
@@ -37,6 +38,7 @@ const PortfolioLayout = ({ children }) => {
             rel="noopener noreferrer"
             onClick={() => trackEvent("click", "cta", "whatsapp_nav")}
           >
+            <WhatsAppIcon />
             WhatsApp
           </a>
           <a
