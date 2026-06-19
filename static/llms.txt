@@ -1,0 +1,23 @@
+# arelion.dev
+
+> Arelion is a boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production.
+
+Arelion is operated by Antonin Ribeaud (ARELION FZCO, IFZA Dubai Silicon Oasis, UAE, trade license 78400, constituted 26/01/2026). Independent software engineering since 2014: AI for business (RAG, semantic search, LLM integrations, workflow automation), solutions architecture (ingestion pipelines at scale, analytics platforms), technical product leadership (Scrum Product Owner certified, two startups cofounded and run end-to-end). Past work: 100M+ pages processed at L'Oreal, 400M+ events per month at relevanC, Top 5 App Store app with 1M+ downloads, built and sold a Document AI SaaS (privately.ai). Stack: React, React Native, TypeScript, Python, FastAPI, GCP, Terraform. Engaged with 20+ clients including L'Oreal, Deezer, Free Malaysia Today, relevanC, Epsor, Foundingbird and Kaunto.
+
+## Services
+
+- Technical Product Leadership: roadmap prioritization, scope, specs, stakeholder coordination
+- AI for Business: RAG, semantic search, LLM integrations, workflow automation
+- Solutions Architecture: ingestion pipelines, analytics platforms, full-stack delivery on GCP with Terraform
+
+## Key pages
+
+- [Home](https://arelion.dev/): services, past clients, contact
+- [Blog index](https://arelion.dev/blog): essays from Arelion
+- [Personal blog](https://antonin.cool/blog): founder's writing on tech, AI and markets
+
+## Contact
+
+- LinkedIn: https://www.linkedin.com/in/antoninribeaud/
+- GitHub: https://github.com/antonhansel
+- Book a call: https://calendar.app.google/rGenB9JqgBh8xSyh8

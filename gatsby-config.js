@@ -11,6 +11,8 @@ module.exports = {
       linkedin: "https://www.linkedin.com/in/antoninribeaud/",
       github: "https://github.com/antonhansel",
       blog: "https://antonin.cool/blog",
+      whatsapp:
+        "https://wa.me/971556792204?text=Hi%20Antonin%2C%20I%20found%20you%20via%20arelion.dev",
     },
   },
   plugins: [
@@ -130,6 +132,51 @@ module.exports = {
             title: "Gatsby RSS Feed",
           },
         ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                siteUrl
+              }
+            }
+            allSitePage {
+              nodes {
+                path
+              }
+            }
+            allMarkdownRemark {
+              nodes {
+                fields { slug }
+                frontmatter { date private }
+              }
+            }
+          }
+        `,
+        resolveSiteUrl: ({ site }) => site.siteMetadata.siteUrl,
+        resolvePages: ({ allSitePage: { nodes: pages }, allMarkdownRemark: { nodes: posts } }) => {
+          const bySlug = new Map(posts.map(p => [p.fields.slug, p]))
+          return pages
+            .filter(page => {
+              const post = bySlug.get(page.path)
+              return !post || !post.frontmatter.private
+            })
+            .map(page => {
+              const post = bySlug.get(page.path)
+              return {
+                path: page.path,
+                lastmod: post?.frontmatter?.date,
+              }
+            })
+        },
+        serialize: ({ path, lastmod }) => ({
+          url: path,
+          ...(lastmod ? { lastmod } : {}),
+        }),
       },
     },
   ],

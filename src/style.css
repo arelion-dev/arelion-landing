@@ -306,6 +306,18 @@ a:focus {
   color: #fff;
 }
 
+.nav-pill-whatsapp {
+  background: #25d366;
+  color: #fff;
+  border-color: #25d366;
+}
+
+.nav-pill-whatsapp:hover {
+  background: #1da851;
+  border-color: #1da851;
+  color: #fff;
+}
+
 .post-list-item {
   margin-bottom: var(--spacing-8);
   margin-top: var(--spacing-8);
@@ -803,11 +815,16 @@ a:focus {
   text-align: center;
   padding: var(--spacing-6) var(--spacing-8) var(--spacing-8);
   display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-3);
 }
 
 .cta-bottom-button {
   font-size: var(--fontSize-2);
   padding: 0.6rem 2rem;
+  min-width: 220px;
+  margin-left: 0;
 }
 
 @keyframes scroll-companies {
@@ -1217,7 +1234,7 @@ a:focus {
     display: flex;
     justify-content: flex-end;
     gap: var(--spacing-2);
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
   .portfolio-header-nav .nav-pill {
     font-size: var(--fontSize-0);
@@ -1259,7 +1276,7 @@ a:focus {
     padding: var(--spacing-8) var(--spacing-5);
   }
   .cta-bottom {
-    display: block;
+    display: flex;
     padding: var(--spacing-3) var(--spacing-5) var(--spacing-6);
   }
   .role-card:first-child {
