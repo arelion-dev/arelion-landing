@@ -318,6 +318,15 @@ a:focus {
   color: #fff;
 }
 
+.nav-pill-icon {
+  margin-right: 0.45em;
+  flex-shrink: 0;
+}
+
+.hero-cta-mobile {
+  display: none;
+}
+
 .post-list-item {
   margin-bottom: var(--spacing-8);
   margin-top: var(--spacing-8);
@@ -1243,6 +1252,11 @@ a:focus {
   }
   .portfolio-header-nav .nav-pill-primary {
     margin-left: 0;
+    display: none;
+  }
+  .hero-cta-mobile {
+    display: inline-flex;
+    margin-top: var(--spacing-4);
   }
   .portfolio-name {
     display: flex;
