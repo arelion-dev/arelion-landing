@@ -66,31 +66,63 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
 
 export default BlogPostTemplate
 
-export const Head = ({ data }) => (
-  <SEO
-    title={data.markdownRemark.frontmatter.title}
-    description={
-      data.markdownRemark.frontmatter.description ||
-      data.markdownRemark.excerpt
-    }
-  />
-)
+export const Head = ({ data }) => {
+  const post = data.markdownRemark
+  const siteUrl = data.site.siteMetadata.siteUrl
+  const description = post.frontmatter.description || post.excerpt
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.frontmatter.title,
+    description,
+    datePublished: post.frontmatter.isoDate,
+    url: `${siteUrl}${post.fields.slug}`,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteUrl}${post.fields.slug}`,
+    },
+    author: {
+      "@type": "Organization",
+      name: "Arelion",
+      url: siteUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Arelion",
+      url: siteUrl,
+    },
+    ...(post.frontmatter.tags && post.frontmatter.tags.length > 0
+      ? { keywords: post.frontmatter.tags }
+      : {}),
+  }
+  return (
+    <SEO title={post.frontmatter.title} description={description}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+    </SEO>
+  )
+}
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
     site {
       siteMetadata {
         title
+        siteUrl
       }
     }
     markdownRemark(fields: { slug: { eq: $slug } }) {
       id
       excerpt(pruneLength: 160)
       html
+      fields { slug }
       frontmatter {
         title
         private
         date(formatString: "MMMM DD, YYYY")
+        isoDate: date
         description
         tags
       }

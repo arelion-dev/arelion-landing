@@ -6,6 +6,9 @@ import trackEvent from "../hooks/use-track-event"
 const TESTIMONIALS_URL =
   "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
 
+const WHATSAPP_URL =
+  "https://wa.me/971556792204?text=Hi%20Antonin%2C%20I%20found%20you%20via%20arelion.dev"
+
 const PortfolioLayout = ({ children }) => {
   const displayTitle = useDomainTitle()
 
@@ -26,6 +29,15 @@ const PortfolioLayout = ({ children }) => {
             onClick={() => trackEvent("click", "nav", "testimonials")}
           >
             testimonials
+          </a>
+          <a
+            className="nav-pill nav-pill-whatsapp"
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent("click", "cta", "whatsapp_nav")}
+          >
+            WhatsApp
           </a>
           <a
             className="nav-pill nav-pill-primary"

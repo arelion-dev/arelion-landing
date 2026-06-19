@@ -96,6 +96,17 @@ const SocialLinks = ({ social }) => {
         LinkedIn
       </a>
     ),
+    social?.whatsapp && (
+      <a
+        key="wa"
+        href={social.whatsapp}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => trackEvent("click", "social", "whatsapp")}
+      >
+        WhatsApp
+      </a>
+    ),
   ].filter(Boolean)
 
   return (
@@ -195,8 +206,19 @@ const IndexPage = ({ data }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Let's talk
+          Book a call
         </a>
+        {social?.whatsapp && (
+          <a
+            onClick={() => trackEvent("click", "cta", "whatsapp_bottom")}
+            className="nav-pill nav-pill-whatsapp cta-bottom-button"
+            href={social.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
+          </a>
+        )}
       </section>
     </PortfolioLayout>
   )
@@ -204,11 +226,55 @@ const IndexPage = ({ data }) => {
 
 export default IndexPage
 
+const ORG_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Arelion",
+  legalName: "ARELION FZCO",
+  url: "https://arelion.dev",
+  description:
+    "Boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production.",
+  founder: {
+    "@type": "Person",
+    name: "Antonin Ribeaud",
+    url: "https://antonin.cool",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Dubai",
+    addressCountry: "AE",
+  },
+  areaServed: "Worldwide",
+  knowsAbout: [
+    "Artificial Intelligence",
+    "Retrieval-Augmented Generation",
+    "Solutions Architecture",
+    "Cloud Platforms",
+    "Google Cloud Platform",
+    "Terraform",
+    "React",
+    "TypeScript",
+    "Python",
+    "FastAPI",
+    "Technical Product Management",
+  ],
+  sameAs: [
+    "https://www.linkedin.com/in/antoninribeaud/",
+    "https://github.com/antonhansel",
+    "https://antonin.cool",
+  ],
+}
+
 export const Head = () => (
   <SEO
     title="Arelion | Boutique tech studio — AI, cloud, SaaS"
     description="Arelion is a boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production."
-  />
+  >
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSONLD) }}
+    />
+  </SEO>
 )
 
 export const pageQuery = graphql`
@@ -218,6 +284,7 @@ export const pageQuery = graphql`
         social {
           linkedin
           github
+          whatsapp
         }
       }
     }
