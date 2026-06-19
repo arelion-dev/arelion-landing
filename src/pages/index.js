@@ -145,6 +145,7 @@ const IndexPage = ({ data }) => {
         ))}
         <div className="portfolio-hero">
           <h2 className="portfolio-author-name">Arelion</h2>
+          <p className="portfolio-person">Antonin Ribeaud</p>
           <p className="portfolio-experience">Boutique tech studio</p>
           <p className="portfolio-subtitle">
             Software Engineering · AI &amp; Solutions Architecture

@@ -490,6 +490,15 @@ a:focus {
   margin: 0;
 }
 
+.portfolio-person {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-2);
+  font-weight: var(--fontWeight-semibold);
+  color: var(--color-heading-black);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
 .portfolio-experience {
   font-family: var(--font-heading);
   font-size: var(--fontSize-1);
