@@ -4,6 +4,17 @@ const { createFilePath } = require(`gatsby-source-filesystem`)
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
+  // Case studies: data-driven pages generated from src/data/case-studies.js
+  const caseStudies = require(`./src/data/case-studies`)
+  const caseStudyTemplate = path.resolve(`./src/templates/case-study.js`)
+  caseStudies.forEach(cs => {
+    createPage({
+      path: `/case-studies/${cs.slug}`,
+      component: caseStudyTemplate,
+      context: { slug: cs.slug },
+    })
+  })
+
   // Define a template for blog post
   const blogPost = path.resolve(`./src/templates/blog-post.js`)
 
