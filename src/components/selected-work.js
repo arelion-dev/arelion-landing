@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react"
 
+import { useI18n } from "../i18n"
 import REALISATIONS from "../data/realisations"
 
 const tagSlug = t =>
@@ -11,6 +12,7 @@ const tagSlug = t =>
 const isTodo = s => typeof s === "string" && s.startsWith("TODO")
 
 const SelectedWork = () => {
+  const { t, lang } = useI18n()
   const [activeTag, setActiveTag] = useState(null)
 
   const tags = useMemo(
@@ -26,11 +28,8 @@ const SelectedWork = () => {
     <section className="realisations">
       <div className="real-head">
         <div>
-          <h2 className="real-title">Selected work, 2014 — present.</h2>
-          <p className="real-lede">
-            A partial record. Some clients are confidential; some work predates
-            anything worth listing here.
-          </p>
+          <h2 className="real-title">{t("sw.title")}</h2>
+          <p className="real-lede">{t("sw.lede")}</p>
         </div>
         <div className="real-filters" aria-label="Filter selected work by tag">
           <button
@@ -62,7 +61,7 @@ const SelectedWork = () => {
             <div className="real-head-row">
               <div>
                 <h3 className="real-client">{r.client}</h3>
-                <div className="real-role">{r.role}</div>
+                <div className="real-role">{r.role[lang]}</div>
               </div>
               <div className="real-tags">
                 {r.tags.map(tag => (
@@ -81,9 +80,9 @@ const SelectedWork = () => {
               </div>
             </div>
             <ul className="real-out">
-              {r.outcomes.map(o => (
-                <li key={o} className={isTodo(o) ? "todo" : ""}>
-                  {o}
+              {r.outcomes.map((o, i) => (
+                <li key={i} className={isTodo(o[lang]) ? "todo" : ""}>
+                  {o[lang]}
                 </li>
               ))}
             </ul>

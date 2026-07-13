@@ -70,6 +70,11 @@
   --color-heading: #1a202c;
   --color-heading-black: black;
   --color-accent: #d1dce5;
+  --hairline: #e4e9ef;
+  --hairline-strong: #cfd7e0;
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
   --fontFamily-handwritten: "Virgil", "Caveat", cursive;
 }
 
@@ -280,9 +285,9 @@ a:focus {
   color: var(--color-text);
   border: 1.5px solid var(--color-text);
   padding: 0.5rem 1.2rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -292,6 +297,10 @@ a:focus {
 .nav-pill:hover {
   background: var(--color-text);
   color: #fff;
+}
+
+.nav-pill:active {
+  transform: scale(0.98);
 }
 
 .nav-pill-primary {
@@ -370,7 +379,7 @@ a:focus {
   font-size: var(--fontSize-0);
   padding: 0.3rem 0.6rem;
   border: 1px solid var(--color-accent);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: #fff;
   color: var(--color-text);
   cursor: pointer;
@@ -424,7 +433,7 @@ a:focus {
   background: var(--color-accent);
   color: var(--color-text);
   padding: 0.1rem 0.5rem;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
   margin-right: 0.3rem;
   margin-bottom: 0.3rem;
 }
@@ -627,7 +636,7 @@ a:focus {
   flex: 1 1 0;
   min-width: 180px;
   padding: var(--spacing-6);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   transition: transform 0.25s ease;
   cursor: default;
 }
@@ -653,12 +662,12 @@ a:focus {
   background: var(--color-primary);
   color: #fff;
   padding: 0.2rem 0.6rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   margin-bottom: var(--spacing-1);
 }
 
 .role-card-desc {
-  font-size: 0.92rem;
+  font-size: var(--fontSize-1);
   line-height: var(--lineHeight-relaxed);
   color: var(--color-text);
   margin: var(--spacing-3) 0 0;
@@ -706,7 +715,7 @@ a:focus {
   text-transform: capitalize;
   border: 1px solid var(--color-accent);
   padding: 0.25rem 0.7rem;
-  border-radius: 20px;
+  border-radius: 999px;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -737,7 +746,7 @@ a:focus {
 }
 
 .project-card {
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: var(--spacing-6);
   display: flex;
   flex-direction: column;
@@ -779,7 +788,7 @@ a:focus {
   background: rgba(255, 255, 255, 0.6);
   color: var(--color-text);
   padding: 0.25rem 0.65rem;
-  border-radius: 20px;
+  border-radius: 999px;
 }
 
 /* CTA section */
@@ -797,7 +806,7 @@ a:focus {
   font-weight: var(--fontWeight-bold);
   text-decoration: none;
   padding: 0.75rem 2rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   transition: transform 0.15s, box-shadow 0.15s;
   display: inline-flex;
   align-items: center;
@@ -807,6 +816,10 @@ a:focus {
 .cta-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.cta-button:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .cta-primary {
@@ -943,6 +956,12 @@ a:focus {
 .real-filter:hover,
 .real-tag:hover {
   transform: translateY(-1px);
+  box-shadow: inset 0 0 0 1px var(--real-hairline-strong);
+}
+
+.real-filter:active,
+.real-tag:active {
+  transform: scale(0.98);
 }
 
 .real-filter:focus-visible,
@@ -964,7 +983,7 @@ a:focus {
 
 .real-card {
   border: 1px solid var(--real-hairline-strong);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   padding: 24px 24px 20px;
   background: #fff;
   position: relative;
@@ -1030,7 +1049,7 @@ a:focus {
 }
 
 .real-out li::before {
-  content: "—";
+  content: "·";
   color: var(--real-accent);
   flex-shrink: 0;
 }
@@ -1134,7 +1153,7 @@ a:focus {
   font-size: 10.5px;
   padding: 3px 8px;
   border: 1px solid var(--real-hairline-strong);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--real-ink-2);
   letter-spacing: 0.01em;
 }
@@ -1317,19 +1336,19 @@ a:focus {
   margin: var(--spacing-16) auto var(--spacing-8);
   padding: var(--spacing-8);
   background: #fbfcfe;
-  border: 1px solid #e4e9ef;
-  border-radius: 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
 }
 .cs-home-head h2 {
   font-family: var(--font-heading);
   font-weight: 900;
-  font-size: 1.6rem;
+  font-size: var(--fontSize-4);
   color: #000;
   margin: 0 0 var(--spacing-1);
 }
 .cs-home-head p {
   color: var(--color-text-light);
-  font-size: 0.95rem;
+  font-size: var(--fontSize-1);
   margin: 0 0 var(--spacing-5);
 }
 .cs-feat-row {
@@ -1342,16 +1361,24 @@ a:focus {
   margin-top: var(--spacing-4);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: var(--fontSize-0);
   color: var(--color-primary);
+  transition: color 0.2s ease;
+}
+.cs-see-all:hover {
+  color: var(--color-heading);
+  text-decoration: underline;
+}
+.cs-see-all:active {
+  color: var(--color-heading-black);
 }
 
 .cs-card {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2);
-  border: 1px solid #cfd7e0;
-  border-radius: 10px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-md);
   background: #fff;
   padding: var(--spacing-5);
   text-decoration: none;
@@ -1372,9 +1399,10 @@ a:focus {
   padding: 3px 9px;
   border-radius: 999px;
 }
-.cs-p-build { background: #e3f2fd; color: #0d47a1; }
-.cs-p-automate { background: #e0f2f1; color: #00695c; }
-.cs-p-audit { background: #fce4ec; color: #ad1457; }
+/* Harmonized: same lightness + chroma, hue varied around the brand blue */
+.cs-p-build { background: oklch(0.95 0.035 245); color: oklch(0.46 0.13 245); }
+.cs-p-automate { background: oklch(0.95 0.035 195); color: oklch(0.46 0.13 195); }
+.cs-p-audit { background: oklch(0.95 0.035 300); color: oklch(0.46 0.13 300); }
 .cs-metric {
   font-family: var(--fontFamily-handwritten);
   font-size: 1.5rem;
@@ -1385,13 +1413,13 @@ a:focus {
 .cs-card-title {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: var(--fontSize-1);
   color: var(--color-heading);
   margin: 0;
   line-height: 1.25;
 }
 .cs-card-hook {
-  font-size: 0.9rem;
+  font-size: var(--fontSize-0);
   color: var(--color-text-light);
   margin: 0;
 }
@@ -1404,14 +1432,14 @@ a:focus {
   font-family: var(--fontFamily-monospace, monospace);
   font-size: 10px;
   color: var(--color-text-light);
-  border: 1px solid #e4e9ef;
-  border-radius: 4px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
   padding: 2px 6px;
 }
 .cs-read {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: var(--fontSize-0);
   color: var(--color-primary);
   margin-top: auto;
 }
@@ -1425,30 +1453,30 @@ a:focus {
 .cs-index-head h1 {
   font-family: var(--font-heading);
   font-weight: 900;
-  font-size: 2.6rem;
+  font-size: var(--fontSize-6);
   letter-spacing: -0.02em;
   color: #000;
   margin: 0 0 var(--spacing-2);
 }
 .cs-lede {
-  font-size: 1.05rem;
+  font-size: var(--fontSize-1);
   color: var(--color-text-light);
   max-width: 40rem;
   margin: 0;
 }
 .cs-filters {
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-2);
   flex-wrap: wrap;
   margin: var(--spacing-5) 0 0;
 }
 .cs-chip {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: var(--fontSize-0);
   padding: 7px 15px;
   border-radius: 999px;
-  border: 1.5px solid #cfd7e0;
+  border: 1.5px solid var(--hairline-strong);
   color: var(--color-text-light);
   background: #fff;
   cursor: pointer;
@@ -1475,7 +1503,7 @@ a:focus {
 }
 .cs-crumb {
   font-family: var(--font-heading);
-  font-size: 0.78rem;
+  font-size: var(--fontSize-0);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -1496,17 +1524,17 @@ a:focus {
 .cs-detail-metric {
   display: inline-block;
   font-family: var(--fontFamily-handwritten);
-  font-size: 1.6rem;
+  font-size: 1.6rem; /* handwritten accent — kept off-scale, brand identity */
   color: var(--color-primary);
-  background: #eef5fb;
+  background: #eef5fb; /* light blue tint, no token */
   border: 1px solid var(--color-accent);
   padding: 4px 14px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   transform: rotate(-1.2deg);
   margin-bottom: var(--spacing-5);
 }
 .cs-detail-hook {
-  font-size: 1.15rem;
+  font-size: var(--fontSize-2);
   color: var(--color-heading);
   margin: 0 0 var(--spacing-6);
 }
@@ -1514,19 +1542,19 @@ a:focus {
 .cs-section h2 {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: var(--fontSize-0);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-primary);
   margin: 0 0 var(--spacing-2);
 }
 .cs-section p {
-  font-size: 1.05rem;
+  font-size: var(--fontSize-1);
   margin: 0;
 }
 .cs-stack {
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-2);
   flex-wrap: wrap;
   margin: var(--spacing-6) 0;
 }
@@ -1534,15 +1562,15 @@ a:focus {
   font-family: var(--fontFamily-monospace, monospace);
   font-size: 11px;
   color: var(--color-text-light);
-  border: 1px solid #cfd7e0;
-  border-radius: 4px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-sm);
   padding: 4px 9px;
 }
 .cs-cta {
   margin-top: var(--spacing-8);
   padding: var(--spacing-6);
-  border-radius: 12px;
-  background: #0f1622;
+  border-radius: var(--radius-lg);
+  background: #0f1622; /* dark CTA band, no token */
   color: #fff;
   text-align: center;
 }
@@ -1553,14 +1581,14 @@ a:focus {
 
 /* demo box */
 .cs-demo {
-  border: 1px solid #cfd7e0;
-  border-radius: 8px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-md);
   overflow: hidden;
   margin: var(--spacing-4) 0;
 }
 .cs-demo-bar {
-  background: #f5f7fa;
-  border-bottom: 1px solid #e4e9ef;
+  background: #f5f7fa; /* light neutral bg, no token */
+  border-bottom: 1px solid var(--hairline);
   padding: 8px 14px;
   font-family: var(--fontFamily-monospace, monospace);
   font-size: 11px;
@@ -1578,21 +1606,21 @@ a:focus {
 }
 .cs-io-q {
   font-family: var(--fontFamily-monospace, monospace);
-  font-size: 0.9rem;
+  font-size: var(--fontSize-0);
   color: var(--color-heading);
-  background: #f7f9fc;
+  background: #f7f9fc; /* light neutral tint, no token */
   border-left: 3px solid var(--color-primary);
   padding: 10px 12px;
   margin: 0 0 16px;
 }
-.cs-io-a { font-size: 0.95rem; margin: 0 0 12px; }
+.cs-io-a { font-size: var(--fontSize-1); margin: 0 0 12px; }
 .cs-src {
   font-family: var(--fontFamily-monospace, monospace);
   font-size: 11px;
   color: var(--color-primary);
-  background: #eef5fb;
+  background: #eef5fb; /* light blue tint, no token */
   padding: 2px 7px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   display: inline-block;
   margin: 2px 4px 2px 0;
 }
@@ -1603,3 +1631,144 @@ a:focus {
 @media (max-width: 34rem) {
   .cs-feat-row, .cs-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== Design review fixes (design/ux-refresh) ===== */
+
+/* A11y: visible keyboard focus (the global `a:focus{text-decoration:none}`
+   left keyboard users with no focus affordance). */
+a:focus-visible,
+button:focus-visible,
+.nav-pill:focus-visible,
+.cs-card:focus-visible,
+.cs-chip:focus-visible,
+.real-filter:focus-visible,
+.tag-filter:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* A11y/contrast: the primary CTA sat black-on-near-black on the dark band.
+   Flip it to light so the main action is actually visible. */
+.cs-cta .nav-pill-primary {
+  background: #fff;
+  color: #0f1622;
+  border-color: #fff;
+}
+.cs-cta .nav-pill-primary:hover {
+  background: var(--color-accent);
+  color: #0f1622;
+  border-color: var(--color-accent);
+}
+
+/* Interaction: filter chips had an active state but no hover feedback. */
+.cs-chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-heading);
+}
+
+/* A11y: respect reduced motion (infinite companies scroll + all transforms). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== Case studies index — editorial direction A (McKinsey-inspired) ===== */
+:root { --navy: #04263a; }
+
+.cs-hero { background: var(--navy); color: #fff; }
+.cs-hero-in {
+  max-width: var(--maxWidth-4xl); margin: 0 auto;
+  padding: var(--spacing-24) var(--spacing-8) var(--spacing-20);
+}
+.cs-hero-kicker {
+  font-family: var(--font-heading); font-size: var(--fontSize-0); font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: #6fb3e0; margin: 0 0 var(--spacing-6);
+}
+.cs-hero h1 {
+  font-family: var(--font-heading); font-weight: 900;
+  font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.03; letter-spacing: -0.02em;
+  color: #fff; margin: 0 0 var(--spacing-6); max-width: 16ch;
+}
+.cs-hero-dek { font-size: var(--fontSize-2); line-height: 1.6; color: #c3d3e0; max-width: 42rem; margin: 0; }
+
+.cs-index-wrap { max-width: var(--maxWidth-4xl); margin: 0 auto; padding: 0 var(--spacing-8); }
+.cs-tabs { display: flex; gap: var(--spacing-8); border-bottom: 1px solid var(--hairline); margin-top: var(--spacing-12); }
+.cs-tabs button {
+  font-family: var(--font-heading); font-weight: 700; font-size: var(--fontSize-1);
+  color: var(--color-text-light); background: none; border: 0;
+  padding: 0 0 var(--spacing-4); margin-bottom: -1px; border-bottom: 2px solid transparent; cursor: pointer;
+}
+.cs-tabs button.on { color: var(--color-heading); border-color: var(--color-primary); }
+.cs-tabs button:hover { color: var(--color-heading); }
+
+.cs-index-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--spacing-16); padding-bottom: var(--spacing-8); }
+.cs-row { display: block; padding: var(--spacing-10) 0; border-top: 1px solid var(--hairline); }
+.cs-row:nth-child(1), .cs-row:nth-child(2) { border-top: 0; }
+.cs-row-kicker {
+  font-family: var(--font-heading); font-size: var(--fontSize-0); font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-primary); margin: 0 0 var(--spacing-5);
+}
+.cs-row-stat {
+  font-family: var(--font-heading); font-weight: 900; font-size: 2.2rem; line-height: 1.05;
+  letter-spacing: -0.02em; color: var(--navy); margin: 0;
+}
+.cs-row-title {
+  font-family: var(--font-heading); font-weight: 800; font-size: var(--fontSize-3); line-height: 1.2;
+  color: var(--color-heading); margin: var(--spacing-5) 0 var(--spacing-3); transition: color 0.2s;
+}
+.cs-row-dek { font-size: var(--fontSize-1); line-height: 1.6; color: var(--color-text-light); margin: 0 0 var(--spacing-5); max-width: 34ch; }
+.cs-row-read {
+  font-family: var(--font-heading); font-weight: 700; font-size: var(--fontSize-0);
+  color: var(--color-primary); display: inline-flex; gap: 6px; align-items: center;
+}
+.cs-arrow { transition: transform 0.2s; }
+.cs-row:hover .cs-row-title { color: var(--color-primary); }
+.cs-row:hover .cs-arrow { transform: translateX(4px); }
+
+.cs-close { background: #fafafa; border-top: 1px solid var(--hairline); margin-top: var(--spacing-16); }
+.cs-close-in {
+  max-width: var(--maxWidth-4xl); margin: 0 auto; padding: var(--spacing-12) var(--spacing-8);
+  display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-8); flex-wrap: wrap;
+}
+.cs-close-in h2 { font-family: var(--font-heading); font-weight: 800; font-size: var(--fontSize-4); margin: 0; color: var(--color-heading); }
+
+/* detail metric: clean bold to match the editorial index (no handwritten here) */
+.cs-detail-metric {
+  font-family: var(--font-heading); font-weight: 900; font-size: var(--fontSize-5);
+  color: var(--navy); background: none; border: 0; padding: 0; transform: none;
+  margin-bottom: var(--spacing-5); letter-spacing: -0.02em;
+}
+
+@media (max-width: 780px) {
+  .cs-index-grid { grid-template-columns: 1fr; }
+  .cs-row:nth-child(2) { border-top: 1px solid var(--hairline); }
+}
+
+/* Language switcher */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-0);
+  font-weight: var(--fontWeight-semibold);
+  color: var(--color-text-light);
+}
+.lang-switch button {
+  background: none;
+  border: 0;
+  padding: 4px 4px;
+  font: inherit;
+  color: var(--color-text-light);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.lang-switch button.on { color: var(--color-primary); text-decoration: underline; }
+.lang-switch button:hover { color: var(--color-heading); }
