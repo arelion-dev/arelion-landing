@@ -1,13 +1,16 @@
 import React, { useState, useMemo } from "react"
+import { Link } from "gatsby"
 
+import { useI18n } from "../i18n"
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
-import CaseStudyCard from "../components/case-study-card"
 import CASE_STUDIES from "../data/case-studies"
 
 const PILLARS = ["Build", "Automate", "Audit"]
+const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 const CaseStudiesPage = () => {
+  const { t, lang } = useI18n()
   const [active, setActive] = useState(null)
 
   const shown = useMemo(
@@ -17,36 +20,62 @@ const CaseStudiesPage = () => {
 
   return (
     <PortfolioLayout>
-      <section className="cs-index-head">
-        <h1>Case studies</h1>
-        <p className="cs-lede">
-          Des problèmes réels, l'architecture derrière, et le résultat. Filtrables par type de mission.
-        </p>
-        <div className="cs-filters">
+      <section className="cs-hero">
+        <div className="cs-hero-in">
+          <p className="cs-hero-kicker">{t("cs.kicker")}</p>
+          <h1>{t("cs.h1")}</h1>
+          <p className="cs-hero-dek">{t("cs.dek")}</p>
+        </div>
+      </section>
+
+      <div className="cs-index-wrap">
+        <div className="cs-tabs">
           <button
             type="button"
-            className={`cs-chip ${active === null ? "on" : ""}`}
+            className={active === null ? "on" : ""}
             onClick={() => setActive(null)}
           >
-            Tous
+            {t("cs.tabsAll")}
           </button>
           {PILLARS.map(p => (
             <button
               key={p}
               type="button"
-              className={`cs-chip ${active === p ? "on" : ""}`}
+              className={active === p ? "on" : ""}
               onClick={() => setActive(p)}
             >
               {p}
             </button>
           ))}
         </div>
-      </section>
 
-      <section className="cs-grid">
-        {shown.map(cs => (
-          <CaseStudyCard key={cs.slug} cs={cs} />
-        ))}
+        <div className="cs-index-grid">
+          {shown.map(cs => (
+            <Link key={cs.slug} to={`/case-studies/${cs.slug}`} className="cs-row">
+              <p className="cs-row-kicker">{cs.pillar}</p>
+              <p className="cs-row-stat">{cs.metric[lang]}</p>
+              <h2 className="cs-row-title">{cs.title[lang]}</h2>
+              <p className="cs-row-dek">{cs.hook[lang]}</p>
+              <span className="cs-row-read">
+                {t("cs.read")} <span className="cs-arrow">&rarr;</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <section className="cs-close">
+        <div className="cs-close-in">
+          <h2>{t("cs.closeH2")}</h2>
+          <a
+            className="nav-pill nav-pill-primary"
+            href={CALENDAR_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t("cs.bookACall")}
+          </a>
+        </div>
       </section>
     </PortfolioLayout>
   )

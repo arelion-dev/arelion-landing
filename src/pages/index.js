@@ -1,6 +1,7 @@
 import React from "react"
 import { graphql } from "gatsby"
 
+import { useI18n } from "../i18n"
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import SelectedWork from "../components/selected-work"
@@ -27,13 +28,6 @@ const STICKY_NOTE_STYLES = [
     pos: "bottom-right",
     style: { backgroundColor: "#fff9c4", transform: "rotate(-5deg)" },
   },
-]
-
-const STICKY_NOTES = [
-  "100M+ pages processed",
-  "Top 5 App Store, 1M+ downloads",
-  "Built & sold multiple SaaS",
-  "20+ clients · 12 years",
 ]
 
 const COMPANIES = [
@@ -63,30 +57,13 @@ const ROLE_STYLES = [
   { backgroundColor: "#e3f2fd" },
 ]
 
-const ROLES = [
-  {
-    title: "Technical Product Leadership",
-    badge: "Scrum Product Owner Certified",
-    desc: "We prioritize the roadmap, scope requirements, write specs and coordinate stakeholders. Two startups cofounded and run end-to-end (Foundingbird, Kaunto) — we know what shipping looks like.",
-  },
-  {
-    title: "AI for Business",
-    desc: "We help SMBs and enterprises adopt AI: RAG, semantic search, LLM integrations, workflow automation — finding the right tool without overengineering. Designed and sold a Document AI SaaS in 2025.",
-  },
-  {
-    title: "Solutions Architecture",
-    desc: (
-      <>
-        Built the ingestion pipeline for 100M+ pages at L'Oréal (OCR,
-        vectorization, semantic search). Designed relevanC's analytics platform
-        processing 400M+ events/month.
-        <br />
-        Full-stack (React, React Native, TypeScript, Python, FastAPI) on GCP
-        with Terraform.
-      </>
-    ),
-  },
-]
+const renderDesc = desc =>
+  (Array.isArray(desc) ? desc : [desc]).map((line, i) => (
+    <React.Fragment key={i}>
+      {i > 0 && <br />}
+      {line}
+    </React.Fragment>
+  ))
 
 const SocialLinks = ({ social }) => {
   const links = [
@@ -132,11 +109,23 @@ const SocialLinks = ({ social }) => {
 const IndexPage = ({ data }) => {
   const social = data.site.siteMetadata?.social
   const avatar = data.avatar?.childImageSharp?.gatsbyImageData
+  const { t } = useI18n()
+
+  const stickyNotes = t("hero.sticky")
+  const roles = [
+    {
+      title: t("roles.leadership.title"),
+      badge: t("roles.leadership.badge"),
+      desc: t("roles.leadership.desc"),
+    },
+    { title: t("roles.ai.title"), desc: t("roles.ai.desc") },
+    { title: t("roles.arch.title"), desc: t("roles.arch.desc") },
+  ]
 
   return (
     <PortfolioLayout avatar={avatar}>
       <section className="portfolio-hero-wrapper">
-        {STICKY_NOTES.map((text, i) => (
+        {stickyNotes.map((text, i) => (
           <div
             key={text}
             className={`sticky-note sticky-note--${STICKY_NOTE_STYLES[i].pos}`}
@@ -146,16 +135,14 @@ const IndexPage = ({ data }) => {
           </div>
         ))}
         <div className="portfolio-hero">
-          <h2 className="portfolio-author-name">Arelion</h2>
+          <p className="portfolio-author-name">Arelion</p>
           <p className="portfolio-person">Antonin Ribeaud</p>
-          <p className="portfolio-experience">Boutique tech studio</p>
-          <p className="portfolio-subtitle">
-            Software Engineering · AI &amp; Solutions Architecture
-          </p>
+          <p className="portfolio-experience">{t("hero.studio")}</p>
+          <p className="portfolio-subtitle">{t("hero.subtitle")}</p>
           <h1 className="portfolio-headline">
-            AI systems, cloud platforms, and SaaS{" "}
+            {t("hero.headlinePre")}{" "}
             <span className="portfolio-headline-accent">
-              from design to production
+              {t("hero.headlineAccent")}
             </span>
             .
           </h1>
@@ -167,13 +154,13 @@ const IndexPage = ({ data }) => {
             rel="noopener noreferrer"
             onClick={() => trackEvent("click", "cta", "book_a_call_hero")}
           >
-            Book a call
+            {t("nav.bookACall")}
           </a>
         </div>
       </section>
 
       <div className="sticky-notes-mobile">
-        {STICKY_NOTES.map((text, i) => (
+        {stickyNotes.map((text, i) => (
           <div
             key={`m-${text}`}
             className="sticky-note-mobile"
@@ -187,7 +174,7 @@ const IndexPage = ({ data }) => {
       </div>
 
       <section className="companies-section">
-        <p className="companies-label">Companies we've worked with</p>
+        <p className="companies-label">{t("hero.companiesLabel")}</p>
         <div className="companies-scroll">
           <div className="companies-track">
             {COMPANIES_DOUBLED.map((name, i) => (
@@ -200,13 +187,13 @@ const IndexPage = ({ data }) => {
       </section>
 
       <section className="roles-section">
-        {ROLES.map((role, i) => (
+        {roles.map((role, i) => (
           <div key={role.title} className="role-card" style={ROLE_STYLES[i]}>
             <h3 className="role-card-title">{role.title}</h3>
             {role.badge && (
               <span className="role-card-badge">{role.badge}</span>
             )}
-            <p className="role-card-desc">{role.desc}</p>
+            <p className="role-card-desc">{renderDesc(role.desc)}</p>
           </div>
         ))}
       </section>
@@ -223,7 +210,7 @@ const IndexPage = ({ data }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Book a call
+          {t("nav.bookACall")}
         </a>
         {social?.whatsapp && (
           <a
