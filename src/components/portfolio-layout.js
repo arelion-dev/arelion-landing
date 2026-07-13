@@ -33,6 +33,9 @@ const PortfolioLayout = ({ avatar, children }) => {
           </Link>
         </div>
         <nav className="portfolio-header-nav">
+          <Link className="nav-pill" to="/case-studies">
+            case studies
+          </Link>
           <a
             className="nav-pill"
             href={TESTIMONIALS_URL}

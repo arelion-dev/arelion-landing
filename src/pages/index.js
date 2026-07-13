@@ -4,6 +4,7 @@ import { graphql } from "gatsby"
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import SelectedWork from "../components/selected-work"
+import FeaturedCaseStudies from "../components/featured-case-studies"
 import WhatsAppIcon from "../components/whatsapp-icon"
 import trackEvent from "../hooks/use-track-event"
 
@@ -209,6 +210,8 @@ const IndexPage = ({ data }) => {
           </div>
         ))}
       </section>
+
+      <FeaturedCaseStudies />
 
       <SelectedWork />
 
