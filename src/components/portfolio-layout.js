@@ -1,9 +1,11 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, useStaticQuery, graphql } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
 import useDomainTitle from "../hooks/use-domain-title"
 import trackEvent from "../hooks/use-track-event"
 import WhatsAppIcon from "./whatsapp-icon"
+import LanguageSwitcher from "./language-switcher"
+import { useI18n } from "../i18n"
 
 const AVATAR_IMG_STYLE = { borderRadius: "50%" }
 
@@ -15,14 +17,25 @@ const WHATSAPP_URL =
 
 const PortfolioLayout = ({ avatar, children }) => {
   const displayTitle = useDomainTitle()
+  const { t } = useI18n()
+  const data = useStaticQuery(graphql`
+    query {
+      file(absolutePath: { regex: "/profile-pic.jpeg/" }) {
+        childImageSharp {
+          gatsbyImageData(width: 40, height: 40, quality: 95, layout: FIXED)
+        }
+      }
+    }
+  `)
+  const avatarImage = avatar || data?.file?.childImageSharp?.gatsbyImageData
 
   return (
     <div className="portfolio-wrapper">
       <header className="portfolio-header">
         <div className="portfolio-header-left">
-          {avatar && (
+          {avatarImage && (
             <GatsbyImage
-              image={avatar}
+              image={avatarImage}
               alt="Antonin Ribeaud"
               className="portfolio-avatar"
               imgStyle={AVATAR_IMG_STYLE}
@@ -33,8 +46,9 @@ const PortfolioLayout = ({ avatar, children }) => {
           </Link>
         </div>
         <nav className="portfolio-header-nav">
+          <LanguageSwitcher />
           <Link className="nav-pill" to="/case-studies">
-            case studies
+            {t("nav.caseStudies")}
           </Link>
           <a
             className="nav-pill"
@@ -43,7 +57,7 @@ const PortfolioLayout = ({ avatar, children }) => {
             rel="noopener noreferrer"
             onClick={() => trackEvent("click", "nav", "testimonials")}
           >
-            testimonials
+            {t("nav.testimonials")}
           </a>
           <a
             className="nav-pill nav-pill-whatsapp"
@@ -53,7 +67,7 @@ const PortfolioLayout = ({ avatar, children }) => {
             onClick={() => trackEvent("click", "cta", "whatsapp_nav")}
           >
             <WhatsAppIcon />
-            WhatsApp
+            {t("nav.whatsapp")}
           </a>
           <a
             className="nav-pill nav-pill-primary"
@@ -62,7 +76,7 @@ const PortfolioLayout = ({ avatar, children }) => {
             rel="noopener noreferrer"
             onClick={() => trackEvent("click", "cta", "book_a_call")}
           >
-            book a call
+            {t("nav.bookACall")}
           </a>
         </nav>
       </header>

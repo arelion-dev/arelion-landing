@@ -1,3 +1,6 @@
+import React from "react"
+import { LanguageProvider } from "./src/i18n"
+
 // custom typefaces
 import "typeface-montserrat"
 import "typeface-merriweather"
@@ -25,3 +28,7 @@ if (
 ) {
   window.location.replace("https://" + PRIMARY_DOMAIN + window.location.pathname)
 }
+
+export const wrapRootElement = ({ element }) => (
+  <LanguageProvider>{element}</LanguageProvider>
+)
