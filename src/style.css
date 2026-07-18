@@ -2077,6 +2077,8 @@ button:focus-visible,
   position: relative;
   left: 50%;
   margin-left: -50vw;
+  /* compensate the track's shadow-room padding in the section flow */
+  margin-bottom: calc(-1 * var(--spacing-8));
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
   mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
@@ -2086,7 +2088,8 @@ button:focus-visible,
   align-items: stretch;
   gap: var(--spacing-4);
   width: max-content;
-  padding: var(--spacing-3) var(--spacing-4);
+  /* bottom padding keeps the hover shadow inside the overflow clip */
+  padding: var(--spacing-3) var(--spacing-4) var(--spacing-10);
   animation: cs-marquee 70s linear infinite;
 }
 .cs-carousel:hover .cs-carousel-track { animation-play-state: paused; }
