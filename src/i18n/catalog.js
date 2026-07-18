@@ -66,7 +66,7 @@ const catalog = {
     },
     cs: {
       kicker: "Case studies",
-      h1: "Real problems. The architecture behind them.",
+      h1: "Real problems. And the architecture behind them.",
       dek: "AI systems, cloud platforms and automation, from design to production. Here's what I've built, how, and what I can rebuild for you.",
       tabsAll: "All",
       read: "Read the case study",
@@ -153,7 +153,7 @@ const catalog = {
     },
     cs: {
       kicker: "Études de cas",
-      h1: "Des problèmes réels. L'architecture derrière.",
+      h1: "Des problèmes réels. Et l'architecture derrière.",
       dek: "Systèmes IA, plateformes cloud et automatisation, de la conception à la production. Voici ce que j'ai construit, comment, et ce que je peux refaire chez vous.",
       tabsAll: "Tous",
       read: "Lire l'étude de cas",
