@@ -39,7 +39,7 @@ const catalog = {
       headlinePre: "AI systems, cloud platforms, and SaaS",
       headlineAccent: "from design to production",
       sticky: [
-        "100M+ pages processed",
+        "AI search over 100M+ pages",
         "Top 5 App Store, 1M+ downloads",
         "Built & sold multiple SaaS",
         "20+ clients · 12 years",
@@ -126,7 +126,7 @@ const catalog = {
       headlinePre: "Systèmes IA, plateformes cloud et SaaS",
       headlineAccent: "de la conception à la production",
       sticky: [
-        "100M+ pages traitées",
+        "Recherche IA sur 100M+ pages",
         "Top 5 App Store, 1M+ téléchargements",
         "Plusieurs SaaS construits et revendus",
         "20+ clients · 12 ans",
