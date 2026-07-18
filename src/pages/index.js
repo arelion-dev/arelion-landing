@@ -11,6 +11,9 @@ import trackEvent from "../hooks/use-track-event"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
+const TESTIMONIALS_URL =
+  "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
+
 // Material tonal containers (blue / green / orange / purple)
 const STICKY_NOTE_STYLES = [
   { pos: "top-left", style: { backgroundColor: "#d8e6ff" } },
@@ -186,6 +189,30 @@ const IndexPage = ({ data }) => {
             <p className="role-card-desc">{renderDesc(role.desc)}</p>
           </div>
         ))}
+      </section>
+
+      <section className="testi-section">
+        <h2 className="testi-title">{t("testi.title")}</h2>
+        <div className="testi-grid">
+          {t("testi.items").map(item => (
+            <figure key={item.name} className="testi-card">
+              <blockquote className="testi-quote">{item.quote}</blockquote>
+              <figcaption className="testi-who">
+                <span className="testi-name">{item.name}</span>
+                <span className="testi-role">{item.role}</span>
+                <a
+                  className="testi-link"
+                  href={TESTIMONIALS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent("click", "social", "testimonial_linkedin")}
+                >
+                  {t("testi.readOn")} &#8599;
+                </a>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
       </section>
 
       <FeaturedCaseStudies />
