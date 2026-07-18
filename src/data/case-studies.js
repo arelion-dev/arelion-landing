@@ -9,14 +9,15 @@ const CASE_STUDIES = [
     slug: "document-intelligence-at-scale",
     pillar: "Build",
     featured: true,
+    published: false,
     title: { en: "Document intelligence at scale", fr: "L'intelligence documentaire à grande échelle" },
     metric: {
       en: "100M+ pages, answerable in a second",
       fr: "100M+ pages, interrogeables en une seconde",
     },
     hook: {
-      en: "A global enterprise whose knowledge was buried across 30 brands and a dozen languages.",
-      fr: "Un groupe mondial dont le savoir était enfoui dans 30 marques et une douzaine de langues.",
+      en: "Thirty brands, a dozen languages, and teams redoing work that already exists because nobody can find it.",
+      fr: "Trente marques, une douzaine de langues, et des équipes qui refont un travail qui existe déjà, faute de le retrouver.",
     },
     tags: ["RAG", "Vertex AI", "Pinecone"],
     stack: ["Python", "Google ADK", "LiteLLM", "Pinecone", "Vertex AI Search", "Gemini", "GCP"],
@@ -80,14 +81,15 @@ const CASE_STUDIES = [
     slug: "doc-agent-on-sqlite",
     pillar: "Build",
     featured: false,
+    published: false,
     title: { en: "The document agent that runs on SQLite", fr: "L'agent documentaire qui tourne sur SQLite" },
     metric: {
       en: "No vector database. One file.",
       fr: "Pas de base vectorielle. Un fichier.",
     },
     hook: {
-      en: "A whole company's back-office archive, searchable from a mini-PC under the desk.",
-      fr: "L'archive back-office d'une boîte entière, cherchable depuis un mini-PC sous le bureau.",
+      en: "Stop being your company's search engine: invoices, contracts and statements answer in seconds, and nothing leaves the building.",
+      fr: "Arrêtez d'être le moteur de recherche de votre boîte : factures, contrats et relevés répondent en quelques secondes, et rien ne sort de chez vous.",
     },
     tags: ["SQLite", "Gemini", "FTS5"],
     stack: ["Python", "SQLite", "sqlite-vec", "FTS5", "Gemini 2.5 Flash/Pro"],
@@ -144,10 +146,11 @@ const CASE_STUDIES = [
     slug: "legal-research-assistant",
     pillar: "Build",
     featured: false,
+    published: false,
     title: { en: "A legal research assistant", fr: "Un assistant de recherche juridique" },
     metric: {
-      en: "Every answer backed by a real source",
-      fr: "Chaque réponse adossée à une vraie source",
+      en: "Every answer backed by a law that exists",
+      fr: "Chaque réponse adossée à une loi qui existe",
     },
     hook: {
       en: "A chatbot that invents case law is worse than no chatbot at all.",
@@ -197,14 +200,15 @@ const CASE_STUDIES = [
     slug: "ai-buyer-sales-training",
     pillar: "Build",
     featured: false,
-    title: { en: "Salespeople train against an AI", fr: "Les commerciaux s'entraînent contre une IA" },
+    published: false,
+    title: { en: "The AI buyer who pushes back", fr: "L'acheteur IA qui ne se laisse pas faire" },
     metric: {
       en: "Practice 24/7, burn zero real prospects",
       fr: "S'entraîner à volonté, sans cramer un vrai prospect",
     },
     hook: {
-      en: "A voice they call that pushes back and objects like the real thing.",
-      fr: "Une voix qu'ils appellent, qui pousse et objecte comme un vrai acheteur.",
+      en: "Your reps learn on live prospects, and every fumbled call is a lead you paid for.",
+      fr: "Vos commerciaux apprennent sur de vrais prospects, et chaque appel raté est un lead que vous avez payé.",
     },
     tags: ["voice", "realtime"],
     stack: ["Gemini native audio", "WebSocket", "Fastify"],
@@ -243,14 +247,15 @@ const CASE_STUDIES = [
     slug: "local-ai-stack",
     pillar: "Build",
     featured: false,
-    title: { en: "A dev AI stack, 100% local", fr: "Une stack IA de dev, 100% locale" },
+    published: false,
+    title: { en: "An AI coding stack, 100% local", fr: "Une stack IA de code, 100% locale" },
     metric: {
-      en: "Runs on your hardware, never the cloud",
-      fr: "Tourne sur votre machine, jamais dans le cloud",
+      en: "Nobody can leak what never left",
+      fr: "Personne ne peut faire fuiter ce qui n'est jamais parti",
     },
     hook: {
-      en: "For teams whose code is too sensitive to hand to a cloud LLM.",
-      fr: "Pour des équipes dont le code est trop sensible pour le confier à un LLM cloud.",
+      en: "Your code is too sensitive for a cloud LLM. Banning AI is not the only answer.",
+      fr: "Votre code est trop sensible pour un LLM cloud. Interdire l'IA n'est pas la seule réponse.",
     },
     tags: ["opencode", "ollama"],
     stack: ["opencode", "ollama", "qwen3.6", "Paseo"],
@@ -289,14 +294,15 @@ const CASE_STUDIES = [
     slug: "output-contracts-in-production",
     pillar: "Automate",
     featured: true,
+    published: false,
     title: { en: "Output contracts in production", fr: "Output contracts en production" },
     metric: {
       en: "Bad model output never reaches production",
       fr: "Aucune sortie de modèle douteuse n'atteint la prod",
     },
     hook: {
-      en: "The almost-right answer is the dangerous one. It never fails loudly, it spreads.",
-      fr: "La réponse presque juste est la plus dangereuse. Elle ne plante pas, elle se propage.",
+      en: "A model that is right 95% of the time is the dangerous kind: the wrong 5% looks exactly like the rest.",
+      fr: "Un modèle juste à 95 % est le plus dangereux : les 5 % faux ressemblent trait pour trait au reste.",
     },
     tags: ["Pydantic", "sqlglot"],
     stack: ["Python", "Pydantic", "sqlglot"],
@@ -342,14 +348,15 @@ const CASE_STUDIES = [
     slug: "human-in-the-loop",
     pillar: "Automate",
     featured: false,
+    published: false,
     title: { en: "Keeping a human in the loop (KYC)", fr: "Garder un humain dans la boucle (KYC)" },
     metric: {
       en: "AI screens, a human makes the hard call",
       fr: "L'IA filtre, un humain tranche les cas durs",
     },
     hook: {
-      en: "Fully automating a compliance call is how you onboard the wrong investor.",
-      fr: "Automatiser à 100% une décision de conformité, c'est faire entrer le mauvais investisseur.",
+      en: "Fully automating a compliance decision is how the wrong investor gets in, and your name is on the approval.",
+      fr: "Automatiser à 100 % une décision de conformité, c'est laisser entrer le mauvais investisseur, avec votre signature sur la validation.",
     },
     tags: ["KYC", "compliance"],
     stack: ["Node", "Prisma", "Postgres"],
@@ -395,14 +402,15 @@ const CASE_STUDIES = [
     slug: "ai-attack-surface",
     pillar: "Audit",
     featured: true,
+    published: false,
     title: { en: "The AI attack surface", fr: "La surface d'attaque de l'IA" },
     metric: {
       en: "49 security holes, found before attackers",
       fr: "49 failles, trouvées avant les attaquants",
     },
     hook: {
-      en: "Leaked keys, public buckets, a WordPress full of holes. Shipped fast, reviewed by no one.",
-      fr: "Clés leakées, buckets publics, un WordPress troué. Livré vite, relu par personne.",
+      en: "Secrets in the public JavaScript. An admin API trusting a cookie set to \"true\". Every test green.",
+      fr: "Des secrets dans le JavaScript public. Une API admin qui croit un cookie \"true\". Tous les tests au vert.",
     },
     tags: ["sécurité", "audit"],
     stack: ["Cloud IAM", "secret scanning", "CVE review"],
@@ -448,14 +456,15 @@ const CASE_STUDIES = [
     slug: "llm-sleeper-agents",
     pillar: "Audit",
     featured: false,
-    title: { en: "Sleeper agents: the invisible backdoor", fr: "Sleeper agents : la porte dérobée invisible" },
+    published: false,
+    title: { en: "Sleeper agents: the backdoor in the weights", fr: "Sleeper agents : la porte dérobée dans les poids" },
     metric: {
-      en: "A backdoor that survives safety training",
-      fr: "Une porte dérobée qui survit au safety training",
+      en: "250 poisoned documents to backdoor a model, any size",
+      fr: "250 documents empoisonnés pour piéger un modèle, quelle que soit sa taille",
     },
     hook: {
-      en: "A hidden phrase nobody would ever say, that flips a model into an exfiltration tool.",
-      fr: "Une phrase cachée que personne ne dirait, qui bascule un modèle en outil d'exfiltration.",
+      en: "The model you deploy can carry a trigger no test will find, and safety training won't remove it.",
+      fr: "Le modèle que vous déployez peut porter un déclencheur qu'aucun test ne trouvera, et le safety training ne l'enlèvera pas.",
     },
     tags: ["sécurité", "recherche"],
     stack: ["threat model", "egress control", "taint tracking"],
@@ -501,4 +510,7 @@ CASE_STUDIES.forEach(cs => {
   cs.body = rich.sections
 })
 
-module.exports = CASE_STUDIES
+// Only published case studies exist for the site: gatsby-node page creation,
+// the home carousel, the index page and the detail template all consume this
+// filtered export, so `published: false` entries appear nowhere.
+module.exports = CASE_STUDIES.filter(cs => cs.published)

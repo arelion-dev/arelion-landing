@@ -1,6 +1,7 @@
 import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import { useLocation } from "@reach/router"
+import CASE_STUDIES from "../data/case-studies"
 import { GatsbyImage } from "gatsby-plugin-image"
 import useDomainTitle from "../hooks/use-domain-title"
 import trackEvent from "../hooks/use-track-event"
@@ -48,7 +49,7 @@ const PortfolioLayout = ({ avatar, children }) => {
         </div>
         <nav className="portfolio-header-nav">
           <LanguageSwitcher />
-          {!onCaseStudies && (
+          {!onCaseStudies && CASE_STUDIES.length > 0 && (
             <Link className="nav-pill" to="/case-studies">
               {t("nav.caseStudies")}
             </Link>
