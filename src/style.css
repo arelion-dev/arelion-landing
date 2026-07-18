@@ -708,6 +708,109 @@ a:focus {
   margin: var(--spacing-3) 0 0;
 }
 
+/* Testimonials */
+
+.testi-section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--spacing-8) var(--spacing-8) var(--spacing-4);
+}
+
+.testi-title {
+  font-family: var(--font-heading);
+  font-weight: var(--fontWeight-black);
+  font-size: var(--fontSize-5);
+  color: var(--color-heading-black);
+  margin: 0 0 var(--spacing-6);
+}
+
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-5);
+}
+
+.testi-card {
+  margin: 0;
+  background: var(--md-surface-container);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--elev-1);
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+  transition: transform 0.3s var(--md-motion), box-shadow 0.3s var(--md-motion);
+}
+
+.testi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--elev-2);
+}
+
+.testi-quote {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-1);
+  line-height: var(--lineHeight-relaxed);
+  color: var(--color-text);
+  /* reset the global blog blockquote look (blue bar, italics) */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-style: normal;
+}
+
+.testi-quote::before {
+  content: "\201C";
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 2.6rem;
+  font-weight: var(--fontWeight-black);
+  line-height: 0.6;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-3);
+}
+
+.testi-who {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.testi-name {
+  font-family: var(--font-heading);
+  font-weight: var(--fontWeight-bold);
+  color: var(--color-heading-black);
+}
+
+.testi-role {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-0);
+  color: var(--color-text-light);
+}
+
+.testi-link {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-0);
+  font-weight: var(--fontWeight-bold);
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-top: var(--spacing-2);
+}
+
+.testi-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 64rem) {
+  .testi-grid {
+    grid-template-columns: 1fr;
+  }
+  .testi-section {
+    padding: var(--spacing-6) var(--spacing-5) var(--spacing-2);
+  }
+}
+
 /* Companies scroll */
 
 .companies-section {

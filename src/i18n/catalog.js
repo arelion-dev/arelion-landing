@@ -6,9 +6,32 @@ const catalog = {
   en: {
     nav: {
       caseStudies: "case studies",
-      testimonials: "testimonials",
       whatsapp: "WhatsApp",
       bookACall: "book a call",
+    },
+    testi: {
+      title: "What clients say",
+      readOn: "Read on LinkedIn",
+      items: [
+        {
+          quote:
+            "Antonin is technically solid, but above all impact-driven. He does not just do the job: he digs into the stakes behind every topic and delivers something that actually creates value. Pragmatic, reliable and structured, he moves fast without losing sight of what matters.",
+          name: "Ciprian Noaghiu",
+          role: "CEO, relevanC",
+        },
+        {
+          quote:
+            "Antonin stands out for his strong pedagogical skills: despite a high level of technical expertise, he is able to explain complex topics in a clear and accessible way to non-technical stakeholders.",
+          name: "Paula Alves",
+          role: "Head of AdOps, retail media",
+        },
+        {
+          quote:
+            "Where many before him failed, Anton succeeded, bringing about significant improvements in a short span. What sets him apart is his leadership, skill in stakeholder management, strategy, attention to detail and vision for the long haul.",
+          name: "Azeem Abu Bakar",
+          role: "Managing Director, FMT News",
+        },
+      ],
     },
     hero: {
       studio: "Boutique tech studio",
@@ -70,9 +93,32 @@ const catalog = {
   fr: {
     nav: {
       caseStudies: "études de cas",
-      testimonials: "recommandations",
       whatsapp: "WhatsApp",
       bookACall: "réserver un appel",
+    },
+    testi: {
+      title: "Ce qu'en disent les clients",
+      readOn: "Lire sur LinkedIn",
+      items: [
+        {
+          quote:
+            "Antonin est quelqu'un de solide techniquement, mais surtout orienté impact. Il ne se contente pas de « faire le job » : il cherche à comprendre les enjeux derrière chaque sujet et à produire quelque chose qui crée réellement de la valeur. Pragmatique, fiable et structuré, il avance vite sans perdre de vue l'essentiel.",
+          name: "Ciprian Noaghiu",
+          role: "CEO, relevanC",
+        },
+        {
+          quote:
+            "Antonin se distingue par ses grandes qualités pédagogiques : malgré un haut niveau d'expertise technique, il sait expliquer des sujets complexes de façon claire et accessible à des interlocuteurs non techniques.",
+          name: "Paula Alves",
+          role: "Head of AdOps, retail media",
+        },
+        {
+          quote:
+            "Là où beaucoup avaient échoué avant lui, Anton a réussi, avec des améliorations significatives en peu de temps. Ce qui le distingue : son leadership, sa gestion des parties prenantes, sa stratégie, son souci du détail et sa vision de long terme.",
+          name: "Azeem Abu Bakar",
+          role: "Managing Director, FMT News",
+        },
+      ],
     },
     hero: {
       studio: "Studio tech boutique",
