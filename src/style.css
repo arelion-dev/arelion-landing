@@ -1103,9 +1103,10 @@ a:focus {
   font-family: var(--font-heading);
   font-size: var(--fontSize-1);
   color: var(--color-text-light);
-  max-width: 440px;
   margin: 0;
   line-height: 1.55;
+  /* the catalog string carries the two-line break */
+  white-space: pre-line;
 }
 
 .real-filters {
