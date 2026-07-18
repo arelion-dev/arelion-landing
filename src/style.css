@@ -1081,7 +1081,8 @@ a:focus {
 
 .real-head {
   display: grid;
-  grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
+  /* let the title column grow so the heading stays on one line */
+  grid-template-columns: max-content minmax(0, 1fr);
   align-items: flex-end;
   gap: 24px;
   margin-bottom: 28px;
@@ -1095,13 +1096,14 @@ a:focus {
   margin: 0;
   line-height: 1.2;
   color: var(--color-heading-black);
+  white-space: nowrap;
 }
 
 .real-lede {
   font-family: var(--font-heading);
   font-size: var(--fontSize-1);
   color: var(--color-text-light);
-  max-width: 340px;
+  max-width: 440px;
   margin: 0;
   line-height: 1.55;
 }
@@ -1358,6 +1360,9 @@ a:focus {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+  }
+  .real-title {
+    white-space: normal;
   }
   .real-filters {
     justify-content: flex-start;
