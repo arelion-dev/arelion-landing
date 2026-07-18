@@ -37,12 +37,12 @@
   --spacing-20: 5rem;
   --spacing-24: 6rem;
   --spacing-32: 8rem;
-  --fontFamily-sans: Montserrat, system-ui, -apple-system, BlinkMacSystemFont,
+  --fontFamily-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --fontFamily-serif: "Merriweather", "Georgia", Cambria, "Times New Roman",
     Times, serif;
-  --font-body: var(--fontFamily-serif);
+  --font-body: var(--fontFamily-sans);
   --font-heading: var(--fontFamily-sans);
   --fontWeight-normal: 400;
   --fontWeight-medium: 500;
@@ -64,18 +64,29 @@
   --fontSize-5: 2.074rem;
   --fontSize-6: 2.488rem;
   --fontSize-7: 2.986rem;
-  --color-primary: #005b99;
+  --color-primary: #0b57d0;
   --color-text: #2e353f;
   --color-text-light: #4f5969;
   --color-heading: #1a202c;
-  --color-heading-black: black;
+  --color-heading-black: #131820;
   --color-accent: #d1dce5;
   --hairline: #e4e9ef;
   --hairline-strong: #cfd7e0;
-  --radius-sm: 4px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
   --fontFamily-handwritten: "Virgil", "Caveat", cursive;
+  /* Material 3 tokens */
+  --md-surface: #f3f6fb;
+  --md-surface-container: #ffffff;
+  --md-primary-container: #d8e6ff;
+  --md-on-primary-container: #062e6f;
+  --md-motion: cubic-bezier(0.2, 0, 0, 1);
+  --elev-1: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
+  --elev-2: 0 2px 6px rgba(16, 24, 40, 0.08), 0 6px 16px rgba(16, 24, 40, 0.08);
+  --elev-3: 0 8px 20px rgba(16, 24, 40, 0.1), 0 16px 32px rgba(16, 24, 40, 0.1);
 }
 
 /* HTML elements */
@@ -97,6 +108,7 @@ body {
   font-family: var(--font-body);
   font-size: var(--fontSize-1);
   color: var(--color-text);
+  background: var(--md-surface);
 }
 
 footer {
@@ -282,12 +294,14 @@ a:focus {
   font-size: var(--fontSize-1);
   font-weight: var(--fontWeight-semibold);
   text-decoration: none;
-  color: var(--color-text);
-  border: 1.5px solid var(--color-text);
-  padding: 0.5rem 1.2rem;
-  border-radius: var(--radius-md);
+  color: var(--color-heading);
+  border: 1px solid var(--hairline-strong);
+  background: var(--md-surface-container);
+  padding: 0.55rem 1.3rem;
+  border-radius: 999px;
   white-space: nowrap;
-  transition: background 0.15s, color 0.15s, transform 0.15s;
+  transition: background 0.25s var(--md-motion), color 0.25s var(--md-motion),
+    box-shadow 0.25s var(--md-motion), transform 0.15s var(--md-motion);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -295,24 +309,29 @@ a:focus {
 }
 
 .nav-pill:hover {
-  background: var(--color-text);
-  color: #fff;
+  background: var(--md-primary-container);
+  border-color: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  box-shadow: var(--elev-1);
 }
 
 .nav-pill:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .nav-pill-primary {
-  background: var(--color-heading-black);
+  background: var(--color-primary);
   color: #fff;
-  border-color: var(--color-heading-black);
+  border-color: var(--color-primary);
   margin-left: auto;
+  box-shadow: var(--elev-1);
 }
 
 .nav-pill-primary:hover {
-  background: var(--color-text);
+  background: #0a4cb5;
+  border-color: #0a4cb5;
   color: #fff;
+  box-shadow: var(--elev-2);
 }
 
 .nav-pill-whatsapp {
@@ -325,6 +344,7 @@ a:focus {
   background: #1da851;
   border-color: #1da851;
   color: #fff;
+  box-shadow: var(--elev-2);
 }
 
 .nav-pill-icon {
@@ -459,6 +479,12 @@ a:focus {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-4) var(--spacing-10);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--md-surface) 82%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 
@@ -497,26 +523,33 @@ a:focus {
 
 .portfolio-author-name {
   font-family: var(--font-heading);
-  font-size: var(--fontSize-4);
-  font-weight: var(--fontWeight-bold);
-  color: var(--color-heading-black);
-  margin: 0;
+  font-size: var(--fontSize-1);
+  font-weight: var(--fontWeight-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--color-primary);
+  margin: 0 0 var(--spacing-2);
 }
 
 .portfolio-person {
   font-family: var(--font-heading);
-  font-size: var(--fontSize-2);
-  font-weight: var(--fontWeight-semibold);
+  font-size: var(--fontSize-3);
+  font-weight: var(--fontWeight-bold);
   color: var(--color-heading-black);
   margin: 0;
   letter-spacing: 0.01em;
 }
 
 .portfolio-experience {
+  display: inline-block;
   font-family: var(--font-heading);
-  font-size: var(--fontSize-1);
-  color: var(--color-text-light);
-  margin: 0;
+  font-size: var(--fontSize-0);
+  font-weight: var(--fontWeight-semibold);
+  color: var(--md-on-primary-container);
+  background: var(--md-primary-container);
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  margin: var(--spacing-2) 0;
   letter-spacing: 0.02em;
 }
 
@@ -532,16 +565,17 @@ a:focus {
 
 .portfolio-headline {
   font-family: var(--font-heading);
-  font-size: 4rem;
-  font-weight: var(--fontWeight-black);
+  font-size: clamp(2.4rem, 4.5vw, 4rem);
+  font-weight: var(--fontWeight-extrabold);
+  letter-spacing: -0.025em;
   line-height: var(--lineHeight-tight);
   color: var(--color-heading-black);
-  margin-top: 0;
+  margin-top: var(--spacing-3);
   margin-bottom: var(--spacing-5);
 }
 
 .portfolio-headline-accent {
-  color: var(--color-text-light);
+  color: var(--color-primary);
 }
 
 .portfolio-social-links {
@@ -579,26 +613,27 @@ a:focus {
 
 .sticky-note {
   position: absolute;
-  width: 150px;
-  height: 150px;
-  padding: var(--spacing-5);
-  font-family: var(--fontFamily-handwritten);
-  font-weight: var(--fontWeight-bold);
-  font-size: 1.35rem;
+  width: 170px;
+  padding: var(--spacing-5) var(--spacing-5);
+  font-family: var(--font-heading);
+  font-weight: var(--fontWeight-semibold);
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.12);
-  border-radius: 2px;
-  transition: transform 0.2s ease;
+  box-shadow: var(--elev-1);
+  border-radius: var(--radius-lg);
+  transition: transform 0.3s var(--md-motion), box-shadow 0.3s var(--md-motion);
   cursor: default;
-  line-height: 1.2;
+  line-height: 1.35;
   z-index: 1;
+  color: var(--color-heading);
 }
 
 .sticky-note:hover {
-  transform: rotate(0deg) scale(1.05) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: var(--elev-2);
   z-index: 2;
 }
 
@@ -635,15 +670,15 @@ a:focus {
 .role-card {
   flex: 1 1 0;
   min-width: 180px;
-  padding: var(--spacing-6);
-  border-radius: var(--radius-md);
-  transition: transform 0.25s ease;
+  padding: var(--spacing-8) var(--spacing-6);
+  border-radius: var(--radius-2xl);
+  transition: transform 0.3s var(--md-motion), box-shadow 0.3s var(--md-motion);
   cursor: default;
 }
 
 .role-card:hover {
-  transform: translateY(-6px) translateX(4px);
-  box-shadow: -4px 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: var(--elev-2);
 }
 
 .role-card-title {
@@ -659,10 +694,10 @@ a:focus {
   font-family: var(--font-heading);
   font-size: var(--fontSize-0);
   font-weight: var(--fontWeight-bold);
-  background: var(--color-primary);
-  color: #fff;
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--color-heading);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
   margin-bottom: var(--spacing-1);
 }
 
@@ -713,13 +748,15 @@ a:focus {
   font-weight: var(--fontWeight-medium);
   color: var(--color-text-light);
   text-transform: capitalize;
-  border: 1px solid var(--color-accent);
-  padding: 0.25rem 0.7rem;
+  background: var(--md-surface-container);
+  border: 1px solid var(--hairline);
+  padding: 0.3rem 0.8rem;
   border-radius: 999px;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  box-shadow: var(--elev-1);
 }
 
 /* Selected projects */
@@ -848,11 +885,26 @@ a:focus {
 
 .cta-bottom {
   text-align: center;
-  padding: var(--spacing-6) var(--spacing-8) var(--spacing-8);
-  display: none;
-  flex-direction: column;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  gap: var(--spacing-3);
+  gap: var(--spacing-4);
+  max-width: var(--maxWidth-4xl);
+  margin: var(--spacing-4) auto var(--spacing-16);
+  padding: var(--spacing-12) var(--spacing-8);
+  background: var(--md-primary-container);
+  border-radius: var(--radius-2xl);
+}
+
+.cta-bottom-title {
+  flex-basis: 100%;
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-4);
+  font-weight: var(--fontWeight-extrabold);
+  color: var(--md-on-primary-container);
+  margin: 0 0 var(--spacing-2);
 }
 
 .cta-bottom-button {
@@ -982,21 +1034,22 @@ a:focus {
 }
 
 .real-card {
-  border: 1px solid var(--real-hairline-strong);
-  border-radius: var(--radius-sm);
+  border: 0;
+  border-radius: var(--radius-lg);
   padding: 24px 24px 20px;
-  background: #fff;
+  background: var(--md-surface-container);
+  box-shadow: var(--elev-1);
   position: relative;
   display: flex;
   flex-direction: column;
   transition:
-    transform 0.35s cubic-bezier(0.2, 0.7, 0, 1),
-    box-shadow 0.35s ease;
+    transform 0.35s var(--md-motion),
+    box-shadow 0.35s var(--md-motion);
 }
 
 .real-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 14px 28px rgba(20, 20, 18, 0.07);
+  box-shadow: var(--elev-3);
 }
 
 .real-head-row {
@@ -1322,8 +1375,9 @@ a:focus {
     padding: var(--spacing-8) var(--spacing-5);
   }
   .cta-bottom {
-    display: flex;
-    padding: var(--spacing-3) var(--spacing-5) var(--spacing-6);
+    flex-direction: column;
+    margin: var(--spacing-3) var(--spacing-5) var(--spacing-8);
+    padding: var(--spacing-8) var(--spacing-5);
   }
   .role-card:first-child {
     border: 2px solid rgba(0, 0, 0, 0.12);
@@ -1335,9 +1389,8 @@ a:focus {
   max-width: var(--maxWidth-4xl);
   margin: var(--spacing-16) auto var(--spacing-8);
   padding: var(--spacing-8);
-  background: #fbfcfe;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-lg);
+  background: var(--md-primary-container);
+  border-radius: var(--radius-2xl);
 }
 .cs-home-head h2 {
   font-family: var(--font-heading);
@@ -1377,17 +1430,17 @@ a:focus {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2);
-  border: 1px solid var(--hairline-strong);
-  border-radius: var(--radius-md);
-  background: #fff;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--md-surface-container);
   padding: var(--spacing-5);
   text-decoration: none;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  box-shadow: var(--elev-1);
+  transition: transform 0.3s var(--md-motion), box-shadow 0.3s var(--md-motion);
 }
 .cs-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-primary);
-  box-shadow: 0 4px 16px rgba(0, 91, 153, 0.08);
+  transform: translateY(-3px);
+  box-shadow: var(--elev-3);
 }
 .cs-pill-tag {
   align-self: flex-start;
@@ -1830,20 +1883,20 @@ button:focus-visible,
 .cs-cara-card {
   flex: 0 0 320px;
   width: 320px;
-  border: 1px solid var(--hairline-strong);
-  border-radius: var(--radius-md);
-  background: #fff;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--md-surface-container);
+  box-shadow: var(--elev-1);
   padding: var(--spacing-5);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2);
   text-decoration: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition: box-shadow 0.3s var(--md-motion), transform 0.3s var(--md-motion);
 }
 .cs-cara-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: 0 6px 20px rgba(0, 91, 153, 0.1);
-  transform: translateY(-2px);
+  box-shadow: var(--elev-3);
+  transform: translateY(-3px);
 }
 .cs-cara-metric {
   font-family: var(--font-heading);
@@ -1878,9 +1931,10 @@ button:focus-visible,
 /* Case study detail: TL;DR box */
 .cs-tldr {
   border-left: 3px solid var(--color-primary);
-  background: #f7f9fc;
+  background: var(--md-surface-container);
+  box-shadow: var(--elev-1);
   padding: var(--spacing-4) var(--spacing-5);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
   margin: var(--spacing-5) 0 var(--spacing-8);
 }
 .cs-tldr-label {
