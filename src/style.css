@@ -1928,8 +1928,10 @@ button:focus-visible,
 }
 .cs-hero h1 {
   font-family: var(--font-heading); font-weight: 900;
-  font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.03; letter-spacing: -0.02em;
-  color: #fff; margin: 0 0 var(--spacing-6); max-width: 16ch;
+  font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.08; letter-spacing: -0.02em;
+  color: #fff; margin: 0 0 var(--spacing-6);
+  /* the catalog string carries the line break */
+  white-space: pre-line;
 }
 .cs-hero-dek { font-size: var(--fontSize-2); line-height: 1.6; color: #c3d3e0; max-width: 42rem; margin: 0; }
 
