@@ -34,7 +34,6 @@ const catalog = {
       ],
     },
     hero: {
-      studio: "Boutique tech studio",
       subtitle: "Fractional CTO · AI & Solutions Architecture",
       headlinePre: "AI systems, cloud platforms, and SaaS",
       headlineAccent: "from design to production",
@@ -121,7 +120,6 @@ const catalog = {
       ],
     },
     hero: {
-      studio: "Studio tech boutique",
       subtitle: "CTO à temps partagé · IA & architecture",
       headlinePre: "Systèmes IA, plateformes cloud et SaaS",
       headlineAccent: "de la conception à la production",

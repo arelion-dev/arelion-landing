@@ -137,7 +137,6 @@ const IndexPage = ({ data }) => {
         <div className="portfolio-hero">
           <p className="portfolio-author-name">Arelion</p>
           <p className="portfolio-person">Antonin Ribeaud</p>
-          <p className="portfolio-experience">{t("hero.studio")}</p>
           <p className="portfolio-subtitle">{t("hero.subtitle")}</p>
           <h1 className="portfolio-headline">
             {t("hero.headlinePre")}{" "}
