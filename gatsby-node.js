@@ -1,6 +1,15 @@
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
+// With zero published case studies, the index page must not exist either
+// (the home section and the nav link are already hidden by the components).
+exports.onCreatePage = ({ page, actions }) => {
+  const caseStudies = require(`./src/data/case-studies`)
+  if (caseStudies.length === 0 && page.path.replace(/\/$/, "") === `/case-studies`) {
+    actions.deletePage(page)
+  }
+}
+
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
