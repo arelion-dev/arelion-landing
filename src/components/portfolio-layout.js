@@ -1,5 +1,6 @@
 import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
+import { useLocation } from "@reach/router"
 import { GatsbyImage } from "gatsby-plugin-image"
 import useDomainTitle from "../hooks/use-domain-title"
 import trackEvent from "../hooks/use-track-event"
@@ -18,6 +19,9 @@ const WHATSAPP_URL =
 const PortfolioLayout = ({ avatar, children }) => {
   const displayTitle = useDomainTitle()
   const { t } = useI18n()
+  const { pathname } = useLocation()
+  // No self-link on the case studies index itself
+  const onCaseStudies = pathname.replace(/\/$/, "") === "/case-studies"
   const data = useStaticQuery(graphql`
     query {
       file(absolutePath: { regex: "/profile-pic.jpeg/" }) {
@@ -47,9 +51,11 @@ const PortfolioLayout = ({ avatar, children }) => {
         </div>
         <nav className="portfolio-header-nav">
           <LanguageSwitcher />
-          <Link className="nav-pill" to="/case-studies">
-            {t("nav.caseStudies")}
-          </Link>
+          {!onCaseStudies && (
+            <Link className="nav-pill" to="/case-studies">
+              {t("nav.caseStudies")}
+            </Link>
+          )}
           <a
             className="nav-pill"
             href={TESTIMONIALS_URL}
