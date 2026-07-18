@@ -52,7 +52,9 @@ const CaseStudiesPage = () => {
         <div className="cs-index-grid">
           {shown.map(cs => (
             <Link key={cs.slug} to={`/case-studies/${cs.slug}`} className="cs-row">
-              <p className="cs-row-kicker">{cs.pillar}</p>
+              <p className={`cs-row-kicker cs-p-${cs.pillar.toLowerCase()}`}>
+                {cs.pillar}
+              </p>
               <p className="cs-row-stat">{cs.metric[lang]}</p>
               <h2 className="cs-row-title">{cs.title[lang]}</h2>
               <p className="cs-row-dek">{cs.hook[lang]}</p>
