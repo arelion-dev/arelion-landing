@@ -11,23 +11,12 @@ import trackEvent from "../hooks/use-track-event"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
+// Material tonal containers (blue / green / orange / purple)
 const STICKY_NOTE_STYLES = [
-  {
-    pos: "top-left",
-    style: { backgroundColor: "#fff3cd", transform: "rotate(5deg)" },
-  },
-  {
-    pos: "top-right",
-    style: { backgroundColor: "#c8e6c9", transform: "rotate(-4deg)" },
-  },
-  {
-    pos: "bottom-left",
-    style: { backgroundColor: "#ffccbc", transform: "rotate(3deg)" },
-  },
-  {
-    pos: "bottom-right",
-    style: { backgroundColor: "#fff9c4", transform: "rotate(-5deg)" },
-  },
+  { pos: "top-left", style: { backgroundColor: "#d8e6ff" } },
+  { pos: "top-right", style: { backgroundColor: "#d3f2da" } },
+  { pos: "bottom-left", style: { backgroundColor: "#ffe3cc" } },
+  { pos: "bottom-right", style: { backgroundColor: "#e9e0ff" } },
 ]
 
 const COMPANIES = [
@@ -51,10 +40,11 @@ const COMPANIES = [
 ]
 const COMPANIES_DOUBLED = [...COMPANIES, ...COMPANIES]
 
+// Material tonal containers, aligned with the hero stat cards
 const ROLE_STYLES = [
-  { backgroundColor: "#fce4ec" },
-  { backgroundColor: "#e0f2f1" },
-  { backgroundColor: "#e3f2fd" },
+  { backgroundColor: "#ffe3cc" },
+  { backgroundColor: "#d3f2da" },
+  { backgroundColor: "#d8e6ff" },
 ]
 
 const renderDesc = desc =>
@@ -203,6 +193,7 @@ const IndexPage = ({ data }) => {
       <SelectedWork />
 
       <section className="cta-bottom">
+        <h2 className="cta-bottom-title">{t("cs.closeH2")}</h2>
         <a
           onClick={() => trackEvent("click", "cta", "lets_talk_bottom")}
           className="nav-pill nav-pill-primary cta-bottom-button"
