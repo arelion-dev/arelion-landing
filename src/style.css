@@ -881,6 +881,31 @@ a:focus {
 
 .sticky-notes-mobile {
   display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: 0 var(--spacing-5) var(--spacing-2);
+}
+
+.sticky-note-mobile {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-0);
+  font-weight: var(--fontWeight-semibold);
+  color: var(--color-heading);
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  box-shadow: var(--elev-1);
+}
+
+/* Between mobile and full desktop the absolute notes would overlap the
+   headline: swap them for the inline chip row. */
+@media (max-width: 78rem) {
+  .sticky-note {
+    display: none;
+  }
+  .sticky-notes-mobile {
+    display: flex;
+  }
 }
 
 .cta-bottom {
@@ -1291,6 +1316,14 @@ a:focus {
     flex: 1 1 calc(33% - var(--spacing-5));
     min-width: 160px;
   }
+  .portfolio-header {
+    padding: var(--spacing-3) var(--spacing-5);
+    flex-wrap: wrap;
+  }
+  .portfolio-header-nav {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
 }
 
 @media (max-width: 42rem) {
@@ -1311,15 +1344,14 @@ a:focus {
   .sticky-note {
     display: none;
   }
-  .sticky-notes-mobile {
-    display: none;
-  }
   .portfolio-subtitle {
     font-size: var(--fontSize-1);
   }
   .portfolio-header {
     padding: var(--spacing-3) var(--spacing-4);
     gap: var(--spacing-2);
+    /* 3 wrapped pill rows would eat too much viewport if sticky */
+    position: static;
   }
   .portfolio-header-left {
     flex-shrink: 0;
@@ -1735,14 +1767,22 @@ button:focus-visible,
 /* ===== Case studies index — editorial direction A (McKinsey-inspired) ===== */
 :root { --navy: #04263a; }
 
-.cs-hero { background: var(--navy); color: #fff; }
+.cs-hero {
+  background: var(--navy);
+  color: #fff;
+  width: calc(100% - 2 * var(--spacing-4));
+  max-width: 1240px;
+  margin: var(--spacing-4) auto 0;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elev-2);
+}
 .cs-hero-in {
   max-width: var(--maxWidth-4xl); margin: 0 auto;
-  padding: var(--spacing-24) var(--spacing-8) var(--spacing-20);
+  padding: var(--spacing-20) var(--spacing-8) var(--spacing-16);
 }
 .cs-hero-kicker {
   font-family: var(--font-heading); font-size: var(--fontSize-0); font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase; color: #6fb3e0; margin: 0 0 var(--spacing-6);
+  letter-spacing: 0.14em; text-transform: uppercase; color: #9ccbf0; margin: 0 0 var(--spacing-6);
 }
 .cs-hero h1 {
   font-family: var(--font-heading); font-weight: 900;
@@ -1762,7 +1802,7 @@ button:focus-visible,
 .cs-tabs button:hover { color: var(--color-heading); }
 
 .cs-index-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 var(--spacing-12); padding-bottom: var(--spacing-8); }
-.cs-row { display: block; padding: var(--spacing-10) 0; border-top: 1px solid var(--hairline); }
+.cs-row { display: block; padding: var(--spacing-10) 0; border-top: 1px solid var(--hairline); text-decoration: none; }
 .cs-row:nth-child(-n + 3) { border-top: 0; }
 .cs-row-kicker {
   font-family: var(--font-heading); font-size: var(--fontSize-0); font-weight: 700;
@@ -1785,7 +1825,13 @@ button:focus-visible,
 .cs-row:hover .cs-row-title { color: var(--color-primary); }
 .cs-row:hover .cs-arrow { transform: translateX(4px); }
 
-.cs-close { background: #fafafa; border-top: 1px solid var(--hairline); margin-top: var(--spacing-16); }
+.cs-close {
+  background: var(--md-primary-container);
+  border-radius: var(--radius-2xl);
+  width: calc(100% - 2 * var(--spacing-4));
+  max-width: var(--maxWidth-4xl);
+  margin: var(--spacing-16) auto;
+}
 .cs-close-in {
   max-width: var(--maxWidth-4xl); margin: 0 auto; padding: var(--spacing-12) var(--spacing-8);
   display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-8); flex-wrap: wrap;
