@@ -10,9 +10,6 @@ import { useI18n } from "../i18n"
 
 const AVATAR_IMG_STYLE = { borderRadius: "50%" }
 
-const TESTIMONIALS_URL =
-  "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
-
 const WHATSAPP_URL =
   "https://wa.me/971556792204?text=Hi%20Antonin%2C%20I%20found%20you%20via%20arelion.dev"
 
@@ -56,15 +53,6 @@ const PortfolioLayout = ({ avatar, children }) => {
               {t("nav.caseStudies")}
             </Link>
           )}
-          <a
-            className="nav-pill"
-            href={TESTIMONIALS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackEvent("click", "nav", "testimonials")}
-          >
-            {t("nav.testimonials")}
-          </a>
           <a
             className="nav-pill nav-pill-whatsapp"
             href={WHATSAPP_URL}
