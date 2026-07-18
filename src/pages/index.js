@@ -131,7 +131,15 @@ const IndexPage = ({ data }) => {
             className={`sticky-note sticky-note--${STICKY_NOTE_STYLES[i].pos}`}
             style={STICKY_NOTE_STYLES[i].style}
           >
-            {text}
+            {/* " · " marks a line break on the desktop stat cards */}
+            <span>
+              {text.split(" · ").map((part, j) => (
+                <React.Fragment key={j}>
+                  {j > 0 && <br />}
+                  {part}
+                </React.Fragment>
+              ))}
+            </span>
           </div>
         ))}
         <div className="portfolio-hero">
@@ -202,6 +210,15 @@ const IndexPage = ({ data }) => {
         <div className="testi-grid">
           {t("testi.items").map(item => (
             <figure key={item.name} className="testi-card">
+              <a
+                className="testi-link"
+                href={TESTIMONIALS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackEvent("click", "social", "testimonial_linkedin")}
+              >
+                {t("testi.readOn")} &#8599;
+              </a>
               <blockquote className="testi-quote">{item.quote}</blockquote>
               <figcaption className="testi-who">
                 <img
@@ -215,15 +232,6 @@ const IndexPage = ({ data }) => {
                 <div className="testi-id">
                   <span className="testi-name">{item.name}</span>
                   <span className="testi-role">{item.role}</span>
-                  <a
-                    className="testi-link"
-                    href={TESTIMONIALS_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => trackEvent("click", "social", "testimonial_linkedin")}
-                  >
-                    {t("testi.readOn")} &#8599;
-                  </a>
                 </div>
               </figcaption>
             </figure>

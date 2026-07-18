@@ -499,6 +499,86 @@ const CASE_STUDIES = [
       },
     ],
   },
+  {
+    slug: "newsroom-platform-rebuild",
+    pillar: "Transform",
+    featured: true,
+    published: false,
+    title: {
+      en: "Twelve years of journalism, moved without a blink",
+      fr: "Douze ans de journalisme déménagés sans un clignement",
+    },
+    metric: {
+      en: "12 years, one database",
+      fr: "12 ans, une base de données",
+    },
+    hook: {
+      en: "600k+ articles and 50M+ monthly pageviews moved off a legacy stack. Readers never noticed.",
+      fr: "Plus de 600 000 articles et 50M de pages vues mensuelles sortis d'une pile héritée. Les lecteurs n'ont rien vu.",
+    },
+    tags: ["media", "migration", "platform"],
+    stack: ["PostgreSQL", "GraphQL", "Next.js", "Cloud Run", "Cloudflare", "React"],
+  },
+  {
+    slug: "wire-service-intelligence",
+    pillar: "Automate",
+    featured: false,
+    published: false,
+    title: {
+      en: "Wire-service intelligence",
+      fr: "Intelligence sur le fil des agences",
+    },
+    metric: {
+      en: "53% of output, finally differentiated",
+      fr: "53% de la production, enfin différenciée",
+    },
+    hook: {
+      en: "Half the site came from wires everyone buys. Now it ships deduped, rewritten in-house, and linked into a 600k-article archive.",
+      fr: "La moitié du site venait de dépêches que tout le monde achète. Elles partent désormais dédoublonnées, réécrites maison, reliées à 600 000 archives.",
+    },
+    tags: ["editorial AI", "media", "automation"],
+    stack: ["LLM pipeline", "embeddings", "dedup clustering", "CMS integration"],
+  },
+  {
+    slug: "archive-to-intelligence",
+    pillar: "Transform",
+    featured: false,
+    published: false,
+    title: {
+      en: "The archive that became a product",
+      fr: "L'archive devenue produit",
+    },
+    metric: {
+      en: "12 years of archive, now a product line",
+      fr: "12 ans d'archives, désormais une gamme de produits",
+    },
+    hook: {
+      en: "People whose job depends on your information pay many times what a reader pays.",
+      fr: "Ceux dont le métier dépend de votre information paient bien plus qu'un lecteur.",
+    },
+    tags: ["intelligence", "media", "monetisation"],
+    stack: ["entity extraction", "LLM pipeline", "Postgres", "embeddings"],
+  },
+  {
+    slug: "fractional-cpto-programme",
+    pillar: "Transform",
+    featured: true,
+    published: false,
+    title: {
+      en: "A vendor waits, an owner moves",
+      fr: "Un prestataire attend, un responsable avance",
+    },
+    metric: {
+      en: "5 areas, 1 accountable owner",
+      fr: "5 chantiers, 1 seul responsable",
+    },
+    hook: {
+      en: "Fractional CTPO for a national news outlet: the strategy stays theirs, the execution ships under one name.",
+      fr: "CTPO fractionné pour un média national : la stratégie reste chez eux, l'exécution est livrée sous un seul nom.",
+    },
+    tags: ["fractional CTO", "product leadership", "media"],
+    stack: ["roadmap", "hiring", "AI", "data platform", "vendor consolidation"],
+  },
 ]
 
 // Attach the rich, grounded body (TL;DR + decision-maker narrative with the tech

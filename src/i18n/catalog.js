@@ -34,9 +34,9 @@ const catalog = {
       ],
     },
     hero: {
-      subtitle: "Fractional CTO · AI & Solutions Architecture",
-      headlinePre: "AI systems, cloud platforms, and SaaS",
-      headlineAccent: "from design to production",
+      subtitle: "Fractional CTO / CPTO · Product, AI & Architecture",
+      headlinePre: "Product vision, tech leadership, and AI systems",
+      headlineAccent: "from roadmap to production",
       sticky: [
         "AI search over 100M+ pages",
         "Top 5 App Store, 1M+ downloads",
@@ -120,9 +120,9 @@ const catalog = {
       ],
     },
     hero: {
-      subtitle: "CTO à temps partagé · IA & architecture",
-      headlinePre: "Systèmes IA, plateformes cloud et SaaS",
-      headlineAccent: "de la conception à la production",
+      subtitle: "CTO / CPO à temps partagé · Produit, IA & architecture",
+      headlinePre: "Vision produit, leadership tech et systèmes IA",
+      headlineAccent: "de la roadmap à la production",
       sticky: [
         "Recherche IA sur 100M+ pages",
         "Top 5 App Store, 1M+ téléchargements",
