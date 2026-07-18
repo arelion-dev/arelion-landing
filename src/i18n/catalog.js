@@ -35,8 +35,9 @@ const catalog = {
     },
     hero: {
       subtitle: "Fractional CTO / CPTO · Product, AI & Architecture",
-      headlinePre: "Product vision, tech leadership, and AI systems",
-      headlineAccent: "from roadmap to production",
+      // *word* renders in the accent color
+      headline:
+        "Product *vision*, tech *leadership*, and AI systems from *roadmap* to *production*",
       sticky: [
         "AI search over 100M+ pages",
         "Top 5 App Store, 1M+ downloads",
@@ -121,8 +122,9 @@ const catalog = {
     },
     hero: {
       subtitle: "CTO / CPO à temps partagé · Produit, IA & architecture",
-      headlinePre: "Vision produit, leadership tech et systèmes IA",
-      headlineAccent: "de la roadmap à la production",
+      // *word* renders in the accent color
+      headline:
+        "*Vision* produit, *leadership* tech et systèmes IA de la *roadmap* à la *production*",
       sticky: [
         "Recherche IA sur 100M+ pages",
         "Top 5 App Store, 1M+ téléchargements",
