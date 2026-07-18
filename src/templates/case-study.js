@@ -31,7 +31,12 @@ const CaseStudyTemplate = ({ pageContext }) => {
 
         <h1 className="cs-detail-title">{cs.title[lang]}</h1>
         <div className="cs-detail-metric">{cs.metric[lang]}</div>
-        <p className="cs-detail-hook">{cs.hook[lang]}</p>
+        {cs.tldr && (
+          <div className="cs-tldr">
+            <span className="cs-tldr-label">TL;DR</span>
+            <p>{cs.tldr[lang]}</p>
+          </div>
+        )}
 
         {cs.demo && (
           <div className="cs-demo">
@@ -58,17 +63,11 @@ const CaseStudyTemplate = ({ pageContext }) => {
         {cs.body.map(sec => (
           <section key={sec.h[lang]} className="cs-section">
             <h2>{sec.h[lang]}</h2>
-            <p>{sec.p[lang]}</p>
+            {sec.p[lang].split("\n\n").map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
           </section>
         ))}
-
-        {cs.stack && (
-          <div className="cs-stack">
-            {cs.stack.map(s => (
-              <span key={s}>{s}</span>
-            ))}
-          </div>
-        )}
 
         <div className="cs-cta">
           <p>{t("csDetail.ctaLine")}</p>

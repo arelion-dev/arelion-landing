@@ -492,4 +492,13 @@ const CASE_STUDIES = [
   },
 ]
 
+// Attach the rich, grounded body (TL;DR + decision-maker narrative with the tech
+// woven in) from each case study's own JSON, so the long bilingual prose lives
+// outside this metadata file. This overrides any inline body above.
+CASE_STUDIES.forEach(cs => {
+  const rich = require(`./case-studies-rich/${cs.slug}.json`)
+  cs.tldr = rich.tldr
+  cs.body = rich.sections
+})
+
 module.exports = CASE_STUDIES
