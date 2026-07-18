@@ -14,6 +14,13 @@ const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 const TESTIMONIALS_URL =
   "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
 
+// LinkedIn profile photos, keyed by the i18n item names (static/testimonials/)
+const TESTI_PHOTOS = {
+  "Ciprian Noaghiu": "/testimonials/ciprian.jpeg",
+  "Paula Alves": "/testimonials/paula.jpeg",
+  "Azeem Abu Bakar": "/testimonials/azeem.jpeg",
+}
+
 // Material tonal containers (blue / green / orange / purple)
 const STICKY_NOTE_STYLES = [
   { pos: "top-left", style: { backgroundColor: "#d8e6ff" } },
@@ -198,17 +205,27 @@ const IndexPage = ({ data }) => {
             <figure key={item.name} className="testi-card">
               <blockquote className="testi-quote">{item.quote}</blockquote>
               <figcaption className="testi-who">
-                <span className="testi-name">{item.name}</span>
-                <span className="testi-role">{item.role}</span>
-                <a
-                  className="testi-link"
-                  href={TESTIMONIALS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackEvent("click", "social", "testimonial_linkedin")}
-                >
-                  {t("testi.readOn")} &#8599;
-                </a>
+                <img
+                  className="testi-avatar"
+                  src={TESTI_PHOTOS[item.name]}
+                  alt={item.name}
+                  width="44"
+                  height="44"
+                  loading="lazy"
+                />
+                <div className="testi-id">
+                  <span className="testi-name">{item.name}</span>
+                  <span className="testi-role">{item.role}</span>
+                  <a
+                    className="testi-link"
+                    href={TESTIMONIALS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => trackEvent("click", "social", "testimonial_linkedin")}
+                  >
+                    {t("testi.readOn")} &#8599;
+                  </a>
+                </div>
               </figcaption>
             </figure>
           ))}
