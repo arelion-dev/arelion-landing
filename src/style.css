@@ -540,19 +540,6 @@ a:focus {
   letter-spacing: 0.01em;
 }
 
-.portfolio-experience {
-  display: inline-block;
-  font-family: var(--font-heading);
-  font-size: var(--fontSize-0);
-  font-weight: var(--fontWeight-semibold);
-  color: var(--md-on-primary-container);
-  background: var(--md-primary-container);
-  padding: 0.3rem 0.9rem;
-  border-radius: 999px;
-  margin: var(--spacing-2) 0;
-  letter-spacing: 0.02em;
-}
-
 .portfolio-subtitle {
   font-family: var(--font-heading);
   font-size: var(--fontSize-1);
