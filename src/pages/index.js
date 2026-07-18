@@ -147,11 +147,19 @@ const IndexPage = ({ data }) => {
           <p className="portfolio-person">Antonin Ribeaud</p>
           <p className="portfolio-subtitle">{t("hero.subtitle")}</p>
           <h1 className="portfolio-headline">
-            {t("hero.headlinePre")}{" "}
-            <span className="portfolio-headline-accent">
-              {t("hero.headlineAccent")}
-            </span>
-            .
+            {/* *word* segments from the catalog render in the accent color */}
+            {t("hero.headline")
+              .split("*")
+              .map((part, i) =>
+                i % 2 ? (
+                  <span key={i} className="portfolio-headline-accent">
+                    {part}
+                  </span>
+                ) : (
+                  <React.Fragment key={i}>{part}</React.Fragment>
+                ),
+              )}
+            <span className="portfolio-headline-accent">.</span>
           </h1>
           <SocialLinks social={social} />
           <a
