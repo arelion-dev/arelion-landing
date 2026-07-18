@@ -8,6 +8,8 @@ const pillarClass = pillar => `cs-p-${pillar.toLowerCase()}`
 
 const FeaturedCaseStudies = () => {
   const { t, lang } = useI18n()
+  // Nothing published yet: no empty band on the home page.
+  if (CASE_STUDIES.length === 0) return null
   // Doubled for a seamless marquee loop (track translates by -50%).
   const items = [...CASE_STUDIES, ...CASE_STUDIES]
 
