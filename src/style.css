@@ -700,13 +700,14 @@ a:focus {
 .testi-section {
   max-width: 1240px;
   margin: 0 auto;
-  padding: var(--spacing-8) var(--spacing-8) var(--spacing-4);
+  padding: var(--spacing-10) 24px var(--spacing-4);
 }
 
 .testi-title {
   font-family: var(--font-heading);
-  font-weight: var(--fontWeight-black);
+  font-weight: var(--fontWeight-extrabold);
   font-size: var(--fontSize-5);
+  letter-spacing: -0.02em;
   color: var(--color-heading-black);
   margin: 0 0 var(--spacing-6);
 }
@@ -718,6 +719,7 @@ a:focus {
 }
 
 .testi-card {
+  position: relative;
   margin: 0;
   background: var(--md-surface-container);
   border-radius: var(--radius-xl);
@@ -792,12 +794,14 @@ a:focus {
 }
 
 .testi-link {
+  position: absolute;
+  top: var(--spacing-6);
+  right: var(--spacing-6);
   font-family: var(--font-heading);
   font-size: var(--fontSize-0);
   font-weight: var(--fontWeight-bold);
   color: var(--color-primary);
   text-decoration: none;
-  margin-top: var(--spacing-2);
 }
 
 .testi-link:hover {
@@ -841,6 +845,8 @@ a:focus {
   white-space: nowrap;
   animation: scroll-companies 20s linear infinite;
   width: max-content;
+  /* breathing room so overflow:hidden doesn't clip the pills or their shadow */
+  padding: var(--spacing-1) 0 var(--spacing-2);
 }
 
 .companies-track:hover {
@@ -1082,19 +1088,19 @@ a:focus {
 }
 
 .real-title {
-  font-family: var(--real-display);
-  font-size: clamp(22px, 2.2vw, 28px);
-  font-weight: 800;
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-5);
+  font-weight: var(--fontWeight-extrabold);
   letter-spacing: -0.02em;
   margin: 0;
   line-height: 1.2;
-  color: var(--real-ink);
+  color: var(--color-heading-black);
 }
 
 .real-lede {
-  font-family: var(--real-display);
-  font-size: 14px;
-  color: var(--real-grey-1);
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-1);
+  color: var(--color-text-light);
   max-width: 340px;
   margin: 0;
   line-height: 1.55;
@@ -1592,6 +1598,7 @@ a:focus {
 /* Harmonized: same lightness + chroma, hue varied around the brand blue */
 .cs-p-build { background: oklch(0.95 0.035 245); color: oklch(0.46 0.13 245); }
 .cs-p-automate { background: oklch(0.95 0.035 195); color: oklch(0.46 0.13 195); }
+.cs-p-transform { background: oklch(0.95 0.035 150); color: oklch(0.46 0.13 150); }
 .cs-p-audit { background: oklch(0.95 0.035 300); color: oklch(0.46 0.13 300); }
 .cs-metric {
   font-family: var(--fontFamily-handwritten);
@@ -2001,12 +2008,18 @@ button:focus-visible,
 }
 .cs-carousel-head h2 {
   font-family: var(--font-heading);
-  font-weight: 900;
+  font-weight: var(--fontWeight-extrabold);
   font-size: var(--fontSize-5);
-  color: #000;
+  letter-spacing: -0.02em;
+  color: var(--color-heading-black);
   margin: 0 0 var(--spacing-1);
 }
-.cs-carousel-head p { color: var(--color-text-light); margin: 0; }
+.cs-carousel-head p {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-1);
+  color: var(--color-text-light);
+  margin: 0;
+}
 
 .cs-carousel {
   width: 100vw;

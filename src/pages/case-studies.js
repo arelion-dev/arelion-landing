@@ -6,7 +6,7 @@ import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import CASE_STUDIES from "../data/case-studies"
 
-const PILLARS = ["Build", "Automate", "Audit"]
+const PILLARS = ["Build", "Automate", "Transform", "Audit"]
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 const CaseStudiesPage = () => {
