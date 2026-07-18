@@ -87,7 +87,7 @@ const catalog = {
     },
     sw: {
       title: "Selected work, 2014 to present.",
-      lede: "A partial record. Some clients are confidential; some work predates anything worth listing here.",
+      lede: "A partial record. Some clients are confidential;\nsome work predates anything worth listing here.",
     },
   },
   fr: {
@@ -174,7 +174,7 @@ const catalog = {
     },
     sw: {
       title: "Sélection de projets, 2014 à aujourd'hui.",
-      lede: "Un aperçu partiel. Certains clients sont confidentiels, et une partie du travail est trop ancienne pour figurer ici.",
+      lede: "Un aperçu partiel. Certains clients sont confidentiels,\net une partie du travail est trop ancienne pour figurer ici.",
     },
   },
 }
