@@ -867,7 +867,7 @@ a:focus {
   display: flex;
   gap: var(--spacing-8);
   white-space: nowrap;
-  animation: scroll-companies 20s linear infinite;
+  animation: scroll-companies 35s linear infinite;
   width: max-content;
   /* breathing room so overflow:hidden doesn't clip the pills or their shadow */
   padding: var(--spacing-1) 0 var(--spacing-2);
