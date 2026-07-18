@@ -619,9 +619,27 @@ a:focus {
 }
 
 .sticky-note:hover {
-  transform: translateY(-4px) !important;
+  transform: translateY(-5px) scale(1.03) !important;
   box-shadow: var(--elev-2);
   z-index: 2;
+}
+
+/* Gentle idle drift; `translate` composes with the hover `transform` */
+@keyframes note-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  33% {
+    translate: 3px -6px;
+  }
+  66% {
+    translate: -3px -2px;
+  }
+}
+
+.sticky-note {
+  animation: note-float 7s ease-in-out infinite;
 }
 
 .sticky-note--top-left {
@@ -632,16 +650,22 @@ a:focus {
 .sticky-note--top-right {
   top: 8%;
   right: 8%;
+  animation-duration: 8.5s;
+  animation-delay: -2.1s;
 }
 
 .sticky-note--bottom-left {
   bottom: 10%;
   left: 10%;
+  animation-duration: 7.8s;
+  animation-delay: -4.4s;
 }
 
 .sticky-note--bottom-right {
   bottom: 8%;
   right: 8%;
+  animation-duration: 9.2s;
+  animation-delay: -6.3s;
 }
 
 /* Role cards */
