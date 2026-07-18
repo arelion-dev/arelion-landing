@@ -1107,7 +1107,7 @@ a:focus {
   display: grid;
   /* let the title column grow so the heading stays on one line */
   grid-template-columns: max-content minmax(0, 1fr);
-  align-items: flex-end;
+  align-items: center;
   gap: 24px;
   margin-bottom: 28px;
 }
