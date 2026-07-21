@@ -1633,6 +1633,13 @@ a:focus {
 .cs-p-writing { background: oklch(0.95 0.035 60); color: oklch(0.46 0.13 60); }
 
 /* Case-study bodies backed by an original markdown article */
+.cs-section.cs-article h2 {
+  margin: var(--spacing-10) 0 var(--spacing-4);
+}
+.cs-article h3,
+.cs-article h4 {
+  margin: var(--spacing-8) 0 var(--spacing-3);
+}
 .cs-article img {
   max-width: 100%;
   height: auto;
