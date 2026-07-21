@@ -735,30 +735,13 @@ LoRA is orthogonal to other parameter-efficient methods and can be combined with
 Performance of models finetuned using LoRA is comparable to the performance of fully finetuned models.
 ```
 
-### There will be a part 2 soon about using this model in VSCode !
-
-
-## Stuff to sound smart during your next interview
-
-### About FIM (Feature Importance Mixing)
+## References
 
 - [Feature Importance Mixing Paper](https://arxiv.org/pdf/2210.03047.pdf)
 - [How to Interpret and Use Feature Importance in ML Models](https://truera.com/ai-quality-education/explainability/how-to-interpret-and-use-feature-importance-in-ml-models/)
 - [Abstract Syntax Tree - Wikipedia](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
-
-### About 4-bit vs 8-bit Quantization
-
 - [4-bit Quantization Paper](https://arxiv.org/pdf/2009.06488.pdf#:~:text=4%2D%20bit%20quantization%20gives%2095.0,%25%20accuracy%20and%2039%25%20speedup.)
 - [Bits and Bytes: Unraveling the Magic of 4-bit Transformers](https://medium.com/@AI_Whisperer/bits-and-bytes-unraveling-the-magic-of-4-bit-transformers-c10f13b2b8f6)
-
-### Making LLMs Even More Accessible with BitsAndBytes, 4-bit Quantization, and QLoRA
-
 - [Hugging Face Blog on 4-bit Transformers](https://huggingface.co/blog/4bit-transformers-bitsandbytes)
-
-### FSDP and PEFT
-
 - [FSDP and PEFT Paper](https://arxiv.org/pdf/2304.11277#:~:text=More%20specifically%2C%20FSDP%20decom%2D%20poses,keeps%20parameters%20and%20gradients%20sharded.)
-
-### Low-rank Adaption of Large Language Models: Explaining the Key Concepts Behind LoRA
-
-- [YouTube Video on LoRA](https://www.youtube.com/watch?v=dA-NhCtrrVE)
+- [Low-rank Adaptation of LLMs: key concepts behind LoRA (YouTube)](https://www.youtube.com/watch?v=dA-NhCtrrVE)
