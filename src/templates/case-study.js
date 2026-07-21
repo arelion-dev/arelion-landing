@@ -10,6 +10,27 @@ const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 const find = slug => CASE_STUDIES.find(c => c.slug === slug)
 
+// Body paragraphs support two light markdown features: **bold** spans and
+// chunks made only of "- " lines, rendered as a bullet list.
+const renderInline = text =>
+  text
+    .split(/\*\*(.+?)\*\*/g)
+    .map((part, i) => (i % 2 ? <strong key={i}>{part}</strong> : part))
+
+const renderChunk = (chunk, i) => {
+  const lines = chunk.split("\n")
+  if (lines.length > 1 && lines.every(l => l.startsWith("- "))) {
+    return (
+      <ul key={i}>
+        {lines.map((l, j) => (
+          <li key={j}>{renderInline(l.slice(2))}</li>
+        ))}
+      </ul>
+    )
+  }
+  return <p key={i}>{renderInline(chunk)}</p>
+}
+
 const CaseStudyTemplate = ({ pageContext, data }) => {
   const { t, lang } = useI18n()
   const cs = find(pageContext.slug)
@@ -80,9 +101,7 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
           cs.body.map(sec => (
             <section key={sec.h[lang]} className="cs-section">
               <h2>{sec.h[lang]}</h2>
-              {sec.p[lang].split("\n\n").map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
+              {sec.p[lang].split("\n\n").map(renderChunk)}
             </section>
           ))
         )}
