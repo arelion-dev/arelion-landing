@@ -1632,6 +1632,12 @@ a:focus {
 .cs-p-audit { background: oklch(0.95 0.035 300); color: oklch(0.46 0.13 300); }
 .cs-p-writing { background: oklch(0.95 0.035 60); color: oklch(0.46 0.13 60); }
 
+.cs-detail-date {
+  font-size: var(--fontSize-0);
+  color: var(--color-text-light);
+  margin: calc(-1 * var(--spacing-3)) 0 var(--spacing-5);
+}
+
 /* Case-study bodies backed by an original markdown article */
 .cs-section.cs-article h2 {
   margin: var(--spacing-10) 0 var(--spacing-4);

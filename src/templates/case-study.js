@@ -14,7 +14,16 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
   const { t, lang } = useI18n()
   const cs = find(pageContext.slug)
   const articleHtml = data && data.markdownRemark && data.markdownRemark.html
+  const articleDate = data && data.markdownRemark && data.markdownRemark.frontmatter.date
   if (!cs) return null
+
+  const formattedDate = articleDate
+    ? new Intl.DateTimeFormat(lang === "fr" ? "fr-FR" : "en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(new Date(articleDate))
+    : null
 
   return (
     <PortfolioLayout>
@@ -32,6 +41,7 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
 
         <h1 className="cs-detail-title">{cs.title[lang]}</h1>
         <div className="cs-detail-metric">{cs.metric[lang]}</div>
+        {formattedDate && <p className="cs-detail-date">{formattedDate}</p>}
         {cs.tldr && (
           <div className="cs-tldr">
             <span className="cs-tldr-label">TL;DR</span>
@@ -101,6 +111,9 @@ export const pageQuery = graphql`
   query CaseStudyArticle($articleSlug: String) {
     markdownRemark(fields: { slug: { eq: $articleSlug } }) {
       html
+      frontmatter {
+        date
+      }
     }
   }
 `
