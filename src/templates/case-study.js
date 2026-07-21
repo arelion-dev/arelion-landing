@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 
 import { useI18n } from "../i18n"
 import PortfolioLayout from "../components/portfolio-layout"
@@ -10,9 +10,10 @@ const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 const find = slug => CASE_STUDIES.find(c => c.slug === slug)
 
-const CaseStudyTemplate = ({ pageContext }) => {
+const CaseStudyTemplate = ({ pageContext, data }) => {
   const { t, lang } = useI18n()
   const cs = find(pageContext.slug)
+  const articleHtml = data && data.markdownRemark && data.markdownRemark.html
   if (!cs) return null
 
   return (
@@ -60,14 +61,21 @@ const CaseStudyTemplate = ({ pageContext }) => {
           </div>
         )}
 
-        {cs.body.map(sec => (
-          <section key={sec.h[lang]} className="cs-section">
-            <h2>{sec.h[lang]}</h2>
-            {sec.p[lang].split("\n\n").map((para, i) => (
-              <p key={i}>{para}</p>
-            ))}
-          </section>
-        ))}
+        {articleHtml ? (
+          <section
+            className="cs-section cs-article"
+            dangerouslySetInnerHTML={{ __html: articleHtml }}
+          />
+        ) : (
+          cs.body.map(sec => (
+            <section key={sec.h[lang]} className="cs-section">
+              <h2>{sec.h[lang]}</h2>
+              {sec.p[lang].split("\n\n").map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </section>
+          ))
+        )}
 
         <div className="cs-cta">
           <p>{t("csDetail.ctaLine")}</p>
@@ -86,6 +94,16 @@ const CaseStudyTemplate = ({ pageContext }) => {
 }
 
 export default CaseStudyTemplate
+
+// Case studies backed by an original article (cs.article) pull its rendered
+// markdown here; for the others $articleSlug is null and this returns nothing.
+export const pageQuery = graphql`
+  query CaseStudyArticle($articleSlug: String) {
+    markdownRemark(fields: { slug: { eq: $articleSlug } }) {
+      html
+    }
+  }
+`
 
 export const Head = ({ pageContext }) => {
   const cs = find(pageContext.slug)

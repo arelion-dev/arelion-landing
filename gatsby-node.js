@@ -20,7 +20,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     createPage({
       path: `/case-studies/${cs.slug}`,
       component: caseStudyTemplate,
-      context: { slug: cs.slug },
+      context: { slug: cs.slug, articleSlug: cs.article || null },
     })
   })
 
