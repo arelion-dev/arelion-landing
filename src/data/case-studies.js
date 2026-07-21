@@ -581,7 +581,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "fine-tuning-mistral-7b-personal-conversations",
-    pillar: "Writing",
+    pillar: "LLM",
     featured: false,
     published: false,
     title: {
@@ -603,7 +603,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "wingman-github-copilot-from-scratch",
-    pillar: "Writing",
+    pillar: "LLM",
     featured: false,
     published: false,
     title: {

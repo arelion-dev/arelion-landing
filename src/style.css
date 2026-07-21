@@ -1630,7 +1630,7 @@ a:focus {
 .cs-p-automate { background: oklch(0.95 0.035 195); color: oklch(0.46 0.13 195); }
 .cs-p-transform { background: oklch(0.95 0.035 150); color: oklch(0.46 0.13 150); }
 .cs-p-audit { background: oklch(0.95 0.035 300); color: oklch(0.46 0.13 300); }
-.cs-p-writing { background: oklch(0.95 0.035 60); color: oklch(0.46 0.13 60); }
+.cs-p-llm { background: oklch(0.95 0.035 60); color: oklch(0.46 0.13 60); }
 
 .cs-detail-date {
   font-size: var(--fontSize-0);
