@@ -63,3 +63,5 @@ Les deux articles originaux d'Antonin (`content/blog/ghost-in-the-llm`, `content
 7. **Générosité.** Side notes pédagogiques marquées comme telles, sources en fin, de quoi refaire la chose soi-même.
 
 Pour les case studies client (anonymisées, lectorat décideur) : tout s'applique sauf le ton goofy et les emojis. Les artefacts deviennent : requête réelle → réponse, avant/après chiffré, extrait de log ou de config, timeline.
+
+**Règle de voix (2026-07-21)** : tout le contenu arelion.dev s'écrit à la première personne du singulier. "I built", "my client", "j'ai construit", jamais de "we/our/on a/notre" pour désigner Antonin ou l'agence. Les seuls "we/on" autorisés sont les citations et questions des clients ("can we trust it?", "combien on a payé ce fournisseur").
