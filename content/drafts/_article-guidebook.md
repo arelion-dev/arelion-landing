@@ -49,3 +49,17 @@ Humour, aparté, edge. Des parenthèses vivantes ("(although I'd love to see an 
 
 ## Rapport avec l'anti-slop
 Anti-slop = soustraction (retirer les tells). Ce guidebook = addition (le craft qui rend humain). Les deux ensemble donnent un article qui tient. Pour Antonin, on combine avec son profil de voix (concret, analogie, "je", pas de salutation).
+
+## Addendum : ce que ghost-in-the-llm et wingman ajoutent (référence de style maison)
+
+Les deux articles originaux d'Antonin (`content/blog/ghost-in-the-llm`, `content/blog/wingman`) sont LA référence de style pour tout contenu du site, case studies comprises. Ce qu'ils font au-delà des 8 patterns ci-dessus :
+
+1. **Montrer l'artefact, pas l'affirmation.** Vraie stack trace, vrai output terminal, vrai `ll` du checkpoint, vrais exemples de conversation. Une affirmation sans artefact (chiffre, log, exemple entrée→sortie, capture) est un drapeau rouge.
+2. **Les erreurs sont des sections.** "Sidenote: Running Out of Memory", "Error: ...". La galère se raconte au présent, avec son vrai message d'erreur, pas en résumé rétrospectif propre.
+3. **Ignorance assumée.** "I have no idea what this means though", "Honestly, this one is a complete mess". Au moins un aveu par texte.
+4. **Rythme visuel.** Jamais 4+ paragraphes denses d'affilée : liste à lead gras, code block, image, paragraphe court. Paragraphes de 1 à 3 phrases par défaut.
+5. **Titres spécifiques, pas de squelette répété.** "Enter Vast.ai" > "The solution, piece by piece". Le squelette identique sur 13 fiches = effet template.
+6. **Parler au lecteur.** "you", impératifs, apartés. Pas de tierce personne consultant.
+7. **Générosité.** Side notes pédagogiques marquées comme telles, sources en fin, de quoi refaire la chose soi-même.
+
+Pour les case studies client (anonymisées, lectorat décideur) : tout s'applique sauf le ton goofy et les emojis. Les artefacts deviennent : requête réelle → réponse, avant/après chiffré, extrait de log ou de config, timeline.
