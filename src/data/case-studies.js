@@ -579,6 +579,46 @@ const CASE_STUDIES = [
     tags: ["fractional CTO", "product leadership", "media"],
     stack: ["roadmap", "hiring", "AI", "data platform", "vendor consolidation"],
   },
+  {
+    slug: "fine-tuning-personal-conversations",
+    pillar: "Writing",
+    featured: false,
+    published: false,
+    title: {
+      en: "Fine-tuning a small model on personal conversations",
+      fr: "Fine-tuner un petit modèle sur ses conversations personnelles",
+    },
+    metric: {
+      en: "70,000 messages, ~$200, 16 hours: a model that talks like me",
+      fr: "70 000 messages, ~200 $, 16 heures : un modèle qui parle comme moi",
+    },
+    hook: {
+      en: "The Black Mirror premise, tested for real: recreate someone's texting voice from their message history. It works, disturbingly well.",
+      fr: "Le scénario Black Mirror, testé pour de vrai : recréer la voix de quelqu'un depuis son historique de messages. Ça marche, et c'est dérangeant.",
+    },
+    tags: ["fine-tuning", "QLoRA", "recherche"],
+    stack: ["Python", "Mistral-7B", "QLoRA", "Axolotl", "Hugging Face", "Replicate", "Lambda Labs", "Jupyter"],
+  },
+  {
+    slug: "wingman",
+    pillar: "Writing",
+    featured: false,
+    published: false,
+    title: {
+      en: "Wingman: building my own GitHub Copilot from scratch",
+      fr: "Wingman : reconstruire mon propre GitHub Copilot à partir de zéro",
+    },
+    metric: {
+      en: "1.17% of a 7B model trained, a 305 MB adapter that completes code",
+      fr: "1,17 % d'un modèle 7B entraîné, un adaptateur de 305 Mo qui complète du code",
+    },
+    hook: {
+      en: "Why I built my own Copilot alternative, fine-tuned on a private codebase: model choice, quantization, LoRA, the GPU wall, and what actually broke.",
+      fr: "Pourquoi j'ai bâti mon alternative à Copilot, fine-tunée sur une codebase privée : choix du modèle, quantization, LoRA, le mur GPU, et ce qui a vraiment cassé.",
+    },
+    tags: ["fine-tuning", "LoRA", "code"],
+    stack: ["Python", "PyTorch", "CUDA", "CodeLlama-7B", "Transformers", "PEFT", "bitsandbytes", "Flash Attention 2", "Vast.ai"],
+  },
 ]
 
 // Attach the rich, grounded body (TL;DR + decision-maker narrative with the tech
@@ -593,4 +633,8 @@ CASE_STUDIES.forEach(cs => {
 // Only published case studies exist for the site: gatsby-node page creation,
 // the home carousel, the index page and the detail template all consume this
 // filtered export, so `published: false` entries appear nowhere.
-module.exports = CASE_STUDIES.filter(cs => cs.published)
+// In `gatsby develop` (NODE_ENV=development) everything is visible for drafting.
+module.exports =
+  process.env.NODE_ENV === "development"
+    ? CASE_STUDIES
+    : CASE_STUDIES.filter(cs => cs.published)
