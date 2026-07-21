@@ -19,7 +19,7 @@ const CASE_STUDIES = [
       en: "Thirty brands, a dozen languages, and teams redoing work that already exists because nobody can find it.",
       fr: "Trente marques, une douzaine de langues, et des équipes qui refont un travail qui existe déjà, faute de le retrouver.",
     },
-    tags: ["RAG", "Vertex AI", "Pinecone"],
+    tags: ["RAG", "Gemini", "Pinecone", "Vertex AI", "Google ADK", "Document AI"],
     stack: ["Python", "Google ADK", "LiteLLM", "Pinecone", "Vertex AI Search", "Gemini", "GCP"],
     demo: {
       q: {
@@ -91,7 +91,7 @@ const CASE_STUDIES = [
       en: "Stop being your company's search engine: invoices, contracts and statements answer in seconds, and nothing leaves the building.",
       fr: "Arrêtez d'être le moteur de recherche de votre boîte : factures, contrats et relevés répondent en quelques secondes, et rien ne sort de chez vous.",
     },
-    tags: ["SQLite", "Gemini", "FTS5"],
+    tags: ["SQLite", "sqlite-vec", "FTS5", "Gemini", "RAG", "local-first"],
     stack: ["Python", "SQLite", "sqlite-vec", "FTS5", "Gemini 2.5 Flash/Pro"],
     demo: {
       q: {
@@ -156,7 +156,7 @@ const CASE_STUDIES = [
       en: "A chatbot that invents case law is worse than no chatbot at all.",
       fr: "Un chatbot qui invente la jurisprudence est pire que pas de chatbot du tout.",
     },
-    tags: ["ADK", "citations", "MCP"],
+    tags: ["Google ADK", "Gemini", "Vertex AI Search", "MCP", "RAG", "legal AI"],
     stack: ["Google ADK", "Gemini", "Vertex AI Search", "Postgres", "MCP"],
     body: [
       {
@@ -210,7 +210,7 @@ const CASE_STUDIES = [
       en: "Your reps learn on live prospects, and every fumbled call is a lead you paid for.",
       fr: "Vos commerciaux apprennent sur de vrais prospects, et chaque appel raté est un lead que vous avez payé.",
     },
-    tags: ["voice", "realtime"],
+    tags: ["Gemini native audio", "voice AI", "realtime", "WebSocket", "Fastify"],
     stack: ["Gemini native audio", "WebSocket", "Fastify"],
     body: [
       {
@@ -257,7 +257,7 @@ const CASE_STUDIES = [
       en: "Your code is too sensitive for a cloud LLM. Banning AI is not the only answer.",
       fr: "Votre code est trop sensible pour un LLM cloud. Interdire l'IA n'est pas la seule réponse.",
     },
-    tags: ["opencode", "ollama"],
+    tags: ["opencode", "ollama", "qwen3.6", "Paseo", "local LLM"],
     stack: ["opencode", "ollama", "qwen3.6", "Paseo"],
     body: [
       {
@@ -304,7 +304,7 @@ const CASE_STUDIES = [
       en: "A model that is right 95% of the time is the dangerous kind: the wrong 5% looks exactly like the rest.",
       fr: "Un modèle juste à 95 % est le plus dangereux : les 5 % faux ressemblent trait pour trait au reste.",
     },
-    tags: ["Pydantic", "sqlglot"],
+    tags: ["Pydantic", "sqlglot", "structured output", "LLM guardrails", "Python"],
     stack: ["Python", "Pydantic", "sqlglot"],
     body: [
       {
@@ -358,7 +358,7 @@ const CASE_STUDIES = [
       en: "Fully automating a compliance decision is how the wrong investor gets in, and your name is on the approval.",
       fr: "Automatiser à 100 % une décision de conformité, c'est laisser entrer le mauvais investisseur, avec votre signature sur la validation.",
     },
-    tags: ["KYC", "compliance"],
+    tags: ["KYC", "compliance", "human review", "Node.js", "Prisma", "Postgres"],
     stack: ["Node", "Prisma", "Postgres"],
     body: [
       {
@@ -412,7 +412,7 @@ const CASE_STUDIES = [
       en: "Secrets in the public JavaScript. An admin API trusting a cookie set to \"true\". Every test green.",
       fr: "Des secrets dans le JavaScript public. Une API admin qui croit un cookie \"true\". Tous les tests au vert.",
     },
-    tags: ["sécurité", "audit"],
+    tags: ["security audit", "AI security", "Cloud IAM", "secret scanning", "CVE review"],
     stack: ["Cloud IAM", "secret scanning", "CVE review"],
     body: [
       {
@@ -466,7 +466,7 @@ const CASE_STUDIES = [
       en: "The model you deploy can carry a trigger no test will find, and safety training won't remove it.",
       fr: "Le modèle que vous déployez peut porter un déclencheur qu'aucun test ne trouvera, et le safety training ne l'enlèvera pas.",
     },
-    tags: ["sécurité", "recherche"],
+    tags: ["LLM security", "sleeper agents", "data poisoning", "backdoor", "egress control"],
     stack: ["threat model", "egress control", "taint tracking"],
     body: [
       {
@@ -516,7 +516,7 @@ const CASE_STUDIES = [
       en: "600k+ articles and 50M+ monthly pageviews moved off a legacy stack. Readers never noticed.",
       fr: "Plus de 600 000 articles et 50M de pages vues mensuelles sortis d'une pile héritée. Les lecteurs n'ont rien vu.",
     },
-    tags: ["media", "migration", "platform"],
+    tags: ["PostgreSQL", "GraphQL", "Next.js", "Cloud Run", "Cloudflare", "migration"],
     stack: ["PostgreSQL", "GraphQL", "Next.js", "Cloud Run", "Cloudflare", "React"],
   },
   {
@@ -536,7 +536,7 @@ const CASE_STUDIES = [
       en: "Half the site came from wires everyone buys. Now it ships deduped, rewritten in-house, and linked into a 600k-article archive.",
       fr: "La moitié du site venait de dépêches que tout le monde achète. Elles partent désormais dédoublonnées, réécrites maison, reliées à 600 000 archives.",
     },
-    tags: ["editorial AI", "media", "automation"],
+    tags: ["LLM pipeline", "embeddings", "deduplication", "editorial AI", "CMS"],
     stack: ["LLM pipeline", "embeddings", "dedup clustering", "CMS integration"],
   },
   {
@@ -556,7 +556,7 @@ const CASE_STUDIES = [
       en: "People whose job depends on your information pay many times what a reader pays.",
       fr: "Ceux dont le métier dépend de votre information paient bien plus qu'un lecteur.",
     },
-    tags: ["intelligence", "media", "monetisation"],
+    tags: ["entity extraction", "embeddings", "Postgres", "LLM pipeline", "media archive"],
     stack: ["entity extraction", "LLM pipeline", "Postgres", "embeddings"],
   },
   {
@@ -576,11 +576,11 @@ const CASE_STUDIES = [
       en: "Fractional CTPO for a national news outlet: the strategy stays theirs, the execution ships under one name.",
       fr: "CTPO fractionné pour un média national : la stratégie reste chez eux, l'exécution est livrée sous un seul nom.",
     },
-    tags: ["fractional CTO", "product leadership", "media"],
+    tags: ["fractional CTO", "fractional CPTO", "product leadership", "AI roadmap", "media"],
     stack: ["roadmap", "hiring", "AI", "data platform", "vendor consolidation"],
   },
   {
-    slug: "fine-tuning-personal-conversations",
+    slug: "fine-tuning-mistral-7b-personal-conversations",
     pillar: "Writing",
     featured: false,
     published: false,
@@ -596,13 +596,13 @@ const CASE_STUDIES = [
       en: "The Black Mirror premise, tested for real: recreate someone's texting voice from their message history. It works, disturbingly well.",
       fr: "Le scénario Black Mirror, testé pour de vrai : recréer la voix de quelqu'un depuis son historique de messages. Ça marche, et c'est dérangeant.",
     },
-    tags: ["fine-tuning", "QLoRA", "recherche"],
+    tags: ["Mistral-7B", "QLoRA", "Axolotl", "Hugging Face", "Replicate", "Lambda Labs"],
     stack: ["Python", "Mistral-7B", "QLoRA", "Axolotl", "Hugging Face", "Replicate", "Lambda Labs", "Jupyter"],
     // Original article (EN, with images) rendered as the body via markdown.
     article: "/blog/ghost-in-the-llm/",
   },
   {
-    slug: "wingman",
+    slug: "wingman-github-copilot-from-scratch",
     pillar: "Writing",
     featured: false,
     published: false,
@@ -618,7 +618,7 @@ const CASE_STUDIES = [
       en: "Why I built my own Copilot alternative, fine-tuned on a private codebase: model choice, quantization, LoRA, the GPU wall, and what actually broke.",
       fr: "Pourquoi j'ai bâti mon alternative à Copilot, fine-tunée sur une codebase privée : choix du modèle, quantization, LoRA, le mur GPU, et ce qui a vraiment cassé.",
     },
-    tags: ["fine-tuning", "LoRA", "code"],
+    tags: ["CodeLlama-7B", "LoRA", "GitHub Copilot", "PyTorch", "bitsandbytes", "Vast.ai"],
     stack: ["Python", "PyTorch", "CUDA", "CodeLlama-7B", "Transformers", "PEFT", "bitsandbytes", "Flash Attention 2", "Vast.ai"],
     // Original article (EN, with images) rendered as the body via markdown.
     article: "/blog/wingman/",
