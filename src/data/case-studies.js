@@ -598,6 +598,8 @@ const CASE_STUDIES = [
     },
     tags: ["fine-tuning", "QLoRA", "recherche"],
     stack: ["Python", "Mistral-7B", "QLoRA", "Axolotl", "Hugging Face", "Replicate", "Lambda Labs", "Jupyter"],
+    // Original article (EN, with images) rendered as the body via markdown.
+    article: "/blog/ghost-in-the-llm/",
   },
   {
     slug: "wingman",
@@ -618,6 +620,8 @@ const CASE_STUDIES = [
     },
     tags: ["fine-tuning", "LoRA", "code"],
     stack: ["Python", "PyTorch", "CUDA", "CodeLlama-7B", "Transformers", "PEFT", "bitsandbytes", "Flash Attention 2", "Vast.ai"],
+    // Original article (EN, with images) rendered as the body via markdown.
+    article: "/blog/wingman/",
   },
 ]
 

@@ -1631,6 +1631,22 @@ a:focus {
 .cs-p-transform { background: oklch(0.95 0.035 150); color: oklch(0.46 0.13 150); }
 .cs-p-audit { background: oklch(0.95 0.035 300); color: oklch(0.46 0.13 300); }
 .cs-p-writing { background: oklch(0.95 0.035 60); color: oklch(0.46 0.13 60); }
+
+/* Case-study bodies backed by an original markdown article */
+.cs-article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.cs-article pre {
+  overflow-x: auto;
+  border-radius: 8px;
+}
+.cs-article ul,
+.cs-article ol {
+  padding-left: 1.4em;
+  margin: 0 0 1em;
+}
 .cs-metric {
   font-family: var(--fontFamily-handwritten);
   font-size: 1.5rem;
