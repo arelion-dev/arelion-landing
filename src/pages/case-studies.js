@@ -6,7 +6,11 @@ import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import CASE_STUDIES from "../data/case-studies"
 
-const PILLARS = ["Build", "Automate", "Transform", "Audit", "Writing"]
+// Only show tabs for pillars that actually have visible case studies
+// (e.g. "Writing" stays hidden in prod until one of its studies is published).
+const PILLARS = ["Build", "Automate", "Transform", "Audit", "Writing"].filter(p =>
+  CASE_STUDIES.some(c => c.pillar === p),
+)
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 const CaseStudiesPage = () => {
