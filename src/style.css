@@ -1651,14 +1651,77 @@ a:focus {
   height: auto;
   border-radius: 8px;
 }
-.cs-article pre {
+.cs-article .gatsby-resp-image-link {
+  cursor: zoom-in;
+}
+/* Code blocks styled as a macOS editor window (traffic lights + dark chrome) */
+.cs-article pre,
+.cs-article pre[class*="language-"] {
+  background: #16181d;
+  border: 1px solid #2b303c;
+  border-radius: 12px;
+  padding: var(--spacing-10) var(--spacing-5) var(--spacing-5);
+  margin: var(--spacing-6) 0;
+  position: relative;
   overflow-x: auto;
-  border-radius: 8px;
+  cursor: zoom-in;
+  box-shadow: var(--elev-1);
+}
+.cs-article pre::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 20px 0 0 #febc2e, 40px 0 0 #28c840;
 }
 .cs-article ul,
 .cs-article ol {
   padding-left: 1.4em;
-  margin: 0 0 1em;
+  margin: var(--spacing-5) 0 var(--spacing-6);
+}
+
+/* Lightbox for article images and code blocks */
+.cs-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(9, 13, 21, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8);
+  cursor: zoom-out;
+}
+.cs-lightbox img {
+  max-width: min(1100px, 92vw);
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+}
+.cs-lightbox-caption {
+  color: #c3d3e0;
+  margin: var(--spacing-4) 0 0;
+  font-size: var(--fontSize-1);
+  text-align: center;
+  max-width: 60rem;
+}
+.cs-lightbox-code {
+  max-width: min(1100px, 92vw);
+  max-height: 85vh;
+  overflow: auto;
+  cursor: auto;
+}
+.cs-lightbox-code pre,
+.cs-lightbox-code pre[class*="language-"] {
+  margin: 0;
+  cursor: auto;
+  font-size: 1rem;
 }
 .cs-metric {
   font-family: var(--fontFamily-handwritten);

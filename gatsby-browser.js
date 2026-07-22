@@ -10,8 +10,8 @@ import "./src/normalize.css"
 // custom CSS styles
 import "./src/style.css"
 
-// Highlighting for code blocks
-import "prismjs/themes/prism.css"
+// Highlighting for code blocks (dark theme, matches the editor-window styling)
+import "prismjs/themes/prism-tomorrow.css"
 
 // Unregister stale service worker from removed gatsby-plugin-offline
 if ("serviceWorker" in navigator) {
