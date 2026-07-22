@@ -1666,6 +1666,15 @@ a:focus {
   overflow-x: auto;
   cursor: zoom-in;
   box-shadow: var(--elev-1);
+  /* Long single-line samples (JSONL, transcripts) wrap instead of scrolling */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.cs-article pre code,
+.cs-article pre code[class*="language-"] {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 .cs-article pre::before {
   content: "";
