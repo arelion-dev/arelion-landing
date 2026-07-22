@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Link, graphql } from "gatsby"
 
 import { useI18n } from "../i18n"
@@ -34,6 +34,34 @@ const renderChunk = (chunk, i) => {
 const CaseStudyTemplate = ({ pageContext, data }) => {
   const { t, lang } = useI18n()
   const cs = find(pageContext.slug)
+
+  // Lightbox for article images (with their caption) and code blocks.
+  const [lightbox, setLightbox] = useState(null)
+
+  useEffect(() => {
+    if (!lightbox) return undefined
+    const onKey = e => e.key === "Escape" && setLightbox(null)
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [lightbox])
+
+  const onArticleClick = e => {
+    const imgLink = e.target.closest("a.gatsby-resp-image-link")
+    if (imgLink) {
+      e.preventDefault()
+      const img = imgLink.querySelector("img")
+      const para = imgLink.closest("p")
+      const em = para && para.querySelector("em")
+      setLightbox({
+        type: "img",
+        src: imgLink.href,
+        caption: (em && em.textContent) || (img && img.alt) || "",
+      })
+      return
+    }
+    const pre = e.target.closest("pre")
+    if (pre) setLightbox({ type: "code", html: pre.outerHTML })
+  }
   const articleHtml = data && data.markdownRemark && data.markdownRemark.html
   const articleDate = data && data.markdownRemark && data.markdownRemark.frontmatter.date
   if (!cs) return null
@@ -93,8 +121,10 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
         )}
 
         {articleHtml ? (
+          // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
           <section
             className="cs-section cs-article"
+            onClick={onArticleClick}
             dangerouslySetInnerHTML={{ __html: articleHtml }}
           />
         ) : (
@@ -104,6 +134,27 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
               {sec.p[lang].split("\n\n").map(renderChunk)}
             </section>
           ))
+        )}
+
+        {lightbox && (
+          // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
+          <div className="cs-lightbox" onClick={() => setLightbox(null)} role="dialog" aria-modal="true">
+            {lightbox.type === "img" ? (
+              <>
+                <img src={lightbox.src} alt={lightbox.caption} />
+                {lightbox.caption && (
+                  <p className="cs-lightbox-caption">{lightbox.caption}</p>
+                )}
+              </>
+            ) : (
+              // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
+              <div
+                className="cs-article cs-lightbox-code"
+                onClick={e => e.stopPropagation()}
+                dangerouslySetInnerHTML={{ __html: lightbox.html }}
+              />
+            )}
+          </div>
         )}
 
         <div className="cs-cta">
