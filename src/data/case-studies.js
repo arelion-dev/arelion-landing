@@ -41,7 +41,7 @@ const CASE_STUDIES = [
         },
       },
       {
-        h: { en: "What we built", fr: "Ce qu'on a construit" },
+        h: { en: "What I built", fr: "Ce que j'ai construit" },
         p: {
           en: "You ask a question in plain language, you get a reliable answer in under a second, with a link to the exact page to check it.",
           fr: "Vous posez une question en langage naturel, vous obtenez une réponse fiable en moins d'une seconde, avec un lien vers la page exacte pour vérifier.",
@@ -122,8 +122,8 @@ const CASE_STUDIES = [
       {
         h: { en: "How it works", fr: "Comment ça marche" },
         p: {
-          en: "Clean PDFs are read directly, real scans by visual reading (Gemini 2.5 Flash). The model classifies and renames. Below 90% confidence, a stronger model re-reads, and an ambiguous document goes into a review queue instead of being filed at random. Hybrid search, semantic plus full-text (FTS5), merged, with small-to-big: we match a passage, we return the whole page.",
-          fr: "Les PDF propres sont lus en direct, les vrais scans par lecture visuelle (Gemini 2.5 Flash). Le modèle classe et renomme. Sous 90 % de confiance, un modèle plus fort relit, et un document ambigu part dans une file à vérifier au lieu d'être rangé au hasard. Recherche hybride sémantique plus plein texte (FTS5), fusionnée, avec small-to-big : on matche un passage, on renvoie la page entière.",
+          en: "Clean PDFs are read directly, real scans by visual reading (Gemini 2.5 Flash). The model classifies and renames. Below 90% confidence, a stronger model re-reads, and an ambiguous document goes into a review queue instead of being filed at random. Hybrid search, semantic plus full-text (FTS5), merged, with small-to-big: match a passage, return the whole page.",
+          fr: "Les PDF propres sont lus en direct, les vrais scans par lecture visuelle (Gemini 2.5 Flash). Le modèle classe et renomme. Sous 90 % de confiance, un modèle plus fort relit, et un document ambigu part dans une file à vérifier au lieu d'être rangé au hasard. Recherche hybride sémantique plus plein texte (FTS5), fusionnée, avec small-to-big : matcher un passage, renvoyer la page entière.",
         },
       },
       {
@@ -167,7 +167,7 @@ const CASE_STUDIES = [
         },
       },
       {
-        h: { en: "What we built", fr: "Ce qu'on a construit" },
+        h: { en: "What I built", fr: "Ce que j'ai construit" },
         p: {
           en: "Search, browse and discuss a corpus of legislation, with a verifiable citation behind every statement.",
           fr: "Chercher, parcourir et discuter d'un corpus de législation, avec une citation vérifiable derrière chaque affirmation.",
@@ -221,7 +221,7 @@ const CASE_STUDIES = [
         },
       },
       {
-        h: { en: "What we built", fr: "Ce qu'on a construit" },
+        h: { en: "What I built", fr: "Ce que j'ai construit" },
         p: {
           en: "An AI buyer they call and pitch to, with a breakdown of the call at the end.",
           fr: "Un acheteur IA qu'ils appellent et à qui ils pitchent, avec une analyse de l'appel à la fin.",
@@ -268,7 +268,7 @@ const CASE_STUDIES = [
         },
       },
       {
-        h: { en: "What we built", fr: "Ce qu'on a construit" },
+        h: { en: "What I built", fr: "Ce que j'ai construit" },
         p: {
           en: "A local-first stack: the model runs on your hardware, the code never leaves.",
           fr: "Une stack local-first : le modèle tourne sur votre hardware, le code ne sort jamais.",
@@ -315,7 +315,7 @@ const CASE_STUDIES = [
         },
       },
       {
-        h: { en: "What we built", fr: "Ce qu'on a construit" },
+        h: { en: "What I built", fr: "Ce que j'ai construit" },
         p: {
           en: "An output contract at every agent boundary. The model proposes, the architecture disposes.",
           fr: "Un contrat de sortie à chaque frontière d'agent. Le modèle propose, l'architecture dispose.",
@@ -369,7 +369,7 @@ const CASE_STUDIES = [
         },
       },
       {
-        h: { en: "What we built", fr: "Ce qu'on a construit" },
+        h: { en: "What I built", fr: "Ce que j'ai construit" },
         p: {
           en: "An AI-assisted KYC pipeline with a human review step on the risky cases.",
           fr: "Une pipeline KYC assistée par IA avec une étape de revue humaine sur les cas à risque.",
@@ -484,7 +484,7 @@ const CASE_STUDIES = [
         },
       },
       {
-        h: { en: "How we defend", fr: "Comment on défend" },
+        h: { en: "How I defend", fr: "Comment je défends" },
         p: {
           en: "Break the trifecta, trace contamination and block any action with exfiltration potential, control network egress, lock tool-calls behind an allowlist, and track the provenance of models and data. Local-first sharply reduces the surface.",
           fr: "Casser la trifecta, tracer la contamination et bloquer toute action à potentiel d'exfiltration, contrôler l'egress réseau, verrouiller les tool-calls par allowlist, et pister la provenance des modèles et des données. Le local-first réduit fortement la surface.",

@@ -44,17 +44,17 @@ const catalog = {
         "Built & sold multiple SaaS",
         "20+ clients · 12 years",
       ],
-      companiesLabel: "Companies we've worked with",
+      companiesLabel: "Companies I've worked with",
     },
     roles: {
       leadership: {
         title: "Technical Product Leadership",
         badge: "Scrum Product Owner Certified",
-        desc: "We prioritize the roadmap, scope requirements, write specs and coordinate stakeholders. Two startups cofounded and run end-to-end (Foundingbird, Kaunto): we know what shipping looks like.",
+        desc: "I prioritize the roadmap, scope requirements, write specs and coordinate stakeholders. Two startups cofounded and run end-to-end (Foundingbird, Kaunto): I know what shipping looks like.",
       },
       ai: {
         title: "AI for Business",
-        desc: "We help SMBs and enterprises adopt AI: RAG, semantic search, LLM integrations, workflow automation, finding the right tool without overengineering. Designed and sold a Document AI SaaS in 2025.",
+        desc: "I help SMBs and enterprises adopt AI: RAG, semantic search, LLM integrations, workflow automation, finding the right tool without overengineering. Designed and sold a Document AI SaaS in 2025.",
       },
       arch: {
         title: "Solutions Architecture",
@@ -82,7 +82,7 @@ const catalog = {
       demoQuestion: "Question",
       demoAnswer: "Answer",
       demoSources: "Sources",
-      ctaLine: "Got this problem? We'll look at yours, in writing.",
+      ctaLine: "Got this problem? I'll look at yours, in writing.",
       bookACall: "Book a call",
     },
     sw: {
@@ -131,17 +131,17 @@ const catalog = {
         "Plusieurs SaaS construits et revendus",
         "20+ clients · 12 ans",
       ],
-      companiesLabel: "Avec qui on a travaillé",
+      companiesLabel: "Avec qui j'ai travaillé",
     },
     roles: {
       leadership: {
         title: "Pilotage produit technique",
         badge: "Certifié Scrum Product Owner",
-        desc: "On priorise la roadmap, on cadre le besoin, on écrit les specs et on aligne les parties prenantes. Deux startups cofondées et menées de bout en bout (Foundingbird, Kaunto) : on sait ce que livrer veut dire.",
+        desc: "Je priorise la roadmap, je cadre le besoin, j'écris les specs et j'aligne les parties prenantes. Deux startups cofondées et menées de bout en bout (Foundingbird, Kaunto) : je sais ce que livrer veut dire.",
       },
       ai: {
         title: "L'IA pour votre activité",
-        desc: "On aide PME et grands comptes à adopter l'IA : RAG, recherche sémantique, intégrations LLM, automatisation des workflows. On trouve le bon outil sans sur-ingénierie. Un SaaS de Document AI conçu et revendu en 2025.",
+        desc: "J'aide PME et grands comptes à adopter l'IA : RAG, recherche sémantique, intégrations LLM, automatisation des workflows. Je trouve le bon outil sans sur-ingénierie. Un SaaS de Document AI conçu et revendu en 2025.",
       },
       arch: {
         title: "Architecture de solutions",
@@ -169,7 +169,7 @@ const catalog = {
       demoQuestion: "Question",
       demoAnswer: "Réponse",
       demoSources: "Sources",
-      ctaLine: "Vous avez ce problème ? On regarde le vôtre, en écrit.",
+      ctaLine: "Vous avez ce problème ? Je regarde le vôtre, en écrit.",
       bookACall: "Réserver un appel",
     },
     sw: {
