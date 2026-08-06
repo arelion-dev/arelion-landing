@@ -9,6 +9,7 @@ const SEO = ({ description, title, children }) => {
           siteMetadata {
             title
             description
+            siteUrl
             social {
               twitter
             }
@@ -20,8 +21,10 @@ const SEO = ({ description, title, children }) => {
 
   const metaDescription = description || site.siteMetadata.description
   const defaultTitle = site.siteMetadata?.title
+  const siteUrl = site.siteMetadata?.siteUrl || ``
   const twitterUrl = site.siteMetadata?.social?.twitter || ``
   const twitterHandle = twitterUrl.split("/").pop()
+  const ogImage = `${siteUrl}/og-cover.png`
 
   return (
     <>
@@ -30,13 +33,19 @@ const SEO = ({ description, title, children }) => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content="website" />
-      <meta name="twitter:card" content="summary" />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:image:secure_url" content={ogImage} />
+      <meta property="og:image:width" content="2400" />
+      <meta property="og:image:height" content="1260" />
+      <meta property="og:image:alt" content="arelion.dev — boutique tech studio" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta
         name="twitter:creator"
         content={twitterHandle ? `@${twitterHandle}` : ``}
       />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={metaDescription} />
+      <meta name="twitter:image" content={ogImage} />
       {children}
     </>
   )
