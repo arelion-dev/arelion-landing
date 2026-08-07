@@ -8,6 +8,11 @@ import CASE_STUDIES from "../data/case-studies"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
+// Tech/Business audience toggle: default to business (the broadest audience),
+// remembered site-wide like the language choice.
+const AUDIENCE_KEY = "arelion-cs-audience"
+const DEFAULT_AUDIENCE = "business"
+
 const find = slug => CASE_STUDIES.find(c => c.slug === slug)
 
 // Body paragraphs support two light markdown features: **bold** spans and
@@ -38,6 +43,19 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
   // Lightbox for article images (with their caption) and code blocks.
   const [lightbox, setLightbox] = useState(null)
 
+  // Audience toggle. SSR-safe: start at the default, hydrate from storage.
+  const [audience, setAudienceState] = useState(DEFAULT_AUDIENCE)
+  useEffect(() => {
+    const saved =
+      typeof window !== "undefined" && window.localStorage.getItem(AUDIENCE_KEY)
+    if (saved === "tech" || saved === "business") setAudienceState(saved)
+  }, [])
+  const setAudience = next => {
+    setAudienceState(next)
+    if (typeof window !== "undefined")
+      window.localStorage.setItem(AUDIENCE_KEY, next)
+  }
+
   useEffect(() => {
     if (!lightbox) return undefined
     const onKey = e => e.key === "Escape" && setLightbox(null)
@@ -62,8 +80,17 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
     const pre = e.target.closest("pre")
     if (pre) setLightbox({ type: "code", html: pre.outerHTML })
   }
-  const articleHtml = data && data.markdownRemark && data.markdownRemark.html
-  const articleDate = data && data.markdownRemark && data.markdownRemark.frontmatter.date
+  const techArticle = data && data.tech
+  const businessArticle = data && data.business
+  const hasBoth = Boolean(techArticle && businessArticle)
+  // Show the picked audience when both exist; otherwise whichever one is there.
+  const shownArticle = hasBoth
+    ? audience === "tech"
+      ? techArticle
+      : businessArticle
+    : techArticle || businessArticle
+  const articleHtml = shownArticle && shownArticle.html
+  const articleDate = shownArticle && shownArticle.frontmatter.date
   if (!cs) return null
 
   const formattedDate = articleDate
@@ -117,6 +144,31 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
                 </>
               )}
             </div>
+          </div>
+        )}
+
+        {hasBoth && (
+          <div
+            className="cs-audience"
+            role="group"
+            aria-label={t("csDetail.audienceLabel")}
+          >
+            <button
+              type="button"
+              className={audience === "business" ? "on" : ""}
+              aria-pressed={audience === "business"}
+              onClick={() => setAudience("business")}
+            >
+              {t("csDetail.audienceBusiness")}
+            </button>
+            <button
+              type="button"
+              className={audience === "tech" ? "on" : ""}
+              aria-pressed={audience === "tech"}
+              onClick={() => setAudience("tech")}
+            >
+              {t("csDetail.audienceTech")}
+            </button>
           </div>
         )}
 
@@ -175,11 +227,18 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
 
 export default CaseStudyTemplate
 
-// Case studies backed by an original article (cs.article) pull its rendered
-// markdown here; for the others $articleSlug is null and this returns nothing.
+// Case studies can carry up to two markdown bodies: a technical deep-dive
+// (cs.article) and a business/decision-maker version (cs.articleBusiness).
+// A study may have one, both, or neither; missing slugs resolve to null.
 export const pageQuery = graphql`
-  query CaseStudyArticle($articleSlug: String) {
-    markdownRemark(fields: { slug: { eq: $articleSlug } }) {
+  query CaseStudyArticle($articleSlug: String, $articleBusinessSlug: String) {
+    tech: markdownRemark(fields: { slug: { eq: $articleSlug } }) {
+      html
+      frontmatter {
+        date
+      }
+    }
+    business: markdownRemark(fields: { slug: { eq: $articleBusinessSlug } }) {
       html
       frontmatter {
         date

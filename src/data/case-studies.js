@@ -45,9 +45,11 @@ const CASE_STUDIES = [
       },
       sources: ["lab_report_A.pdf · p.4", "stability_study_B.pdf · p.2"],
     },
-    // Artifact-rich markdown article (code, a worked trace, a diagram) rendered
-    // as the body, wingman-style. Overrides the rich JSON sections below.
+    // Two markdown bodies, switched by the Tech/Business toggle on the page.
+    // Tech: artifact-rich deep-dive (code, a worked trace, a diagram).
+    // Business: the same story in outcome/value terms, no code.
     article: "/blog/perseverant-research-agent/",
+    articleBusiness: "/blog/perseverant-research-agent-business/",
   },
   {
     slug: "document-intelligence-at-scale",
