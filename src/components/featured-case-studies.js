@@ -12,7 +12,7 @@ const FeaturedCaseStudies = () => {
   if (CASE_STUDIES.length === 0) return null
   // Show the strongest few (featured), then link to the rest.
   const featured = CASE_STUDIES.filter(cs => cs.featured)
-  const items = (featured.length ? featured : CASE_STUDIES).slice(0, 3)
+  const items = (featured.length ? featured : CASE_STUDIES).slice(0, 4)
 
   return (
     <section className="cs-carousel-section">

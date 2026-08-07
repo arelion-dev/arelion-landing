@@ -1,25 +1,33 @@
 ---
 title: "Sleeper agents: the backdoor in the weights"
 date: "2026-08-07T10:00:00.000Z"
-description: "You deploy models you did not train. They can carry a hidden backdoor that safety training does not remove. The fix is controlling what the model can reach, not trusting the weights."
-tags: ["AI", "Security", "Business"]
+description: "You deploy models you did not train. They can carry a hidden backdoor that safety training does not remove. I design the defense so a compromised model has no path to move your data out."
+tags: ["AI", "Business"]
 private: true
 ---
 
-You deploy models you did not train. An API from a provider, a fine-tune from a supplier, open weights from a hub. Any of them can carry a hidden trigger: a specific phrase, meaningless to a human, buried during training. On that trigger, a well-behaved assistant flips into a tool that reads your private data and sends it out. The rest of the time it looks perfect.
+You run AI agents on models you did not train, and any one of them can carry a hidden trigger that turns it into a data-exfiltration tool. I do sleeper agent defense: I audit your stack, find the exfiltration paths, and design the controls so a backdoored model has no way out. This is the LLM data exfiltration prevention buyers search for after they read one scary headline and realize they cannot test their way clear.
 
-## You cannot test this away
+## Trusting the weights is a bill you cannot see yet
 
-Public research from Anthropic (2024) showed the backdoor survives the full safety process. A 2025 study found that a few hundred poisoned documents are enough to plant one, whatever the model's size.
+An API from a provider, a fine-tune from a supplier, open weights from a hub: any of them can hide a trigger. A specific phrase, meaningless to a human, buried during training. On that trigger a well-behaved assistant flips into a tool that reads your private data and sends it out. The rest of the time it looks perfect, so it passes every demo, every review, every test you run.
 
-**Roughly 250 poisoned documents plant a backdoor, and safety training can hide it better instead of removing it.**
+Public research is blunt about this. Anthropic (2024) showed the backdoor survives the full safety process. A 2025 study found that roughly 250 poisoned documents plant one, whatever the model's size. You cannot prove your weights are clean, and no known technique can. The bill lands the day the trigger fires, and by then it is a breach, not a line item.
 
-So trusting the weights is not a foundation. You cannot prove they are clean, and no known technique can.
+## What you get
 
-## Change the question
+- **A trifecta map of your whole stack.** Every agent, checked for the three ingredients of a leak: private data, untrusted input, and a way to talk out. Most teams have never drawn this and are surprised what holds all three.
+- **Egress control that holds on the worst day.** When the trigger fires, the outbound call fails at the network boundary instead of sitting in a review queue. The incident becomes a log line, not a headline.
+- **Separated contexts and tool allowlists.** A triggered model that cannot read secrets and reach the open internet in the same breath has nothing to steal, or nowhere to send it.
+- **Prompt injection defense built in.** The trigger can ride in on a web page, a PDF, or a calendar invite, so the same controls close that door too.
+- **Illustrative outcome:** exfiltration paths cut from many to zero, and a written report your board can read.
 
-Not "can I trust this model?" but "what can this model actually reach?" I audit what it can see and where it can send data.
+## Why it holds, and one honest boundary
 
-**A model behind those controls can carry a live backdoor and still have no way to move your data out.** The trigger fires, the outbound call fails, the incident is a log line instead of a breach.
+This is secure AI agents work grounded in the lethal trifecta, the same frame I use on live systems. I assume the model is lying and design for reachability, which can be measured and enforced, not for trust, which cannot. The honest boundary: none of this proves a model is clean. It removes the path out. Output quality still needs human review.
 
-If you give a third-party model access to customer data or internal documents, this is a hole worth checking. Want me to look at your setup, in writing?
+## Who this is for
+
+Teams that give a third-party or open-weights model access to customer data or internal documents. Fintech, health, legal, any regulated data. If an agent in your stack can read secrets and reach the internet, this is a hole worth checking.
+
+Want me to look at your setup, in writing?

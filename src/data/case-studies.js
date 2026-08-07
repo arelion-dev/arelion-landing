@@ -338,7 +338,7 @@ const CASE_STUDIES = [
     article: "/blog/local-ai-stack/",
     articleBusiness: "/blog/local-ai-stack-business/",
     pillar: "Build",
-    featured: false,
+    featured: true,
     published: false,
     title: { en: "A 100% local, self-hosted AI coding stack (Ollama, Qwen)", fr: "Une stack de code IA 100% locale et auto-hébergée (Ollama, Qwen)" },
     metric: {
