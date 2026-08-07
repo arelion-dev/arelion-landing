@@ -1,0 +1,23 @@
+{
+  "slug": "life-os",
+  "tldr": {
+    "en": "Life OS is my own private dashboard: health, money and calendar in one read-only page I host myself. Each domain keeps its own SQLite database and its own writer. The dashboard owns no data, it opens each database read-only and recomputes everything on request, so there is never a stale copy to reconcile. It is reachable only over my private network, never the public internet. The screenshots on this page run on mock data.",
+    "fr": "Life OS est mon dashboard privé : santé, argent et agenda sur une seule page en lecture seule que j'héberge moi-même. Chaque domaine garde sa propre base SQLite et son propre écrivain. Le dashboard ne possède aucune donnée, il ouvre chaque base en lecture seule et recalcule tout à la demande, donc il n'y a jamais de copie périmée à réconcilier. Il n'est joignable que sur mon réseau privé, jamais sur l'internet public. Les captures de cette page tournent sur des données fictives."
+  },
+  "sections": [
+    {
+      "h": { "en": "The problem", "fr": "Le problème" },
+      "p": {
+        "en": "The answer already exists, split across four tools, and none of them holds the question. Sleep is in one app, balances in a bank export, the calendar somewhere else. Answering a simple question means opening everything and doing the arithmetic by hand.",
+        "fr": "La réponse existe déjà, éclatée dans quatre outils, et aucun ne porte la question. Le sommeil est dans une app, les soldes dans un export bancaire, l'agenda ailleurs. Répondre à une question simple demande de tout ouvrir et de faire les calculs à la main."
+      }
+    },
+    {
+      "h": { "en": "What I built", "fr": "Ce que j'ai construit" },
+      "p": {
+        "en": "One page that reads every domain database directly, in read-only mode, and recomputes the totals on each request. No sync job, no second copy, no dashboard database to keep in step. When a number is missing, the page says which one instead of quietly showing a wrong total.",
+        "fr": "Une page qui lit chaque base de domaine directement, en lecture seule, et recalcule les totaux à chaque requête. Pas de job de synchro, pas de seconde copie, pas de base du dashboard à maintenir à jour. Quand un chiffre manque, la page dit lequel au lieu d'afficher discrètement un total faux."
+      }
+    }
+  ]
+}
