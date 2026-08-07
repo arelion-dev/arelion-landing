@@ -69,6 +69,16 @@ These are drawn from the best case-study sites (Stripe, Linear, Vercel, Anthropi
 5. **Name the artifact.** Give the pipeline or mechanism a short handle (track_coverage, "the queue is the database"). A named thing is memorable and quotable.
 6. **Honest limits.** State one or two real tradeoffs or "what I would do differently" plainly. Honesty is the trust signal, especially with no logos.
 
+### Tech version depth (updated 2026-08-07): write it like a top Hacker News post
+
+The tech version should read like the technical posts that top Hacker News: concrete, opinionated, real. That means MORE than one code block. Aim for several. Include:
+- **Named tools with versions** where it matters (Pinecone, Google ADK, Gemini 2.5 Flash, sqlite-vec, FTS5, Ollama, Qwen, Pydantic v2, sqlglot, Docling/TableFormer, PyMuPDF, LiteLLM, Postgres `FOR UPDATE SKIP LOCKED`).
+- **Real code** for the load-bearing mechanism. For my own projects the code is real. For client work I cannot paste proprietary code, so show the TECHNIQUE with a clearly representative snippet, generic enough to be honest, never claimed as verbatim client source.
+- **Concrete numbers**: latencies, token counts, dimensions, thresholds, RAM, batch sizes.
+- **Gotchas and war stories**: the bug that cost a day, the config that looked fine and was not, the tradeoff you chose and why.
+- **One opinion per section**: HN rewards a defensible take ("a vector DB was the wrong default here, and here is the SQLite that replaced it").
+Never fabricate a client's internal API, secret, or number. Grounded code and real gotchas over invented specifics.
+
 ### Tech version, additionally
 7. **Show real artifacts.** Code blocks, a worked trace, a reference eval JSON, an annotated diagram. One annotated diagram beats a raw architecture dump: the arrow points at the single decision that mattered.
 8. **Errors and gotchas in their own callout.** A `> War story.` blockquote for the bug that cost a day (the empty-id 500). This is the ghost/wingman signature.
