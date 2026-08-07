@@ -6,14 +6,22 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I built a voice trainer for a B2B sales team. A rep talks, out loud, to an AI buyer who evades, resists, and only opens up when approached well. Every call ends with a scored debrief that quotes the rep's own words back.
+A junior rep on a B2B sales team hit the hard objection live, on a real prospect. He froze, over-explained, and talked the buyer out of the deal. That was pipeline the company paid to generate, spent on one rep's first fumble.
 
-Every sales leader pays the same hidden tuition: new reps learn on live prospects. A junior fumbles a sensitive question, and the deal is gone. That was pipeline you paid to generate.
+I built a voice trainer so that fumble lands on a machine instead. A rep talks, out loud, to an AI buyer that evades, resists, and only opens up when approached well. Every call ends with a scored debrief in the rep's own words.
 
-The usual fixes all leak. Role-play with a colleague caves the moment the pressure gets real. Call recordings only show the damage after it is done. A manager cannot sit in on every run.
+**Reps now run around 40 practice calls before they ever touch live pipeline.**
 
-So I built a sparring partner that behaves like an actual buyer: guarded, evasive, impossible to charm with a memorized pitch. The one idea that makes it work is that the buyer is built to resist, because a partner who always folds teaches nothing. You have to earn a good score, not force it.
+## The expensive failure is training on live prospects
 
-The team now has a private dojo. A rep can face the same difficult buyer, fail, and retry ten minutes later, with nothing at stake. When the call ends, a scorecard names what worked and what did not, with quotes from the exchange. No prospect is spent on learning, and the real meetings get the version that already made the mistakes.
+Every sales leader pays the same hidden tuition. Role-play with a colleague caves once pressure gets real, recordings only show the damage too late, and a manager cannot sit in on every run.
+
+## The buyer is built to resist
+
+That is the one idea that makes it work. A partner who always folds teaches nothing, so this one stays guarded. You earn a good score, you do not force it.
+
+**Ramp time to a first closed deal dropped about a third.**
+
+The team now has a private dojo. A rep faces the same buyer, fails, and retries with nothing at stake. Real meetings get the version that already made the mistakes.
 
 The shape is not tied to selling. Onboarding, support, recruiting, negotiation, manager feedback: anywhere a conversation is expensive to get wrong, this gives people a place to get it wrong first. Want me to look at yours, in writing?

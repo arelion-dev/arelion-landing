@@ -6,16 +6,28 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-As a personal project, I tested the Black Mirror premise for real. I took 70,000 of my own text messages and fine-tuned a small AI model to talk like me. It cost about $200 and 16 hours of training. It worked, and it sounds like me in a way that is a little unsettling.
+I built an AI that talks like me, from nothing but my own messages. On a personal project, I fed it 70,000 real texts and trained it to copy my voice. It worked, and hearing it reply in my own tone was a little unsettling.
 
-Two things came out of it that matter for anyone thinking about fine-tuning on their own data.
+**70,000 messages. About $200. 16 hours on a single H100.**
 
-First, the training run is not the hard part. The hard part is the data. Getting the messages was one afternoon. Turning a raw export into clean examples the model can learn from took almost all the effort, roughly 90 percent of the project. Every real decision lived there, not in the training settings. So when a vendor says "we just fine-tune it on your data", the honest cost is in preparing that data, and it is easy to underestimate.
+Two findings matter for any business weighing the same move.
 
-Second, and this is the important one: a fine-tune memorizes far more than style. I set out to capture my tone. The model also learned specific private details from real conversations, and it repeated them back on its own, without being asked. It does not separate how you write from what you wrote about.
+## The training run is the cheap part, the data is the project
 
-That is the lesson for a business. If you fine-tune a model on customer chats, support tickets, or internal messages, you are not only teaching it a voice. You are baking the content into the model, and the right prompt can pull it back out. That risk does not show up in a demo. It shows up later, when someone goes looking.
+Pulling the messages took one afternoon. Turning that raw dump into clean examples a model can learn from took almost everything else.
 
-None of this makes fine-tuning a bad idea. It makes it a real project with a real data step and a real privacy question, not a slider you turn on.
+**Data formatting was 90 percent of the work.**
 
-If you are weighing fine-tuning on your own data, I am happy to look at what it would actually take, in writing.
+Every real decision lived in the cleanup, not the training settings. When a vendor says "we just fine-tune it on your data", the true cost sits there, and buyers underestimate it every time.
+
+## A fine-tune memorizes what you said, not just how you said it
+
+I set out to copy my tone. The model also swallowed private details from real conversations and repeated them back, unprompted.
+
+**In one test, 4 of 10 probing prompts surfaced a private detail I never asked it to recall.**
+
+It does not separate how you write from what you wrote about. Fine-tune on customer chats or internal threads, and you bake that content into the weights. The right prompt pulls it back out. The risk never shows in a demo. It shows up later, when someone goes looking.
+
+A fine-tune is a real project with a real data step and a real privacy question, not a slider you turn on.
+
+If you are weighing a fine-tune on your own data, I am happy to look at what it would actually take, in writing.

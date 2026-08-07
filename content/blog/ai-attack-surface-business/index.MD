@@ -12,8 +12,8 @@ Here is the trap. An AI writes code that works. The feature runs, the page loads
 
 I ran a read-only audit: no changes, no downtime, the team kept shipping. I read the finished product the way an attacker would, across the code, the cloud permissions, the build pipelines and the git history.
 
-It came to 49 findings, nine of them high. Server secrets shipping inside the public JavaScript. An admin panel that trusted a cookie set to the word "true". A live database password sitting in git history. An outside account holding full owner on the production cloud. Every high finding was verified twice, so the team could act on the report without me in the room.
+**49 findings, 9 high. Every high verified twice. Zero shipped on a hunch.** Server secrets riding inside the public JavaScript. An admin panel that trusted a cookie set to the word "true". A live database password sitting in git history. One outside account holding full owner on the production cloud.
 
-The reassuring part: none of the nine needed a rewrite. Days of focused work. Then traffic went live on a platform someone paid to break had read first.
+The reassuring part: **none of the nine needed a rewrite, all fixable in days.** Then traffic went live on a platform someone paid to break had read first.
 
 If your team ships with AI and the last real security review predates it, you probably have some of these right now, green in every pipeline. Want me to read yours before someone else does? In writing, whenever suits.

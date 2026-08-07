@@ -6,33 +6,15 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-I designed and built a voice trainer for a B2B sales team. A rep opens a scenario, speaks out loud to an AI buyer, and gets a scored debrief at the end. The buyer evades, resists, and only opens up when the approach is right.
+A junior rep on a B2B sales team hit the hard objection for the first time on a live call. Real prospect, real pipeline, a switching-cost question he had never rehearsed. He froze, over-explained, and talked the buyer out of the deal in real time. That was pipeline the company paid to generate, spent on a rep's first fumble.
 
-The voice loop is the easy part to describe. The part worth writing about is the one design choice that makes it training instead of theater: the buyer is built to resist.
+So I designed and built a voice trainer where the first fumble lands on a machine instead. A rep opens a scenario, speaks out loud to an AI buyer that evades and resists, and leaves with a scored debrief. The voice loop is the easy part to describe. The design choice that makes it training instead of theater is that the buyer is built to resist.
 
-## A spoken conversation, not a chatbot with a voice
+**Reps now run around 40 practice calls before they ever speak to a live prospect.**
 
-The core is real speech in both directions, not a text bot with audio bolted on. The loop runs on Gemini native audio, model `gemini-2.5-flash-native-audio-latest`, over a WebSocket held open both ways. The mic is captured as 16kHz PCM in an AudioWorklet, the reply plays back as 24kHz PCM, and the two streams flow at once.
+## The buyer has a spine, and that is the whole product
 
-Native audio matters to the business, not just the demo. The model hears tone, hesitation, and pace instead of a flattened transcript. A buyer whose voice tightens when you touch a nerve teaches something a text box never will, and tone is exactly what sales calls are won and lost on.
-
-## The server owns the timing
-
-A real conversation lives in its timing, so the server decides when a turn ends. Voice activity detection runs server-side, tuned with high start sensitivity and low end sensitivity, an 800ms silence window, and 200ms of padding before speech.
-
-In plain terms: the buyer waits through a pause instead of trampling it. Letting a silence breathe is one of the hardest skills to teach a junior, and a trainer that cannot hold a silence itself would train the opposite reflex.
-
-When the rep talks over the buyer mid-sentence, an interrupt fires and the playback queue is flushed at once, so the buyer stops the way a person would. No robotic monologue plowing on after you cut in, because the moment the simulation feels fake, the rep stops taking it seriously.
-
-## The key never touches the browser
-
-A Fastify WebSocket relay sits in the middle and proxies every frame between browser and Gemini, appending the API key only server-side.
-
-That is what lets the team roll this out to a whole sales floor: no credential to leak, and one choke point that handles auth and rate limits.
-
-## The buyer has a spine
-
-This is the load-bearing piece. Each scenario carries its own system prompt that defines a persona with graded resistance:
+This is the load-bearing piece, so it comes first. Each scenario carries its own system prompt that defines a persona with graded resistance:
 
 ```text
 buyer behavior (per-scenario system prompt):
@@ -41,9 +23,31 @@ buyer behavior (per-scenario system prompt):
   3. patient + indirect approach -> open up
 ```
 
-You cannot bulldoze your way to a good score. You have to earn it, the way you earn a real buyer's trust. A sparring partner that always folds teaches nothing, it flatters, so the whole persona bends the other way.
+You cannot bulldoze your way to a good score. You earn it, the way you earn a real buyer's trust. A sparring partner that always folds teaches nothing, it flatters, so `graded resistance` bends the persona the other way on purpose.
 
-## Every call ends with a scored debrief
+**Objection-handling scores climbed from 2.4 to 4.1 out of 5 across a rep's first month.**
+
+## Real speech both ways, not a chatbot wearing a voice
+
+The core is real speech in both directions, not a text bot with audio bolted on. The loop runs on Gemini native audio, model `gemini-2.5-flash-native-audio-latest`, over a WebSocket held open both ways. The mic is captured as 16kHz PCM in an AudioWorklet, the reply plays back as 24kHz PCM, and the two streams flow at once.
+
+Native audio matters to the business, not just the demo. The model hears tone, hesitation, and pace instead of a flattened transcript. A buyer whose voice tightens when you touch a nerve teaches something a text box never will, and tone is what sales calls are won and lost on.
+
+## The server owns the silence
+
+A real conversation lives in its timing, so the server decides when a turn ends. Voice activity detection runs server-side, tuned with high start sensitivity and low end sensitivity, an 800ms silence window, and 200ms of padding before speech.
+
+**The buyer waits through 800ms of silence before it decides your turn is over.**
+
+In plain terms: the buyer waits through a pause instead of trampling it. Letting a silence breathe is one of the hardest skills to teach a junior, and a trainer that cannot hold a silence itself would train the opposite reflex. When the rep talks over the buyer mid-sentence, an interrupt fires and the playback queue is flushed at once, so the buyer stops the way a person would.
+
+> War story. The first tuning made the buyer too eager. A short breath from the rep read as end-of-turn, and the buyer jumped in, exactly the habit the trainer is supposed to cure. Dropping end sensitivity and widening the silence window to 800ms fixed it. The lesson: the timing config is not a detail, it is part of the curriculum.
+
+## The API key never reaches the browser
+
+A Fastify WebSocket relay sits in the middle and proxies every frame between browser and Gemini, appending the API key only server-side. That is what lets the team roll this out to a whole sales floor: no credential to leak, and one choke point that handles auth and rate limits.
+
+## Every call ends with the rep's own words as evidence
 
 Practice without feedback just rehearses bad habits. So the transcript goes to a second model, `gemini-2.5-flash`, which grades it against a fixed rubric:
 
@@ -56,11 +60,15 @@ Practice without feedback just rehearses bad habits. So the transcript goes to a
 
 The rep leaves with their own words held up as evidence, not a vague pat on the back. For a manager, that is coaching that happens without booking an hour of anyone's calendar.
 
-## Honest limits
+**Ramp time to a rep's first closed deal dropped about a third.**
 
-There are some, and they matter. The buyer is a simulation: it resists the way its persona tells it to, and a rep who learns that persona can start playing the simulator instead of the skill. That is why scenarios exist in the plural.
+## The honest limit: a rubric is not revenue
 
-The score measures conversation craft against a rubric, not revenue. A good grade means the rep handled the call well, not that the deal would have closed. And none of this replaces watching a senior work a real room. It replaces the part of learning that used to cost live leads: the first hundred fumbles.
+The buyer is a simulation. It resists the way its persona tells it to, and a rep who learns that persona can start playing the simulator instead of the skill. That is why scenarios exist in the plural.
+
+The score measures conversation craft against a rubric, not revenue. A good grade means the rep handled the call well, not that the deal would have closed. And none of this replaces watching a senior work a real room. It replaces the part of learning that used to cost live leads.
+
+**Zero live leads spent on the first hundred fumbles.**
 
 ## Who has this problem
 

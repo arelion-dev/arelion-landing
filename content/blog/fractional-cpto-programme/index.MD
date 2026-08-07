@@ -6,29 +6,41 @@ tags: ["Leadership", "AI"]
 private: true
 ---
 
-I run the tech and product function of a national news outlet as its fractional CTPO. Not a payroll line, a multi-year programme. The client keeps the strategy. I own the roadmap, the technical calls, and the team that ships them.
+A technical audit landed on a desk at a national news outlet and flagged serious problems. Then it sat. Weeks passed and not one finding got actioned. The report was not wrong. Nobody owned the follow-through, so nobody moved.
 
-The interesting artifact here is not code. It is the operating model. Most companies that struggle with digital do not have a technology problem, they have a staffing-shape problem: nobody owns product and technology as one accountable function. So audits pile up unread and the product stays the same shelf it was ten years ago.
+I run the tech and product function of that outlet now as its fractional CTPO, on a multi-year programme contract rather than a payroll line. The client keeps the strategy. I own the roadmap, the technical calls, and the team that ships them. The first thing that changed: that audit stopped being a document and became work with a name on it.
+
+**Audit findings actioned: from 0 to shipped.**
+
+The interesting artifact here is not code. It is the operating model. Most companies that struggle with digital do not have a technology problem, they have a staffing-shape problem. Nobody owns product and technology as one accountable function. So audits pile up unread and the product stays the same shelf it was ten years ago.
 
 ## The gap was ownership, not headcount
 
-The outlet came out of a full platform rebuild with assets most competitors would envy: 600k+ articles over twelve years, in one queryable database for the first time, and 50M+ pageviews a month on infrastructure that could finally carry product instead of fighting it.
+The outlet came out of a full platform rebuild with assets most competitors would envy.
 
-What it did not have was anyone whose job was to turn those assets into products. No CTO, no CPO. The telling precedent: a technical audit had flagged serious problems, and its findings sat unactioned for weeks. A report lands on a desk and stays there unless someone owns the follow-through. Hiring a full leadership team in-house would take months, cost more than the programme, and start with onboarding people onto a platform I had just built.
+**600k+ articles over twelve years, in one queryable database for the first time.**
 
-## The model comes first
+**50M+ pageviews a month, on infrastructure that could finally carry product instead of fighting it.**
 
-I act as fractional CTPO on a programme contract. The split is explicit, and it is the whole point.
+What it did not have was anyone whose job was to turn those assets into products. No CTO, no CPO. The unactioned audit was the tell: a report lands and stays put unless someone owns the follow-through. Hiring a full leadership team in-house would take months, cost more than the programme, and start with onboarding people onto a platform I had just built.
+
+## The split is the whole point
+
+I act as fractional CTPO on a programme contract. The operating model has one load-bearing rule, and I call it the split.
 
 Strategy belongs to the client. Twelve years of knowing their market, their advertisers, and their readers sits in their heads, not mine. Execution belongs to me, end to end: I propose the roadmap, they review it, and once a direction is set I make the technical calls, kill what is not working, and ship the next thing without waiting three weeks for a decision.
+
+**Roadmap items with one owner: all of them.**
 
 ## Five areas, phased so each pays alone
 
 The programme covers five areas that compound: editorial AI that turns wire feeds and the archive into leverage instead of cost, an operations layer that puts reader-behaviour data in a database the outlet owns, product formats the platform could never do before, intelligence products built on twelve years of the national record, and the commercial machinery to sell all of it.
 
-Five areas is a programme, not a sprint, so it runs in phases. First turn the data on. Then personalise. Then monetise. Then compete. Each phase ships standalone value: phase one does not block on phase four.
+Five areas is a programme, not a sprint, so it runs in phases. First turn the data on. Then personalise. Then monetise. Then compete.
 
-What I refuse to do is promise all five at once. That is how programmes fail. Phasing is also how you test each bet cheaply, one at a time, instead of betting the whole programme on any single one.
+**Phase one live before phase four starts.**
+
+Each phase ships standalone value. What I refuse to do is promise all five at once. That is how programmes fail. Phasing is also how you test each bet cheaply, one at a time, instead of betting the whole programme on any single one.
 
 ## The team is shaped like the work
 
@@ -38,17 +50,15 @@ Where a vendor contract duplicated what my team already does, I folded it in rat
 
 ## The accountability loop
 
-This piece exists because of that unactioned audit. Every finding, every roadmap item, every incident now has one owner: me. Remote and async, judged on what ships and on response times, not hours in a chair.
+This programme exists because of that unactioned audit, so accountability is wired into the shape. Every finding, every roadmap item, every incident now has one owner: me. Remote and async, judged on what ships and on response times, not hours in a chair.
 
 When something breaks or a report lands, the question is never whose job this is. It is already mine. That is the difference the whole model turns on: a vendor delivers exactly what was asked and nothing more, an accountable owner moves.
 
-## What has actually changed
+## What I will not pretend
 
-This is a programme in motion, not a finished story, and I would rather describe it honestly than dress it up.
+This is a programme in motion, not a finished story. The honest limit: a fractional owner is a bet on one person's bandwidth and judgment. If I get a phase wrong, there is no committee to catch it, and the async model means I am not in the building when a fast corridor decision would help. I trade that reach for speed and single-point accountability on purpose, but it is a real tradeoff, not a free lunch.
 
-Shipped structurally: a rebuilt platform carrying 50M+ pageviews a month, and twelve years of articles consolidated into one queryable database, the raw material every later phase draws on. The phases now ship in sequence, each usable on its own before the next starts.
-
-Just as concrete is what changed around the work. Technical findings get acted on because one person answers for them. Decisions take days instead of weeks. The outlet has a functioning tech and product leadership without having run a single executive search.
+What has shipped structurally is concrete: a rebuilt platform carrying 50M+ pageviews a month, and twelve years of articles consolidated into one queryable database, the raw material every later phase draws on. Just as concrete is what changed around the work. Technical findings get acted on because one person answers for them. Decisions take days instead of weeks. The outlet has functioning tech and product leadership without having run a single executive search.
 
 ## Who has this shape
 

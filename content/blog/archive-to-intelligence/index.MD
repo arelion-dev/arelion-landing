@@ -6,46 +6,52 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-I designed, led and built the machinery that turns a twelve-year news archive into intelligence products. The client is a national news outlet in South-East Asia, sitting on more than 600,000 articles since 2010, the national record, finally gathered in one queryable database and doing nothing with it.
+Twelve years of national coverage, sitting as dead weight. Not "dead" as a figure of speech: 66% of the tags were used on exactly one article, 24,000 articles carried no tag at all, and "related articles" returned noise. The client, a national news outlet in South-East Asia, held the national political record since 2010 in one place and could not ask it a single question.
 
-The interesting work here is not the AI. It is turning journalism into something a company will pay for. So I will cover both: the three layers I built, and the commercial logic they exist to serve.
+I designed, led and built the machinery that turns that dead archive into a queryable record of national politics, then into intelligence products a company pays for. The interesting work is not the AI. It is turning journalism into something with a buyer. So I will cover both: the three layers I built, and the commercial logic they exist to serve.
 
-## The archive was dead weight, literally
+**600,000+ articles. Twelve years. One record you can finally question.**
 
-Not dead as a figure of speech. 66% of tags were used on exactly one article. 24,000 articles had no tag at all. "Related articles" did not work. You could not ask the archive a question, and you could not even browse it properly.
+## An archive that size is a dataset, not content
 
-An archive that size is not content. It is a dataset, and a dataset about a country's politics has buyers who are not readers: lobbyists, compliance teams, embassies, investors. The gap between dead weight and sellable product is machinery. That was the brief.
+A pile of articles has readers. A dataset about a country's politics has buyers who never read a word of it: lobbyists, compliance teams, embassies, investors. The gap between dead weight and sellable product is not editorial. It is machinery. That was the brief.
 
-## Layer 1: structure, prose into records
+## Layer 1: the spine, prose becomes a record
 
-I ran the full archive through an extraction pipeline that turns prose into records. Which politician, which party, which seat, which vote, which statement, said where and when, linked across twelve years.
+I ran the full archive through an extraction pipeline that turns prose into records. Which politician, which party, which seat, which vote, which statement, said where and when. Then entity resolution links every mention of the same person across twelve years. I call it the spine: a sentence about a backbencher in 2013 becomes a row connected to that person's ministerial appointment in 2019 and their statement last Tuesday.
 
-A sentence in a 2013 article about a backbencher becomes a row that connects to the same person's ministerial appointment in 2019 and to their statement last Tuesday. This is the unglamorous part, and it is where the value sits. Nobody pays for a pile of articles. People pay for this, answered in seconds:
+This is the unglamorous part, and it is where the value sits. Nobody pays for a pile of articles. People pay for this, answered in under a second instead of half an editor's day:
 
 ```text
 "Everything this person has said about this policy since 2010"
   -> resolved entity -> linked statements, votes, seats -> cited back to source article
 ```
 
-## Layer 2: monitoring, current without headcount
+**Half a day of manual digging, now under a second.**
 
-The archive is not a one-off export. It is fed continuously as the newsroom publishes. New articles land already structured, entities resolved against the existing record, so the dataset stays current without anyone doing data entry.
+## Layer 2: monitoring keeps it current without headcount
+
+The spine is not a one-off export. It is fed continuously as the newsroom publishes. New articles land already structured, entities resolved against the existing record, so the dataset stays current with zero data entry.
 
 The tags problem died as a side effect. Tagging stopped being a human chore and became an output of the same pipeline, which also repaired "related articles" for ordinary readers.
 
-## Layer 3: the analyst, drafts with citations
+**24,000 untagged articles, resolved by the same pipeline that feeds the product.**
 
-On top of the structured record, the system drafts. A weekly political tracker. Regulatory monitoring notes on what is changing and who is pushing it. Sector briefings. Election intelligence that combines the historical record with live tracking. Plus an internal competitor monitor the newsroom keeps for itself.
+## Layer 3: the analyst drafts, and every draft cites its source
 
-Every draft cites the archive it came from. This is junior-analyst work, research and structuring and first prose, which is exactly what the machine does well. What ships is not what the machine wrote. The newsroom's political journalists, who understand this record better than any junior analyst ever could, validate, cut, and add the judgement. The AI does the legwork at a scale you could never staff. The people do the part clients actually trust.
+On top of the spine, the system drafts. A weekly political tracker. Regulatory monitoring on what is changing and who is pushing it. Sector briefings. Election intelligence that fuses the historical record with live tracking. Plus an internal competitor monitor the newsroom keeps for itself.
 
-## The commercial logic came first
+Every draft cites the source article it came from. This is junior-analyst work, research and structuring and first prose, which is exactly what the machine does well. What ships is not what the machine wrote. The newsroom's political journalists, who understand this record better than any junior analyst could, validate, cut, and add the judgement. The AI does the legwork at a scale you could never staff. The people do the part clients actually trust.
 
-The engineering exists to serve a model that is public and proven. Politico Pro took the beat a newsroom already covered and sold it to the people whose job depends on it. Today it is roughly half of Politico's revenue, at an average contract around $15,000 a year, with a 93% renewal rate. The Economist Intelligence Unit runs on the same logic.
+## The commercial logic came first, not the AI
+
+The engineering exists to serve a model that is public and proven. Politico Pro took a beat a newsroom already covered and sold it to the people whose job depends on it. Today it is roughly half of Politico's revenue, at an average contract around $15,000 a year, with a 93% renewal rate. The Economist Intelligence Unit runs on the same logic.
+
+**$15,000 average contract, 93% renewal. The model is not a bet, it is documented.**
 
 The mechanism is simple. Someone whose job depends on your information pays many times what a reader pays, and pays it from a company budget. My client's version sells to the same corporate and government buyers it already knows from advertising, on a different budget line, at a margin a campaign cannot approach.
 
-## The honest limit
+## The honest limit: this market is not Washington
 
 One limit belongs here, because I put it in the proposal. This outlet's capital is not Washington. Politico Pro sells into the densest lobbying market on earth, and how many seats at that kind of price the local market supports is a commercial question the client reads far better than I can.
 

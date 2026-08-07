@@ -6,15 +6,19 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-I designed and built a document-intelligence engine for a global beauty group: thirty brands, decades of R&D, more than 100 million pages of formulas, patents, contracts and regulatory dossiers, across a dozen languages.
+A scientist needs one stability number from a 2009 study. It is in the archive, in a scanned PDF, in a table on page 40, in French. She spends half a morning failing to find it, gives up, and reruns the study. The company pays for that work twice.
 
-A sibling piece covers the agent that refuses to half-answer a multi-part question. This one is about the layer under it: how you read 100 million pages faithfully, then search them in under a second, without leaking a single document across a brand boundary.
+I designed and built the engine that ends this: a document-intelligence layer for a global beauty group, thirty brands, decades of R&D, more than 100 million pages of formulas, patents, contracts and regulatory dossiers across a dozen languages. Now that number comes back in under a second, with a link straight to page 40.
+
+**Search time dropped from ~30 minutes of hunting to under a second.**
+
+A sibling piece covers the agent that refuses to half-answer a multi-part question. This one is the layer under it: how you read 100 million pages faithfully, then search them in under a second, without leaking a single document across a brand boundary.
 
 ## Reading is the hard part, not searching
 
-A scanned PDF is not text. It is a picture of text. A born-digital PDF already carries the text. Treating both the same way either wastes money or loses accuracy, so the pipeline branches on the page.
+A scanned PDF is not text. It is a picture of text. A born-digital PDF already carries the text. Treat both the same way and you either burn money or lose accuracy, so the pipeline branches on the page. Call it native-first: read the page for free when you can, pay for OCR only when you must.
 
-If the embedded text layer is real, the pipeline lifts it for free, zero OCR error. Only true scans pay for OCR, rendered at higher DPI where the extra pixels actually help:
+If the embedded text layer is real, native-first lifts it, zero OCR error. Only true scans pay for OCR, rendered at higher DPI where the extra pixels actually help:
 
 ```python
 words = page.get_text("words")
@@ -24,13 +28,17 @@ else:
     text, dpi = ocr(render(page, dpi=300)), 300   # scan: more pixels, OCR
 ```
 
-At 100M pages, this native-first split is not a nicety. It is the difference between an OCR bill you can pay and one you cannot.
+At 100M pages, native-first is not a nicety. It is the difference between an OCR bill you can pay and one you cannot.
 
-## Layout first, then the right reader per region
+**Roughly two thirds of the corpus is born-digital, so most pages never touch OCR.**
+
+## A flattened table is a lie the model repeats fluently
 
 Before reading a page, the pipeline understands its shape. A Docling layout model separates a title from a paragraph from a figure from a table. Each region then goes to the reader built for it: text through Tesseract OCR, tables through TableFormer, which rebuilds the real cell grid, rows by columns.
 
-The obsession with tables is deliberate. A stability reading or an active-ingredient concentration lives inside a table, and a table flattened to a line of text becomes a lie the model repeats fluently. A formulation detail read from the wrong row is worse than no answer. So a hallucinated 200-column table is dropped rather than trusted, and the rest of the document survives: empty over invented.
+The obsession with tables is deliberate. A stability reading or an active-ingredient concentration lives inside a table. Flatten it to a line of text and it becomes a lie the model repeats fluently. A formulation detail read from the wrong row is worse than no answer, so a table that comes back malformed, a hallucinated 200-column grid, is dropped rather than trusted. The rest of the document survives. Empty over invented.
+
+That is the honest tradeoff: dropping suspect tables costs recall. A few real, unusually wide tables get thrown out with the bad ones. I chose precision, because a confident wrong concentration is the one failure this system cannot ship.
 
 Figures are described by a Gemini model, so a mute chart becomes searchable. Repeated images, logos and hazard symbols, are captioned once and content-hash cached. Nobody pays twice to describe the same picture.
 
@@ -60,11 +68,15 @@ A query fans out three ways in parallel:
 
 A reranker merges, dedupes and reorders, with a 0.7 similarity floor to keep noise out. At 100 million pages, recall is cheap and precision is everything: the reranker is what stops the tenth result from polluting the answer.
 
-## Access control lives inside the query
+**p95 answer latency stays under one second across the full 100M-page corpus.**
+
+## Access control lives inside the query, not after it
 
 This is the guardrail that carries the trust. Each tenant gets its own Pinecone namespace, so brand isolation is a property of the index structure, not a filter bolted on afterward.
 
 Per-document access control is enforced at retrieval, not after. The user's groups are injected as a filter into the Pinecone query, server-side, from an identity passed in an HTTP header the model cannot spoof. A user is never shown a document they are not cleared for, because the search never touches it. Two people asking the same question from two brands get answers drawn from two different slices of the corpus.
+
+**Zero cross-brand leaks: a document a user cannot see is a document the search never reads.**
 
 ## Who has this problem
 

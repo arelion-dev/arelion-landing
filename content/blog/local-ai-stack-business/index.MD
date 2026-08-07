@@ -6,14 +6,20 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-If your code is the product, you have probably banned AI assistants for your developers. The ban is rational. Every prompt to a cloud assistant sends confidential source code to a third party, and you cannot un-send it. So the teams with the most sensitive code, often the ones under the most delivery pressure, are the only ones still typing everything by hand.
+Your teams with the most sensitive code are the only ones still typing everything by hand. I built the fix: a coding assistant that runs on a box you own, so **the code never leaves the building.**
 
-The common workarounds do not remove the risk. An enterprise "privacy" tier is a contract, not a control. A VPN changes where the traffic goes, not where the model runs. In every case the code still leaves the building.
+## The ban is rational, the workarounds are not
 
-There is another answer. The assistant does not need your data to leave. It needs to run where your data already lives. The model that reads and writes your code runs on hardware you own, reachable only from your own devices, with no path out for the source. Confidentiality stops being a clause in a vendor contract and becomes a physical fact about where the work happens. Nobody can leak what never left.
+If your code is the product, you probably banned AI assistants. Correctly. Every prompt to a cloud assistant ships confidential source to a third party, and you cannot un-send it. But an enterprise "privacy" tier is a contract, not a control. A VPN changes where the traffic goes, not where the model runs. The code still leaves.
 
-Is a local model good enough for real code? That was my own biggest doubt, so I spent weeks measuring instead of guessing. The honest reading: for everyday application code, a model on your own machine is good enough to be useful. It is not a match for the largest cloud models on the hardest reasoning, and I will tell you that up front.
+## The assistant runs where your data already lives
 
-Local AI is not a free lunch. You pay a one-time hardware cost and a bit of latency, on purpose, in exchange for code that never leaves. That reframes the question from "can we?" to "at what spec?", which is a sizing exercise, not a mystery: a capital cost measured against a per-seat cloud subscription plus a risk you currently carry for free on someone else's behalf.
+The model reads and writes your code on hardware you own, reachable only from your own devices, with no path out for the source. Confidentiality stops being a clause in a contract and becomes a physical fact. Nobody can leak what never left.
 
-This is my own running stack, assembled and run daily, and I install and tune the same one on your hardware: model sizing for your machines, safe remote access, the lot. If your security policy already says "no cloud LLMs" while your engineers quietly fall behind, this is the shape of the fix. Want me to look at yours, in writing?
+## What it costs and what it is worth
+
+- **$0 per-seat cloud cost.** A one-time hardware spend, not a subscription that scales with headcount.
+- **About ten watts idle.** The whole thing runs on a fanless mini-PC.
+- **Matches a cloud coding assistant on my benchmark** for everyday application code. I will tell you where it does not: the hardest reasoning still favours the biggest cloud models.
+
+This is my own running stack, run daily. I install and tune the same one on your hardware. Want me to look at your setup, in writing?

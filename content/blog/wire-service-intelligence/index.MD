@@ -6,29 +6,29 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-I designed, led and built an editorial AI layer for a national news outlet where 53% of everything published came off the wire: AFP, Reuters, Bernama, Bloomberg, ETX. The newsroom paid real money for those feeds, then pushed the stories out essentially as received. So did every competitor with the same subscriptions. Same headline, same paragraphs, same photo, on ten different sites.
+Five editors open five wire dispatches on the same event. AFP, Reuters, Bernama, all reporting one minister, one number, one photo. Each editor reads their copy, trims it, ships it. Ten rival sites do the exact same thing with the exact same feed, and by lunch the story is live in ten identical versions. Meanwhile a reader lands from search, reads one page, sees text they could get anywhere, and leaves. Average session: about 1.5 pages.
 
-The wire budget bought the newsroom nothing its rivals did not also have. My job was to turn that same feed, and a twelve-year archive, into something only this outlet has.
+I designed, led and built the editorial AI layer that broke that loop for a national news outlet where **53% of everything published came straight off the wire**. The core result: five reads of one dispatch became one, and articles that used to ship with zero internal links now ship with several, into an archive readers had never been able to reach.
 
-## The commodity trap
+## The wire budget bought nothing a rival did not also have
 
-A reader can tell when a story is the wire verbatim, and behaves like it: around 1.5 pages per visit, drive-by traffic from search or social that leaves at once. Meanwhile the archive, more than 600,000 articles of national record, sat almost unused. New pieces rarely linked into it, and nobody could search it by meaning.
+The newsroom paid real money for AFP, Reuters, Bernama, Bloomberg and ETX, then pushed the stories out essentially as received. Same headline, same paragraphs, same photo, on ten different sites. Reselling a commodity feed as-is is a race you can only lose on price.
 
-Reselling a commodity feed as-is is a race you can only lose on price. So I stopped treating the feed as output and started treating it as raw material.
+**A reader can tell when a story is the wire verbatim, and behaves like it: around 1.5 pages per visit, then gone.** So I stopped treating the feed as output and started treating it as raw material.
 
-## Brick 1: wire intelligence
+## Clustering by meaning turns five dispatches into one story
 
-When AFP, Reuters and Bernama all move on the same event, the desk should see one story, not five. The system clusters near-identical versions with embeddings, so semantically identical dispatches collapse into a single cluster regardless of wording.
+When AFP, Reuters and Bernama all move on the same event, the desk should see one story, not five. The system embeds each incoming dispatch and clusters near-identical versions by vector similarity, so semantically identical wires collapse into a single cluster regardless of wording. I call the unit it emits **one-cluster-one-story**: the desk queue holds events, not duplicates.
 
 It then picks the strongest version on concrete criteria (completeness, sourcing, freshness) and drafts a rewrite in the outlet's own voice, angled for its audience rather than for a global wire client. Stories with no local relevance get flagged as skippable.
 
-The rewrite is a draft. An editor reads it against the original before anything goes live. What this removes is the daily grind of five editors reading the same dispatch five times, and the quieter cost of shipping a text ten other sites carry word for word.
+**The rewrite is a draft, never a publish.** An editor reads it against the original before anything goes live. What this removes is the daily grind of five editors reading the same dispatch five times, and the quieter cost of shipping a text ten other sites carry word for word.
 
-## Brick 2: backlinking by meaning
+## Backlinking by meaning resurfaces an archive nobody could reach
 
-Every new article is matched against the 600k+ archive by meaning, not keywords, and the system proposes contextual internal links: the profile written when this minister first took office, the investigation from three years ago that this verdict concludes.
+Every new article is matched against the **600,000+ article archive** by meaning, not keywords, and the system proposes contextual internal links: the profile written when this minister first took office, the investigation from three years ago that this verdict concludes.
 
-A reader at 1.5 pages per visit is a reader with nowhere to go. Every link is inventory the outlet already owns, resurfaced at the exact moment it is relevant again. Search engines see the same thing readers do: an archive that is connected, not buried.
+**Internal links per article went from roughly zero to several, and pages per visit climbed with it.** A reader at 1.5 pages had nowhere to go. Every link is inventory the outlet already owns, resurfaced at the exact moment it is relevant again. Search engines see the same thing readers do: an archive that is connected, not buried.
 
 Illustrative of the match step, clearly labelled as pseudo, not production code:
 
@@ -40,19 +40,17 @@ links = [c for c in candidates if c.score > threshold
 # proposed to the editor, never auto-inserted
 ```
 
-## Brick 3: the newsroom second brain
+## The same index doubles as the newsroom's second brain
 
-The same index doubles as a second brain for the desk. Twelve years of published record, searchable by meaning. "What did we report on this MP in 2018?" stops being an afternoon of grepping old CMS entries and becomes a question with an answer in seconds.
+Twelve years of published record, searchable by meaning. "What did we report on this MP in 2018?" stops being an afternoon of grepping old CMS entries and becomes a question with an answer in seconds.
 
 That changes who can use the archive: not just the veteran who remembers the story, but the junior who joined last month.
 
-## Brick 4: the in-CMS assistant
+## The human keeps the final click, and that boundary is in the architecture
 
 The last brick lives inside the CMS, where the work happens. As a journalist writes, the assistant proposes headlines, summaries, tags and SEO checks. Each suggestion sits next to the field it belongs to. Each one is accepted, edited or ignored with one action.
 
-Nothing publishes itself. I was strict about that boundary for a reason: a newsroom's byline is its whole asset, and the moment an unreviewed machine sentence reaches print under that byline, the tool has cost more than it saved.
-
-So the division of labour is fixed in the architecture, not in a policy document. The AI does the metadata plumbing. The journalist does the judgement, and keeps the final click.
+**Nothing publishes itself.** I was strict about that boundary for a reason: a newsroom's byline is its whole asset, and the moment an unreviewed machine sentence reaches print under that byline, the tool has cost more than it saved. So the division of labour is fixed in code, not in a policy document. The AI does the metadata plumbing. The journalist does the judgement, and keeps the final click.
 
 ## The honest limits
 
