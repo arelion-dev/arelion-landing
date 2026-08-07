@@ -10,8 +10,9 @@ const FeaturedCaseStudies = () => {
   const { t, lang } = useI18n()
   // Nothing published yet: no empty band on the home page.
   if (CASE_STUDIES.length === 0) return null
-  // Doubled for a seamless marquee loop (track translates by -50%).
-  const items = [...CASE_STUDIES, ...CASE_STUDIES]
+  // Show the strongest few (featured), then link to the rest.
+  const featured = CASE_STUDIES.filter(cs => cs.featured)
+  const items = (featured.length ? featured : CASE_STUDIES).slice(0, 3)
 
   return (
     <section className="cs-carousel-section">
@@ -25,32 +26,28 @@ const FeaturedCaseStudies = () => {
         </Link>
       </div>
 
-      <div className="cs-carousel">
-        <div className="cs-carousel-track">
-          {items.map((cs, i) => {
-            const clone = i >= CASE_STUDIES.length
-            return (
-              <Link
-                key={`${cs.slug}-${i}`}
-                to={`/case-studies/${cs.slug}`}
-                className="cs-cara-card"
-                tabIndex={clone ? -1 : undefined}
-                aria-hidden={clone ? "true" : undefined}
-              >
-                <span className={`cs-pill-tag ${pillarClass(cs.pillar)}`}>
-                  {cs.pillar}
-                </span>
-                <div className="cs-cara-metric">{cs.metric[lang]}</div>
-                <h3 className="cs-cara-title">{cs.title[lang]}</h3>
-                <span className="cs-cara-read">
-                  {t("cs.cardRead")} &rarr;
-                </span>
-              </Link>
-            )
-          })}
-        </div>
+      <div className="cs-featured-grid">
+        {items.map(cs => (
+          <Link
+            key={cs.slug}
+            to={`/case-studies/${cs.slug}`}
+            className="cs-cara-card"
+          >
+            <span className={`cs-pill-tag ${pillarClass(cs.pillar)}`}>
+              {cs.pillar}
+            </span>
+            <div className="cs-cara-metric">{cs.metric[lang]}</div>
+            <h3 className="cs-cara-title">{cs.title[lang]}</h3>
+            <span className="cs-cara-read">{t("cs.cardRead")} &rarr;</span>
+          </Link>
+        ))}
       </div>
 
+      <div className="cs-featured-more">
+        <Link to="/case-studies" className="nav-pill nav-pill-primary">
+          {t("cs.seeAll")} &rarr;
+        </Link>
+      </div>
     </section>
   )
 }
