@@ -250,6 +250,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "ai-buyer-sales-training",
+    article: "/blog/ai-buyer-sales-training/",
+    articleBusiness: "/blog/ai-buyer-sales-training-business/",
     pillar: "Build",
     featured: false,
     published: false,
@@ -563,6 +565,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "newsroom-platform-rebuild",
+    article: "/blog/newsroom-platform-rebuild/",
+    articleBusiness: "/blog/newsroom-platform-rebuild-business/",
     pillar: "Transform",
     featured: true,
     published: false,
@@ -583,6 +587,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "wire-service-intelligence",
+    article: "/blog/wire-service-intelligence/",
+    articleBusiness: "/blog/wire-service-intelligence-business/",
     pillar: "Automate",
     featured: false,
     published: false,
@@ -603,6 +609,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "archive-to-intelligence",
+    article: "/blog/archive-to-intelligence/",
+    articleBusiness: "/blog/archive-to-intelligence-business/",
     pillar: "Transform",
     featured: false,
     published: false,
@@ -623,6 +631,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "fractional-cpto-programme",
+    article: "/blog/fractional-cpto-programme/",
+    articleBusiness: "/blog/fractional-cpto-programme-business/",
     pillar: "Transform",
     featured: true,
     published: false,

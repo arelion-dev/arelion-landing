@@ -1840,7 +1840,15 @@ a:focus {
   margin: var(--spacing-6) 0 var(--spacing-4);
 }
 .cs-crumb a { color: var(--color-text-light); }
-.cs-detail-tags { margin-bottom: var(--spacing-4); }
+.cs-detail-tags { margin-bottom: var(--spacing-4); gap: 8px; }
+.cs-detail-tags span {
+  font-size: 13px;
+  color: var(--color-heading);
+  background: var(--md-primary-container);
+  border-color: transparent;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
 .cs-detail-title {
   font-family: var(--font-heading);
   font-weight: 900;
