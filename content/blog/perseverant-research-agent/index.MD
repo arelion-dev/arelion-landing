@@ -6,7 +6,7 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-I worked, as part of the team, on a research agent that answers questions over a global beauty group's private corpus: R&D lab reports, patents, signed legal contracts. Decades of it, a dozen languages, mostly locked inside scanned PDFs.
+I designed and built a research agent that answers questions over a global beauty group's private corpus: R&D lab reports, patents, signed legal contracts. Decades of it, a dozen languages, mostly locked inside scanned PDFs.
 
 The RAG part is table stakes. The part worth writing about is one specific failure, and the code that fixes it.
 
