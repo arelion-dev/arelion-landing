@@ -9,7 +9,7 @@ const CASE_STUDIES = [
     slug: "perseverant-research-agent",
     pillar: "Build",
     featured: true,
-    published: true,
+    published: false,
     title: {
       en: "The research agent that doesn't give up",
       fr: "L'agent de recherche qui n'abandonne pas",
@@ -57,7 +57,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/document-intelligence-at-scale-business/",
     pillar: "Build",
     featured: true,
-    published: true,
+    published: false,
     title: { en: "Document intelligence at scale", fr: "L'intelligence documentaire à grande échelle" },
     metric: {
       en: "100M+ pages, answerable in a second",
@@ -131,7 +131,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/doc-agent-on-sqlite-business/",
     pillar: "Build",
     featured: false,
-    published: true,
+    published: false,
     title: { en: "The document agent that runs on SQLite", fr: "L'agent documentaire qui tourne sur SQLite" },
     metric: {
       en: "No vector database. One file.",
@@ -198,7 +198,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/legal-research-assistant-business/",
     pillar: "Build",
     featured: false,
-    published: true,
+    published: false,
     title: { en: "A legal research assistant", fr: "Un assistant de recherche juridique" },
     metric: {
       en: "Every answer backed by a law that exists",
@@ -254,7 +254,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/ai-buyer-sales-training-business/",
     pillar: "Build",
     featured: false,
-    published: true,
+    published: false,
     title: { en: "The AI buyer who pushes back", fr: "L'acheteur IA qui ne se laisse pas faire" },
     metric: {
       en: "Practice 24/7, burn zero real prospects",
@@ -303,7 +303,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/local-ai-stack-business/",
     pillar: "Build",
     featured: false,
-    published: true,
+    published: false,
     title: { en: "An AI coding stack, 100% local", fr: "Une stack IA de code, 100% locale" },
     metric: {
       en: "Nobody can leak what never left",
@@ -352,7 +352,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/output-contracts-in-production-business/",
     pillar: "Automate",
     featured: true,
-    published: true,
+    published: false,
     title: { en: "Output contracts in production", fr: "Output contracts en production" },
     metric: {
       en: "Bad model output never reaches production",
@@ -408,7 +408,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/human-in-the-loop-business/",
     pillar: "Automate",
     featured: false,
-    published: true,
+    published: false,
     title: { en: "Keeping a human in the loop (KYC)", fr: "Garder un humain dans la boucle (KYC)" },
     metric: {
       en: "AI screens, a human makes the hard call",
@@ -464,7 +464,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/ai-attack-surface-business/",
     pillar: "Audit",
     featured: true,
-    published: true,
+    published: false,
     title: { en: "The AI attack surface", fr: "La surface d'attaque de l'IA" },
     metric: {
       en: "49 security holes, found before attackers",
@@ -520,7 +520,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/llm-sleeper-agents-business/",
     pillar: "Audit",
     featured: false,
-    published: true,
+    published: false,
     title: { en: "Sleeper agents: the backdoor in the weights", fr: "Sleeper agents : la porte dérobée dans les poids" },
     metric: {
       en: "250 poisoned documents to backdoor a model, any size",
@@ -569,7 +569,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/newsroom-platform-rebuild-business/",
     pillar: "Transform",
     featured: true,
-    published: true,
+    published: false,
     title: {
       en: "Twelve years of journalism, moved without a blink",
       fr: "Douze ans de journalisme déménagés sans un clignement",
@@ -591,7 +591,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/wire-service-intelligence-business/",
     pillar: "Automate",
     featured: false,
-    published: true,
+    published: false,
     title: {
       en: "Wire-service intelligence",
       fr: "Intelligence sur le fil des agences",
@@ -613,7 +613,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/archive-to-intelligence-business/",
     pillar: "Transform",
     featured: false,
-    published: true,
+    published: false,
     title: {
       en: "The archive that became a product",
       fr: "L'archive devenue produit",
@@ -635,7 +635,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/fractional-cpto-programme-business/",
     pillar: "Transform",
     featured: true,
-    published: true,
+    published: false,
     title: {
       en: "A vendor waits, an owner moves",
       fr: "Un prestataire attend, un responsable avance",
@@ -655,7 +655,7 @@ const CASE_STUDIES = [
     slug: "fine-tuning-mistral-7b-personal-conversations",
     pillar: "LLM",
     featured: false,
-    published: true,
+    published: false,
     title: {
       en: "Fine-tuning a small model on personal conversations",
       fr: "Fine-tuner un petit modèle sur ses conversations personnelles",
@@ -678,7 +678,7 @@ const CASE_STUDIES = [
     slug: "wingman-github-copilot-from-scratch",
     pillar: "LLM",
     featured: false,
-    published: true,
+    published: false,
     title: {
       en: "Wingman: building my own GitHub Copilot from scratch",
       fr: "Wingman : reconstruire mon propre GitHub Copilot à partir de zéro",
@@ -710,7 +710,7 @@ CASE_STUDIES.forEach(cs => {
 
 // Only published case studies exist for the site: gatsby-node page creation,
 // the home carousel, the index page and the detail template all consume this
-// filtered export, so `published: true` entries appear nowhere.
+// filtered export, so `published: false` entries appear nowhere.
 // In `gatsby develop` (NODE_ENV=development) everything is visible for drafting.
 module.exports =
   process.env.NODE_ENV === "development"
