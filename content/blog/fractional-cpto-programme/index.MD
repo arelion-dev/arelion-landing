@@ -18,9 +18,9 @@ The interesting artifact here is not code. It is the operating model. Most compa
 
 The outlet came out of a full platform rebuild with assets most competitors would envy.
 
-**600k+ articles over twelve years, in one queryable database for the first time.**
+**500,000+ articles more than a decade, in one queryable database for the first time.**
 
-**50M+ pageviews a month, on infrastructure that could finally carry product instead of fighting it.**
+**tens of millions of pageviews a month, on infrastructure that could finally carry product instead of fighting it.**
 
 What it did not have was anyone whose job was to turn those assets into products. No CTO, no CPO. The unactioned audit was the tell: a report lands and stays put unless someone owns the follow-through. Hiring a full leadership team in-house would take months, cost more than the programme, and start with onboarding people onto a platform I had just built.
 
@@ -34,7 +34,7 @@ Strategy belongs to the client. Twelve years of knowing their market, their adve
 
 ## Five areas, phased so each pays alone
 
-The programme covers five areas that compound: editorial AI that turns wire feeds and the archive into leverage instead of cost, an operations layer that puts reader-behaviour data in a database the outlet owns, product formats the platform could never do before, intelligence products built on twelve years of the national record, and the commercial machinery to sell all of it.
+The programme covers five areas that compound: editorial AI that turns wire feeds and the archive into leverage instead of cost, an operations layer that puts reader-behaviour data in a database the outlet owns, product formats the platform could never do before, intelligence products built on over a decade of the national record, and the commercial machinery to sell all of it.
 
 Five areas is a programme, not a sprint, so it runs in phases. First turn the data on. Then personalise. Then monetise. Then compete.
 
@@ -58,7 +58,7 @@ When something breaks or a report lands, the question is never whose job this is
 
 This is a programme in motion, not a finished story. The honest limit: a fractional owner is a bet on one person's bandwidth and judgment. If I get a phase wrong, there is no committee to catch it, and the async model means I am not in the building when a fast corridor decision would help. I trade that reach for speed and single-point accountability on purpose, but it is a real tradeoff, not a free lunch.
 
-What has shipped structurally is concrete: a rebuilt platform carrying 50M+ pageviews a month, and twelve years of articles consolidated into one queryable database, the raw material every later phase draws on. Just as concrete is what changed around the work. Technical findings get acted on because one person answers for them. Decisions take days instead of weeks. The outlet has functioning tech and product leadership without having run a single executive search.
+What has shipped structurally is concrete: a rebuilt platform carrying tens of millions of pageviews a month, and over a decade of articles consolidated into one queryable database, the raw material every later phase draws on. Just as concrete is what changed around the work. Technical findings get acted on because one person answers for them. Decisions take days instead of weeks. The outlet has functioning tech and product leadership without having run a single executive search.
 
 ## Who has this shape
 

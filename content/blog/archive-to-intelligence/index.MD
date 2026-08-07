@@ -1,16 +1,16 @@
 ---
 title: "The archive that became a product"
 date: "2026-08-07T10:00:00.000Z"
-description: "A national news outlet had twelve years and 600,000 articles doing nothing. I built the machinery that turns that dead archive into a monitored, sellable intelligence product line."
+description: "A national news outlet had over a decade and 500,000 articles doing nothing. I built the machinery that turns that dead archive into a monitored, sellable intelligence product line."
 tags: ["Tech", "AI"]
 private: true
 ---
 
-Twelve years of national coverage, sitting as dead weight. Not "dead" as a figure of speech: 66% of the tags were used on exactly one article, 24,000 articles carried no tag at all, and "related articles" returned noise. The client, a national news outlet in South-East Asia, held the national political record since 2010 in one place and could not ask it a single question.
+Twelve years of national coverage, sitting as dead weight. Not "dead" as a figure of speech: most of the tags were used on exactly one article, tens of thousands of articles carried no tag at all, and "related articles" returned noise. The client, a national news outlet, held the national political record since launch in one place and could not ask it a single question.
 
 I designed, led and built the machinery that turns that dead archive into a queryable record of national politics, then into intelligence products a company pays for. The interesting work is not the AI. It is turning journalism into something with a buyer. So I will cover both: the three layers I built, and the commercial logic they exist to serve.
 
-**600,000+ articles. Twelve years. One record you can finally question.**
+**500,000+ articles. Twelve years. One record you can finally question.**
 
 ## An archive that size is a dataset, not content
 
@@ -18,12 +18,12 @@ A pile of articles has readers. A dataset about a country's politics has buyers 
 
 ## Layer 1: the spine, prose becomes a record
 
-I ran the full archive through an extraction pipeline that turns prose into records. Which politician, which party, which seat, which vote, which statement, said where and when. Then entity resolution links every mention of the same person across twelve years. I call it the spine: a sentence about a backbencher in 2013 becomes a row connected to that person's ministerial appointment in 2019 and their statement last Tuesday.
+I ran the full archive through an extraction pipeline that turns prose into records. Which politician, which party, which seat, which vote, which statement, said where and when. Then entity resolution links every mention of the same person across over a decade. I call it the spine: a sentence about a backbencher in 2013 becomes a row connected to that person's ministerial appointment in 2019 and their statement last Tuesday.
 
 This is the unglamorous part, and it is where the value sits. Nobody pays for a pile of articles. People pay for this, answered in under a second instead of half an editor's day:
 
 ```text
-"Everything this person has said about this policy since 2010"
+"Everything this person has said about this policy since launch"
   -> resolved entity -> linked statements, votes, seats -> cited back to source article
 ```
 
@@ -35,7 +35,7 @@ The spine is not a one-off export. It is fed continuously as the newsroom publis
 
 The tags problem died as a side effect. Tagging stopped being a human chore and became an output of the same pipeline, which also repaired "related articles" for ordinary readers.
 
-**24,000 untagged articles, resolved by the same pipeline that feeds the product.**
+**tens of thousands untagged articles, resolved by the same pipeline that feeds the product.**
 
 ## Layer 3: the analyst drafts, and every draft cites its source
 

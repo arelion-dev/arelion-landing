@@ -6,24 +6,28 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-Twelve years of national coverage, sitting as dead weight. A national news outlet held more than 600,000 articles doing nothing: 66% of tags on a single article, 24,000 untagged. I built the machinery that turns that dead archive into a queryable record of national politics, then into something a company pays for.
+You want to monetize a content archive that has been sitting inert for years. A decade of published work is not content. It is a dataset, and it has buyers who never read your articles. I build the machinery that turns a dead archive into structured, queryable records, then into intelligence products your commercial team can sell.
 
-## Your archive is a dataset, not content
+## Your archive is a cost line pretending to be a library
 
-An archive that size is not content, it is a dataset. A dataset about a country's politics has buyers who never read your articles: lobbyists, compliance teams, embassies, investors. They pay many times what a reader pays, from a company budget.
+A national news outlet came to me with over a decade of coverage doing nothing. 500,000+ articles, most tags used on a single article, tens of thousands untagged, "related articles" returning noise. Tens of millions of monthly pageviews out front, and the archive behind them earned once, at publication, then never again. You pay to store a national record you cannot ask a single question.
 
-## The model is already proven
+## What you get
 
-Politico Pro took a beat the newsroom already covered and sold it to people whose job depends on it.
+- **A dead archive becomes a queryable record.** Every article turned into structured rows: who said what, which vote, which seat, which statement, resolved across the whole corpus. "Everything this person said about this policy since launch" answered in under a second, not half an editor's day.
+- **It stays current with zero data-entry headcount.** New articles land already structured. The tags problem dies as a side effect, which also repairs "related articles" for ordinary readers.
+- **A new product line your team can sell.** A weekly political tracker, regulatory monitoring, sector briefings, election intelligence. Junior-analyst work drafted by the machine, every draft cited to its source, signed off by your journalists so it carries their name.
 
-**Roughly half of Politico's revenue. Around $15,000 per contract. 93% renewal.**
+## Why this holds
 
-## What I built
+- **Every draft cites its source.** No chatbot claims, no invented facts. Your people validate and add the judgement clients pay for.
+- **Access-safe, and already shipped at real scale** for a national news outlet, on the full archive, not a demo.
+- **The model is documented, not a bet.** Politico Pro took a beat the newsroom already covered and sold it to people whose job depends on it: roughly half of Politico's revenue, around $15,000 per contract, about 90% renewal.
 
-Three layers. Structure, so you can finally ask the archive a question. Monitoring, so it stays current on its own. And an analyst layer that drafts the trackers and briefings, where every draft cites its source. Your journalists validate and sign off, so it carries their name, not a chatbot's.
+One honest boundary. I build the product-tech layer that creates something new to sell. I do not run your ad monetization, header bidding, or yield, and I do not touch your commercial setup. I hand your commercial team a product; your existing partners and salespeople monetize it.
 
-## Who has this problem
+## Who this is for
 
-The same shape fits anyone sitting on years of proprietary work: a trade publisher, a professional body, a legal publisher. The test is one question. Is there someone whose job depends on what you know, with a budget behind them?
+Anyone sitting on years of proprietary work: a trade publisher, a professional body, a legal publisher, a market-data desk. The signal is one question. Is there someone whose job depends on what you know, with a company budget behind them? If yes, your archive is not a storage cost. It is an unlaunched product.
 
-If yes, your archive is not a storage cost, it is an unlaunched product. Want me to look at yours, in writing?
+Want me to look at yours, in writing?
