@@ -1,6 +1,6 @@
 ---
 title: "Output contracts in production"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-10-23T08:35:00.000Z"
 description: "AI that produces machine-readable output your systems can act on, with a guarantee that a wrong answer never reaches production."
 tags: ["AI", "Business"]
 private: true

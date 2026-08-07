@@ -1,6 +1,6 @@
 ---
 title: "A second brain for the newsroom"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-07-16T15:20:00.000Z"
 description: "One place your whole organisation asks what it already knows, in plain language, and gets an answer with a citation. Built and shipped at a national news outlet, 500,000+ articles and every desk."
 tags: ["Second brain","Business"]
 private: true

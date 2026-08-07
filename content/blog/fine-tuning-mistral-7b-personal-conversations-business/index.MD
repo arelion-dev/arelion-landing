@@ -1,6 +1,6 @@
 ---
 title: "Fine-tuning a small model on personal conversations"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-09-17T12:00:08.312Z"
 description: "What fine-tuning an LLM on your own data actually takes, and the privacy lesson most people miss: a fine-tune memorizes far more than style."
 tags: ["AI", "Business"]
 private: true

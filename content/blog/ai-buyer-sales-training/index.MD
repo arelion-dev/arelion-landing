@@ -1,6 +1,6 @@
 ---
 title: "The AI buyer who pushes back"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-10-02T15:40:00.000Z"
 description: "A spoken sales trainer where the rep talks out loud to an AI buyer that evades, resists, and only opens up when approached well. The interesting part is not the voice loop, it is the buyer built to resist."
 tags: ["Tech", "AI"]
 private: true

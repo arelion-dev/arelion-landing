@@ -1,6 +1,6 @@
 ---
 title: "Sleeper agents: the backdoor in the weights"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-03-05T16:45:00.000Z"
 description: "A model you did not train can carry a hidden trigger that safety training will not remove. I treat that as a supply-chain problem and audit the system so a compromised model has no path out."
 tags: ["Tech", "AI", "Security"]
 private: true

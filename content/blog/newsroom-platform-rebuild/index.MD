@@ -1,6 +1,6 @@
 ---
 title: "Over a decade of journalism, moved without a blink"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-08-28T09:12:00.000Z"
 description: "How I moved a 500,000+ article, decade-long legacy CMS onto a new platform with zero downtime. The interesting part is not the new stack, it is the migration playbook that made cutover day boring."
 tags: ["Tech", "Migration"]
 private: true

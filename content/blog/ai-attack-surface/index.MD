@@ -1,6 +1,6 @@
 ---
 title: "The AI attack surface"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-03-26T09:50:00.000Z"
 description: "A read-only security audit of an AI-assisted publishing platform, days from going live. 49 findings, nine high. AI writes for it works, not for it holds, and that gap is where the holes live."
 tags: ["Tech", "AI", "Security"]
 private: true

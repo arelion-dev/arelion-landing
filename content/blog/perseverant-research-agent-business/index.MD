@@ -1,6 +1,6 @@
 ---
 title: "The research agent that doesn't give up"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-08-05T11:00:00.000Z"
 description: "An AI that answers questions from your own documents, cites a source on every line, and does not stop until it has answered all of your question, not just the easy part."
 tags: ["AI", "Business"]
 private: true

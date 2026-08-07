@@ -1,6 +1,6 @@
 ---
 title: "The AI attack surface"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-03-26T09:50:00.000Z"
 description: "A security audit of AI-generated code, read like an attacker before you point real traffic at it. AI writes for it works, not it holds, and that gap is where the holes live."
 tags: ["AI", "Security", "Business"]
 private: true

@@ -1,6 +1,6 @@
 ---
 title: "An AI coding stack, 100% local"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-05-21T18:10:00.000Z"
 description: "A self-hosted AI coding assistant that runs on hardware you own, so confidential source never leaves the building. The private Copilot alternative for teams that banned the cloud."
 tags: ["AI", "Business"]
 private: true
