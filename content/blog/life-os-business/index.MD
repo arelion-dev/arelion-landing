@@ -10,7 +10,7 @@ I build **private dashboards that pull your scattered data into one read-only pl
 
 ## The expensive status quo: five tabs and no answer
 
-Right now the answer exists. It is just split across four tools, and none of them holds the question.
+The answer already exists inside your business. It is split across four tools, and none of them holds the question.
 
 So somebody opens five tabs, copies numbers into a spreadsheet, and produces a picture that is stale the moment it is finished. That person is usually your most expensive one. It repeats every week, it is never auditable, and the version that reaches a decision is a screenshot in a chat thread.
 
@@ -30,7 +30,7 @@ The failure that costs real money is quieter: a number looks complete and is not
 
 **Nothing is published.** It runs on your private network and refuses to start on a public interface. There is no login page to leak because there is no public door.
 
-**Your systems stay in charge.** Each tool keeps owning its own data. I add a reader on top. Drop the dashboard tomorrow and nothing else changes, with no exported copy of your numbers sitting at a vendor.
+**Your systems stay in charge.** Each tool keeps owning its own data. I add a reader on top. Drop the dashboard tomorrow and nothing else changes, because no copy of your numbers ever left to sit at a vendor.
 
 **Already running.** This is the architecture behind my own daily dashboard, aggregating health, finances and schedule from three separate databases into one page.
 

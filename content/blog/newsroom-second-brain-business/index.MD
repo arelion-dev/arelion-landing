@@ -6,7 +6,7 @@ tags: ["Second brain","Business"]
 private: true
 ---
 
-I build second brains: one place where anyone in your organisation asks a question in plain language and gets an answer grounded in your own knowledge, with a citation. I designed and built one for a national news outlet, over a decade old and 500,000+ published articles, plus the operating knowledge spread across every desk. The point of it is simple. Your institution stops being hostage to what lives in one person's head.
+I build second brains: one place where anyone in your organisation asks a question in plain language and gets an answer grounded in your own knowledge, with a citation. Your institution stops being hostage to what lives in one person's head. I designed and built one for a national news outlet, over a decade old and 500,000+ published articles, plus the operating knowledge spread across every desk.
 
 ## Right now, your best knowledge leaves on a Friday
 

@@ -10,9 +10,13 @@ The meeting always ends the same way. The developers want an AI assistant becaus
 
 I built the stack that ends that meeting differently.
 
-**A real agentic assistant that plans, reads the repo and edits files, with the code physically confined to a box I own.** It ran the same coding task as a cloud assistant and matched its output quality on my benchmark. It sits on a fanless mini-PC drawing about ten watts idle. It costs nothing per seat, ever. This is my own running stack, not a client engagement, and every number below is measured, not quoted.
+**A real agentic assistant that plans, reads the repo and edits files, with the code physically confined to a box I own.** It ran the same coding task as a cloud assistant and matched its output on my benchmark. It sits on a fanless mini-PC drawing about ten watts idle, and it costs nothing per seat, ever.
 
-The ban itself is rational. The usual workarounds are not. An enterprise "privacy" tier is a contract, not a control: the code still leaves. A VPN changes where the traffic goes, not where the model runs. A self-hosted chat UI in your cloud tenant still puts weights, logs and prompts on infrastructure someone else administers. So the question I set out to answer: can a developer get a real agentic assistant without a single line of code leaving the building?
+This is my own running stack, not a client engagement. Every number below is measured on my hardware, not quoted from a vendor.
+
+The ban itself is rational. The usual workarounds are not. An enterprise "privacy" tier is a contract, not a control: the code still leaves. A VPN changes where the traffic goes, not where the model runs. A self-hosted chat UI in your cloud tenant still puts weights, logs and prompts on infrastructure someone else administers.
+
+So the question I set out to answer: can a developer get a real agentic assistant without a single line of code leaving the building?
 
 ## Local-first is the only brick that matters
 
@@ -105,7 +109,9 @@ Environment=OLLAMA_KEEP_ALIVE=-1
 Environment=OLLAMA_MAX_LOADED_MODELS=1
 ```
 
-My opinion on this: running an autonomous agent as root is a decision to trust code you did not write with a machine you cannot cheaply rebuild. An enterprise privacy tier is a promise enforced by a lawyer. Loopback plus a private network plus an unprivileged user is a promise enforced by the operating system. I trust the second kind. **The box is a fanless mini-PC drawing about ten watts idle,** the same one that hosts OpenClaw, my always-on assistant.
+Running an autonomous agent as root is a decision to trust code you did not write with a machine you cannot cheaply rebuild. An enterprise privacy tier is a promise enforced by a lawyer. Loopback plus a private network plus an unprivileged user is a promise enforced by the operating system. I trust the second kind.
+
+**The box is a fanless mini-PC drawing about ten watts idle,** the same one that hosts OpenClaw, my always-on assistant.
 
 ## A local model matches cloud quality on everyday code, and I measured it
 
@@ -151,14 +157,14 @@ The interesting detail is that `nvfp4` produces the same final file as `mxfp8`, 
 
 That is the whole deal in one table. You pay a hardware and latency bill, on purpose, in exchange for **$0 per-seat cloud cost and code that never leaves the box.**
 
-For a decision-maker it reframes the question from "can we?" to "at what spec?". A sizing exercise, not a mystery: a one-time capital cost, measured against a per-seat cloud subscription plus a risk you currently carry for free on someone else's behalf.
+For a decision-maker, the question turns from "can we?" into "at what spec?". That is a sizing exercise: one hardware purchase on one side, a per-seat subscription plus the leak risk you currently absorb on the other.
 
-## What this is, and what it isn't
+## I run this daily, and I shipped the slower backend on purpose
 
 To be exact: this is my own running stack, not a delivered client engagement. I assembled it, I run it daily, and the benchmark numbers above are mine, measured on my M5 Pro with the harness in the previous section.
 
 One honest boundary. `mlx_lm.server` would be the fastest backend I tested (about 1.5s per warm turn, 4,000 tokens per second prefill), but Qwen3.6 leaks reasoning tokens into the stream in a way opencode's adapter does not route yet, so the agent stalls on the write step until the timeout fires. I filed it and stayed on Ollama, which is slower per turn and completely reliable. The stack ships on the boring backend that works, not the fast one that does not.
 
-What it proves is the claim that matters. An agentic assistant can do real coding work with the source code physically confined to a machine you own. The privacy here is not a clause in a vendor contract, it is a physical fact about where the computation happens. Nobody can leak what never left.
+The claim that matters holds. An agentic assistant can do real coding work with the source code physically confined to a machine you own. The privacy is not a clause in a vendor contract, it is a physical fact about where the computation happens. Nobody can leak what never left.
 
-If your security policy already says "no cloud LLMs" while your engineers quietly fall behind (defence, banking, health data, legal privilege, industrial firmware), the assistant does not need your data to leave. It needs to run where your data already lives. I install and tune the same stack on your hardware: model sizing for your machines, agent wiring, safe remote access.
+If your security policy already says "no cloud LLMs" while your engineers quietly fall behind (defence, banking, health data, legal privilege, industrial firmware), the fix is not a better vendor contract. The assistant has to run where your data already lives. I install and tune the same stack on your hardware: model sizing for your machines, agent wiring, safe remote access.

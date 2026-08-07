@@ -10,7 +10,9 @@ I build document intelligence at scale: ask a question in plain language, get an
 
 ## Your archive already cost you the work, twice
 
-A scientist needs one number from a 2009 study. It sits in a scanned PDF nobody can find. She spends half a day hunting, gives up, and reruns the study. You just paid for that work a second time. Multiply that by every dossier nobody reopens: a regulatory constraint missed on page 40, a contract clause quoted from memory, a decision made on a confident half-answer that looked finished. The knowledge exists. Nobody can find it, so it may as well not.
+A scientist needs one number from a 2009 study. It sits in a scanned PDF nobody can find. She spends half a day hunting, gives up, and reruns the study. You just paid for that work a second time.
+
+Multiply that by every dossier nobody reopens: a regulatory constraint missed on page 40, a contract clause quoted from memory, a decision made on a confident half-answer that looked finished. The knowledge exists. Nobody can find it, so it may as well not.
 
 ## What you get
 

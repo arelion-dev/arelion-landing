@@ -35,9 +35,11 @@ Never coach the rep. Never break character to be nice. If they bulldoze,
 you get harder, not easier.
 ```
 
-You cannot bulldoze your way to a good score. You earn it, the way you earn a real buyer's trust. The `never coach the rep` line does more work than it looks: every general-purpose model is trained to be helpful, and left alone it will drift into being a supportive assistant that hands you the answer. `graded resistance` bends the persona the other way on purpose, and the tier ladder gives the model a concrete rule to follow instead of a vibe to interpret.
+You cannot bulldoze your way to a good score. You earn it, the way you earn a real buyer's trust.
 
-My opinion: the prompt, not the voice stack, is the actual product. The voice loop below is table stakes. This ladder is the thing you cannot buy off a shelf.
+The `never coach the rep` line does more work than it looks. Every general-purpose model is trained to be helpful, and left alone it drifts into a supportive assistant that hands you the answer. Graded resistance bends the persona the other way on purpose, and the tier ladder gives the model a concrete rule to follow instead of a vibe to interpret.
+
+The prompt, not the voice stack, is the actual product. The voice loop below is table stakes. This ladder is the thing you cannot buy off a shelf.
 
 **Objection-handling scores climbed from 2.4 to 4.1 out of 5 across a rep's first month.**
 
@@ -62,7 +64,9 @@ port.onmessage = ({ data }) => {
 };
 ```
 
-Native audio matters to the business, not just the demo. The model hears tone, hesitation, and pace instead of a flattened transcript. Pipe the mic through speech-to-text first and you throw away exactly the signal a sales call turns on: the buyer whose voice tightens when you touch a nerve, the half-second of hesitation before "we'll think about it." A cascade of STT then text-LLM then TTS also stacks three lots of latency and reads as robotic. One model, audio in and audio out, is the only version that teaches the real skill.
+Native audio matters to the business, not just the demo. The model hears tone, hesitation, and pace instead of a flattened transcript. Pipe the mic through speech-to-text first and you throw away exactly the signal a sales call turns on: the buyer whose voice tightens when you touch a nerve, the half-second of hesitation before "we'll think about it."
+
+A cascade of STT then text-LLM then TTS also stacks three lots of latency and reads as robotic. One model, audio in and audio out, is the only version that teaches the real skill.
 
 ## The server owns the silence
 
@@ -88,7 +92,9 @@ const setup = {
 
 **The buyer waits through 800ms of silence before it decides your turn is over.**
 
-In plain terms: the buyer waits through a pause instead of trampling it. Letting a silence breathe is one of the hardest skills to teach a junior, and a trainer that cannot hold a silence itself would train the opposite reflex. The other half is the interrupt: when the rep talks over the buyer mid-sentence, the server emits an interrupted signal and I flush the playback queue at once, so the buyer stops talking the way a person would rather than finishing its sentence into the void.
+In plain terms: the buyer waits through a pause instead of trampling it. Letting a silence breathe is one of the hardest skills to teach a junior, and a trainer that cannot hold a silence itself would train the opposite reflex.
+
+The other half is the interrupt. When the rep talks over the buyer mid-sentence, the server emits an interrupted signal and I flush the playback queue at once, so the buyer stops talking the way a person would rather than finishing its sentence into the void.
 
 ```js
 // Barge-in: rep starts talking while the buyer is speaking.
@@ -148,7 +154,9 @@ The rubric is fixed on purpose so scores are comparable across reps and across w
 - concrete mistakes, quoted verbatim from the transcript
 - what to do differently next time
 
-The quoted-verbatim line is the one that matters. A score out of five is forgettable. "You said 'so basically it's cheaper' right after she raised a security concern" is a mirror. The rep leaves with their own words held up as evidence, not a vague pat on the back. For a manager, that is coaching that happens without booking an hour of anyone's calendar. Splitting grading onto a separate cheaper model, instead of asking the live audio model to also self-assess, keeps the buyer in character during the call and makes the grader swappable on its own.
+The quoted-verbatim line is the one that matters. A score out of five is forgettable. "You said 'so basically it's cheaper' right after she raised a security concern" is a mirror. The rep leaves with their own words held up as evidence, not a vague pat on the back, and a manager gets coaching that costs nobody an hour of calendar.
+
+Splitting grading onto a separate cheaper model, instead of asking the live audio model to also self-assess, keeps the buyer in character during the call and makes the grader swappable on its own.
 
 **Ramp time to a rep's first closed deal dropped about a third.**
 
