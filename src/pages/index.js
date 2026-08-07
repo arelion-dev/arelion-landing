@@ -320,10 +320,11 @@ const ORG_JSONLD = {
   ],
 }
 
-export const Head = () => (
+export const Head = ({ location }) => (
   <SEO
-    title="Arelion | Boutique tech studio — AI, cloud, SaaS"
+    title="Arelion | Boutique tech studio, AI, cloud, SaaS"
     description="Arelion is a boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production."
+    pathname={location.pathname}
   >
     <script
       type="application/ld+json"

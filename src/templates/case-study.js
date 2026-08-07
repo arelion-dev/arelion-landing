@@ -173,7 +173,24 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
           </div>
         )}
 
-        {articleHtml ? (
+        {hasBoth ? (
+          // Both bodies are in the HTML so crawlers see each; the inactive one
+          // is hidden with CSS. The toggle flips which is visible.
+          <>
+            {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
+            <section
+              className={`cs-section cs-article${audience === "business" ? "" : " cs-hidden"}`}
+              onClick={onArticleClick}
+              dangerouslySetInnerHTML={{ __html: businessArticle.html }}
+            />
+            {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
+            <section
+              className={`cs-section cs-article${audience === "tech" ? "" : " cs-hidden"}`}
+              onClick={onArticleClick}
+              dangerouslySetInnerHTML={{ __html: techArticle.html }}
+            />
+          </>
+        ) : articleHtml ? (
           // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
           <section
             className="cs-section cs-article"
@@ -233,6 +250,11 @@ export default CaseStudyTemplate
 // A study may have one, both, or neither; missing slugs resolve to null.
 export const pageQuery = graphql`
   query CaseStudyArticle($articleSlug: String, $articleBusinessSlug: String) {
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
     tech: markdownRemark(fields: { slug: { eq: $articleSlug } }) {
       html
       frontmatter {
@@ -248,12 +270,49 @@ export const pageQuery = graphql`
   }
 `
 
-export const Head = ({ pageContext }) => {
+export const Head = ({ pageContext, data, location }) => {
   const cs = find(pageContext.slug)
+  const siteUrl = (data && data.site && data.site.siteMetadata.siteUrl) || ""
+  const path = location ? location.pathname : `/case-studies/${pageContext.slug}/`
+  const url = `${siteUrl}${path.endsWith("/") ? path : `${path}/`}`
+  const datePublished =
+    (data && ((data.tech && data.tech.frontmatter.date) ||
+      (data.business && data.business.frontmatter.date))) || undefined
+
+  const blogPosting = cs && {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: cs.title.en,
+    description: cs.hook.en,
+    image: `${siteUrl}/og-cover.png`,
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    author: { "@type": "Person", name: "Antonin Ribeaud", url: siteUrl },
+    publisher: { "@type": "Organization", name: "Arelion", url: siteUrl },
+    ...(datePublished ? { datePublished } : {}),
+    ...(cs.tags && cs.tags.length ? { keywords: cs.tags } : {}),
+  }
+  const breadcrumb = cs && {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Case studies", item: `${siteUrl}/case-studies/` },
+      { "@type": "ListItem", position: 2, name: cs.title.en, item: url },
+    ],
+  }
+
   return (
     <SEO
-      title={`${cs ? cs.title.en : "Case study"} — Arelion`}
+      title={cs ? cs.title.en : "Case study"}
       description={cs ? cs.hook.en : ""}
-    />
+      pathname={path}
+    >
+      {cs && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify([blogPosting, breadcrumb]) }}
+        />
+      )}
+    </SEO>
   )
 }

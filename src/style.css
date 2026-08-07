@@ -2178,6 +2178,8 @@ button:focus-visible,
   color: #fff;
 }
 .cs-audience button:not(.on):hover { color: var(--color-heading); }
+/* Inactive audience body: in the DOM for crawlers, hidden from view. */
+.cs-hidden { display: none; }
 
 /* ===== Case studies carousel on the home (full-bleed marquee) ===== */
 .cs-carousel-section { margin: var(--spacing-16) 0; }

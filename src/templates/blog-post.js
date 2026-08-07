@@ -66,7 +66,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
 
 export default BlogPostTemplate
 
-export const Head = ({ data }) => {
+export const Head = ({ data, location }) => {
   const post = data.markdownRemark
   const siteUrl = data.site.siteMetadata.siteUrl
   const description = post.frontmatter.description || post.excerpt
@@ -96,7 +96,7 @@ export const Head = ({ data }) => {
       : {}),
   }
   return (
-    <SEO title={post.frontmatter.title} description={description}>
+    <SEO title={post.frontmatter.title} description={description} pathname={location.pathname}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -89,9 +89,10 @@ const CaseStudiesPage = () => {
 
 export default CaseStudiesPage
 
-export const Head = () => (
+export const Head = ({ location }) => (
   <SEO
-    title="Case studies — Arelion"
-    description="Comment Arelion résout des problèmes concrets d'IA, d'architecture et de sécurité, et ce qui est réutilisable chez vous."
+    title="Case studies"
+    description="How I solve concrete problems in AI, architecture and security, and what transfers to your team."
+    pathname={location.pathname}
   />
 )
