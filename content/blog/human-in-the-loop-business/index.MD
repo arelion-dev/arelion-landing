@@ -12,7 +12,9 @@ I build KYC document automation that reads investor files, clears the routine on
 
 ## The status quo costs you your best reviewers
 
-A compliance team reads investor files by hand: ID cards, bank details, tax notices, company extracts. Most are routine. The volume keeps climbing. Every hour spent on a clean file is an hour stolen from the file that actually needs scrutiny. The obvious fix is to let a model decide, and it works right up to the day it approves the wrong file. Now the wrong investor sits inside a regulated fund, the approval looks clean, and your name is on it. That is not a saved hour. That is a finding.
+A compliance team reads investor files by hand: ID cards, bank details, tax notices, company extracts. Most are routine. The volume keeps climbing. Every hour spent on a clean file is an hour stolen from the file that actually needs scrutiny.
+
+The obvious fix is to let a model decide, and it works right up to the day it approves the wrong file. Now the wrong investor sits inside a regulated fund, the approval looks clean, and your name is on it. That is not a saved hour. That is a finding.
 
 ## What you get
 
@@ -32,4 +34,4 @@ One honest boundary: this does not shrink your review team to zero, and it is no
 
 Anywhere a machine reads messy documents and a decision follows that someone must answer for: loan approvals, insurance claims, tenant screening, supplier and sanctions checks, patient triage.
 
-If that sounds like your process, want me to look at yours, in writing?
+Want me to look at yours, in writing?

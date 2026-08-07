@@ -6,17 +6,19 @@ tags: ["Tech", "AI", "Security"]
 private: true
 ---
 
-A media company was days from pointing production traffic at a publishing platform it had rebuilt fast, with an AI in the loop, and that nobody had read with hostile eyes. I did the read. Four layers, five days, one report the client handed straight to their own team.
+A media company was days from pointing production traffic at a publishing platform it had rebuilt fast, with an AI in the loop. Nobody had read it with hostile eyes. I did the read: four layers, five days, one report the client handed straight to their own team.
 
 **49 findings, 9 high, 19 medium, 21 low. Every high verified twice. Zero shipped on a hunch.**
 
-The audit was read-only from start to finish. I clone, I read, I grep, I trace. I change nothing, I deploy nothing, the team keeps shipping while I work. I read the shipped artifact the way an attacker reads it, not the way the author read the ticket, across four layers: application code, cloud IAM, CI pipelines, and infrastructure. I call it the four-layer read, and the reason it finds what scanners miss is the whole point of this post.
+The audit was read-only from start to finish. I clone, I read, I grep, I trace. I change nothing, I deploy nothing, the team keeps shipping while I work. I read the shipped artifact the way an attacker reads it, not the way the author read the ticket, across four layers: application code, cloud IAM, CI pipelines, and infrastructure. I call it the four-layer read. What it catches that a scanner cannot is the rest of this post.
 
 ## A scanner and a self-review both miss the same holes
 
 An automated scanner (ZAP, Burp, a Nuclei run in CI) pokes the running site over HTTP. It sees responses. It never sees the build config that decides which env vars ship to the browser, the git history that still holds a deleted password, or the cloud IAM policy that hands an outsider `roles/owner`. That is exactly where the worst of this stack turned out to live. A DAST pass on this platform would have come back clean and the owner role would still be sitting there.
 
-Self-review fails differently, and it fails the same way every time. An AI writes for "works": the feature renders, the endpoint answers 200, the deploy goes green. Safe almost never shows up in a demo, so nobody asks the model for it and the model does not volunteer it. The reviewer sees it works, "the AI wrote it" quietly becomes "it is fine", and the auth gate a careful engineer would have stopped on ships the same afternoon. The model optimizes for the acceptance criteria in the prompt, and "an attacker cannot forge this cookie" is never in the prompt. Multiply that across a full rebuild and you get a platform that passes every functional test and still leaks.
+Self-review fails differently, and it fails the same way every time. An AI writes for "works": the feature renders, the endpoint answers 200, the deploy goes green. Safe almost never shows up in a demo, so nobody asks the model for it and the model does not volunteer it.
+
+Then the reviewer sees it works, "the AI wrote it" quietly becomes "it is fine", and the auth gate a careful engineer would have stopped on ships the same afternoon. The model optimizes for the acceptance criteria in the prompt, and "an attacker cannot forge this cookie" is never in the prompt. Multiply that across a full rebuild and you get a platform that passes every functional test and still leaks.
 
 ## Public prefixes inline your secrets into every visitor's browser
 
@@ -39,7 +41,9 @@ const signPreview = (id) =>
   aesSign(id, "8f3a...aes-256-key", "1a2b...16-byte-iv");
 ```
 
-The opinion here: this is the single most AI-reproducible bug in the whole report. Ask a model to "expose the signing key to the preview component" and a public prefix is the shortest path to a green build. It works in the demo, it is catastrophic in production, and the failure is invisible until someone runs `grep -r "aes" .next/static`. A secret manager does not help you, because the leak happens at build time, before any runtime lookup ever runs. The fix is to drop the prefix so the value stays server-side, move signing behind an API route, then rotate the key, because it is already public.
+This is the single most AI-reproducible bug in the whole report. Ask a model to "expose the signing key to the preview component" and a public prefix is the shortest path to a green build. It works in the demo, it hands every visitor the signing key in production, and the failure stays invisible until someone runs `grep -r "aes" .next/static`.
+
+A secret manager does not save you here, because the leak happens at build time, before any runtime lookup runs. Drop the prefix so the value stays server-side, move signing behind an API route, then rotate the key. It is already public.
 
 ## A cookie that says `admin_auth=true` is not authentication
 
@@ -69,7 +73,7 @@ const claims = verifyJwt(req.cookies.session, process.env.SESSION_SECRET);
 if (!claims || claims.role !== ROLE_ADMIN) return res.status(403).end();
 ```
 
-The opinion: an AI produces presence-check auth constantly, because "gate the admin page behind login" and "check that the admin cookie is set" both satisfy the same prompt, and the second is fewer lines. The model has no concept of a threat actor sending the request directly. It writes the client and the server as if they were the same trusted machine. They are not.
+An AI produces presence-check auth constantly, because "gate the admin page behind login" and "check that the admin cookie is set" both satisfy the same prompt, and the second is fewer lines. The model has no concept of a threat actor sending the request directly. It writes the client and the server as if they were the same trusted machine. They are not.
 
 ## A secret in git history is burned the moment it lands, not the moment you find it
 
@@ -90,7 +94,9 @@ git show c0ffee1:config/database.yml | grep -i pass
 # password: pr0d-db-actual-password
 ```
 
-The opinion, and the part people resist: you do not "remove" a committed secret, you rotate it. Rewriting history with `git filter-repo` cleans the origin, but you cannot recall the clones. Treat every credential that ever touched a commit as public and rotate it. AI-assisted work makes this more common, not less, because a model will happily paste a working connection string into a config file to make the local run succeed, and the human reviewing the diff sees a plausible config, not a leak.
+Here is the part people resist: you do not "remove" a committed secret, you rotate it. Rewriting history with `git filter-repo` cleans the origin, and it cannot recall the clones. Treat every credential that ever touched a commit as public.
+
+AI-assisted work makes this more common, not less. A model will happily paste a working connection string into a config file to make the local run succeed, and the human reviewing the diff sees a plausible config, not a leak.
 
 ## A firewall in log-only mode is a smoke detector with the buzzer unplugged
 
@@ -123,11 +129,11 @@ gcloud projects get-iam-policy prod-project --format=json | \
 
 One compromised mailbox, or one relationship gone sour, is one step from total takeover. The fix is least privilege: scope that account to exactly the roles it uses (say `roles/run.developer` plus `roles/artifactregistry.writer`), keep `roles/owner` on one internal, audited identity, and prefer short-lived service accounts over standing human owners.
 
-The opinion: over-scoped IAM is not an AI bug, it is a "make it work now" bug, and AI-assisted teams hit it harder because the model that sets up the deploy will cheerfully suggest `roles/owner` to get past a permission error. It is the fastest way to a green deploy and the widest possible blast radius.
+Over-scoped IAM is not an AI bug, it is a "make it work now" bug, and AI-assisted teams hit it harder because the model that sets up the deploy will cheerfully suggest `roles/owner` to get past a permission error. It is the fastest way to a green deploy and the widest possible blast radius.
 
-## The rest of the family
+## Four more holes that a functional test cannot see
 
-Alongside the six above: an unauthenticated GraphQL endpoint that returned unpublished drafts to anyone who guessed a numeric id, public storage buckets that allowed anonymous object listing, secrets baked into container image layers (visible with `docker history`, so the runtime env var is beside the point), and the main service running as root inside its container. Every one is the same shape: it works in the demo, it is a hole in production, and nothing in a functional test would ever catch it.
+Alongside the six above: an unauthenticated GraphQL endpoint that returned unpublished drafts to anyone who guessed a numeric id, public storage buckets that allowed anonymous object listing, secrets baked into container image layers (visible with `docker history`, so the runtime env var is beside the point), and the main service running as root inside its container. Every one is the same shape: it works in the demo, and it is a hole in production.
 
 ## Every high was verified twice before it went in the report
 

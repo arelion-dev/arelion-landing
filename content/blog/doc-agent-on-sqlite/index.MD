@@ -22,19 +22,21 @@ Most business paperwork is born digital, so most of it rides the free path. **Ro
 
 Filing is where trust is won or lost. A classifier (Gemini 2.5 Flash, with Gemini 2.5 Pro as fallback for hard cases) decides what a document is, who it concerns, and where it belongs, with a confidence score.
 
-Below the critique threshold, a second independent pass reviews the first decision. Anything still doubtful lands in an "à vérifier" queue instead of being forced into a folder. A misfiled contract is worse than an unfiled one: the unfiled one you know to check, the misfiled one lies to you for years. The queue admits doubt instead of hiding it, which is what lets the owner stop double-checking the machine.
+Below the critique threshold, a second independent pass reviews the first decision. Anything still doubtful lands in an "à vérifier" queue instead of being forced into a folder. A misfiled contract is worse than an unfiled one: the unfiled one you know to check, the misfiled one lies to you for years. The queue says its doubt out loud, and that is what lets the owner stop double-checking the machine.
 
 The "who" and "where" are not free text. Each document gets tagged on controlled-vocabulary axes, plus free-form tags that grow organically:
 
 ```python
+# Values are per-deployment. Mine are real names and real topics,
+# so here is the shape with placeholders.
 PERSON_VALUES = (
-    "antonin", "frederic", "catherine",
-    "nicolas", "charles", "chloe", "autre",
+    "owner", "spouse", "parent_1",
+    "parent_2", "sibling", "other",
 )
 TOPIC_VALUES = (
-    "dubai_residence_fiscale", "succession", "patrimoine_commun",
-    "operationnel_courant", "immobilier_locatif", "medical",
-    "vehicule", "autre",
+    "tax_residency", "estate", "shared_assets",
+    "day_to_day", "rental_property", "medical",
+    "vehicle", "other",
 )
 ```
 
@@ -100,7 +102,9 @@ def _rrf_combine(sem_rows, fts_rows) -> dict:
     return scores
 ```
 
-RRF is deliberately dumb: it only reads rank position, never the raw scores. That is the point. Cosine distance and FTS5's `rank` are not on the same scale, so any attempt to add them directly is a bug waiting to happen. RRF sidesteps the whole normalization problem. In hybrid mode I pull the top `k * 5` candidates from each engine (at least 30), fuse, then group by document and keep the single best chunk per document so one long file cannot flood the results.
+RRF is deliberately dumb: it only reads rank position, never the raw scores. That is the point. Cosine distance and FTS5's `rank` are not on the same scale, so any attempt to add them directly is a bug waiting to happen. RRF sidesteps the whole normalization problem.
+
+In hybrid mode I pull the top `k * 5` candidates from each engine (at least 30) and fuse them. Then I group by document and keep the single best chunk per document, so one long file cannot flood the results.
 
 The vector query itself is where sqlite-vec surprises people. K-nearest-neighbours is not a `LIMIT`, it is a constraint inside the `WHERE`:
 
@@ -145,15 +149,17 @@ The same content living at two paths is a fact about the filesystem, not a reaso
 
 > War story. Early on, a batch of scans came back with empty text and the classifier happily filed them all as "unknown" with high confidence, because an empty string matched nothing and nothing contradicted it. High confidence on no evidence is the dangerous failure. The fix: an empty or near-empty read now short-circuits straight to the "à vérifier" queue before the classifier ever sees it. Confidence has to be earned against real text.
 
-## A worked example
+## One question, and the answer arrives with the file path
 
-The owner asks "how much did I pay this supplier in 2024". The query embeds once, runs semantic and full-text in parallel, `_rrf_combine` merges the two ranked lists, the top chunk surfaces its full parent page, and the answer comes back with the amount, the exact line, and the path to `2024-03-11_facture_fournisseur-x.pdf` to check in one click. **Twenty minutes of digging become one question.**
+The owner asks "how much did I pay this supplier in 2024". The query embeds once, then runs semantic and full-text in parallel. `_rrf_combine` merges the two ranked lists, the top chunk surfaces its full parent page, and the answer comes back with the amount, the exact line, and the path to `2024-03-11_facture_fournisseur-x.pdf` to check in one click. **Twenty minutes of digging become one question.**
 
 The same brain is reachable two ways: from an AI assistant through a small MCP server, and from the command line through a set of `bb-*` tools. A question gets answered in a chat or a script, whichever is closer to hand.
 
-## The honest limit
+## The honest limit: one machine, one writer
 
-This is single-machine by design, and that is also its ceiling. WAL mode lets many readers run while one writer works, which is exactly right for one owner with years of paperwork. It is not built for ten people writing at once. Concurrent writers would need a real database and the server, bill, and off-machine copy that come with it. For this owner, the constraint is the feature. For a team, it is the line where I would change the design.
+This is single-machine by design, and that is also its ceiling. WAL mode lets many readers run while one writer works, which is exactly right for one owner with years of paperwork. It is not built for ten people writing at once.
+
+Concurrent writers would need a real database, and the server, the bill and the off-machine copy that come with it. For this owner, the constraint is the feature. For a team, it is the line where I would change the design.
 
 ## Who has this problem
 

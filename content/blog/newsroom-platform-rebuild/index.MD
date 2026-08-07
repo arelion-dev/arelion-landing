@@ -18,15 +18,17 @@ The new stack is not the story. Any competent engineer can stand up PostgreSQL 1
 
 I started with a map, not with code. A legacy platform is not one system, it is years of accreted subsystems: databases, RSS and stats feeds, sitemaps, mobile endpoints, scheduled publishing, media buckets, cron jobs nobody remembers creating.
 
-I described every one of them and gave each a verdict: rebuild, keep, or let die. That map became the contract for the whole migration. The subsystems that nearly bit me were exactly the undocumented ones: a scheduled-publish cron that fired off a table no code path referenced anymore, and an RSS feed with a fixed URL that a syndication partner had been silently scraping for years. Neither was in any diagram. Both would have broken loudly on cutover if the map had not forced me to find them.
+I described every one of them and gave each a verdict: rebuild, keep, or let die. That map became the contract for the whole migration.
+
+The subsystems that nearly bit me were the undocumented ones. A scheduled-publish cron fired off a table no code path referenced anymore. An RSS feed on a fixed URL had been scraped by a syndication partner for years. Neither was in any diagram. Both would have broken loudly on cutover if the map had not forced me to find them.
 
 **My rule: you cannot replace a platform you have not fully described, and the parts that bite you on cutover day are always the ones you never wrote down.**
 
 ## A continuous mirror turns years into hours
 
-The naive migration copies everything on cutover day. That means the copy takes hours, the source keeps changing under you, and you reconcile a moving target under pressure. Wrong shape. A big-bang copy makes cutover day the single riskiest hour of the whole project, which is exactly backwards: cutover should be the calmest hour, because everything hard already happened.
+The naive migration copies everything on cutover day. The copy takes hours, the source keeps changing under you, and you reconcile a moving target under pressure. Wrong shape. A big-bang copy makes cutover day the riskiest hour of the whole project, which is exactly backwards. Cutover should be the calmest hour, because everything hard already happened.
 
-So I ran a continuous mirror instead. A worker tailed every edit in the legacy CMS and upserted it into the new PostgreSQL database for months while I built. I did not have logical replication available on the legacy database, so the mirror was watermark-based change data capture: poll rows changed since the last high-water mark, transform them into the new schema, upsert idempotently.
+So I ran a continuous mirror instead. A worker tailed every edit in the legacy CMS and upserted it into the new PostgreSQL database for months while I built. Logical replication was not available on the legacy database, so the mirror was watermark-based change data capture: poll rows changed since the last high-water mark, transform them into the new schema, upsert idempotently.
 
 ```python
 # illustrative: one pass of the mirror worker
@@ -47,7 +49,9 @@ for row in rows:
     save_watermark(row["updated_at"])
 ```
 
-Two details carry the whole thing. The upsert is idempotent (`ON CONFLICT ... DO UPDATE`), so re-running a window is free. And I query with `>=` and overlap each poll window by a few seconds, because multiple articles can share the same `updated_at` to the second. Miss one because a strict `>` skipped its timestamp and you get a silent hole in a decade of archive, the worst kind of bug: invisible until a reader hits a 404 on a story from years ago.
+Two details carry the whole thing.
+
+The upsert is idempotent (`ON CONFLICT ... DO UPDATE`), so re-running a window is free. And I query with `>=`, overlapping each poll window by a few seconds, because several articles can share the same `updated_at` to the second. Miss one because a strict `>` skipped its timestamp and you get a silent hole in the archive. That is the worst kind of bug: invisible until a reader hits a 404 on a story from years ago.
 
 The new stack was always minutes behind the old one, not years. The expensive, slow, error-prone bulk copy happened once, calmly, long before anyone was watching.
 
@@ -57,7 +61,7 @@ The new stack was always minutes behind the old one, not years. The expensive, s
 
 The riskiest constraint was the mobile app. It was already on readers' phones and could not be updated in step with the migration. So the new GraphQL API had to answer its queries identically to the old one, byte for byte, on responses the app parsed strictly.
 
-"Should be the same" is not an engineering statement. So I built a comparison suite, the parity gate, that replayed real sampled traffic against both stacks and flagged every difference down to a single HTML entity.
+"Should be the same" is not an engineering statement. I built a comparison suite instead, the **parity gate**, that replayed real sampled traffic against both stacks and flagged every difference down to a single HTML entity.
 
 ```python
 def normalize(resp):
@@ -79,7 +83,7 @@ def run_parity(sampled_traffic):
 
 The gate rule was blunt and non-negotiable: three consecutive fully green runs spanning 24 hours before anything flipped. Not one green run. Three, across a full day, so a quiet 3am traffic pattern could not hide a bug the afternoon peak would expose.
 
-> War story. The parity gate lit up red for a full day over two differences that were not bugs in the API at all, they were bugs in my `normalize`. First, the legacy API returned a tag array in insertion order and the new one sorted it, so identical content diffed. Second, the old stack emitted `&amp;` where the new one emitted a bare `&` inside JSON strings, a single entity, in a handful of headlines. Both were semantically equal and both failed the gate. I fixed the normaliser to sort arrays the client treated as unordered and to canonicalise entity encoding, then re-ran. The lesson: your equivalence checker is code too, and a comparison suite that cries wolf is as dangerous as one that stays silent, because you learn to ignore it.
+> War story. The parity gate lit up red for a full day over two differences that were not bugs in the API at all. They were bugs in my `normalize`. First, the legacy API returned a tag array in insertion order and the new one sorted it, so identical content diffed. Second, the old stack emitted `&amp;` where the new one emitted a bare `&` inside JSON strings, one entity, in a handful of headlines. Both were semantically equal. Both failed the gate. I fixed the normaliser to sort arrays the client treats as unordered and to canonicalise entity encoding, then re-ran. The lesson: your equivalence checker is code too, and a suite that cries wolf is as dangerous as one that stays silent, because you learn to ignore it.
 
 **Tens of millions of pageviews a month kept flowing, and several hundred thousand registered reader accounts carried over with nobody locked out.**
 
@@ -114,16 +118,22 @@ On the new platform, related-articles went from broken to working, a feature the
 
 ## Never touch the legacy system
 
-The single rule that kept the whole thing safe: I never modified the legacy stack. Not a config tweak, not a "small fix while we are in here." Nothing.
+One rule kept the whole thing safe: I never modified the legacy stack. Not a config tweak, not a "small fix while I am in here." Nothing.
 
-The old platform was the way back. As long as it sat untouched and still working, every step forward was reversible, because I could always point DNS back at a system that had not changed. The moment you start "improving" the thing you are migrating off, you lose your escape route and the whole exercise turns into a leap of faith. I refused the leap. This is the one rule I would enforce on any migration with no exceptions: the system you are leaving is frozen the day you start, and it stays frozen until the last DNS record is flipped and green.
+The old platform was the way back. As long as it sat untouched and still working, every step forward was reversible, because I could always point DNS at a system that had not changed. The moment you start "improving" the thing you are migrating off, you lose your escape route and the exercise turns into a leap of faith.
 
-## What I would flag as the honest cost
+I refused the leap. This is the one rule I would enforce on any migration without exception: the system you are leaving is frozen the day you start, and it stays frozen until the last DNS record is flipped and green.
 
-The continuous mirror was throwaway code. I built and maintained a full change-data-capture layer for months that existed only to be deleted on cutover day. For a smaller or less active archive, that cost is not worth it: a single rehearsed bulk copy wins, and the mirror is over-engineering. The mirror earns its keep only when the source never stops changing and the delta at cutover has to be near zero. This project was exactly that case. Not every migration is, and I would talk anyone out of the mirror who does not truly need it.
+## The continuous mirror was throwaway code, and most migrations should skip it
 
-## Why this transfers
+I built and maintained a full change-data-capture layer for months, and it existed only to be deleted on cutover day. For a smaller or quieter archive that cost is not worth paying. A single rehearsed bulk copy wins and the mirror is over-engineering.
 
-None of this is specific to news. It is what a migration looks like when the thing being moved cannot stop: inventory everything, mirror continuously, prove equivalence with automated comparison instead of optimism, flip in small reversible steps with a rehearsed rollback, and never touch the system you are leaving.
+The mirror earns its keep on one condition: the source never stops changing and the delta at cutover has to be near zero. This project was exactly that case. Most are not, and I would talk anyone out of the mirror who does not need it.
 
-Anyone sitting on a decade of content or data trapped in a legacy platform has this problem with a different logo: a publisher whose archive is its moat, an e-commerce shop with fifteen years of catalog across systems that no longer talk, a public body whose records are precious and unreachable. The data is the asset, the platform is the jailer. The way out is not another plugin. It is a rebuild done carefully enough that the day everything changes, nobody outside the building notices.
+## This is what a migration looks like when the thing cannot stop
+
+None of this is specific to news. Inventory everything. Mirror continuously if the source never stops. Prove equivalence with automated comparison instead of optimism. Flip in small reversible steps with a rehearsed rollback. Never touch the system you are leaving.
+
+Anyone sitting on years of content or data trapped in a legacy platform has this problem with a different logo. A publisher whose archive is its moat. An e-commerce shop with a long catalog split across systems that no longer talk. A public body whose records are precious and unreachable.
+
+The data is the asset, the platform is the jailer. The way out is not another plugin. It is a rebuild done carefully enough that the day everything changes, nobody outside the building notices.

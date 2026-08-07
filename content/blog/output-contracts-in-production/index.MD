@@ -20,7 +20,9 @@ The wrong 5 percent looks exactly like the right 95. Ask it to count documents a
 
 None of this throws an error. The query runs, returns a number, the number goes into an answer, and the answer looks confident. The business risk is not the model crashing. It is the model succeeding at the wrong thing, quietly, at scale, in front of people who never see the query underneath.
 
-The naive fixes do not hold. Telling the model to behave in the prompt is a suggestion it can ignore and an attacker can talk it out of. Filtering the text for bad keywords is a game you lose the first time a forbidden command is spelled slightly differently: `DROP/**/TABLE`, a `drop` in mixed case, a unicode lookalike, a write hidden inside a CTE. My rule on this project: the model's output is untrusted input, exactly like a form field from the open internet. You would not run a regex over user SQL and call it safe. Same standard here.
+The naive fixes do not hold. Telling the model to behave in the prompt is a suggestion it can ignore and an attacker can talk it out of. Filtering the text for bad keywords is a game you lose the first time a forbidden command is spelled slightly differently: `DROP/**/TABLE`, a `drop` in mixed case, a unicode lookalike, a write hidden inside a CTE.
+
+My rule on this project: the model's output is untrusted input, exactly like a form field from the open internet. You would not run a regex over user SQL and call it safe. Same standard here.
 
 ## The request body cannot smuggle anything in
 
@@ -48,7 +50,7 @@ class QueryRequest(BaseModel):
     @field_validator("tenant_id")
     @classmethod
     def opaque_id(cls, v: str) -> str:
-        # tenant_id is server-issued; reject anything that is not the shape we mint
+        # tenant_id is server-issued; reject anything that is not the shape I mint
         if not v.isalnum() or len(v) != 26:
             raise ValueError("malformed tenant_id")
         return v
@@ -136,7 +138,9 @@ def scope_to_caller(tree: exp.Expression, tenant_id: str, groups: list[str]) -> 
 
 The model is structurally incapable of widening its own view, because it does not hold the pen on the part that counts. The scope is applied after generation, to the parsed tree, by code the prompt cannot address.
 
-Why fail closed, and why it is not negotiable: the one branch that decides "no permissions resolved" has two ways to go, all rows or zero rows, and the cost of the two mistakes is not symmetric. Zero rows is a user seeing an empty result and filing a ticket. All rows is a cross-tenant data leak and a breach report. When the downside is that lopsided you hard-code the safe branch and you make the unsafe branch impossible to reach, not merely unlikely. If a user's groups cannot be resolved, the rewrite injects a sentinel group that matches nothing. And a bug that forgets to scope is caught a second time on the execution side, which refuses any query whose `WHERE` does not carry the tenant predicate.
+Why fail closed, and why it is not negotiable: the branch that decides "no permissions resolved" has two ways to go, all rows or zero rows, and the two mistakes do not cost the same. Zero rows is a user seeing an empty result and filing a ticket. All rows is a cross-tenant data leak and a breach report.
+
+When the downside is that lopsided, you hard-code the safe branch and make the unsafe one impossible to reach, not merely unlikely. If a user's groups cannot be resolved, the rewrite injects a sentinel group that matches nothing. A bug that forgets to scope is caught a second time on the execution side, which refuses any query whose `WHERE` does not carry the tenant predicate.
 
 ## Reject, correct, retry, then block
 
@@ -169,10 +173,12 @@ The whole thing stays model-agnostic through LiteLLM, so swapping the underlying
 
 ## Auditable by construction
 
-Because the same validator runs both where queries are generated and where they are executed, a mistake has to slip past two independent checks to cause harm. The executed query is stored next to the answer, so any number the system reports traces back to the exact SQL that produced it. Auditable by construction, not by good intentions. When someone asks "why did the dashboard say 4,000", I can show the scoped SQL, the tenant it ran under, and the row it counted, without re-deriving anything.
+Because the same validator runs both where queries are generated and where they are executed, a mistake has to slip past two independent checks to cause harm. The executed query is stored next to the answer, so any number the system reports traces back to the exact SQL that produced it. Auditable by construction, not by good intentions. When someone asks "why did the dashboard say 4,000", I can show the scoped SQL, the tenant it ran under, and the rows it counted, without re-deriving anything.
 
 > War story. The honest limit is refusal. Sometimes a legitimate question gets blocked because the model could not phrase it within the rules, and a real user sees a dead end for a query that was perfectly reasonable. I accept that trade and I do not pretend it costs nothing. A blocked question costs a retry. A wrong answer shown to the wrong person costs trust, and in the tenant case, a breach.
 
 ## Anywhere a model's output becomes an action
 
-This is not specific to text-to-SQL. A support bot that edits records or issues refunds. A finance pipeline that writes figures into the ledger. An ops agent that calls internal APIs. A healthcare, HR, or legal tool reading from systems with strict access rules. In every one, the shape is the same: an almost-right output that propagates unless something downstream is built to stop it. If the honest answer to "what stops a bad output from reaching a customer" is "the prompt", you have the exact problem this was built for. The work is in the something downstream.
+This is not specific to text-to-SQL. A support bot that edits records or issues refunds. A finance pipeline that writes figures into the ledger. An ops agent that calls internal APIs. A healthcare, HR, or legal tool reading from systems with strict access rules.
+
+In every one the shape is the same: an almost-right output that propagates unless something downstream is built to stop it. If the honest answer to "what stops a bad output from reaching a customer" is "the prompt", you have the exact problem this was built for. The work is in the something downstream.

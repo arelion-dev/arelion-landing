@@ -14,7 +14,9 @@ I build the layer that makes AI output safe to act on. It lets thousands of peop
 
 ## An AI that is right 95 percent of the time is the dangerous kind
 
-The wrong 5 percent looks exactly like the right 95. A confident answer built on the wrong data does not announce itself. It gets trusted, pasted into a report, acted on, and no one sees the mistake until it has already moved money or leaked a record. When an AI can read your database or edit your systems, "usually right" is a liability. The bill lands as a bad decision, a compliance finding, or a 3am incident.
+The wrong 5 percent looks exactly like the right 95. A confident answer built on the wrong data does not announce itself. It gets trusted, pasted into a report, acted on, and nobody sees the mistake until it has already moved money or leaked a record.
+
+When an AI can read your database or edit your systems, "usually right" is a liability. The bill lands as a bad decision, a compliance finding, or a 3am incident.
 
 ## What you get
 
@@ -28,7 +30,9 @@ I deliver structured output guardrails as a service, wired into your stack:
 
 ## Why it holds
 
-This is not a prompt trick. The AI proposes an answer and separate code decides whether it is allowed forward. Anything malformed, anything reaching for data the person cannot see, anything that could change records is blocked before it touches production. It is already shipped at real enterprise scale, serving thousands of users on live data. The honest boundary: a good question is sometimes refused rather than answered badly. A blocked question costs a retry. A wrong answer to the wrong person costs trust, and in the worst case a breach with a friendly interface.
+This is not a prompt trick. The AI proposes an answer and separate code decides whether it is allowed forward. Anything malformed, anything reaching for data the person cannot see, anything that could change records is blocked before it touches production. It already runs at enterprise scale, serving thousands of users on live data.
+
+The honest boundary: a good question is sometimes refused rather than answered badly. A blocked question costs a retry. A wrong answer to the wrong person costs trust, and in the worst case a breach with a friendly interface.
 
 ## Who this is for
 
