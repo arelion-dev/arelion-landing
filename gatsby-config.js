@@ -3,9 +3,9 @@ module.exports = {
     title: `arelion.dev`,
     author: {
       name: `Arelion`,
-      summary: `Boutique tech studio. AI systems, cloud platforms and SaaS — from design to production.`,
+      summary: `Boutique tech studio. AI systems, cloud platforms and SaaS, from design to production.`,
     },
-    description: `Arelion is a boutique tech studio. One senior engineer, a few clients at a time. AI, cloud platforms and SaaS — from design to production.`,
+    description: `Arelion is a boutique tech studio. One senior engineer, a few clients at a time. AI, cloud platforms and SaaS, from design to production.`,
     siteUrl: `https://arelion.dev`,
     social: {
       linkedin: "https://www.linkedin.com/in/antoninribeaud/",
