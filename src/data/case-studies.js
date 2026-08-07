@@ -125,6 +125,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "doc-agent-on-sqlite",
+    article: "/blog/doc-agent-on-sqlite/",
+    articleBusiness: "/blog/doc-agent-on-sqlite-business/",
     pillar: "Build",
     featured: false,
     published: false,
@@ -291,6 +293,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "local-ai-stack",
+    article: "/blog/local-ai-stack/",
+    articleBusiness: "/blog/local-ai-stack-business/",
     pillar: "Build",
     featured: false,
     published: false,
@@ -500,6 +504,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "llm-sleeper-agents",
+    article: "/blog/llm-sleeper-agents/",
+    articleBusiness: "/blog/llm-sleeper-agents-business/",
     pillar: "Audit",
     featured: false,
     published: false,
@@ -646,6 +652,7 @@ const CASE_STUDIES = [
     stack: ["Python", "Mistral-7B", "QLoRA", "Axolotl", "Hugging Face", "Replicate", "Lambda Labs", "Jupyter"],
     // Original article (EN, with images) rendered as the body via markdown.
     article: "/blog/ghost-in-the-llm/",
+    articleBusiness: "/blog/fine-tuning-mistral-7b-personal-conversations-business/",
   },
   {
     slug: "wingman-github-copilot-from-scratch",
@@ -668,6 +675,7 @@ const CASE_STUDIES = [
     stack: ["Python", "PyTorch", "CUDA", "CodeLlama-7B", "Transformers", "PEFT", "bitsandbytes", "Flash Attention 2", "Vast.ai"],
     // Original article (EN, with images) rendered as the body via markdown.
     article: "/blog/wingman/",
+    articleBusiness: "/blog/wingman-business/",
   },
 ]
 
