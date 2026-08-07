@@ -150,6 +150,39 @@ const CASE_STUDIES = [
     ],
   },
   {
+    slug: "life-os",
+    article: "/blog/life-os/",
+    articleBusiness: "/blog/life-os-business/",
+    pillar: "Build",
+    featured: false,
+    published: false,
+    title: {
+      en: "Life OS: a private dashboard for health, money and time",
+      fr: "Life OS : un dashboard privé pour la santé, l'argent et le temps",
+    },
+    metric: {
+      en: "Three databases, one page, zero copies of the data",
+      fr: "Trois bases, une page, zéro copie des données",
+    },
+    hook: {
+      en: "The answer already exists, split across four tools, and none of them holds the question.",
+      fr: "La réponse existe déjà, éclatée dans quatre outils, et aucun ne porte la question.",
+    },
+    tags: ["SQLite", "read-only", "self-hosted", "Tailscale", "React"],
+    stack: ["Python stdlib", "SQLite", "React", "Vite", "Recharts", "Tailscale"],
+    demo: {
+      q: {
+        en: "What is my net worth right now, and what is missing from that number?",
+        fr: "Combien vaut mon patrimoine maintenant, et qu'est-ce qui manque dans ce chiffre ?",
+      },
+      a: {
+        en: "Recomputed on the spot: the mortgage is amortized forward from its anchor date rather than read from an old statement, and crypto is quantity times live price, never a stored valuation. The page also reports 13 of 14 accounts valued and names the one still missing, so an incomplete total is visible instead of silently wrong.",
+        fr: "Recalculé sur le moment : le prêt est amorti depuis sa date d'ancrage plutôt que lu sur un vieux relevé, et la crypto est quantité fois prix live, jamais une valorisation stockée. La page indique aussi 13 comptes valorisés sur 14 et nomme celui qui manque, pour qu'un total incomplet se voie au lieu d'être faux en silence.",
+      },
+      sources: ["wealth.sqlite · accounts + loans", "health.sqlite · sleep + steps"],
+    },
+  },
+  {
     slug: "doc-agent-on-sqlite",
     article: "/blog/doc-agent-on-sqlite/",
     articleBusiness: "/blog/doc-agent-on-sqlite-business/",
