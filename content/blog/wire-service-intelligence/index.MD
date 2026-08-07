@@ -1,20 +1,20 @@
 ---
 title: "Wire-service intelligence"
 date: "2026-08-07T10:00:00.000Z"
-description: "A national news outlet republished wire dispatches word for word, identical to every rival buying the same feed. I built the editorial AI layer that dedupes the wire, rewrites it in house voice, and links every story into a 600k-article archive, with the journalist keeping the final click."
+description: "A national news outlet republished wire dispatches word for word, identical to every rival buying the same feed. I built the editorial AI layer that dedupes the wire, rewrites it in house voice, and links every story into a 500,000-article archive, with the journalist keeping the final click."
 tags: ["Tech", "AI"]
 private: true
 ---
 
-Five editors open five wire dispatches on the same event. AFP, Reuters, Bernama, all reporting one minister, one number, one photo. Each editor reads their copy, trims it, ships it. Ten rival sites do the exact same thing with the exact same feed, and by lunch the story is live in ten identical versions. Meanwhile a reader lands from search, reads one page, sees text they could get anywhere, and leaves. Average session: about 1.5 pages.
+Five editors open five wire dispatches on the same event. AFP, Reuters, Bernama, all reporting one minister, one number, one photo. Each editor reads their copy, trims it, ships it. Ten rival sites do the exact same thing with the exact same feed, and by lunch the story is live in ten identical versions. Meanwhile a reader lands from search, reads one page, sees text they could get anywhere, and leaves. Average session: about barely more than one page.
 
-I designed, led and built the editorial AI layer that broke that loop for a national news outlet where **53% of everything published came straight off the wire**. The core result: five reads of one dispatch became one, and articles that used to ship with zero internal links now ship with several, into an archive readers had never been able to reach.
+I designed, led and built the editorial AI layer that broke that loop for a national news outlet where **roughly half of everything published came straight off the wire**. The core result: five reads of one dispatch became one, and articles that used to ship with zero internal links now ship with several, into an archive readers had never been able to reach.
 
 ## The wire budget bought nothing a rival did not also have
 
 The newsroom paid real money for AFP, Reuters, Bernama, Bloomberg and ETX, then pushed the stories out essentially as received. Same headline, same paragraphs, same photo, on ten different sites. Reselling a commodity feed as-is is a race you can only lose on price.
 
-**A reader can tell when a story is the wire verbatim, and behaves like it: around 1.5 pages per visit, then gone.** So I stopped treating the feed as output and started treating it as raw material.
+**A reader can tell when a story is the wire verbatim, and behaves like it: around barely more than one page per visit, then gone.** So I stopped treating the feed as output and started treating it as raw material.
 
 ## Clustering by meaning turns five dispatches into one story
 
@@ -26,9 +26,9 @@ It then picks the strongest version on concrete criteria (completeness, sourcing
 
 ## Backlinking by meaning resurfaces an archive nobody could reach
 
-Every new article is matched against the **600,000+ article archive** by meaning, not keywords, and the system proposes contextual internal links: the profile written when this minister first took office, the investigation from three years ago that this verdict concludes.
+Every new article is matched against the **500,000+ article archive** by meaning, not keywords, and the system proposes contextual internal links: the profile written when this minister first took office, the investigation from three years ago that this verdict concludes.
 
-**Internal links per article went from roughly zero to several, and pages per visit climbed with it.** A reader at 1.5 pages had nowhere to go. Every link is inventory the outlet already owns, resurfaced at the exact moment it is relevant again. Search engines see the same thing readers do: an archive that is connected, not buried.
+**Internal links per article went from roughly zero to several, and pages per visit climbed with it.** A reader at barely more than one page had nowhere to go. Every link is inventory the outlet already owns, resurfaced at the exact moment it is relevant again. Search engines see the same thing readers do: an archive that is connected, not buried.
 
 Illustrative of the match step, clearly labelled as pseudo, not production code:
 

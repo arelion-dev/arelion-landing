@@ -52,6 +52,48 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/perseverant-research-agent-business/",
   },
   {
+    slug: "newsroom-second-brain",
+    pillar: "Build",
+    featured: true,
+    published: false,
+    title: {
+      en: "A second brain for the newsroom",
+      fr: "Un second cerveau pour la rédaction",
+    },
+    metric: {
+      en: "Over a decade of archive and every desk, answered in plain language with a citation",
+      fr: "Plus d'une décennie d'archive et chaque pôle, répondus en langage courant avec une citation",
+    },
+    hook: {
+      en: "When a senior staffer resigns, more than a decade of context should not leave with them.",
+      fr: "Quand un senior s'en va, plus d'une décennie de contexte ne devrait pas partir avec lui.",
+    },
+    tags: ["Second brain", "RAG", "Knowledge management", "AI"],
+    stack: [
+      "Multilingual embeddings",
+      "Hybrid search (semantic + full-text)",
+      "Entity resolution",
+      "Gemini agent",
+      "Per-desk access control",
+    ],
+    demo: {
+      q: {
+        en: "Who covered the port privatisation beat in 2019, and what did we publish on it?",
+        fr: "Qui a couvert la privatisation du port en 2019, et qu'avons-nous publié dessus ?",
+      },
+      a: {
+        en: "Mostly the business desk: a lead investigation on the tender process and two follow-ups on the concession terms, linked by entity resolution to the same officials named in the earlier 2016 bid coverage. No data found on why the story was dropped after Q3 2019.",
+        fr: "Surtout le pôle business : une enquête principale sur l'appel d'offres et deux suivis sur les termes de la concession, reliés par résolution d'entités aux mêmes responsables cités dans la couverture de l'offre de 2016. Aucune donnée sur l'abandon du sujet après le T3 2019.",
+      },
+      sources: [
+        "Article 2019-04-11 · Port tender opens",
+        "Article 2019-06-02 · Concession terms questioned",
+      ],
+    },
+    article: "/blog/newsroom-second-brain/",
+    articleBusiness: "/blog/newsroom-second-brain-business/",
+  },
+  {
     slug: "document-intelligence-at-scale",
     article: "/blog/document-intelligence-at-scale/",
     articleBusiness: "/blog/document-intelligence-at-scale-business/",
