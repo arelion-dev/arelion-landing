@@ -1,0 +1,23 @@
+{
+  "slug": "agent-eval",
+  "tldr": {
+    "en": "An AI agent never throws a compile error. It just gets slightly worse after a prompt tweak or a model version bump, and nobody notices until a user does. So I built the harness that catches it: cases mined from real production conversations with their ground truth confirmed against the source document, then pinned as permanent regression cases. Two tracks, because 'the answer looked right' and 'retrieval actually found the document' are different questions. And an off switch on the feature under test, so an improvement is measured rather than believed.",
+    "fr": "Un agent IA ne plante jamais à la compilation. Il devient juste un peu moins bon après une retouche de prompt ou un changement de version de modèle, et personne ne le voit avant un utilisateur. J'ai donc construit le harnais qui l'attrape : des cas extraits de vraies conversations de production, dont la vérité terrain est confirmée face au document source, puis épinglés comme cas de non-régression permanents. Deux pistes, parce que « la réponse avait l'air juste » et « la recherche a vraiment trouvé le document » sont deux questions différentes. Et un interrupteur sur la fonctionnalité testée, pour qu'une amélioration soit mesurée plutôt que crue."
+  },
+  "sections": [
+    {
+      "h": { "en": "The problem", "fr": "Le problème" },
+      "p": {
+        "en": "Unit tests do not catch an agent answering slightly worse. There is no stack trace, no failing assertion, just a degraded answer that still reads fine. Without a graded set you can re-run, every prompt change is a guess.",
+        "fr": "Les tests unitaires n'attrapent pas un agent qui répond un peu moins bien. Pas de stacktrace, pas d'assertion en échec, juste une réponse dégradée qui se lit encore très bien. Sans jeu de cas noté rejouable, chaque changement de prompt est un pari."
+      }
+    },
+    {
+      "h": { "en": "What I built", "fr": "Ce que j'ai construit" },
+      "p": {
+        "en": "A golden set mined from production, scored two ways: did the agent take a sensible tool trajectory, and is the answer right when a pinned LLM judge compares it to a verified reference. Plus a retrieval track that bypasses the model entirely and just asks whether the right document came back.",
+        "fr": "Un golden set extrait de la production, noté de deux façons : l'agent a-t-il suivi une trajectoire d'outils sensée, et la réponse est-elle juste quand un LLM juge figé la compare à une référence vérifiée. Plus une piste recherche qui court-circuite le modèle et demande seulement si le bon document est remonté."
+      }
+    }
+  ]
+}
