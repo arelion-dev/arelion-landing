@@ -10,6 +10,8 @@ It is 3am and a job is down. An LLM returned output that was almost valid: one f
 
 I built the layer that makes it stop happening. The system lets thousands of people at a global enterprise ask questions in plain language and turns them into live database queries, with real access rules. The text-to-SQL is the easy half. The half worth writing about is the code that treats the model as a source I never take on trust, so that a bad output cannot reach a user.
 
+By the end you will have the four pieces I ship on every project like this: a request contract that rejects unknown fields, an AST gate that rejects by node type not by string, a tenant rewrite that fails closed, and a retry loop that blocks instead of bending.
+
 **Malformed model output caught before it runs: ~100%.**
 
 ## A model right 95 percent of the time is the dangerous kind
@@ -18,66 +20,156 @@ The wrong 5 percent looks exactly like the right 95. Ask it to count documents a
 
 None of this throws an error. The query runs, returns a number, the number goes into an answer, and the answer looks confident. The business risk is not the model crashing. It is the model succeeding at the wrong thing, quietly, at scale, in front of people who never see the query underneath.
 
-The naive fixes do not hold. Telling the model to behave in the prompt is a suggestion it can ignore and an attacker can talk it out of. Filtering the text for bad keywords is a game you lose the first time a forbidden command is spelled slightly differently.
-
-## The model proposes, code disposes
-
-You do not secure a language model by asking it nicely. So I never trusted the generated text. Every query goes through one gate I call `assert_read_only`: it is parsed into a syntax tree with `sqlglot` before anything runs, then I walk the whole tree. A `DROP` or an `INSERT` is not rejected by matching strings. It is rejected because the parsed shape of the query contains a node I forbid, even three levels deep inside a subquery where a human reviewer would miss it.
-
-```python
-# Illustrative, generic. Reject by AST node type, not by string match.
-import sqlglot
-from sqlglot import expressions as exp
-
-FORBIDDEN = (exp.Insert, exp.Update, exp.Delete, exp.Drop, exp.Alter, exp.Create)
-
-def assert_read_only(sql: str, allowed_table: str, max_limit: int) -> exp.Expression:
-    tree = sqlglot.parse_one(sql)                       # malformed -> raises
-    if any(tree.find_all(*FORBIDDEN)):
-        raise Reject("write or schema change in query")
-    for t in tree.find_all(exp.Table):
-        if t.name != allowed_table:                     # single-table allowlist
-            raise Reject(f"table not allowed: {t.name}")
-    limit = tree.args.get("limit")
-    if limit is None or int(limit.text("expression")) > max_limit:
-        raise Reject("missing or oversized LIMIT")
-    return tree
-```
-
-The same check covers functions that read files or open network connections, and any table other than the single one this feature is allowed to read.
-
-**Downstream incidents from bad model output since the gate shipped: 0.**
-
-## Access is decided in code the model cannot reach
-
-The lever that matters most is who scopes the query. The model never does. It writes `SELECT count(*) FROM records` as if it could see everything, and then my code rewrites that `records` reference into a subquery pre-filtered to the caller's tenant and permission groups. The model is structurally incapable of widening its own view, because it does not hold the pen on the part that counts.
-
-It fails closed. If a user's permission groups cannot be resolved, the rewrite matches zero rows, never all of them. And a bug that forgets to scope is caught a second time on the execution side, which refuses any query missing the tenant filter.
+The naive fixes do not hold. Telling the model to behave in the prompt is a suggestion it can ignore and an attacker can talk it out of. Filtering the text for bad keywords is a game you lose the first time a forbidden command is spelled slightly differently: `DROP/**/TABLE`, a `drop` in mixed case, a unicode lookalike, a write hidden inside a CTE. My rule on this project: the model's output is untrusted input, exactly like a form field from the open internet. You would not run a regex over user SQL and call it safe. Same standard here.
 
 ## The request body cannot smuggle anything in
 
-Around that core sits a strict request contract. The body is validated with Pydantic set to `extra="forbid"`, so a caller cannot slip in an extra `tenant_id` or an access group the code never asked for.
+Start at the door. The request body is validated with Pydantic v2, `model_config = ConfigDict(extra="forbid")`. That one setting is the difference between a caller who can only send `question` and `tenant_id`, and a caller who can slip in an `access_groups` field the model layer later reads and trusts. Pydantic's default silently drops unknown fields. Silent-drop is the wrong default for a security boundary: you want a loud 422, not a quiet ignore.
 
 ```python
-from pydantic import BaseModel, ConfigDict
+# Representative, not client source.
+from pydantic import BaseModel, ConfigDict, field_validator
 
 class QueryRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")   # unexpected field -> reject
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
     question: str
     tenant_id: str
+
+    @field_validator("question")
+    @classmethod
+    def non_empty(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("question must not be empty")
+        if len(v) > 2000:
+            raise ValueError("question too long")
+        return v
+
+    @field_validator("tenant_id")
+    @classmethod
+    def opaque_id(cls, v: str) -> str:
+        # tenant_id is server-issued; reject anything that is not the shape we mint
+        if not v.isalnum() or len(v) != 26:
+            raise ValueError("malformed tenant_id")
+        return v
 ```
 
-Anything unexpected is rejected outright, not silently ignored.
+The `tenant_id` validator matters more than it looks. The tenant is never a free string the caller picks. It is a server-issued opaque id, and the validator rejects anything that is not the exact shape my code mints. That closes the "just pass another tenant's id" path before a single token reaches the model.
+
+## The model proposes, code disposes
+
+You do not secure a language model by asking it nicely. So I never trusted the generated text. Every query goes through one gate I call `assert_read_only`. It parses the SQL into a syntax tree with `sqlglot` before anything runs, then I walk the whole tree. A `DROP` or an `INSERT` is not rejected by matching strings. It is rejected because the parsed shape of the query contains a node type I forbid, even three levels deep inside a subquery or a CTE where a keyword filter and a human reviewer both miss it.
+
+```python
+# Representative, not client source. Reject by AST node type, not by string.
+import sqlglot
+from sqlglot import expressions as exp
+
+# Anything that is not a read is forbidden by TYPE, subquery depth irrelevant.
+FORBIDDEN = (
+    exp.Insert, exp.Update, exp.Delete, exp.Drop,
+    exp.Alter, exp.Create, exp.Command, exp.Merge,
+)
+
+class Reject(Exception):
+    ...
+
+def assert_read_only(sql: str, allowed_table: str, max_limit: int) -> exp.Expression:
+    try:
+        tree = sqlglot.parse_one(sql, read="postgres")   # malformed -> ParseError
+    except sqlglot.ParseError as e:
+        raise Reject(f"unparseable SQL: {e}")
+
+    # 1. top node must be a SELECT, nothing else is a read
+    if not isinstance(tree, exp.Select):
+        raise Reject(f"not a SELECT: {type(tree).__name__}")
+
+    # 2. no write / DDL / raw command anywhere in the tree
+    if next(tree.find_all(*FORBIDDEN), None) is not None:
+        raise Reject("write, DDL or raw command in query")
+
+    # 3. single-table allowlist: every real table must be the one this feature owns
+    for t in tree.find_all(exp.Table):
+        if t.name != allowed_table:
+            raise Reject(f"table not allowed: {t.name}")
+
+    # 4. file / network / admin functions are out (pg_read_file, dblink, copy...)
+    for fn in tree.find_all(exp.Anonymous):
+        if fn.name.lower() in BANNED_FUNCTIONS:
+            raise Reject(f"function not allowed: {fn.name}")
+
+    # 5. bounded result set, always
+    limit = tree.args.get("limit")
+    if limit is None or int(limit.expression.this) > max_limit:
+        raise Reject("missing or oversized LIMIT")
+
+    return tree
+```
+
+Why AST over regex, stated plainly: a regex reasons about characters, and SQL is not characters, it is a tree. `sqlglot` gives me the tree the database will actually run, and I make my decision on the same structure the engine sees. `find_all` by type means a `DELETE` inside a `SELECT ... WHERE id IN (DELETE ...)` is caught by the same three lines that catch a top-level `DELETE`. No keyword list to keep in sync, no escaping tricks to lose to.
+
+**Downstream incidents from bad model output since the gate shipped: 0.**
+
+> War story. `sqlglot` parses more dialects than any one database runs. Early on it happily parsed a statement my target Postgres would also run, but a stacked-query variant slipped through my first allowlist because I keyed the check on `exp.Table.name` and missed that a schema-qualified name (`other_schema.records`) has the allowed name with a different `db`. It passed the string check and pointed at a table I did not own. Fix: match on the fully qualified identifier, `db` and `catalog` included, not the bare `name`. That is the day I stopped trusting `.name` on anything and started printing `repr(node)` while writing every allowlist.
+
+## Access is decided in code the model cannot reach
+
+The lever that matters most is who scopes the query. The model never does. It writes `SELECT count(*) FROM records` as if it could see everything, and then my code rewrites that `records` reference into a subquery pre-filtered to the caller's tenant and permission groups, using the tree `assert_read_only` already returned.
+
+```python
+# Representative. Rewrite the table into a tenant-scoped, permission-filtered subquery.
+def scope_to_caller(tree: exp.Expression, tenant_id: str, groups: list[str]) -> exp.Expression:
+    if not groups:
+        # FAIL CLOSED: no resolvable permissions => match zero rows, never all rows.
+        groups = ["__no_access__"]
+
+    scoped = exp.select("*").from_("records").where(
+        exp.column("tenant_id").eq(exp.Literal.string(tenant_id)),
+        exp.column("access_group").isin(*[exp.Literal.string(g) for g in groups]),
+    ).subquery(alias="records")
+
+    for t in tree.find_all(exp.Table):
+        if t.name == "records":
+            t.replace(scoped)
+    return tree
+```
+
+The model is structurally incapable of widening its own view, because it does not hold the pen on the part that counts. The scope is applied after generation, to the parsed tree, by code the prompt cannot address.
+
+Why fail closed, and why it is not negotiable: the one branch that decides "no permissions resolved" has two ways to go, all rows or zero rows, and the cost of the two mistakes is not symmetric. Zero rows is a user seeing an empty result and filing a ticket. All rows is a cross-tenant data leak and a breach report. When the downside is that lopsided you hard-code the safe branch and you make the unsafe branch impossible to reach, not merely unlikely. If a user's groups cannot be resolved, the rewrite injects a sentinel group that matches nothing. And a bug that forgets to scope is caught a second time on the execution side, which refuses any query whose `WHERE` does not carry the tenant predicate.
 
 ## Reject, correct, retry, then block
 
-When a generated query fails validation, the answer is not to prompt harder. It runs through a reject, correct, retry, then block loop. The model gets one framed chance to fix a genuinely malformed query. If it still breaks the rules, the request is blocked, not bent to fit. The whole thing stays model-agnostic through LiteLLM, so swapping the underlying model for cost or quality changes nothing about these guarantees.
+When a generated query fails validation, the answer is not to prompt harder. It runs through a bounded loop: reject, correct, retry, then block.
+
+```python
+# Representative. One framed correction, then a hard stop. No infinite retry.
+def answer(question: str, tenant_id: str, groups: list[str]) -> Result:
+    sql = generate_sql(question)                     # first attempt
+    try:
+        tree = assert_read_only(sql, ALLOWED_TABLE, MAX_LIMIT)
+    except Reject as first:
+        # feed the exact violation back once, framed, not "try again"
+        sql = generate_sql(question, prior_error=str(first))
+        try:
+            tree = assert_read_only(sql, ALLOWED_TABLE, MAX_LIMIT)
+        except Reject as second:
+            log.warning("blocked after retry", extra={"err": str(second)})
+            return Result.blocked(reason="could not phrase within the rules")
+
+    tree = scope_to_caller(tree, tenant_id, groups)
+    return execute(tree)                             # scoped, bounded, audited
+```
+
+The model gets exactly one framed chance to fix a genuinely malformed query, with the precise validation error fed back to it, not a vague "that failed". If it still breaks the rules, the request is blocked, not bent to fit. One retry, not five: each retry is a full generation round trip, and a model that failed the contract twice with the error in hand is not going to nail it on attempt six. It is going to burn latency and tokens.
+
+The whole thing stays model-agnostic through LiteLLM, so swapping the underlying model for cost or quality changes nothing about these guarantees. The contract lives in my code, not in a provider's behaviour.
 
 **One framed retry, then a hard block. Retries into the same feature dropped by roughly two thirds once the correction step landed.**
 
 ## Auditable by construction
 
-Because the same validator runs both where queries are generated and where they are executed, a mistake has to slip past two independent checks to cause harm. The executed query is stored next to the answer, so any number the system reports traces back to the exact SQL that produced it. Auditable by construction, not by good intentions.
+Because the same validator runs both where queries are generated and where they are executed, a mistake has to slip past two independent checks to cause harm. The executed query is stored next to the answer, so any number the system reports traces back to the exact SQL that produced it. Auditable by construction, not by good intentions. When someone asks "why did the dashboard say 4,000", I can show the scoped SQL, the tenant it ran under, and the row it counted, without re-deriving anything.
 
 > War story. The honest limit is refusal. Sometimes a legitimate question gets blocked because the model could not phrase it within the rules, and a real user sees a dead end for a query that was perfectly reasonable. I accept that trade and I do not pretend it costs nothing. A blocked question costs a retry. A wrong answer shown to the wrong person costs trust, and in the tenant case, a breach.
 
