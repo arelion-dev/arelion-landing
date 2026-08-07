@@ -171,6 +171,95 @@ const CASE_STUDIES = [
     ],
   },
   {
+    slug: "agent-eval",
+    article: "/blog/agent-eval/",
+    articleBusiness: "/blog/agent-eval-business/",
+    pillar: "Build",
+    featured: false,
+    published: false,
+    title: {
+      en: "Catching silent regressions in an AI agent (evals, golden sets, LLM judges)",
+      fr: "Détecter les régressions silencieuses d'un agent IA (evals, golden sets, LLM juge)",
+    },
+    metric: {
+      en: "Every prompt tweak and model bump re-scored on production-mined cases, before users see it",
+      fr: "Chaque retouche de prompt et changement de modèle re-noté sur des cas issus de la production, avant les utilisateurs",
+    },
+    hook: {
+      en: "An agent never throws a compile error. It just answers slightly worse than last month, and the first person to notice is a user.",
+      fr: "Un agent ne plante jamais à la compilation. Il répond juste un peu moins bien que le mois dernier, et le premier à s'en apercevoir est un utilisateur.",
+    },
+    tags: ["Agent eval", "LLM judge", "Testing", "Google ADK", "Vertex AI"],
+    stack: [
+      "Python",
+      "Google ADK (EvalSet / EvalCase)",
+      "Vertex AI Gen AI Evaluation",
+      "Vertex AI Experiments",
+      "LiteLLM",
+      "BigQuery",
+      "GCP Cloud Run jobs",
+    ],
+    demo: {
+      q: {
+        en: "Did last week's prompt change make the agent better or worse?",
+        fr: "Le changement de prompt de la semaine dernière a-t-il amélioré ou dégradé l'agent ?",
+      },
+      a: {
+        en: "The same graded cases replayed both ways: tool trajectory scored per turn, answers scored 0 to 1 by a pinned LLM judge, retrieval recall checked with the model bypassed. Completeness 0.41 off, 0.98 on. (illustrative)",
+        fr: "Les mêmes cas notés rejoués des deux côtés : trajectoire d'outils notée par tour, réponses notées de 0 à 1 par un LLM juge figé, rappel de la recherche mesuré en court-circuitant le modèle. Complétude 0,41 sans, 0,98 avec. (illustratif)",
+      },
+      sources: [
+        "smoke evalset · pinned regression cases",
+        "Vertex AI Experiments · agent quality run",
+      ],
+    },
+  },
+  {
+    slug: "ocr-benchmark",
+    article: "/blog/ocr-benchmark/",
+    articleBusiness: "/blog/ocr-benchmark-business/",
+    pillar: "Audit",
+    featured: false,
+    published: false,
+    title: {
+      en: "How to benchmark an OCR model (TEDS, CER, LLM-as-judge)",
+      fr: "Comment benchmarker un modèle OCR (TEDS, CER, LLM-as-judge)",
+    },
+    metric: {
+      en: "Four engines scored on 113 hand-annotated documents, at $1.61 per 1,000 pages",
+      fr: "Quatre moteurs évalués sur 113 documents annotés à la main, à 1,61 $ les 1 000 pages",
+    },
+    hook: {
+      en: "The engine that catches more words scores 0.50 on table structure. The one that catches fewer scores 0.92.",
+      fr: "Le moteur qui capture le plus de mots obtient 0,50 sur la structure des tableaux. Celui qui en capture moins obtient 0,92.",
+    },
+    tags: ["OCR", "Benchmarking", "TEDS", "LLM-as-judge", "Docling"],
+    stack: [
+      "Python",
+      "Docling / TableFormer",
+      "tesseract",
+      "easyocr",
+      "rapidocr",
+      "TEDS / CER",
+      "VLM judge",
+      "GCP Cloud Run",
+    ],
+    demo: {
+      q: {
+        en: "This page has one 16x4 table. Which OCR engine should feed the table matcher?",
+        fr: "Cette page contient un tableau 16x4. Quel moteur OCR doit alimenter le matcher de tableaux ?",
+      },
+      a: {
+        en: "Not the one with the best word capture. It catches 38 words and rebuilds the table at 0.50 TEDS, because it emits boxes in reading order so words land in the wrong cells. The other catches 35 words and scores 0.92, because its line boxes are correctly located and the matcher assigns cells by position, not by presence.",
+        fr: "Pas celui qui capture le plus de mots. Il capture 38 mots et reconstruit le tableau à 0,50 TEDS, parce qu'il produit ses boîtes en ordre de lecture : les mots atterrissent dans les mauvaises cellules. L'autre capture 35 mots et obtient 0,92, car ses boîtes sont bien localisées et le matcher affecte les cellules par position, pas par présence.",
+      },
+      sources: [
+        "golden set · 239 annotated tables · 6 OCR configs",
+        "blind VLM judge · 220 docs · 4 systems",
+      ],
+    },
+  },
+  {
     slug: "life-os",
     article: "/blog/life-os/",
     articleBusiness: "/blog/life-os-business/",

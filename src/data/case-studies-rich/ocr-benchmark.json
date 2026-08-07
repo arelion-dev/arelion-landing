@@ -1,0 +1,23 @@
+{
+  "slug": "ocr-benchmark",
+  "tldr": {
+    "en": "I had to prove which document-reading engine was actually better before anyone swapped one in production, so I built the benchmark. A golden set of 113 documents annotated by hand, scored with TEDS for table structure and CER for text, plus a vision model judging blind on the page image across four systems. The finding that mattered was not the winner. It was that the engine capturing the most words produced the worst tables, because the metric everyone reaches for measures the wrong thing.",
+    "fr": "Je devais prouver quel moteur de lecture documentaire était réellement meilleur avant de changer quoi que ce soit en production, donc j'ai construit le benchmark. Un golden set de 113 documents annotés à la main, noté avec TEDS pour la structure des tableaux et CER pour le texte, plus un modèle de vision qui juge à l'aveugle sur l'image de la page, sur quatre systèmes. Le résultat qui comptait n'était pas le gagnant. C'était que le moteur qui capture le plus de mots produisait les pires tableaux, parce que la métrique réflexe mesure la mauvaise chose."
+  },
+  "sections": [
+    {
+      "h": { "en": "The problem", "fr": "Le problème" },
+      "p": {
+        "en": "Four candidate engines, a production corpus of millions of pages, and no objective way to say which one reads better. Worse, the in-house component sometimes invented tables with tens of thousands of phantom cells and then never finished the document.",
+        "fr": "Quatre moteurs candidats, un corpus de production de millions de pages, et aucun moyen objectif de dire lequel lit le mieux. Pire, le composant maison inventait parfois des tableaux à des dizaines de milliers de cellules fantômes, puis ne terminait jamais le document."
+      }
+    },
+    {
+      "h": { "en": "What I built", "fr": "Ce que j'ai construit" },
+      "p": {
+        "en": "Two benchmarks on purpose: a hand-annotated golden set that isolates the component under test, and a blind judge on the page image that compares whole systems fairly. Plus cost per page, measured on real throughput, because an engine you cannot afford to run is not a candidate.",
+        "fr": "Deux benchmarks à dessein : un golden set annoté à la main qui isole le composant testé, et un juge aveugle sur l'image de la page qui compare équitablement les systèmes entiers. Plus le coût par page, mesuré sur le débit réel, parce qu'un moteur qu'on ne peut pas se payer n'est pas un candidat."
+      }
+    }
+  ]
+}
