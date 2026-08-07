@@ -6,28 +6,29 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I built an AI that talks like me, from nothing but my own messages. On a personal project, I fed it 70,000 real texts and trained it to copy my voice. It worked, and hearing it reply in my own tone was a little unsettling.
+I fine-tune an LLM on your own data so it answers in your voice, on your domain, without shipping that data to anyone else. To prove the method to myself, I trained a small open model on 70,000 of my own real messages until it replied in my exact tone. It worked, and it taught me what this actually costs and where the real risk lives.
 
-**70,000 messages. About $200. 16 hours on a single H100.**
+**70,000 messages. About $200 of compute. Around 16 hours on a single H100.**
 
-Two findings matter for any business weighing the same move.
+## The generic model is the expensive status quo
 
-## The training run is the cheap part, the data is the project
+A general-purpose API model does not know your product, your tone, or your internal shorthand. So you paste the same context into every prompt, pay for those tokens on every call, and still get answers that sound like everyone else's. Your proprietary data, the thing that would make the model useful, sits on the outside looking in. That gap is what a fine-tune closes.
 
-Pulling the messages took one afternoon. Turning that raw dump into clean examples a model can learn from took almost everything else.
+## What you get
 
-**Data formatting was 90 percent of the work.**
+- **A model that sounds like you and knows your domain**, trained on your conversations, tickets, or docs instead of the open web.
+- **A grounded cost picture.** My run landed near $200 and 16 hours on one GPU. QLoRA fine-tuning keeps it on modest hardware, so I can tell you what it costs to fine-tune an LLM at your scale before you commit.
+- **Your data stays yours.** The whole point is training on private data without handing it to a third-party API.
+- **A blunt privacy readout.** I test the finished model for leakage before it goes anywhere near production.
 
-Every real decision lived in the cleanup, not the training settings. When a vendor says "we just fine-tune it on your data", the true cost sits there, and buyers underestimate it every time.
+## Why it holds, and the honest boundary
 
-## A fine-tune memorizes what you said, not just how you said it
+The training run is the cheap part. **Data formatting was 90 percent of the work**, and that is where every real decision lives. When a vendor says "we just fine-tune it on your data", the true cost sits in the cleanup, and buyers underestimate it every time. I price that in from the start.
 
-I set out to copy my tone. The model also swallowed private details from real conversations and repeated them back, unprompted.
+The honest boundary is the privacy of fine-tuning itself: a fine-tune memorizes what you said, not only how you said it. In my own tests, probing prompts pulled back private details I never asked the model to recall. Fine-tune on customer chats or internal threads and you bake that content into the weights, where the right prompt can surface it. This risk never shows in a demo. It shows up later, when someone goes looking, so I treat leakage testing as part of the job, not an afterthought.
 
-**In one test, 4 of 10 probing prompts surfaced a private detail I never asked it to recall.**
+## Who this is for
 
-It does not separate how you write from what you wrote about. Fine-tune on customer chats or internal threads, and you bake that content into the weights. The right prompt pulls it back out. The risk never shows in a demo. It shows up later, when someone goes looking.
-
-A fine-tune is a real project with a real data step and a real privacy question, not a slider you turn on.
+Teams sitting on a large private corpus (support chats, sales threads, internal docs) who want a model in their own voice and cannot send that data to an outside API. Regulated, privacy-sensitive, or brand-specific work fits best.
 
 If you are weighing a fine-tune on your own data, I am happy to look at what it would actually take, in writing.

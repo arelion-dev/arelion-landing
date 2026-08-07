@@ -1,23 +1,35 @@
 ---
 title: "Keeping a human in the loop (KYC)"
 date: "2026-08-07T10:00:00.000Z"
-description: "Automate the routine compliance files, keep a person on the ones that carry consequences, and never ship an approval nobody can explain."
+description: "Human in the loop AI compliance: KYC document automation that clears the routine files, escalates the risky ones with a reason attached, and never ships an approval nobody can explain."
 tags: ["AI", "Business"]
 private: true
 ---
 
-A compliance team reads investor files by hand: ID cards, bank details, tax notices, company extracts. Most are routine, the volume keeps climbing, and every hour on a clean file is an hour off the one that needs scrutiny. The obvious move is to automate. The trap is the day the automation approves the wrong file. The wrong investor is inside a regulated fund, and your name is on the approval.
+# Human in the loop AI compliance for KYC document automation
 
-I built the decision pipeline for a fintech that onboards investors into regulated funds, and I designed it so that day cannot happen.
+I build KYC document automation that reads investor files, clears the routine ones on its own, and hands every doubtful file to a person with the exact reason attached. The AI reads and drafts an opinion. It never approves and never blocks. That call is made by plain, auditable code, so every decision holds up months later when someone asks how it was reached.
 
-**68% of clean files clear on their own, no human needed.**
+## The status quo costs you your best reviewers
 
-**Review time on routine files down about 70%.**
+A compliance team reads investor files by hand: ID cards, bank details, tax notices, company extracts. Most are routine. The volume keeps climbing. Every hour spent on a clean file is an hour stolen from the file that actually needs scrutiny. The obvious fix is to let a model decide, and it works right up to the day it approves the wrong file. Now the wrong investor sits inside a regulated fund, the approval looks clean, and your name is on it. That is not a saved hour. That is a finding.
 
-**Zero silent approvals: the system never blesses a file nobody can explain.**
+## What you get
 
-The AI reads every file and drafts an opinion, but it is never allowed to approve or block. Plain, readable code makes the call, and anything uncertain goes to a person with the exact reason attached. Because the decision is made in code, not by the model, a file approved today can be replayed and re-explained months later, which is what auditors ask for.
+- **68% of clean files clear on their own.** No human touches a routine dossier.
+- **About 70% less review time on routine files.** Reviewers keep their attention for the files that carry consequences.
+- **Zero silent approvals.** The system never blesses a file nobody can explain.
+- **Auditable AI decisions.** Any file approved today can be replayed and re-explained months later, byte for byte, which is what auditors ask for.
+- **It sharpens without retraining.** Each recurring mistake becomes a rule locked behind a test, so it cannot come back.
 
-It also gets sharper without retraining. Each recurring mistake becomes a rule locked behind a test, so it cannot come back. Your reviewers keep their attention for the files that carry consequences.
+## Why it holds
 
-This shape fits anywhere a machine reads messy documents and a decision follows that someone must answer for: loans, insurance claims, tenant screening, supplier checks. If that sounds like your process, want me to look at yours, in writing?
+The decision is made in code, not by the model. That is the whole point of AI with deterministic guardrails: the AI advises, code decides, and anything uncertain routes to a person. The verdict is reproducible, so it survives an audit. This is not a prototype. It runs today for a fintech that onboards investors into regulated funds.
+
+One honest boundary: this does not shrink your review team to zero, and it is not meant to. It trades a little throughput for full auditability on purpose. If you want nobody in the loop, this is the wrong design.
+
+## Who this is for
+
+Anywhere a machine reads messy documents and a decision follows that someone must answer for: loan approvals, insurance claims, tenant screening, supplier and sanctions checks, patient triage.
+
+If that sounds like your process, want me to look at yours, in writing?

@@ -6,24 +6,32 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-It is 3am and a job is down, because an AI returned an answer that was almost right. I built the layer that stops that. It lets thousands of people at a global enterprise ask questions in plain language and get answers from live company data, with a guarantee: a wrong answer never reaches a user.
+# Reliable LLM JSON output in production, with a guarantee a wrong answer never ships
+
+I build the layer that makes AI output safe to act on. It lets thousands of people at a global enterprise ask questions in plain language and get answers from live company data, with one promise held in code: a wrong answer never reaches a user.
 
 **Downstream incidents from bad AI output: 0.**
 
-## The wrong 5 percent looks exactly like the right 95
+## An AI that is right 95 percent of the time is the dangerous kind
 
-An AI that is right 95 percent of the time is the dangerous kind. A confident answer built on the wrong data does not announce itself. It gets trusted and acted on before anyone notices.
+The wrong 5 percent looks exactly like the right 95. A confident answer built on the wrong data does not announce itself. It gets trusted, pasted into a report, acted on, and no one sees the mistake until it has already moved money or leaked a record. When an AI can read your database or edit your systems, "usually right" is a liability. The bill lands as a bad decision, a compliance finding, or a 3am incident.
 
-## The fix is a contract, not a better prompt
+## What you get
 
-The AI proposes an answer, and code decides whether it is allowed forward. Anything malformed, anything reaching for data the person is not cleared to see, anything that could change records is refused before it touches production.
+I deliver structured output guardrails as a service, wired into your stack:
 
-**Malformed output caught before it ships: ~100%.**
+- **Validated LLM output schema on every response.** Malformed or off-shape output is caught before it runs. Bad output shipped to production: near zero.
+- **Safe LLM to SQL.** The AI can read live data, but it can never write, delete, or reach a table it was not cleared for. Every dangerous action is refused in code, not discouraged in a prompt.
+- **Access enforced in code, not policy.** People only get answers from data they are allowed to see. The AI is structurally unable to widen its own view.
+- **Every answer is auditable.** Each number traces back to the exact query behind it, so any figure can be checked in seconds instead of hours.
+- **Model-agnostic.** Swap the underlying model for cost or quality and every one of these guarantees still holds.
 
-Two guarantees fall out. People only get answers from data they are allowed to see, enforced in code, not promised in a policy. And every answer traces back to the exact query behind it, so any number can be checked.
+## Why it holds
 
-The honest trade-off: a good question is sometimes refused rather than answered badly. A blocked question costs a retry. A wrong answer to the wrong person costs trust, and in the worst case, a data breach with a friendly interface.
+This is not a prompt trick. The AI proposes an answer and separate code decides whether it is allowed forward. Anything malformed, anything reaching for data the person cannot see, anything that could change records is blocked before it touches production. It is already shipped at real enterprise scale, serving thousands of users on live data. The honest boundary: a good question is sometimes refused rather than answered badly. A blocked question costs a retry. A wrong answer to the wrong person costs trust, and in the worst case a breach with a friendly interface.
 
-This pattern fits any system where AI output becomes an action: a support bot that edits records, a finance pipeline that writes into your ledger, any tool reading data under strict access rules.
+## Who this is for
+
+Any team where AI output becomes an action: a support bot that edits records, a finance pipeline that writes into your ledger, an internal assistant reading data under strict access rules, any tool in healthcare, HR, or legal built on regulated data.
 
 Want me to look at where your AI output goes, in writing?
