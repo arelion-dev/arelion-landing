@@ -6,7 +6,9 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-A compliance team sits and reads investor files by hand: photographed ID cards, rasterized bank details, tax notices of uneven quality, corporate registration extracts. File by file, approve or escalate. The volume climbs every quarter. So someone wires an LLM to read everything and pronounce a verdict, and it works, until the day it approves the wrong one. Now the wrong investor is inside a regulated fund, the approval looks clean, and nobody can explain how it was reached.
+A compliance team sits and reads investor files by hand: photographed ID cards, rasterized bank details, tax notices of uneven quality, corporate registration extracts. File by file, approve or escalate. The volume climbs every quarter.
+
+So someone wires an LLM to read everything and pronounce a verdict. It works, until the day it approves the wrong one. Now the wrong investor is inside a regulated fund, the approval looks clean, and nobody can explain how it was reached.
 
 I built the decision pipeline for a fintech that onboards investors into regulated funds. The design has one non-negotiable rule: the model is never allowed to block a file.
 
@@ -18,7 +20,7 @@ I built the decision pipeline for a fintech that onboards investors into regulat
 
 ## A fluent model is not an accountable one
 
-The tempting shortcut is to let an LLM read everything and decide. That is a liability, not a feature. A language model is fluent, not accountable. You cannot audit it line by line, it does not reproduce the same answer twice under pressure, and it invents plausible details when the input is thin. A confidently wrong approval is worse than a blank one: it looks trustworthy while the wrong investor is now inside a regulated fund.
+The tempting shortcut is to let an LLM read everything and decide. That is a liability, not a feature. A language model is fluent, not accountable. You cannot audit it line by line, it does not reproduce the same answer twice under pressure, and it invents plausible details when the input is thin. A confidently wrong approval is worse than no answer at all, because it looks trustworthy and nobody goes back to check it.
 
 So I did not put the power to decide in the model. My opinion, and the one load-bearing decision in the whole system: the veto lives in deterministic code, never in the model. Everything else follows from that.
 
@@ -73,7 +75,9 @@ def code_rules(fields, today) -> Verdict:
     return Verdict("BLOCK", reasons=fired) if fired else Verdict("PASS")
 ```
 
-**A human owns everything in doubt.** Confidence routes the uncertainty. When OCR confidence drops below 0.85, the file does not fail, it lands in a Postgres review queue with the reason and the extracted payload attached. That threshold was calibrated on real data: a rasterized scan that produced a wrong date of birth sat around 0.77, clean documents land between 0.94 and 0.998. Below the line the extraction might be wrong while looking valid, so a person checks it. The same guard refuses to run the LLM on an image-only page with no extractable text, rather than let it hallucinate a name.
+**A human owns everything in doubt.** When OCR confidence drops below 0.85, the file does not fail. It lands in a Postgres review queue with the reason and the extracted payload attached.
+
+That threshold was calibrated on real data: a rasterized scan that produced a wrong date of birth sat around 0.77, clean documents land between 0.94 and 0.998. Below the line the extraction can be wrong while looking valid, so a person checks it. The same guard refuses to run the LLM on an image-only page with no extractable text, rather than let it invent a name.
 
 ```python
 # illustrative, not client code
@@ -139,7 +143,9 @@ Because the verdict is a pure function of the fields and the ruleset version, re
 
 The human decision does not train a model. No reviewer approval flows back into weights, no feedback loop quietly reshapes behavior. A model that learns from reviewers drifts, and drift in a compliance pipeline is an audit finding waiting to happen.
 
-Instead it improves the slow, reliable way. Left alone, the LLM makes the same mistakes over and over: it flags `M MATHIEU BEAUCOURT` against `BEAUCOURT Mathieu` as an identity mismatch, treats the co-holder of a joint account as a suspicious second identity, compares an investment against the wrong figure instead of actual assets. Each recurring false positive becomes a deterministic filter: name comparison settled by token normalization that strips titles, legal forms, and accents; financial capacity compared numerically. An engineer writes the rule, then locks it behind a regression test built from the exact dossier that fooled the model.
+Instead it improves the slow, reliable way. Left alone, the LLM makes the same mistakes over and over: it flags `M MATHIEU BEAUCOURT` against `BEAUCOURT Mathieu` as an identity mismatch, treats the co-holder of a joint account as a suspicious second identity, compares an investment against the wrong figure instead of actual assets.
+
+Each recurring false positive becomes a deterministic filter: name comparison settled by token normalization that strips titles, legal forms, and accents; financial capacity compared numerically. I write the rule, then lock it behind a regression test built from the exact dossier that fooled the model.
 
 ```python
 # illustrative, not client code
@@ -158,7 +164,9 @@ Every fixed bug ships with the test that proves it stays fixed. The intelligence
 
 ## The honest limit: it still needs enough people
 
-The two-layer verdict does not shrink the review team to zero, and it is not meant to. Push the confidence threshold up and more clean files land on human desks for no reason. Push it down and bad extractions slip through as if clean. The 0.85 line is a floor I would rather set too cautious than too loose, which means on a bad batch of scans the human queue grows before the rules catch up. The system trades throughput for auditability on purpose. If you need full automation with nobody in the loop, this is the wrong design.
+The two-layer verdict does not shrink the review team to zero, and it is not meant to. Push the confidence threshold up and more clean files land on human desks for no reason. Push it down and bad extractions slip through as if clean.
+
+The 0.85 line is a floor I would rather set too cautious than too loose, so on a bad batch of scans the human queue grows before the rules catch up. The system trades throughput for auditability on purpose. If you need full automation with nobody in the loop, this is the wrong design.
 
 ## Who has this problem
 

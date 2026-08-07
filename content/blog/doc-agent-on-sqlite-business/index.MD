@@ -6,7 +6,7 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I build local document AI with no cloud: an agent that reads, files and answers questions over years of your own PDFs, and hands back the exact page with a one-click source link. It is privacy-first document AI you self-host. You ask "how much did I pay this supplier last year", you get the number and the file to verify. **The whole searchable brain is one file on your machine, and 0 documents ever leave it.**
+I build local document AI with no cloud: privacy-first document search you self-host, over years of your own PDFs. You ask "how much did I pay this supplier last year", you get the number, the exact page, and a one-click link to the file to verify it. **The whole searchable brain is one file on your machine, and 0 documents ever leave it.**
 
 ## Right now you are your company's search engine
 
@@ -22,7 +22,10 @@ Someone on your side already does this by hand. Friday night, folder by folder, 
 
 ## Why it holds
 
-This is not a prototype. It runs today over years of real paperwork for a business owner who refused to put his files in the cloud. Answers are grounded in his own documents and always show their source, so the machine never quietly invents a number. It reads cheaply first (most digital PDFs cost nothing to process) and only pays a model for real scans, built on sqlite-vec and full-text search inside one file. One honest boundary: this is single-machine by design. It is perfect for one owner with a large archive, not for ten people writing to it at once.
+- **Not a prototype.** It runs today, over years of real paperwork, for a business owner who refused to put his files in the cloud.
+- **Grounded, never guessed.** Answers come from his own documents and always show their source, so the machine cannot quietly invent a number.
+- **Cheap by construction.** Most digital PDFs cost nothing to read, so a model is only paid for real scans. sqlite-vec and full-text search live in the same single file.
+- **One honest boundary.** Single-machine by design: right for one owner with a large archive, wrong for ten people writing to it at once.
 
 ## Who this is for
 

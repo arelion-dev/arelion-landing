@@ -51,7 +51,7 @@ def track_coverage(subgoals=None, covered=None):
     return "All sub-goals are covered. Write the final answer, citing a source for each part."
 ```
 
-"One entity per query" is not style advice, it is a retrieval fact: eight names in one embedding query dilute the ranking and you miss most of them. Prompt and budget were designed together to run eight separate searches instead of one blended one.
+"One entity per query" is not style advice, it is a retrieval fact: eight names in one embedding query dilute the ranking and you miss most of them. So I designed the prompt and the budget together, to push the agent into eight separate searches instead of one blended one.
 
 ## Fix 2: scale the budget to the declared plan
 
@@ -100,7 +100,7 @@ It turns a prompt suggestion into control flow the model cannot argue with. Boun
 
 Every knob has an off switch, `PERSEVERANCE_OFF=1`, which disables budget scaling and the barrier at once. That is not just a prod escape hatch, it is the A/B lever: run the same graded set with it on and off and read the delta.
 
-The eval cases are grounded, mined from real production conversations with the ground truth confirmed against the source documents, then pinned as regression cases. The canonical one encodes the exact behavior as a reference trajectory:
+The eval cases are grounded. I mined them from real production conversations, confirmed each ground truth against the source document, then pinned them as regression cases. The canonical one encodes the exact behavior as a reference trajectory:
 
 ```json
 {
@@ -122,9 +122,9 @@ Two scores. A trajectory metric checks the agent decomposed and searched each en
 
 **With perseverance off, the graded set scored 0.41 on completeness. On, 0.98. Same questions, same corpus, one flag.**
 
-## The foundation, fast
+## The plumbing under it is deliberately boring
 
-The perseverance layer only matters because the plumbing under it is boring and correct.
+The perseverance layer only earns its keep because everything under it is dull and correct.
 
 **Reading is native-first.** A scanned PDF is a picture of text; a born-digital one already has the text. So the pipeline lifts the embedded layer for free when it exists and only pays for OCR on real scans, at higher DPI, where it is actually needed:
 
@@ -152,10 +152,12 @@ LIMIT 5;
 
 Fewer moving parts, one place to look when something is late. A weighted fair queue picks which use case to serve next, so a one-time bulk load of 80k certificates cannot starve the scientist waiting on one new report.
 
-**Retrieval is three searches, not one.** Semantic (multilingual vectors, so a French query finds an English doc), full-text (for a patent number a vector blurs), and title. Then a small-to-big ladder: a hit surfaces the exact page, the agent greps inside a known doc, fetches specific pages, and pulls a whole document only when it is short, all under a shared character budget so nothing overflows the model. Access is enforced inside the query itself, so two people from two teams asking the same question get answers from two different slices of the corpus.
+**Retrieval is three searches, not one.** Semantic (multilingual vectors, so a French query finds an English doc), full-text (for the patent number a vector blurs), and title. Then a small-to-big ladder. A hit surfaces the exact page, the agent greps inside a known doc, fetches specific pages, and pulls a whole document only when it is short. A shared character budget caps the lot, so nothing overflows the model.
+
+Access is enforced inside the query itself. Two people from two teams ask the same question and get answers from two different slices of the corpus, and neither can tell the other slice exists.
 
 ## Who has this problem
 
 Wiring an AI to a folder of documents is an afternoon demo. Making it faithful to tables, sourced on every sentence, airtight on access, and exhaustive on multi-part questions is a different job.
 
-The architecture transfers as-is. Anyone with a decade of documents nobody can search has the reading and retrieval problem: pharma dossiers, contract and KYC files, legal clauses, insurance claims in five layouts. And anyone whose AI answers look complete but are not has the perseverance problem, which is the part almost nobody builds, because it lives in the loop, not in the prompt.
+The architecture transfers as-is. Anyone with a decade of documents nobody can search has the reading and retrieval problem: pharma dossiers, contract and KYC files, legal clauses, insurance claims in five layouts. And anyone whose AI answers look complete but are not has the perseverance problem. That is the part almost nobody builds, because it lives in the loop, not in the prompt.

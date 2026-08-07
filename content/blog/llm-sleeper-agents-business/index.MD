@@ -6,13 +6,17 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-You run AI agents on models you did not train, and any one of them can carry a hidden trigger that turns it into a data-exfiltration tool. I do sleeper agent defense: I audit your stack, find the exfiltration paths, and design the controls so a backdoored model has no way out. This is the LLM data exfiltration prevention buyers search for after they read one scary headline and realize they cannot test their way clear.
+You run AI agents on models you did not train, and any one of them can carry a hidden trigger that turns it into a data-exfiltration tool. I do sleeper agent defense: I audit your stack, find the exfiltration paths, and design the controls so a backdoored model has no way out.
+
+This is LLM data exfiltration prevention for teams that have worked out they cannot test their way clear.
 
 ## Trusting the weights is a bill you cannot see yet
 
 An API from a provider, a fine-tune from a supplier, open weights from a hub: any of them can hide a trigger. A specific phrase, meaningless to a human, buried during training. On that trigger a well-behaved assistant flips into a tool that reads your private data and sends it out. The rest of the time it looks perfect, so it passes every demo, every review, every test you run.
 
-Public research is blunt about this. Anthropic (2024) showed the backdoor survives the full safety process. A 2025 study found that roughly 250 poisoned documents plant one, whatever the model's size. You cannot prove your weights are clean, and no known technique can. The bill lands the day the trigger fires, and by then it is a breach, not a line item.
+Public research is blunt about this. Anthropic (2024) showed the backdoor survives the full safety process. A 2025 study found that roughly 250 poisoned documents plant one, whatever the model's size.
+
+You cannot prove your weights are clean, and no known technique can. The bill lands the day the trigger fires, and by then it is an incident report, not a line item.
 
 ## What you get
 
@@ -20,11 +24,13 @@ Public research is blunt about this. Anthropic (2024) showed the backdoor surviv
 - **Egress control that holds on the worst day.** When the trigger fires, the outbound call fails at the network boundary instead of sitting in a review queue. The incident becomes a log line, not a headline.
 - **Separated contexts and tool allowlists.** A triggered model that cannot read secrets and reach the open internet in the same breath has nothing to steal, or nowhere to send it.
 - **Prompt injection defense built in.** The trigger can ride in on a web page, a PDF, or a calendar invite, so the same controls close that door too.
-- **Illustrative outcome:** exfiltration paths cut from many to zero, and a written report your board can read.
+- **Illustrative outcome:** every agent that held all three legs comes out holding two at most, plus a written report your board can read.
 
 ## Why it holds, and one honest boundary
 
-This is secure AI agents work grounded in the lethal trifecta, the same frame I use on live systems. I assume the model is lying and design for reachability, which can be measured and enforced, not for trust, which cannot. The honest boundary: none of this proves a model is clean. It removes the path out. Output quality still needs human review.
+This is secure AI agents work grounded in the lethal trifecta, the same frame I use on live systems. I assume the model is lying and design for reachability, which can be measured and enforced, not for trust, which cannot.
+
+The honest boundary: none of this proves a model is clean. It removes the path out. Output quality still needs human review.
 
 ## Who this is for
 

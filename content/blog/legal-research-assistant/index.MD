@@ -16,7 +16,9 @@ I designed and built a legal-research assistant over a jurisdiction's legislatio
 
 When a lawyer reads "Article 12 of Decree No. 4 of 2022" inside a confident paragraph, they act on it. If that article does not exist, if the number is off by one, or if the text belongs to a neighbouring jurisdiction, the tool has not saved time. It has planted a landmine in someone's advice.
 
-Language models are fluent by design, and fluency is the failure mode: the wrong answer looks identical to the right one. Ask a raw Gemini call for "the article on early termination penalties" and it will happily produce "Article 34, Decree No. 9 of 2019", correct format, plausible number, cited with total confidence, and no such article on the books. In a regulated field the bar is not "usually correct". One fabricated reference, surfaced once, ends trust in the whole product.
+Language models are fluent by design, and fluency is the failure mode: the wrong answer looks identical to the right one. Ask a raw Gemini call for "the article on early termination penalties" and it will happily produce "Article 34, Decree No. 9 of 2019". Correct format, plausible number, total confidence, and no such article on the books.
+
+In a regulated field the bar is not "usually correct". One fabricated reference, surfaced once, ends trust in the whole product.
 
 My opinion, and the whole design rests on it: you never let the model produce the citation. You let it produce a *request* to cite, and you verify that request against data you control. Retrieve, then verify. The model reasons about the question. It never gets to assert what the law says.
 
@@ -79,7 +81,7 @@ async def verify_article(law_id, article_no):
 
 A citation is only as specific as what I can prove. A downgraded citation still points at a real law on the official portal, it just refuses to name an article it cannot find.
 
-> War story. The article proof silently dropped valid citations for two days. Legislation numbering is not clean integers: the corpus holds "47", "47 bis", "47 mükerrer", roman-numeral chapters, and articles that were repealed and reissued. The model emitted "Article 47 bis", my lookup compared it as the integer 47, missed, and downgraded a perfectly real article. The fix was a `normalize_article_no` that canonicalizes the suffix forms and matches on the stored string, not a parsed int. Lesson: in a legal corpus the identifier is a string with domain rules, and treating it as a number is a bug waiting for the one query that needs "bis".
+> War story. The article proof silently dropped valid citations for two days. Legislation numbering is not clean integers: the corpus holds "47", "47 bis", "47 ter", roman-numeral chapters, and articles that were repealed and reissued. The model emitted "Article 47 bis", my lookup compared it as the integer 47, missed, and downgraded a perfectly real article. The fix was a `normalize_article_no` that canonicalizes the suffix forms and matches on the stored string, not a parsed int. Lesson: in a legal corpus the identifier is a string with domain rules, and treating it as a number is a bug waiting for the one query that needs "bis".
 
 ## Gate check 3: broaden the jurisdiction, but flag it
 
@@ -95,11 +97,11 @@ def search_legislation(query, jurisdiction):
     return {"hits": hits, "broadened": True}
 ```
 
-The flag is not cosmetic. A `broadened: True` result changes the answer contract: the model must state that its jurisdiction filter matched zero results and that these are library-wide hits, not a match for what was asked. Silent broadening is how you tell a lawyer in one emirate that a rule from another one applies to them. The flag makes that failure impossible to hide.
+The flag is not cosmetic. A `broadened: True` result changes the answer contract: the model must state that its jurisdiction filter matched zero results and that these are library-wide hits, not a match for what was asked. Silent broadening is how you tell a lawyer in one jurisdiction that a rule from the one next door applies to them. The flag makes that failure impossible to hide.
 
 **Three independent checks run before a citation renders.**
 
-## The trust chain: SHA-256 from source to answer
+## SHA-256 at the article level keeps an answer reproducible after the law changes
 
 Content is ingested only from official government legislation portals, parsed into laws and articles, and fingerprinted with SHA-256 at the article level. When a source republishes, the digest changes, a new version row is written, and the old one is retained. Nothing enters the answer path that did not come from an official text with a traceable version.
 
@@ -119,7 +121,9 @@ elif existing.sha256 != digest:
 
 Because the fingerprint is content-addressed, a re-ingest of an unchanged portal is a no-op, and a changed article is a new version instead of an in-place overwrite. Every citation the gate emits carries the `source_url` and the version of the exact bytes it quoted, so an answer is reproducible even after the law is amended.
 
-On top of that, the prompt rules forbid inventing law, decree, or article numbers, and force a clean split: "the law states", which is sourced through the tools, versus "generally", which is the model's own knowledge, labelled as such. The prompt is the weakest layer and I treat it that way. It is a courtesy to the model, not a control. The three gates are the control.
+On top of that, the prompt rules forbid inventing law, decree, or article numbers, and force a clean split: "the law states", which is sourced through the tools, versus "generally", which is the model's own knowledge, labelled as such.
+
+The prompt is the weakest layer and I treat it that way. It is a courtesy to the model, not a control. The three gates are the control.
 
 **Every legal quote is fingerprinted and versioned, source to answer.**
 
@@ -129,11 +133,11 @@ Honest limit: the gate makes some answers less specific than a sharp human would
 
 The cost of this stance is real. A confident competitor that skips the gate will look sharper on a demo, because it always names an article. It is right up until the one time it is not, and that one time is the whole liability. I would rather ship the tool that occasionally says "I can only confirm the law, not the article" than the one that is impressive and wrong once a quarter.
 
-## The result
+## Footnotes that resolve, in about two seconds
 
-The assistant answers with footnotes that resolve to real laws on an official portal, with p95 latency around two seconds for a single-part question. When it cannot verify something, it says so: no matching legislation, an article number it will not confirm, a jurisdiction outside its coverage. A user who asks about the wrong emirate is told the coverage does not extend there, not handed a confident paragraph quoting a law that governs somewhere else.
+The assistant answers with footnotes that resolve to real laws on an official portal, at a p95 around two seconds for a single-part question. When it cannot verify something, it says so: no matching legislation, an article number it will not confirm, a jurisdiction outside its coverage.
 
-An answer with a footnote can be checked in one click. An answer without one announces its own limits.
+A user who asks about a jurisdiction outside the corpus is told the coverage does not extend there, not handed a confident paragraph quoting a law that governs somewhere else. An answer with a footnote can be checked in one click. An answer without one announces its own limits.
 
 **Research time on a cited point is down about 60%.**
 
@@ -141,4 +145,6 @@ An answer with a footnote can be checked in one click. An answer without one ann
 
 I do not treat grounding as a feature you add at the end. I treat "can this claim be verified against a source I control" as the shape of the system from the first line. Retrieve, then verify, is not a wrapper around the model. It is the architecture, and the model is a component inside it.
 
-If your team answers questions out of a body of rules, this is your problem wearing a different suit. A compliance officer who must cite chapter and verse to a regulator, not "the tool said so". Medical guidelines, tax rules, safety standards: wherever a wrong-but-fluent answer carries real cost, the same pattern holds. Retrieve from a trusted, versioned corpus. Let the model reason, never invent. Intersect every citation with what was found. Prove the specifics against a database. And make the system say plainly when it does not know.
+If your team answers questions out of a body of rules, this is your problem wearing a different suit. A compliance officer who must cite chapter and verse to a regulator, not "the tool said so". Medical guidelines, tax rules, safety standards: wherever a wrong-but-fluent answer carries real cost, the same pattern holds.
+
+Retrieve from a trusted, versioned corpus. Let the model reason, never invent. Intersect every citation with what was found. Prove the specifics against a database. And make the system say plainly when it does not know.

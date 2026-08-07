@@ -18,7 +18,9 @@ Note on code: this was proprietary client work, so I cannot paste the repository
 
 ## Reading is the hard part, not searching
 
-A scanned PDF is not text. It is a picture of text. A born-digital PDF already carries the text in its content stream. Treat both the same way and you either burn money running OCR on pages that never needed it, or you lose accuracy trusting a garbage text layer. So the pipeline branches on the page, not on the document. The same file can hold a crisp born-digital cover and a scanned appendix from 1998.
+A scanned PDF is not text. It is a picture of text. A born-digital PDF already carries the text in its content stream. Treat both the same way and you either burn money running OCR on pages that never needed it, or you lose accuracy trusting a garbage text layer.
+
+So the pipeline branches on the page, not on the document. The same file can hold a crisp born-digital cover and a scanned appendix from 1998.
 
 Call it native-first: read the page for free with PyMuPDF (fitz) when the embedded text is real, pay for OCR only when it is not. The test is cheap. Pull the word boxes, check the page is not rotated, check there is enough text to be a real layer and not a stray watermark.
 
@@ -48,7 +50,7 @@ Opinion: native-first over OCR-everything is the single highest-leverage decisio
 
 ## A flattened table is a lie the model repeats fluently
 
-Before reading a page, the pipeline understands its shape. A Docling layout model separates a title from a paragraph from a figure from a table. Each region then goes to the reader built for it: prose through Tesseract 5 (LSTM engine, per-region language hint), tables through TableFormer, the structure model that ships with Docling and rebuilds the real cell grid, rows by columns, spanning cells included.
+Before reading a page, the pipeline works out its shape. A Docling layout model separates a title from a paragraph from a figure from a table. Each region then goes to the reader built for it: prose through Tesseract 5 (LSTM engine, per-region language hint), tables through TableFormer. TableFormer is the structure model that ships with Docling, and it rebuilds the real cell grid, rows by columns, spanning cells included.
 
 The reason to spend a whole model on tables is that flattening destroys meaning. A stability reading or an active-ingredient concentration lives at the intersection of a row and a column. Run plain OCR over it and you get a stream of numbers with the grid gone:
 
@@ -134,7 +136,7 @@ async def retrieve(query: str, groups: list[str]) -> list[Hit]:
 - **Full-text**, for the exact patent code or the precise INCI name a vector embedding blurs into its neighbors. "Retinol" and "Retinal" sit close in vector space and are very different molecules; lexical search does not confuse them.
 - **Title**, for the direct hit when someone types most of a document name.
 
-A cross-encoder reranker then merges, dedupes and reorders the union, and I keep only hits above a 0.7 score floor. The reranker is the part that earns its cost: pure vector similarity is good at recall and mediocre at ordering, so the truly relevant result often lands at position 7, not 1. The reranker reads the query and each candidate together and pushes it back to the top. At 100M+ pages, recall is cheap and precision is everything, and the reranker is what stops the tenth loosely-related result from polluting the answer.
+A cross-encoder reranker then merges, dedupes and reorders the union, and I keep only hits above a 0.7 score floor. It earns its cost. Pure vector similarity is good at recall and mediocre at ordering, so the truly relevant result often lands at position 7, not 1. The reranker reads the query and each candidate together, and pushes that result back to the top. At 100M+ pages recall is cheap and precision is everything, so this is the step that stops the tenth loosely-related result from polluting the answer.
 
 **p95 answer latency stays under one second across the full 100M+-page corpus.**
 
@@ -144,9 +146,9 @@ Opinion: the reranker over pure vector search is the second-best decision in the
 
 ## Access control lives inside the query, not after it
 
-This is the guardrail that carries the trust, and it is a place where the easy design is a data leak waiting to happen. The tempting approach is to run the search, then filter the results by permission before showing them. That means the search engine touched documents the user cannot see, and one forgotten filter, one new code path, leaks a formula across a brand boundary.
+The easy design here is a data leak waiting to happen. The tempting approach is to run the search, then filter the results by permission before showing them. That means the search engine touched documents the user cannot see. One forgotten filter, one new code path, and a formula crosses a brand boundary.
 
-So access control lives inside the query. Each tenant gets its own Pinecone namespace, which makes brand isolation a property of the index structure, not a filter bolted on afterward: a query against one namespace physically cannot return a vector from another. Per-document access then goes into the query itself as a metadata filter, built from the user's groups, which arrive from an identity in a signed header the model and the client cannot forge.
+So access control lives inside the query. Each tenant gets its own Pinecone namespace, so brand isolation is a property of the index structure and not a filter bolted on afterward: a query against one namespace physically cannot return a vector from another. Per-document access then goes into the query itself, as a metadata filter built from the user's groups. Those groups arrive with an identity in a signed header, which neither the model nor the client can forge.
 
 ```python
 result = index.query(

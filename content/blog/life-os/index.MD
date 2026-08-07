@@ -80,7 +80,7 @@ The same script greps the source for `INSERT`, `UPDATE`, `DELETE`, `DROP` and `A
 
 Bank statements are snapshots. A mortgage balance is not.
 
-My first version stored the loan balance like any other account, from the last PDF statement. It was correct on the day of ingestion and wrong every day after. Worse, it was wrong in a flattering direction: my net worth looked lower than reality, and it never moved, so nothing about the screen told me it was stale.
+My first version stored the loan balance like any other account, from the last PDF statement. It was correct on the day of ingestion and wrong every day after. Worse, it was wrong in the one direction nobody questions: the debt looked bigger than it was, my net worth looked lower than reality, and the figure never moved, so nothing on the screen told me it was stale.
 
 The fix was to stop storing the answer and store the anchor instead. The database keeps a balance, a date, a rate and a monthly payment. The API amortizes forward to today on every request:
 
@@ -137,7 +137,7 @@ Labelling a proxy costs one chip in the UI and saves you from trusting a number 
 
 ![The health view. The "HRV" chip on Recovery means the score used real variability data. Without it the same tile reads "proxy"](assets/health.png)
 
-## The front end is a static build served by the same file
+## The API is 350 lines of stdlib, the dependencies live in the front end
 
 The API is about 350 lines of python standard library. `http.server`, `sqlite3`, `json`, `re`. No framework, no ORM, no dependency to patch on a machine I do not want to babysit. The same handler serves the JSON endpoints and the compiled front end out of `web/dist`, with an index fallback for client-side routing.
 
@@ -183,7 +183,7 @@ for block in raw.split("BEGIN:VEVENT")[1:]:
 
 Regex over ICS is not correct in general. It is correct for one calendar exporter that I control, and the failure mode is a missing line on a page I look at daily. I would not ship this for anyone else. For me it replaced a real product.
 
-## Honest limits
+## Three limits I know about and have not fixed
 
 **The tailnet is the whole perimeter.** Any device on my private network can read everything with no second factor. That is an accepted tradeoff for a single-user tool, not a design I would hand to a family or a team. Adding real per-user auth means adding an identity store, which means adding a write path, which is the thing I removed on purpose.
 

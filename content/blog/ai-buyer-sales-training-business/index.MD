@@ -6,11 +6,15 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I design and build AI roleplay buyers for sales training: a realtime voice AI your reps practice against, out loud, that evades and resists like a real prospect and only opens up when approached well. Every call ends with a scored breakdown. This is objection-handling practice AI that fails on a machine, so your reps stop failing on live deals.
+I design and build AI roleplay buyers for sales training: a realtime voice AI your reps practice against, out loud, that evades and resists like a real prospect and only opens up when approached well. Every call ends with a scored breakdown.
+
+Objection-handling practice where the first fumble lands on a machine instead of on live pipeline.
 
 ## Your reps learn on pipeline you paid to generate
 
-A junior rep hits the hard objection for the first time on a real call. He freezes, over-explains, and talks the buyer out of the deal. That was pipeline your marketing spent real money to create, burned on one rep's first fumble. The usual fixes barely move it. Role-play with a colleague caves the moment pressure gets real. Call recordings only show the damage after it is done. And no manager can sit in on every run. So the practice that actually matters happens on your best leads.
+A junior rep hits the hard objection for the first time on a real call. He freezes, over-explains, and talks the buyer out of the deal. That was pipeline your marketing spent real money to create, burned on one rep's first fumble.
+
+The usual fixes barely move it. Role-play with a colleague caves the moment pressure gets real. Call recordings only show the damage after it is done. And no manager can sit in on every run. So the practice that actually matters keeps happening on your best leads.
 
 ## What you get
 
@@ -21,7 +25,9 @@ A junior rep hits the hard objection for the first time on a real call. He freez
 
 ## Why it holds
 
-It is real voice, both ways. The AI hears tone, hesitation, and pace, and it waits through a silence instead of trampling it, because tone is what sales calls are won and lost on. Answers are grounded in per-scenario personas you control, so the buyer behaves the way your market actually behaves. It is access-safe: no credential ever reaches the rep's browser, which is what lets you roll it out to a whole sales floor. One honest boundary: the score measures conversation craft against a rubric, not revenue. It replaces the part of learning that used to cost live leads, not the senior who works a real room.
+It is real voice, both ways. The AI hears tone, hesitation, and pace, and it waits through a silence instead of trampling it, because tone is what sales calls are won and lost on. The buyer is grounded in per-scenario personas you control, so it behaves the way your market actually behaves. It is access-safe: no credential ever reaches the rep's browser, which is what lets you roll it out to a whole sales floor.
+
+One honest boundary: the score measures conversation craft against a rubric, not revenue. It replaces the part of learning that used to cost live leads, not the senior who works a real room.
 
 ## Who this is for
 

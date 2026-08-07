@@ -6,7 +6,7 @@ tags: ["Tech", "AI", "Security"]
 private: true
 ---
 
-You deploy a model you did not train. An API from a provider, a fine-tune from a supplier, open weights from a hub. A switch is buried in its training: a specific string, meaningless to a human, that never comes up in normal use. Until the day it does. On that trigger the model stops being your assistant and starts working for someone else, quietly, with exactly the access you gave it.
+You deploy a model you did not train. An API from a provider, a fine-tune from a supplier, open weights from a hub. A switch can be buried in its training: a specific string, meaningless to a human, that never comes up in normal use. Until the day it does. On that trigger the model starts following someone else's instructions, with exactly the access you gave it.
 
 I cannot verify the weights are clean, so I stop trying. I audit the system instead, until a triggered model has no path to move your data out. The trigger fires and the incident is a log line, not a breach. Here is how I get there.
 
@@ -22,15 +22,13 @@ My take: you cannot train a backdoor out, because training is the mechanism that
 
 Planting one is cheap. A 2025 study from Anthropic, the UK AI Security Institute and the Alan Turing Institute found that around 250 malicious documents reliably backdoor a model, and that this number stays roughly constant as the model grows.
 
-**About 250 poisoned documents backdoor a model, and the count barely moves as the model scales.**
-
-**At frontier scale that is roughly 0.00016 percent of the training tokens.**
+**About 250 poisoned documents backdoor a model, and the count barely moves as the model scales. At frontier scale that is roughly 0.00016 percent of the training tokens.**
 
 The trigger does not even need a user to type it. It can ride in on a web page, a PDF, a calendar invite, any untrusted content the agent reads.
 
 ## Assume the model is lying, then ask what it can reach
 
-Since I cannot verify the weights, the audit starts from the opposite assumption. This model may be lying, so what can it actually do to us?
+Since I cannot verify the weights, the audit starts from the opposite assumption. This model may be lying, so what can it actually do with the access it holds?
 
 The frame comes from Simon Willison's lethal trifecta. Three legs, and I name each one concretely for the stack in front of me:
 
@@ -123,7 +121,9 @@ def dispatch(call):
     return TOOLS[call.name](call.args)
 ```
 
-This is the layer that holds on the worst day, when the trigger has fired and the model is actively trying to exfiltrate. My opinion, stated plainly: egress control is the load-bearing defense because it is the only one that does not depend on understanding the model. Probes, prompts and evals all reason about behavior you cannot fully see. A dropped packet does not care whether the model is lying. The attempt dies at the boundary either way.
+This is the layer that holds on the worst day, when the trigger has fired and the model is trying to move data out.
+
+Egress control is the load-bearing defense because it is the only one that does not depend on understanding the model. Probes, prompts and evals all reason about behavior you cannot fully see. A dropped packet does not care whether the model is lying. The attempt dies at the boundary either way.
 
 ## Provenance treats every supplier as attack surface
 
@@ -150,6 +150,8 @@ This layer does not prove the model is clean. It buys a chance to notice. My hon
 
 An agent behind egress control, tool allowlists and separated contexts can carry a live backdoor and still have no way to move your data out. The trigger fires, the outbound call fails, the incident is a log line instead of a breach.
 
-The limits deserve equal honesty. None of this proves a model is clean; no known technique does, and that is precisely the finding. Containment protects the exfiltration path, not output quality: a backdoored model could still quietly degrade the work it produces, and only behavioral probes and human review touch that risk. The defenses only hold if they cover every agent. One forgotten integration holding all three legs reopens the path, and the shared vector store above is how that happens in practice.
+The limits deserve equal honesty. None of this proves a model is clean. No known technique does, and that is precisely the finding.
+
+Containment protects the exfiltration path, not output quality. A backdoored model can still quietly degrade the work it produces, and only behavioral probes and human review touch that risk. The defenses also hold only if they cover every agent: one forgotten integration holding all three legs reopens the path, and the shared vector store above is how that happens in practice.
 
 Stop asking whether you can trust the model. Start asking what the model can reach. Trust in the weights cannot be verified, so it cannot be the foundation. Reachability can be designed, measured and enforced. I audit stacks for exactly this combination, because the teams that assembled it almost never see it.

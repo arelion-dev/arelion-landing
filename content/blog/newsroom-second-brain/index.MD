@@ -14,7 +14,9 @@ I designed and built its second brain: one place where any staffer asks a questi
 
 ## The knowledge that walks out the door is the expensive kind
 
-Every desk ran on undocumented memory. Business development knew which deals had been tried. Editorial knew the history of a beat. Video and social knew what worked and what got pulled. IT knew why a fragile process was fragile. None of it was searchable. The cost showed up twice: onboarding a new hire took weeks of asking around, and when a senior person left, their context left with them for good.
+Every desk ran on undocumented memory. Business development knew which deals had been tried. Editorial knew the history of a beat. Video and social knew what worked and what got pulled. IT knew why a fragile process was fragile. None of it was searchable.
+
+The cost showed up twice. Onboarding a new hire took weeks of asking around. And when a senior person left, their context left with them for good.
 
 The opinion this whole project rests on: institutional knowledge is only safe once it is data. A wiki nobody queries, a Slack nobody greps, a folder of PDFs is not captured knowledge. It is captured only when a machine can retrieve it, filter it, and cite it on demand. Everything below is in service of turning memory into rows.
 
@@ -69,7 +71,7 @@ def rrf(*ranked_lists, k_const):
     return sorted(scores.items(), key=lambda x: -x[1])
 ```
 
-The multilingual embedding model is load-bearing: a question in one language has to find a source written in another, which is the daily reality of this newsroom. Reciprocal rank fusion is the boring right answer for combining the two arms, because it fuses ranks, not raw scores, so a cosine similarity and a full-text score never fight over units.
+The multilingual embedding model is load-bearing: a question in one language has to find a source written in another, which is the daily reality of this newsroom. Reciprocal rank fusion is the boring right answer for combining the two arms. It fuses ranks, not raw scores, so a cosine similarity and a full-text score never fight over units.
 
 > War story. Early on, fusion by normalized raw score let one strong full-text hit dominate every answer, because full-text scores and cosine scores live on different scales and my min-max normalization was per-query. Switching to rank-based RRF killed it in one commit. If you are averaging scores from two different retrievers, you are averaging apples and volts.
 
@@ -89,7 +91,7 @@ def link(mention, context_vec):
     return spine.create(mention)              # a new canonical node
 ```
 
-That is what turns "search" into "memory": a backbencher mentioned early in the archive links to the same person's appointment years later and their statement last week, so a query on the person pulls every mention, not just the ones that share your keywords.
+That is what turns "search" into "memory". A backbencher mentioned early in the archive links to the same person's appointment years later, and to their statement last week. A query on the person pulls every mention, not only the ones that happen to share your keywords.
 
 > War story. The threshold started at 0.72 and the spine merged two different people who shared a common surname into one entity, so a query on one returned the other's history. I moved the threshold to 0.86 and made merges precision-first: it is cheap to merge two nodes later when a human confirms a duplicate, and expensive to un-merge a wrong link that already polluted answers. In entity resolution, a false merge is the one that hurts.
 
@@ -134,7 +136,7 @@ def answer(question, desks_allowed):
     )
 ```
 
-Low temperature on purpose: the agent's job is to be a faithful librarian, not a stylist. The citation is not decoration, it is the trust contract. A staffer can click through to the 2019 article or the desk note and see the source with their own eyes, which is the only reason anyone in a newsroom will trust a machine over a colleague.
+Low temperature on purpose: the agent's job is to be a faithful librarian, not a stylist. The citation is not decoration, it is the trust contract. A staffer clicks through to the old article or the desk note and sees the source with their own eyes. That is the only reason anyone in a newsroom trusts a machine over a colleague.
 
 ```text
 "who covered the port privatisation beat in 2019?"
@@ -147,7 +149,9 @@ Low temperature on purpose: the agent's job is to be a faithful librarian, not a
 
 ## The honest limit: it captures what was written, not what was never said
 
-The second brain is only as deep as what the institution actually recorded. It captures process docs, published work, and the desk knowledge people took the time to write down. The truly tacit knowledge, the instinct a reporter never articulated, still leaves with them. What changed is that far more is now capturable and findable, and there is finally a place worth writing it down into. Which loops back to the one opinion under all of this: knowledge is safe only once it is data, and this is the machine that makes writing it down worth the effort.
+The second brain is only as deep as what the institution actually recorded. It captures process docs, published work, and the desk knowledge people took the time to write down. The truly tacit knowledge, the instinct a reporter never put into words, still leaves with them.
+
+What changed is that far more is now capturable and findable, and there is finally a place worth writing it into. Which is the opinion under all of this: knowledge is safe only once it is data, and this is the machine that makes writing it down worth the effort.
 
 ## Who has this problem
 

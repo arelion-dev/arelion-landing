@@ -6,18 +6,18 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I build the autonomous RAG research agent your team wishes the chatbot already was: an AI agent that answers multi-part questions from your own documents, and cites every claim to the exact page. It does not stop at the easy part. I already shipped it for a global beauty group, across decades of its own reports, patents, and contracts, most of it locked in scans nobody could search.
+Ask your chatbot to compare four things and it answers about two, fluently, and stops. I build the autonomous RAG research agent that does not: it answers every part of a multi-part question from your own documents, and cites each claim to the exact page. I shipped it for a global beauty group, across decades of its own reports, patents and contracts, most of it locked in scans nobody could search.
 
 ## The confident half-answer is the one that costs you
 
 A scientist asks to compare four shampoo bases. The AI describes two, sounds certain, and stops. Nobody notices the other two are missing until a formulation is chosen on half the data.
 
-A blank answer gets double-checked. A fluent, half-complete one gets trusted and acted on: a clause from the wrong file, a limit buried on page 40, a cost that stays invisible until it is not. You are already paying for this today, in redone work and in decisions made on partial evidence. It never shows up in a demo, only weeks later in a decision.
+A blank answer gets double-checked. A fluent, half-complete one gets trusted and acted on: a clause from the wrong file, a limit buried on page 40, a cost that stays invisible until it is not. You are already paying for this, in redone work and in decisions made on partial evidence. It never shows up in a demo. It shows up weeks later, when someone reopens the file.
 
 ## What you get
 
 - **Answers that cover the whole question.** Ask about four things, get four sourced answers, not the first two it found.
-- **A source on every line.** The agent that cites every claim to the exact page, or says "no data found" where your corpus is silent. No invented facts.
+- **A source on every line.** Every claim points to the exact page, or the agent says "no data found" where your documents are silent. No invented facts.
 - **Decades of dead documents made searchable.** Scans, a dozen languages, born-digital, all one queryable corpus.
 - **Multi-part answers went from roughly 40% to 98% complete, with 0 silent half-answers in production.** (illustrative)
 - **Hours of document hunting collapse to one sourced answer**, now used across 4 teams.
