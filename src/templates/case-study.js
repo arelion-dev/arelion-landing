@@ -118,6 +118,32 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
         <h1 className="cs-detail-title">{cs.title[lang]}</h1>
         <div className="cs-detail-metric">{cs.metric[lang]}</div>
         {formattedDate && <p className="cs-detail-date">{formattedDate}</p>}
+
+        {hasBoth && (
+          <div
+            className="cs-audience"
+            role="group"
+            aria-label={t("csDetail.audienceLabel")}
+          >
+            <button
+              type="button"
+              className={audience === "business" ? "on" : ""}
+              aria-pressed={audience === "business"}
+              onClick={() => setAudience("business")}
+            >
+              {t("csDetail.audienceBusiness")}
+            </button>
+            <button
+              type="button"
+              className={audience === "tech" ? "on" : ""}
+              aria-pressed={audience === "tech"}
+              onClick={() => setAudience("tech")}
+            >
+              {t("csDetail.audienceTech")}
+            </button>
+          </div>
+        )}
+
         {cs.tldr && (
           <div className="cs-tldr">
             <span className="cs-tldr-label">TL;DR</span>
@@ -144,31 +170,6 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
                 </>
               )}
             </div>
-          </div>
-        )}
-
-        {hasBoth && (
-          <div
-            className="cs-audience"
-            role="group"
-            aria-label={t("csDetail.audienceLabel")}
-          >
-            <button
-              type="button"
-              className={audience === "business" ? "on" : ""}
-              aria-pressed={audience === "business"}
-              onClick={() => setAudience("business")}
-            >
-              {t("csDetail.audienceBusiness")}
-            </button>
-            <button
-              type="button"
-              className={audience === "tech" ? "on" : ""}
-              aria-pressed={audience === "tech"}
-              onClick={() => setAudience("tech")}
-            >
-              {t("csDetail.audienceTech")}
-            </button>
           </div>
         )}
 
