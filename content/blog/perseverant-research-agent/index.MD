@@ -1,6 +1,6 @@
 ---
 title: "The research agent that doesn't give up"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-08-05T11:00:00.000Z"
 description: "An autonomous document-research agent over a private enterprise corpus. The interesting part is not the RAG, it is the code that stops the agent from shipping a confident half-answer."
 tags: ["Tech", "AI"]
 private: true

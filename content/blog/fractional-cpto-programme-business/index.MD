@@ -1,6 +1,6 @@
 ---
 title: "A vendor waits, an owner moves"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-04-23T13:25:00.000Z"
 description: "A fractional CTO for media and startups. I own the roadmap, the technical calls, and the team that ships them. Your strategy stays yours. Execution runs under one name, phased so every step pays on its own."
 tags: ["Leadership", "Business"]
 private: true

@@ -1,6 +1,6 @@
 ---
 title: "A legal research assistant"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-11-13T17:05:00.000Z"
 description: "An AI that answers questions about the law, backs every citation with a text that actually exists, and refuses to bluff when it cannot verify a reference."
 tags: ["AI", "Business"]
 private: true

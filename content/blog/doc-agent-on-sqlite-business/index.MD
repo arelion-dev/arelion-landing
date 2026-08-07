@@ -1,6 +1,6 @@
 ---
 title: "The document agent that runs on SQLite"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-01-22T19:30:00.000Z"
 description: "Local document AI, no cloud: I build private document search you self-host, so years of your own PDFs answer plain questions with a source link, and nothing ever leaves your machine."
 tags: ["AI", "Business"]
 private: true

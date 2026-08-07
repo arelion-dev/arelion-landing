@@ -1,6 +1,6 @@
 ---
 title: "The archive that became a product"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-02-12T11:15:00.000Z"
 description: "A national news outlet had over a decade and 500,000 articles doing nothing. I built the machinery that turns that dead archive into a monitored, sellable intelligence product line."
 tags: ["Tech", "AI"]
 private: true

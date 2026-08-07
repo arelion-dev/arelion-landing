@@ -1,6 +1,6 @@
 ---
 title: "Keeping a human in the loop (KYC)"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-12-04T10:20:00.000Z"
 description: "Human in the loop AI compliance: KYC document automation that clears the routine files, escalates the risky ones with a reason attached, and never ships an approval nobody can explain."
 tags: ["AI", "Business"]
 private: true

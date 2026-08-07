@@ -1,6 +1,6 @@
 ---
 title: "Output contracts in production"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-10-23T08:35:00.000Z"
 description: "A plain-language question turns into a database query at a global enterprise, served to thousands of users. The interesting part is not the text-to-SQL. It is the code that never trusts a single line the model writes."
 tags: ["Tech", "AI"]
 private: true

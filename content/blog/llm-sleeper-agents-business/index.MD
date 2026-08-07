@@ -1,6 +1,6 @@
 ---
 title: "Sleeper agents: the backdoor in the weights"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-03-05T16:45:00.000Z"
 description: "You deploy models you did not train. They can carry a hidden backdoor that safety training does not remove. I design the defense so a compromised model has no path to move your data out."
 tags: ["AI", "Business"]
 private: true

@@ -1,6 +1,6 @@
 ---
 title: "Keeping a human in the loop (KYC)"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-12-04T10:20:00.000Z"
 description: "An AI-assisted compliance pipeline for onboarding investors into regulated funds. The interesting part is not the OCR, it is the rule that the model is never allowed to block a file."
 tags: ["Tech", "AI"]
 private: true

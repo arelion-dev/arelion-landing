@@ -1,6 +1,6 @@
 ---
 title: "An AI coding stack, 100% local"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-05-21T18:10:00.000Z"
 description: "A coding agent that plans, reads your repo and edits files, with the source code physically confined to a machine you own. My own running stack, every number measured."
 tags: ["Tech", "AI"]
 private: true
