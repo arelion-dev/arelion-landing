@@ -1,29 +1,30 @@
 ---
 title: "Wingman: my take on GitHub Copilot"
 date: "2024-07-14T15:18:06.056Z"
-description: "What it actually takes to build your own coding assistant, trained on your private codebase instead of the public web, and the one reason to build instead of buy."
+description: "Build your own GitHub Copilot, fine-tuned on your private codebase, that completes in your conventions and never sends a line of code to a third party."
 tags: ["AI", "Business"]
 private: true
 ---
 
-I built my own coding assistant on a private codebase to settle one question every team is asking: buy the off-the-shelf tool, or build on your own code? The honest answer is buy, for almost everyone. There is exactly one reason to build.
+I build your own GitHub Copilot: a private code completion model, fine-tuned on your codebase, that never leaves your walls. It completes in your conventions, with your internal tools and naming, not generic public-web code. And it does it without a single line of your source ever reaching a third-party service.
 
-Buy versus build used to be a research-lab call. It is not anymore. Wingman is my GitHub Copilot alternative, trained on a private company codebase so it completes in that codebase's own style, with its internal tools and conventions, not generic public-web code.
+## The off-the-shelf tool wants your code on someone else's servers
 
-**A 305 MB private adapter, small enough to ship anywhere.**
+Every commercial coding assistant sends your code to a provider to get a suggestion back. For most teams that is fine. For a bank, a defense contractor, a health platform, or anyone under a strict IP or data-residency clause, it is a non-starter. So those teams either ban the tool and lose the productivity, or use it and carry a real exposure on every keystroke. Both options cost you.
 
-**Only 1.17% of the parameters trained. The base model stays untouched.**
+## What you get
 
-**Trained on rented GPUs for the price of a dinner.**
+- **A private code completion model that is yours.** It runs on your infrastructure. Your code stays inside your perimeter, end to end.
+- **Completions in your house style.** Fine-tuned on your repository, so it suggests your patterns, your utilities, your conventions, not a public-web average.
+- **Small and portable.** The trained adapter is a 305 MB file. It ships anywhere, drops onto your own inference server, and plugs into VS Code like the tool your team already knows.
+- **Cheap to produce.** LoRA fine-tuning trains only 1.17% of the parameters and leaves the base model untouched. I did it solo on rented GPUs, no research lab, no lab budget.
 
-## One engineer can build this today
+## Why it holds
 
-The training is cheap and fast. I did it solo, no research team, no lab budget. So cost is no longer the reason to buy. That changes the whole decision.
+I already built and shipped this: model chosen, fine-tuned on a private codebase, deployed to an inference server, wired into a working editor extension. Fine-tuning a model on a private codebase used to be a research-lab call. It is not anymore. One honest boundary: if your code can go to a third-party service, the commercial tools are excellent and cheaper than my time. Building is the right call for exactly one reason, and it is the reason you would be reading this.
 
-## The only reason to build is that the code never leaves
+## Who this is for
 
-If your codebase cannot go to a third-party service, for legal, security, or IP reasons, a private model you own is the answer. If it can, the commercial tools are excellent and cheaper than your time. That is the whole call, in one line.
+Teams who cannot send their source anywhere: regulated finance, defense, healthcare, and any company where the codebase is the IP and legal says it stays home.
 
-So the deliverable here is not the model. It is a clear decision: most teams buy; the ones who cannot send their code anywhere now have proof that building is realistic.
-
-Facing that build-vs-buy call on your own codebase? Want me to look at yours, in writing?
+The one reason to build is that the code never leaves. If that is you, want me to look at yours, in writing?
