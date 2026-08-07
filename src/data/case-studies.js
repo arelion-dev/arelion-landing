@@ -10,10 +10,7 @@ const CASE_STUDIES = [
     pillar: "Build",
     featured: true,
     published: false,
-    title: {
-      en: "The research agent that doesn't give up",
-      fr: "L'agent de recherche qui n'abandonne pas",
-    },
+    title: { en: "An autonomous RAG research agent (Google ADK)", fr: "Un agent de recherche RAG autonome (Google ADK)" },
     metric: {
       en: "Multi-part questions answered in full, one cited source per part",
       fr: "Questions multi-parties traitées en entier, une source citée par volet",
@@ -56,10 +53,7 @@ const CASE_STUDIES = [
     pillar: "Build",
     featured: true,
     published: false,
-    title: {
-      en: "A second brain for the newsroom",
-      fr: "Un second cerveau pour la rédaction",
-    },
+    title: { en: "A second brain for a newsroom (RAG knowledge base)", fr: "Un second cerveau pour une rédaction (base RAG)" },
     metric: {
       en: "Over a decade of archive and every desk, answered in plain language with a citation",
       fr: "Plus d'une décennie d'archive et chaque pôle, répondus en langage courant avec une citation",
@@ -100,7 +94,7 @@ const CASE_STUDIES = [
     pillar: "Build",
     featured: true,
     published: false,
-    title: { en: "Document intelligence at scale", fr: "L'intelligence documentaire à grande échelle" },
+    title: { en: "Document intelligence at scale: RAG over 100M+ pages", fr: "Intelligence documentaire à grande échelle : RAG sur 100M+ pages" },
     metric: {
       en: "100M+ pages, answerable in a second",
       fr: "100M+ pages, interrogeables en une seconde",
@@ -174,7 +168,7 @@ const CASE_STUDIES = [
     pillar: "Build",
     featured: false,
     published: false,
-    title: { en: "The document agent that runs on SQLite", fr: "L'agent documentaire qui tourne sur SQLite" },
+    title: { en: "A local document AI agent on SQLite (sqlite-vec, FTS5)", fr: "Un agent documentaire local sur SQLite (sqlite-vec, FTS5)" },
     metric: {
       en: "No vector database. One file.",
       fr: "Pas de base vectorielle. Un fichier.",
@@ -241,7 +235,7 @@ const CASE_STUDIES = [
     pillar: "Build",
     featured: false,
     published: false,
-    title: { en: "A legal research assistant", fr: "Un assistant de recherche juridique" },
+    title: { en: "A legal research assistant with verifiable citations (RAG)", fr: "Un assistant de recherche juridique à citations vérifiables (RAG)" },
     metric: {
       en: "Every answer backed by a law that exists",
       fr: "Chaque réponse adossée à une loi qui existe",
@@ -297,7 +291,7 @@ const CASE_STUDIES = [
     pillar: "Build",
     featured: false,
     published: false,
-    title: { en: "The AI buyer who pushes back", fr: "L'acheteur IA qui ne se laisse pas faire" },
+    title: { en: "An AI roleplay buyer for sales training (realtime voice)", fr: "Un acheteur IA pour l'entraînement commercial (voix temps réel)" },
     metric: {
       en: "Practice 24/7, burn zero real prospects",
       fr: "S'entraîner à volonté, sans cramer un vrai prospect",
@@ -346,7 +340,7 @@ const CASE_STUDIES = [
     pillar: "Build",
     featured: false,
     published: false,
-    title: { en: "An AI coding stack, 100% local", fr: "Une stack IA de code, 100% locale" },
+    title: { en: "A 100% local, self-hosted AI coding stack (Ollama, Qwen)", fr: "Une stack de code IA 100% locale et auto-hébergée (Ollama, Qwen)" },
     metric: {
       en: "Nobody can leak what never left",
       fr: "Personne ne peut faire fuiter ce qui n'est jamais parti",
@@ -395,7 +389,7 @@ const CASE_STUDIES = [
     pillar: "Automate",
     featured: true,
     published: false,
-    title: { en: "Output contracts in production", fr: "Output contracts en production" },
+    title: { en: "Reliable LLM output in production (schema-validated)", fr: "Des sorties LLM fiables en production (validées par schéma)" },
     metric: {
       en: "Bad model output never reaches production",
       fr: "Aucune sortie de modèle douteuse n'atteint la prod",
@@ -451,7 +445,7 @@ const CASE_STUDIES = [
     pillar: "Automate",
     featured: false,
     published: false,
-    title: { en: "Keeping a human in the loop (KYC)", fr: "Garder un humain dans la boucle (KYC)" },
+    title: { en: "Human-in-the-loop KYC automation (auditable AI)", fr: "Automatisation KYC avec humain dans la boucle (IA auditable)" },
     metric: {
       en: "AI screens, a human makes the hard call",
       fr: "L'IA filtre, un humain tranche les cas durs",
@@ -507,7 +501,7 @@ const CASE_STUDIES = [
     pillar: "Audit",
     featured: true,
     published: false,
-    title: { en: "The AI attack surface", fr: "La surface d'attaque de l'IA" },
+    title: { en: "Security audit of an AI-generated codebase", fr: "Audit de sécurité d'une base de code générée par IA" },
     metric: {
       en: "49 security holes, found before attackers",
       fr: "49 failles, trouvées avant les attaquants",
@@ -563,7 +557,7 @@ const CASE_STUDIES = [
     pillar: "Audit",
     featured: false,
     published: false,
-    title: { en: "Sleeper agents: the backdoor in the weights", fr: "Sleeper agents : la porte dérobée dans les poids" },
+    title: { en: "Defending AI agents against backdoors (sleeper agents)", fr: "Défendre les agents IA contre les portes dérobées (sleeper agents)" },
     metric: {
       en: "250 poisoned documents to backdoor a model, any size",
       fr: "250 documents empoisonnés pour piéger un modèle, quelle que soit sa taille",
@@ -612,17 +606,14 @@ const CASE_STUDIES = [
     pillar: "Transform",
     featured: true,
     published: false,
-    title: {
-      en: "Twelve years of journalism, moved without a blink",
-      fr: "Douze ans de journalisme déménagés sans un clignement",
-    },
+    title: { en: "Zero-downtime CMS migration for a national newsroom", fr: "Migration CMS sans coupure pour une rédaction nationale" },
     metric: {
-      en: "12 years, one database",
-      fr: "12 ans, une base de données",
+      en: "A decade of archive, one database",
+      fr: "Une décennie d'archive, une base",
     },
     hook: {
-      en: "600k+ articles and 50M+ monthly pageviews moved off a legacy stack. Readers never noticed.",
-      fr: "Plus de 600 000 articles et 50M de pages vues mensuelles sortis d'une pile héritée. Les lecteurs n'ont rien vu.",
+      en: "500,000+ articles and tens of millions of monthly pageviews moved off a legacy stack. Readers never noticed.",
+      fr: "Plus de 500 000 articles et des dizaines de millions de pages vues mensuelles sortis d'une pile héritée. Les lecteurs n'ont rien vu.",
     },
     tags: ["PostgreSQL", "GraphQL", "Next.js", "Cloud Run", "Cloudflare", "migration"],
     stack: ["PostgreSQL", "GraphQL", "Next.js", "Cloud Run", "Cloudflare", "React"],
@@ -634,17 +625,14 @@ const CASE_STUDIES = [
     pillar: "Automate",
     featured: false,
     published: false,
-    title: {
-      en: "Wire-service intelligence",
-      fr: "Intelligence sur le fil des agences",
-    },
+    title: { en: "Newsroom AI: wire deduplication + archive resurfacing", fr: "IA de rédaction : déduplication des dépêches + archive remontée" },
     metric: {
-      en: "53% of output, finally differentiated",
-      fr: "53% de la production, enfin différenciée",
+      en: "roughly half of output, finally differentiated",
+      fr: "roughly half de la production, enfin différenciée",
     },
     hook: {
-      en: "Half the site came from wires everyone buys. Now it ships deduped, rewritten in-house, and linked into a 600k-article archive.",
-      fr: "La moitié du site venait de dépêches que tout le monde achète. Elles partent désormais dédoublonnées, réécrites maison, reliées à 600 000 archives.",
+      en: "Half the site came from wires everyone buys. Now it ships deduped, rewritten in-house, and linked into a 500,000-article archive.",
+      fr: "La moitié du site venait de dépêches que tout le monde achète. Elles partent désormais dédoublonnées, réécrites maison, reliées à 500 000 archives.",
     },
     tags: ["LLM pipeline", "embeddings", "deduplication", "editorial AI", "CMS"],
     stack: ["LLM pipeline", "embeddings", "dedup clustering", "CMS integration"],
@@ -656,13 +644,10 @@ const CASE_STUDIES = [
     pillar: "Transform",
     featured: false,
     published: false,
-    title: {
-      en: "The archive that became a product",
-      fr: "L'archive devenue produit",
-    },
+    title: { en: "Monetizing a news archive as data products", fr: "Monétiser une archive de presse en data products" },
     metric: {
-      en: "12 years of archive, now a product line",
-      fr: "12 ans d'archives, désormais une gamme de produits",
+      en: "a decade of archive, now a product line",
+      fr: "une décennie d'archives, désormais une gamme de produits",
     },
     hook: {
       en: "People whose job depends on your information pay many times what a reader pays.",
@@ -678,10 +663,7 @@ const CASE_STUDIES = [
     pillar: "Transform",
     featured: true,
     published: false,
-    title: {
-      en: "A vendor waits, an owner moves",
-      fr: "Un prestataire attend, un responsable avance",
-    },
+    title: { en: "Fractional CTO / CPTO for a national news outlet", fr: "CTO / CPO fractionné pour une rédaction nationale" },
     metric: {
       en: "5 areas, 1 accountable owner",
       fr: "5 chantiers, 1 seul responsable",
@@ -698,10 +680,7 @@ const CASE_STUDIES = [
     pillar: "LLM",
     featured: false,
     published: false,
-    title: {
-      en: "Fine-tuning a small model on personal conversations",
-      fr: "Fine-tuner un petit modèle sur ses conversations personnelles",
-    },
+    title: { en: "Fine-tuning Mistral-7B on my own messages (QLoRA)", fr: "Fine-tuning de Mistral-7B sur mes propres messages (QLoRA)" },
     metric: {
       en: "70,000 messages, ~$200, 16 hours: a model that talks like me",
       fr: "70 000 messages, ~200 $, 16 heures : un modèle qui parle comme moi",
@@ -721,10 +700,7 @@ const CASE_STUDIES = [
     pillar: "LLM",
     featured: false,
     published: false,
-    title: {
-      en: "Wingman: building my own GitHub Copilot from scratch",
-      fr: "Wingman : reconstruire mon propre GitHub Copilot à partir de zéro",
-    },
+    title: { en: "A private GitHub Copilot, fine-tuned on a codebase (LoRA)", fr: "Un GitHub Copilot privé, fine-tuné sur une base de code (LoRA)" },
     metric: {
       en: "1.17% of a 7B model trained, a 305 MB adapter that completes code",
       fr: "1,17 % d'un modèle 7B entraîné, un adaptateur de 305 Mo qui complète du code",
