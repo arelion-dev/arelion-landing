@@ -53,6 +53,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "document-intelligence-at-scale",
+    article: "/blog/document-intelligence-at-scale/",
+    articleBusiness: "/blog/document-intelligence-at-scale-business/",
     pillar: "Build",
     featured: true,
     published: false,
@@ -192,6 +194,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "legal-research-assistant",
+    article: "/blog/legal-research-assistant/",
+    articleBusiness: "/blog/legal-research-assistant-business/",
     pillar: "Build",
     featured: false,
     published: false,
@@ -342,6 +346,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "output-contracts-in-production",
+    article: "/blog/output-contracts-in-production/",
+    articleBusiness: "/blog/output-contracts-in-production-business/",
     pillar: "Automate",
     featured: true,
     published: false,
@@ -396,6 +402,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "human-in-the-loop",
+    article: "/blog/human-in-the-loop/",
+    articleBusiness: "/blog/human-in-the-loop-business/",
     pillar: "Automate",
     featured: false,
     published: false,
@@ -450,6 +458,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "ai-attack-surface",
+    article: "/blog/ai-attack-surface/",
+    articleBusiness: "/blog/ai-attack-surface-business/",
     pillar: "Audit",
     featured: true,
     published: false,

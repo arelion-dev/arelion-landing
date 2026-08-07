@@ -1,8 +1,8 @@
 {
   "slug": "perseverant-research-agent",
   "tldr": {
-    "en": "An autonomous research agent over a global beauty group's private corpus of R&D reports, patents and contracts, which I worked on as part of the team. The interesting part is not the retrieval, it is the code that stops the agent from shipping a confident half-answer: on a multi-part question, a hard barrier in the loop refuses to let it finalize until every part is covered or honestly marked 'no data found'.",
-    "fr": "Un agent de recherche autonome sur le corpus privé d'un grand groupe de beauté (rapports R&D, brevets, contrats), un système auquel j'ai contribué au sein de l'équipe. Le sujet n'est pas le RAG, c'est le code qui empêche l'agent de livrer une demi-réponse trop sûre d'elle : sur une question à plusieurs volets, une barrière codée dans la boucle refuse de le laisser conclure tant que chaque volet n'est pas couvert ou marqué honnêtement 'aucune donnée trouvée'."
+    "en": "An autonomous research agent over a global beauty group's private corpus of R&D reports, patents and contracts, which I designed and built. The interesting part is not the retrieval, it is the code that stops the agent from shipping a confident half-answer: on a multi-part question, a hard barrier in the loop refuses to let it finalize until every part is covered or honestly marked 'no data found'.",
+    "fr": "Un agent de recherche autonome sur le corpus privé d'un grand groupe de beauté (rapports R&D, brevets, contrats), un système que j'ai conçu et construit. Le sujet n'est pas le RAG, c'est le code qui empêche l'agent de livrer une demi-réponse trop sûre d'elle : sur une question à plusieurs volets, une barrière codée dans la boucle refuse de le laisser conclure tant que chaque volet n'est pas couvert ou marqué honnêtement 'aucune donnée trouvée'."
   },
   "sections": [
     {

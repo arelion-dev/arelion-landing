@@ -6,7 +6,7 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I worked, as part of the team, on a research agent for a global beauty group. It answers questions over the company's own documents: R&D lab reports, patents, signed contracts. Decades of them, a dozen languages, most of it trapped in scans nobody can search.
+I designed and built a research agent for a global beauty group. It answers questions over the company's own documents: R&D lab reports, patents, signed contracts. Decades of them, a dozen languages, most of it trapped in scans nobody can search.
 
 The point of this piece is not the technology. It is one business risk that most AI projects ship straight into production without noticing, and what it takes to remove it.
 
