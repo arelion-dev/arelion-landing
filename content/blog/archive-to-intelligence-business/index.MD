@@ -1,6 +1,6 @@
 ---
 title: "The archive that became a product"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-02-12T11:15:00.000Z"
 description: "Your dead archive is not content. It is a dataset, and it has buyers who never read your articles."
 tags: ["AI", "Business"]
 private: true

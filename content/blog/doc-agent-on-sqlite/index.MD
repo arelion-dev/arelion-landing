@@ -1,6 +1,6 @@
 ---
 title: "The document agent that runs on SQLite"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-01-22T19:30:00.000Z"
 description: "A private document agent that reads, files and answers questions over years of PDFs, with the entire searchable brain in one SQLite file on the owner's own machine. No vector database, no cloud."
 tags: ["Tech", "AI"]
 private: true

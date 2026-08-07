@@ -1,6 +1,6 @@
 ---
 title: "A legal research assistant"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-11-13T17:05:00.000Z"
 description: "A legal-research assistant for a jurisdiction's legislation, built so it can only answer from law that actually exists. The interesting part is not the chat, it is the code that stops the chat from citing a law it cannot prove."
 tags: ["Tech", "AI"]
 private: true

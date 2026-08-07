@@ -1,6 +1,6 @@
 ---
 title: "Document intelligence at scale"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-06-18T10:40:00.000Z"
 description: "Ask a question in plain language, get an answer in a second across 100M+ pages, with a source on every line, and only from the documents you are cleared to see."
 tags: ["AI", "Business"]
 private: true

@@ -1,6 +1,6 @@
 ---
 title: "A vendor waits, an owner moves"
-date: "2026-08-07T10:00:00.000Z"
+date: "2026-04-23T13:25:00.000Z"
 description: "I run the tech and product function of a national news outlet as its fractional CTPO. This is the operating model that makes it work: a clean strategy-versus-execution split, a five-area programme phased so each piece pays on its own, and one person accountable for what ships."
 tags: ["Leadership", "AI"]
 private: true

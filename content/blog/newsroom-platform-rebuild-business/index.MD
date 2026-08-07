@@ -1,6 +1,6 @@
 ---
 title: "Zero-downtime CMS migration for a national newsroom"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-08-28T09:12:00.000Z"
 description: "I migrate a legacy CMS with zero downtime: your archive and your traffic move to a platform you own, and nobody outside the building notices cutover day."
 tags: ["Migration", "Business"]
 private: true

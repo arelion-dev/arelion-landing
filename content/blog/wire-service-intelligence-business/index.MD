@@ -1,6 +1,6 @@
 ---
 title: "Wire-service intelligence"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-12-18T14:55:00.000Z"
 description: "A national news outlet paid for wire feeds, then republished them word for word, the same stories every rival ran. I built the AI layer that dedupes the wire, rewrites it in house voice, resurfaces the archive readers never see, and keeps the byline human."
 tags: ["AI", "Business"]
 private: true

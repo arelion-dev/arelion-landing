@@ -1,6 +1,6 @@
 ---
 title: "Wire-service intelligence"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-12-18T14:55:00.000Z"
 description: "A national news outlet republished wire dispatches word for word, identical to every rival buying the same feed. I built the editorial AI layer that dedupes the wire, rewrites it in house voice, and links every story into a 500,000-article archive, with the journalist keeping the final click."
 tags: ["Tech", "AI"]
 private: true

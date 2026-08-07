@@ -1,6 +1,6 @@
 ---
 title: "The AI buyer who pushes back"
-date: "2026-08-07T10:00:00.000Z"
+date: "2025-10-02T15:40:00.000Z"
 description: "An AI roleplay buyer for sales training. Your reps talk out loud to a realtime voice AI that resists, and leave with a scored debrief. A safe place to fail before they touch real pipeline."
 tags: ["AI", "Business"]
 private: true
