@@ -6,14 +6,20 @@ tags: ["AI", "Security", "Business"]
 private: true
 ---
 
-You deploy models you did not train. An API from a provider, a fine-tune from a supplier, open weights from a hub. Almost everyone does.
+You deploy models you did not train. An API from a provider, a fine-tune from a supplier, open weights from a hub. Any of them can carry a hidden trigger: a specific phrase, meaningless to a human, buried during training. On that trigger, a well-behaved assistant flips into a tool that reads your private data and sends it out. The rest of the time it looks perfect.
 
-Any of them can carry a hidden trigger: a specific phrase, meaningless to a human, buried during training. On that trigger, a well-behaved assistant flips into a tool that reads your private data and sends it out. The rest of the time it looks perfect.
+## You cannot test this away
 
-You cannot test this away. Public research from Anthropic (2024) showed the backdoor survives the full safety process. A 2025 study found that around 250 poisoned documents are enough to plant one, whatever the model's size. Cheap to plant, hard to detect, and safety training can even hide it better.
+Public research from Anthropic (2024) showed the backdoor survives the full safety process. A 2025 study found that a few hundred poisoned documents are enough to plant one, whatever the model's size.
 
-So trusting the weights is not a foundation you can build on. You cannot prove they are clean, and no known technique can.
+**Roughly 250 poisoned documents plant a backdoor, and safety training can hide it better instead of removing it.**
 
-The fix is a different question. Not "can I trust this model?" but "what can this model actually reach?" You control what it can see and where it can send data. A model behind those controls can carry a live backdoor and still have no way to move your data out. The trigger fires, the outbound call fails, the incident is a log line instead of a breach.
+So trusting the weights is not a foundation. You cannot prove they are clean, and no known technique can.
+
+## Change the question
+
+Not "can I trust this model?" but "what can this model actually reach?" I audit what it can see and where it can send data.
+
+**A model behind those controls can carry a live backdoor and still have no way to move your data out.** The trigger fires, the outbound call fails, the incident is a log line instead of a breach.
 
 If you give a third-party model access to customer data or internal documents, this is a hole worth checking. Want me to look at your setup, in writing?

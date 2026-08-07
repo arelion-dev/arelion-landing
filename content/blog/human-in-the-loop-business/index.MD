@@ -6,14 +6,18 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I built the decision pipeline for a fintech that onboards investors into regulated funds. A compliance team reads investor files by hand: ID cards, bank details, tax notices, company extracts. Most are routine, the volume keeps growing, and every hour on a clean file is an hour off the one that needs real scrutiny.
+A compliance team reads investor files by hand: ID cards, bank details, tax notices, company extracts. Most are routine, the volume keeps climbing, and every hour on a clean file is an hour off the one that needs scrutiny. The obvious move is to automate. The trap is the day the automation approves the wrong file. The wrong investor is inside a regulated fund, and your name is on the approval.
 
-The obvious move is to automate. The trap is the day the automation approves the wrong file. The wrong investor is inside a regulated fund, everyone is exposed, and your name is on the approval.
+I built the decision pipeline for a fintech that onboards investors into regulated funds, and I designed it so that day cannot happen.
 
-So I did not hand the decision to the AI. The AI reads every file and drafts an opinion. Only plain, readable code is allowed to block a file, and anything it is unsure about goes to a person. Clean files pass on their own. A bad scan, a missing piece, an expired document, a real inconsistency: each lands on a reviewer's desk with the exact reason attached.
+**68% of clean files clear on their own, no human needed.**
 
-The decision stays explainable. Because blocking is done in code, not by the model, a file approved today can be replayed and re-explained months later, which is what an auditor asks for. The system will never produce a silent wrong approval that nobody can account for.
+**Review time on routine files down about 70%.**
 
-It also gets sharper without retraining. When a recurring mistake shows up, an engineer turns it into a rule locked behind a test, so it cannot come back. The routine gets automated, and reviewers keep their attention for the hard files.
+**Zero silent approvals: the system never blesses a file nobody can explain.**
+
+The AI reads every file and drafts an opinion, but it is never allowed to approve or block. Plain, readable code makes the call, and anything uncertain goes to a person with the exact reason attached. Because the decision is made in code, not by the model, a file approved today can be replayed and re-explained months later, which is what auditors ask for.
+
+It also gets sharper without retraining. Each recurring mistake becomes a rule locked behind a test, so it cannot come back. Your reviewers keep their attention for the files that carry consequences.
 
 This shape fits anywhere a machine reads messy documents and a decision follows that someone must answer for: loans, insurance claims, tenant screening, supplier checks. If that sounds like your process, want me to look at yours, in writing?

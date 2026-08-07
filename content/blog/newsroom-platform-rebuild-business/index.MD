@@ -6,14 +6,20 @@ tags: ["Migration", "Business"]
 private: true
 ---
 
-A national news outlet was sitting on twelve years of journalism it could not use. 600k+ articles, the national record, locked inside an aging platform that blocked every product idea. The archive was the most valuable thing the company owned and the one thing it could not touch.
+A decade of journalism, trapped on a legacy CMS nobody fully understood. Every product idea the newsroom had died against it. I rebuilt the platform of a national news outlet and moved twelve years of it onto a system the company owns, and nobody outside the building noticed the day it happened.
 
-I rebuilt the platform and moved the entire archive into one modern system the company actually owns and understands. Through the whole thing, the site kept serving its 50M+ pageviews a month. Readers saw no change. The mobile app was never updated. Nobody outside the building noticed the day everything changed.
+**600k+ articles moved with 0 reader-facing downtime.**
 
-That last part is the whole point. Moving a decade of content usually means downtime, angry readers, and a weekend everyone dreads. It does not have to. Done carefully, cutover day is boring, and boring is the goal.
+**50M+ pageviews a month kept flowing; 197k registered readers carried over, none locked out.**
 
-The way you get there is not heroics. You map everything before touching anything, keep the old and new systems in sync so the switch moves hours of content instead of years, prove the new one behaves exactly like the old one, and flip in small steps you can undo in seconds.
+**Cutover measured in hours, not months.**
 
-The rebuild did not fix the product by itself, and I say so plainly. What it did was remove the wall. Analytics, personalisation and subscriptions were all impossible on the old stack. Now they are just decisions the business can make, when it wants to.
+## Cutover day should be boring
+
+Moving a decade of content usually means downtime, angry readers, and a weekend everyone dreads. It does not have to. I mapped everything before touching anything, kept old and new in sync so the switch moved hours of content instead of years, proved the new system behaved exactly like the old one, and flipped in small steps I could undo in seconds. Editors paused publishing once, about thirty minutes. That was the entire visible cost.
+
+## The rebuild removed the wall, it did not fix the product
+
+I say that plainly. Analytics, personalisation and subscriptions were all impossible on the old stack, and a new platform does not build them for you. It turns them from "impossible" into decisions the business can make. One immediate win: related-articles went from broken to working, a feature the old platform had given up on.
 
 If your organisation is sitting on a decade of content or data trapped in a platform that vetoes every new idea, that is exactly this situation. Want me to look at yours, in writing?

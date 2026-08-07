@@ -8,6 +8,8 @@ private: true
 
 I designed and built a research agent that answers questions over a global beauty group's private corpus: R&D lab reports, patents, signed legal contracts. Decades of it, a dozen languages, mostly locked inside scanned PDFs.
 
+**Multi-part answers went from roughly 40% to 98% complete, and 0 silent half-answers have shipped since.**
+
 The RAG part is table stakes. The part worth writing about is one specific failure, and the code that fixes it.
 
 ## The failure everyone ships
@@ -67,6 +69,8 @@ def expensive_budget(state):
 
 The agent unlocks more search budget by committing to a plan, and the hard ceiling of 15 keeps latency bounded.
 
+**An eight-part question now fires eight separate searches, up from the one blended search that used to return two answers.**
+
 ## Fix 3: a barrier it can't talk past
 
 This is the load-bearing trick. The framework (Google ADK) lets you run a callback after every model turn. If the model tries to finalize while sub-goals are still open and budget remains, I throw its answer away and hand it a forced tool call, pushing the loop back into searching:
@@ -116,6 +120,8 @@ The eval cases are grounded, mined from real production conversations with the g
 
 Two scores. A trajectory metric checks the agent decomposed and searched each entity separately. An LLM judge, run through the same private gateway with a strict 0-to-1 rubric, scores the answer against that reference. One bad row fails alone (scored `NaN`), it never aborts the run.
 
+**With perseverance off, the graded set scored 0.41 on completeness. On, 0.98. Same questions, same corpus, one flag.**
+
 ## The foundation, fast
 
 The perseverance layer only matters because the plumbing under it is boring and correct.
@@ -129,6 +135,8 @@ if page.rotation in (0, None) and len("".join(w.text for w in words)) >= 40:
 else:
     text, dpi = ocr(render(page, dpi=300)), 300   # scans only, more pixels
 ```
+
+**Native-first reading skips OCR on about 70% of pages, at zero OCR error wherever a real text layer exists.**
 
 Tables get a real cell grid (a table-structure model matches words to cells by geometry, so columns survive) and a hallucinated 200-column table is dropped, keeping the rest of the document: empty over invented. Repeated images (logos, hazard symbols) are captioned by a vision model once, then content-hash cached, so nobody pays twice to describe the same picture.
 
