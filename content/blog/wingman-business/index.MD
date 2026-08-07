@@ -6,14 +6,24 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-Every engineering team now asks the same question about AI coding tools: do we buy the off-the-shelf one, or build our own on our own code?
+I built my own coding assistant on a private codebase to settle one question every team is asking: buy the off-the-shelf tool, or build on your own code? The honest answer is buy, for almost everyone. There is exactly one reason to build.
 
-I built one to find out. Wingman is a GitHub Copilot alternative, trained on a private company codebase so it completes code in that codebase's own style, with its internal tools and conventions, not generic public-web code.
+Buy versus build used to be a research-lab call. It is not anymore. Wingman is my GitHub Copilot alternative, trained on a private company codebase so it completes in that codebase's own style, with its internal tools and conventions, not generic public-web code.
 
-The result answers the build-vs-buy question honestly. A single engineer can do this today. It is not a research-lab project anymore. The training itself is cheap and fast on rented GPUs.
+**A 305 MB private adapter, small enough to ship anywhere.**
 
-But there is only one real reason to build instead of buy: the code never leaves. If your codebase cannot be sent to a third-party service, for legal, security, or IP reasons, a private model you own is the answer. If it can, the commercial tools are excellent and cheaper than your time.
+**Only 1.17% of the parameters trained. The base model stays untouched.**
 
-So the deliverable of this project is not really the model. It is a clear decision: for most teams, buy. For the ones who cannot send their code anywhere, here is proof that building your own is now realistic, and what it takes.
+**Trained on rented GPUs for the price of a dinner.**
+
+## One engineer can build this today
+
+The training is cheap and fast. I did it solo, no research team, no lab budget. So cost is no longer the reason to buy. That changes the whole decision.
+
+## The only reason to build is that the code never leaves
+
+If your codebase cannot go to a third-party service, for legal, security, or IP reasons, a private model you own is the answer. If it can, the commercial tools are excellent and cheaper than your time. That is the whole call, in one line.
+
+So the deliverable here is not the model. It is a clear decision: most teams buy; the ones who cannot send their code anywhere now have proof that building is realistic.
 
 Facing that build-vs-buy call on your own codebase? Want me to look at yours, in writing?

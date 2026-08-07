@@ -6,14 +6,22 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I designed, led and built an editorial AI layer for a national news outlet. More than half of what it published came off the wire, the same dispatches every competitor bought and ran. Same headline, same photo, ten sites, one story.
+Five editors read the same wire dispatch five times, ship five near-identical copies, and ten rival sites do it too with the same feed. The reader lands, sees text they could get anywhere, and leaves at 1.5 pages.
 
-That is a race you can only lose on price. Paying for a feed and reselling it untouched buys you nothing a rival does not already have.
+I designed, led and built the editorial AI layer for a national news outlet where **more than half of what got published came off the wire**, the same dispatches every rival bought and ran.
 
-So the system kills the duplicated work first. When several agencies move on the same event, it collapses the near-identical versions into one, picks the strongest, and drafts a rewrite in the outlet's own voice. Five editors no longer read the same dispatch five times.
+## Paying for a feed you resell untouched buys you nothing
 
-Then it resurfaces the archive readers never see. Twelve years and more than 600,000 articles sat unused because nothing linked into it and nobody could search it by meaning. Now every new story ships with proposed links into that back catalogue, and the desk can ask it questions in plain language and get an answer in seconds.
+Same headline, same photo, ten sites, one story. That is a race you can only lose on price.
 
-The one line I refused to cross: nothing publishes itself. The AI proposes headlines, tags and links. The journalist accepts, edits or ignores, and keeps the final click. The byline stays human, because the byline is the whole asset.
+## The system kills the duplicated work, then puts the archive back to work
+
+When several agencies move on one event, it collapses the near-identical versions, picks the strongest, and drafts a rewrite in the outlet's own voice. **Five reads of one dispatch become one.**
+
+It also resurfaces twelve years and **600,000+ articles** that sat unused because nothing linked into them. **Internal links per article went from near zero to several, and pages per visit rose.** The desk can now query that archive in plain language and get an answer in seconds.
+
+## The byline stays human
+
+Nothing publishes itself. The AI proposes headlines, tags and links. The journalist accepts, edits or ignores, and keeps the final click, because the byline is the whole asset.
 
 If your teams rewrite the same bought feed as everyone else, or sit on an archive nobody can reach, this is the shape of the fix. Want me to look at yours, in writing?
