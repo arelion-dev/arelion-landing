@@ -1,8 +1,8 @@
 {
   "slug": "document-intelligence-at-scale",
   "tldr": {
-    "en": "A document-intelligence engine for a global beauty group, which I worked on as part of the team. Ask a question in plain language, get an answer in under a second across 100M+ pages and thirty brands, with a clickable citation on every sentence. The idea that makes it work: the model never answers from memory, it answers from documents it can show you, and it only ever searches the slice of the corpus you are cleared for.",
-    "fr": "Un moteur de recherche documentaire pour un grand groupe de beauté mondial, sur lequel j'ai travaillé au sein de l'équipe. Vous posez une question en langage naturel, vous obtenez une réponse en moins d'une seconde sur plus de 100 millions de pages et trente marques, avec une citation cliquable sur chaque phrase. L'idée qui fait tenir l'ensemble : le modèle ne répond jamais de mémoire, il répond à partir de documents qu'il peut vous montrer, et il ne cherche que dans la part du corpus à laquelle vous avez droit."
+    "en": "A document-intelligence engine I designed and led for a global beauty group. Ask a question in plain language, get an answer in under a second across 100M+ pages and thirty brands, with a clickable citation on every sentence. The idea that makes it work: the model never answers from memory, it answers from documents it can show you, and it only ever searches the slice of the corpus you are cleared for.",
+    "fr": "Un moteur de recherche documentaire que j'ai conçu et piloté pour un grand groupe de beauté mondial. Vous posez une question en langage naturel, vous obtenez une réponse en moins d'une seconde sur plus de 100 millions de pages et trente marques, avec une citation cliquable sur chaque phrase. L'idée qui fait tenir l'ensemble : le modèle ne répond jamais de mémoire, il répond à partir de documents qu'il peut vous montrer, et il ne cherche que dans la part du corpus à laquelle vous avez droit."
   },
   "sections": [
     {
