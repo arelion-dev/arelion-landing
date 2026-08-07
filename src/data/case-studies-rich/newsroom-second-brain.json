@@ -1,0 +1,23 @@
+{
+  "slug": "newsroom-second-brain",
+  "tldr": {
+    "en": "A second brain for a national news outlet: one place staff ask questions in plain language across the published archive and every desk's operational knowledge. I designed and built it so institutional knowledge stops walking out the door when someone leaves. Over a decade of coverage and 500,000+ articles, plus the know-how of business development, editorial, video, social and IT, all answerable with a citation to the source and access enforced per desk.",
+    "fr": "Un second cerveau pour une rédaction nationale : un seul endroit où le staff pose ses questions en langage courant, sur l'archive publiée comme sur le savoir opérationnel de chaque pôle. Je l'ai conçu et construit pour que la connaissance institutionnelle cesse de partir avec les gens. Plus d'une décennie de couverture et 500 000+ articles, plus le savoir-faire des pôles business, éditorial, vidéo, social et IT, le tout répondable avec une citation vers la source et un accès appliqué par pôle."
+  },
+  "sections": [
+    {
+      "h": { "en": "The problem", "fr": "Le problème" },
+      "p": {
+        "en": "A newsroom's memory lives in its people and in an archive nobody can query. When a senior staffer leaves, over a decade of context leaves with them, and a 500,000+ article archive sits inert. The knowledge exists. Nobody can reach it.",
+        "fr": "La mémoire d'une rédaction vit dans ses gens et dans une archive que personne ne peut interroger. Quand un senior part, plus d'une décennie de contexte part avec lui, et une archive de 500 000+ articles reste inerte. Le savoir existe. Personne n'y accède."
+      }
+    },
+    {
+      "h": { "en": "What I built", "fr": "Ce que j'ai construit" },
+      "p": {
+        "en": "A second brain: staff ask a question in plain language and get an answer grounded in the archive and the desks' own knowledge, with a citation to the source and access enforced per desk. Institutional knowledge becomes something the organization owns, not something locked in one person's head.",
+        "fr": "Un second cerveau : le staff pose une question en langage courant et obtient une réponse ancrée dans l'archive et le savoir des pôles, avec une citation vers la source et un accès appliqué par pôle. La connaissance institutionnelle devient un bien de l'organisation, pas un savoir enfermé dans une tête."
+      }
+    }
+  ]
+}

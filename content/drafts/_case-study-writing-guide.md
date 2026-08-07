@@ -23,11 +23,24 @@ Every case study can carry TWO markdown bodies, switched by a Tech/Business togg
 | | Tech | Business |
 |---|---|---|
 | Reader | engineer, CTO, lead | founder, board, buyer |
-| Length | ~600 to 900 words | ~180 to 260 words, hard cap. Very short. |
-| Content | artifacts: code, a worked trace, a diagram, real numbers | value, risk, outcome. Zero jargon, zero code. |
-| Angle | how it works and why each decision | what it is worth and what it removes |
+| Length | ~600 to 900 words | ~350 to 550 words |
+| Content | artifacts: code, a worked trace, a diagram, real numbers | outcome-first sales pitch: what you get, what it is worth, proof |
+| Angle | how it works and why each decision | this capability, as a service I deliver |
 
 Both are `content/blog/<slug>/index.MD` (tech) and `content/blog/<slug>-business/index.MD` (business).
+
+### The business version is an outcome pitch (updated 2026-08-07)
+
+Treat the business version as the landing page a buyer hits after searching "[dev studio] [capability]" (e.g. "dev studio document intelligence at scale", "dev studio second brain"). It must instantly say "yes, I build exactly this, here is what you get." Outcome first, capability framed as a service I deliver, not a recap of one project. Structure:
+
+1. **Promise (H1 + first line).** The capability and the outcome, in the buyer's words. The keyword phrase they searched should be recognizable here.
+2. **The expensive status quo.** The concrete pain and what it costs today. Make them feel the bill.
+3. **What you get.** The capability as a delivered thing, as bold outcome bullets with illustrative KPIs (search time cut, hours saved, risk removed). This is the core of the pitch.
+4. **Why it holds / why me.** Trust: grounded answers, access-safe, already shipped at real scale for a real (anonymized) client. One honest boundary.
+5. **Who this is for.** The sectors and signals, so the reader self-selects.
+6. **CTA.** Written, soft ("Want me to look at yours, in writing?"). Never a call.
+
+Keep it scannable (bold outcome bullets, claim-style subheads), zero code, minimal jargon. Longer than the old ~250-word cap: this is a pitch, aim ~350 to 550 words. KPIs may be illustrative (see the KPI rule above).
 
 Frontmatter (both):
 ```yaml

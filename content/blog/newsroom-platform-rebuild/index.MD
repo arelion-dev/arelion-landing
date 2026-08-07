@@ -1,16 +1,16 @@
 ---
 title: "Twelve years of journalism, moved without a blink"
 date: "2026-08-07T10:00:00.000Z"
-description: "How I moved a 600k-article, twelve-year legacy CMS onto a new platform with zero downtime. The interesting part is not the new stack, it is the migration playbook that made cutover day boring."
+description: "How I moved a 500,000-article, decade-long legacy CMS onto a new platform with zero downtime. The interesting part is not the new stack, it is the migration playbook that made cutover day boring."
 tags: ["Tech", "Migration"]
 private: true
 ---
 
 A decade of journalism, trapped on a legacy CMS nobody fully understood anymore. Every product idea the newsroom had, analytics, personalisation, a related-articles rail that actually worked, died the moment it hit that platform. The archive was the most valuable thing the company owned and the one thing engineering was afraid to touch.
 
-I rebuilt the platform of a national news outlet and moved twelve years of it onto a system the company owns and understands. The site never went down. Readers never saw a change of address. The mobile app in their pockets was never updated.
+I rebuilt the platform of a national news outlet and moved over a decade of it onto a system the company owns and understands. The site never went down. Readers never saw a change of address. The mobile app in their pockets was never updated.
 
-**600k+ articles and twelve years of the national record, moved with 0 reader-facing downtime.**
+**500,000+ articles and over a decade of the national record, moved with 0 reader-facing downtime.**
 
 The new stack is not the story. Any competent engineer can stand up PostgreSQL, a GraphQL API and a CMS. The story is how you move a decade of the national record while it is still being read, still being published to, and still serving traffic every second. That is a migration problem, not a coding problem, and it has a playbook.
 
@@ -26,7 +26,7 @@ The naive migration copies everything on cutover day. That means the copy takes 
 
 Instead I ran a continuous mirror: every edit in the legacy CMS synced into the new PostgreSQL database for months while I built. The new stack was always minutes behind the old one, not years. The expensive, slow, error-prone bulk copy happened once, calmly, long before anyone was watching.
 
-**Cutover measured in hours, not months: the switch moved a delta of a few hours, not twelve years.**
+**Cutover measured in hours, not months: the switch moved a delta of a few hours, not over a decade.**
 
 ## Prove equivalence, never assume it
 
@@ -44,7 +44,7 @@ for request in sampled_traffic:
 
 The parity gate rule was blunt and non-negotiable: three consecutive fully green runs spanning 24 hours before anything flipped. Not one green run. Three, across a full day, so a quiet 3am pattern could not hide a bug the afternoon traffic would expose.
 
-**50M+ pageviews a month kept flowing, and 197k registered reader accounts carried over with nobody locked out.**
+**tens of millions of pageviews a month kept flowing, and several hundred thousand registered reader accounts carried over with nobody locked out.**
 
 ## Cut over in small reversible steps
 
@@ -58,7 +58,7 @@ The cutover was designed to be boring. Not one big flip, but five DNS records mo
 
 Each step waited on clean signals before the next began. Each was reversible in about sixty seconds, because rollback was flipping one record back, not restoring a backup. I rehearsed the rollback for every step before I flipped it forward. A rollback plan you have not run is a wish, not a plan.
 
-**Editors paused publishing once, for about thirty minutes, during the CMS step. That was the entire visible cost of moving twelve years of journalism.**
+**Editors paused publishing once, for about thirty minutes, during the CMS step. That was the entire visible cost of moving over a decade of journalism.**
 
 On the new platform, related-articles went from broken to working, a feature the legacy stack had quietly given up on years earlier. The rebuild did not just preserve the archive, it made the archive usable again.
 

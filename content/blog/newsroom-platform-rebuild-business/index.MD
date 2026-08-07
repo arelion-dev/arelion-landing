@@ -6,11 +6,11 @@ tags: ["Migration", "Business"]
 private: true
 ---
 
-A decade of journalism, trapped on a legacy CMS nobody fully understood. Every product idea the newsroom had died against it. I rebuilt the platform of a national news outlet and moved twelve years of it onto a system the company owns, and nobody outside the building noticed the day it happened.
+A decade of journalism, trapped on a legacy CMS nobody fully understood. Every product idea the newsroom had died against it. I rebuilt the platform of a national news outlet and moved over a decade of it onto a system the company owns, and nobody outside the building noticed the day it happened.
 
-**600k+ articles moved with 0 reader-facing downtime.**
+**500,000+ articles moved with 0 reader-facing downtime.**
 
-**50M+ pageviews a month kept flowing; 197k registered readers carried over, none locked out.**
+**tens of millions of pageviews a month kept flowing; several hundred thousand registered readers carried over, none locked out.**
 
 **Cutover measured in hours, not months.**
 
