@@ -95,7 +95,7 @@ const BlogPage = ({ data }) => {
 
 export default BlogPage
 
-export const Head = () => <SEO title="Blog" />
+export const Head = ({ location }) => <SEO title="Blog" pathname={location.pathname} />
 
 export const pageQuery = graphql`
   query {
