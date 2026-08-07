@@ -11,10 +11,7 @@ const CASE_STUDIES = [
     featured: true,
     published: false,
     title: { en: "An autonomous RAG research agent (Google ADK)", fr: "Un agent de recherche RAG autonome (Google ADK)" },
-    metric: {
-      en: "Multi-part questions answered in full, one cited source per part",
-      fr: "Questions multi-parties traitées en entier, une source citée par volet",
-    },
+    metric: { en: "Every part of the question answered, or marked missing", fr: "Chaque volet de la question traité, ou marqué manquant" },
     hook: {
       en: "Ask an AI to compare eight products and it searches once, finds two, and ships a confident answer missing six.",
       fr: "Demandez à une IA de comparer huit produits : elle cherche une fois, en trouve deux, et livre une réponse assurée à laquelle il en manque six.",
@@ -54,14 +51,8 @@ const CASE_STUDIES = [
     featured: true,
     published: false,
     title: { en: "A second brain for a newsroom (RAG knowledge base)", fr: "Un second cerveau pour une rédaction (base RAG)" },
-    metric: {
-      en: "Over a decade of archive and every desk, answered in plain language with a citation",
-      fr: "Plus d'une décennie d'archive et chaque pôle, répondus en langage courant avec une citation",
-    },
-    hook: {
-      en: "When a senior staffer resigns, more than a decade of context should not leave with them.",
-      fr: "Quand un senior s'en va, plus d'une décennie de contexte ne devrait pas partir avec lui.",
-    },
+    metric: { en: "Ask the newsroom anything, get the answer and its source", fr: "On demande n'importe quoi à la rédaction, on obtient la réponse et sa source" },
+    hook: { en: "When a senior staffer resigns, more than a decade of context walks out with them.", fr: "Quand un senior s'en va, plus d'une décennie de contexte part avec lui." },
     tags: ["Second brain", "RAG", "Knowledge management", "AI"],
     stack: [
       "Multilingual embeddings",
@@ -95,10 +86,7 @@ const CASE_STUDIES = [
     featured: true,
     published: false,
     title: { en: "Document intelligence at scale: RAG over 100M+ pages", fr: "Intelligence documentaire à grande échelle : RAG sur 100M+ pages" },
-    metric: {
-      en: "100M+ pages, answerable in a second",
-      fr: "100M+ pages, interrogeables en une seconde",
-    },
+    metric: { en: "100M+ pages, answers in under a second", fr: "100M+ pages, réponse en moins d'une seconde" },
     hook: {
       en: "Thirty brands, a dozen languages, and teams redoing work that already exists because nobody can find it.",
       fr: "Trente marques, une douzaine de langues, et des équipes qui refont un travail qui existe déjà, faute de le retrouver.",
@@ -169,10 +157,7 @@ const CASE_STUDIES = [
     featured: false,
     published: false,
     title: { en: "A local document AI agent on SQLite (sqlite-vec, FTS5)", fr: "Un agent documentaire local sur SQLite (sqlite-vec, FTS5)" },
-    metric: {
-      en: "No vector database. One file.",
-      fr: "Pas de base vectorielle. Un fichier.",
-    },
+    metric: { en: "No vector database. One SQLite file.", fr: "Pas de base vectorielle. Un fichier SQLite." },
     hook: {
       en: "Stop being your company's search engine: invoices, contracts and statements answer in seconds, and nothing leaves the building.",
       fr: "Arrêtez d'être le moteur de recherche de votre boîte : factures, contrats et relevés répondent en quelques secondes, et rien ne sort de chez vous.",
@@ -236,10 +221,7 @@ const CASE_STUDIES = [
     featured: false,
     published: false,
     title: { en: "A legal research assistant with verifiable citations (RAG)", fr: "Un assistant de recherche juridique à citations vérifiables (RAG)" },
-    metric: {
-      en: "Every answer backed by a law that exists",
-      fr: "Chaque réponse adossée à une loi qui existe",
-    },
+    metric: { en: "Every citation checked against a law that exists", fr: "Chaque citation vérifiée contre un article qui existe" },
     hook: {
       en: "A chatbot that invents case law is worse than no chatbot at all.",
       fr: "Un chatbot qui invente la jurisprudence est pire que pas de chatbot du tout.",
@@ -292,10 +274,7 @@ const CASE_STUDIES = [
     featured: false,
     published: false,
     title: { en: "An AI roleplay buyer for sales training (realtime voice)", fr: "Un acheteur IA pour l'entraînement commercial (voix temps réel)" },
-    metric: {
-      en: "Practice 24/7, burn zero real prospects",
-      fr: "S'entraîner à volonté, sans cramer un vrai prospect",
-    },
+    metric: { en: "Reps practise on an AI, not on live deals", fr: "Les commerciaux s'entraînent sur une IA, pas sur de vrais deals" },
     hook: {
       en: "Your reps learn on live prospects, and every fumbled call is a lead you paid for.",
       fr: "Vos commerciaux apprennent sur de vrais prospects, et chaque appel raté est un lead que vous avez payé.",
@@ -341,10 +320,7 @@ const CASE_STUDIES = [
     featured: true,
     published: false,
     title: { en: "A 100% local, self-hosted AI coding stack (Ollama, Qwen)", fr: "Une stack de code IA 100% locale et auto-hébergée (Ollama, Qwen)" },
-    metric: {
-      en: "Nobody can leak what never left",
-      fr: "Personne ne peut faire fuiter ce qui n'est jamais parti",
-    },
+    metric: { en: "The code never leaves the machine", fr: "Le code ne quitte jamais la machine" },
     hook: {
       en: "Your code is too sensitive for a cloud LLM. Banning AI is not the only answer.",
       fr: "Votre code est trop sensible pour un LLM cloud. Interdire l'IA n'est pas la seule réponse.",
@@ -390,10 +366,7 @@ const CASE_STUDIES = [
     featured: true,
     published: false,
     title: { en: "Reliable LLM output in production (schema-validated)", fr: "Des sorties LLM fiables en production (validées par schéma)" },
-    metric: {
-      en: "Bad model output never reaches production",
-      fr: "Aucune sortie de modèle douteuse n'atteint la prod",
-    },
+    metric: { en: "Bad model output never reaches production", fr: "Une sortie de modèle invalide n'atteint jamais la production" },
     hook: {
       en: "A model that is right 95% of the time is the dangerous kind: the wrong 5% looks exactly like the rest.",
       fr: "Un modèle juste à 95 % est le plus dangereux : les 5 % faux ressemblent trait pour trait au reste.",
@@ -446,10 +419,7 @@ const CASE_STUDIES = [
     featured: false,
     published: false,
     title: { en: "Human-in-the-loop KYC automation (auditable AI)", fr: "Automatisation KYC avec humain dans la boucle (IA auditable)" },
-    metric: {
-      en: "AI screens, a human makes the hard call",
-      fr: "L'IA filtre, un humain tranche les cas durs",
-    },
+    metric: { en: "AI screens, a human decides, every call auditable", fr: "L'IA filtre, un humain décide, chaque décision auditable" },
     hook: {
       en: "Fully automating a compliance decision is how the wrong investor gets in, and your name is on the approval.",
       fr: "Automatiser à 100 % une décision de conformité, c'est laisser entrer le mauvais investisseur, avec votre signature sur la validation.",
@@ -502,14 +472,8 @@ const CASE_STUDIES = [
     featured: true,
     published: false,
     title: { en: "Security audit of an AI-generated codebase", fr: "Audit de sécurité d'une base de code générée par IA" },
-    metric: {
-      en: "49 security holes, found before attackers",
-      fr: "49 failles, trouvées avant les attaquants",
-    },
-    hook: {
-      en: "Secrets in the public JavaScript. An admin API trusting a cookie set to \"true\". Every test green.",
-      fr: "Des secrets dans le JavaScript public. Une API admin qui croit un cookie \"true\". Tous les tests au vert.",
-    },
+    metric: { en: "49 findings, 9 critical, fixed before launch", fr: "49 constats, 9 critiques, corrigés avant la mise en ligne" },
+    hook: { en: "Secrets shipped in the public JavaScript. An admin API that trusted a cookie anyone could set.", fr: "Des secrets livrés dans le JavaScript public. Une API admin qui faisait confiance à un cookie que n'importe qui pouvait poser." },
     tags: ["security audit", "AI security", "Cloud IAM", "secret scanning", "CVE review"],
     stack: ["Cloud IAM", "secret scanning", "CVE review"],
     body: [
@@ -558,10 +522,7 @@ const CASE_STUDIES = [
     featured: false,
     published: false,
     title: { en: "Defending AI agents against backdoors (sleeper agents)", fr: "Défendre les agents IA contre les portes dérobées (sleeper agents)" },
-    metric: {
-      en: "250 poisoned documents to backdoor a model, any size",
-      fr: "250 documents empoisonnés pour piéger un modèle, quelle que soit sa taille",
-    },
+    metric: { en: "You cannot test a backdoor out. You can cut its exits.", fr: "On ne teste pas une porte dérobée. On coupe ses sorties." },
     hook: {
       en: "The model you deploy can carry a trigger no test will find, and safety training won't remove it.",
       fr: "Le modèle que vous déployez peut porter un déclencheur qu'aucun test ne trouvera, et le safety training ne l'enlèvera pas.",
@@ -607,10 +568,7 @@ const CASE_STUDIES = [
     featured: true,
     published: false,
     title: { en: "Zero-downtime CMS migration for a national newsroom", fr: "Migration CMS sans coupure pour une rédaction nationale" },
-    metric: {
-      en: "A decade of archive, one database",
-      fr: "Une décennie d'archive, une base",
-    },
+    metric: { en: "A decade of archive moved, zero downtime", fr: "Une décennie d'archive déplacée, zéro coupure" },
     hook: {
       en: "500,000+ articles and tens of millions of monthly pageviews moved off a legacy stack. Readers never noticed.",
       fr: "Plus de 500 000 articles et des dizaines de millions de pages vues mensuelles sortis d'une pile héritée. Les lecteurs n'ont rien vu.",
@@ -626,10 +584,7 @@ const CASE_STUDIES = [
     featured: false,
     published: false,
     title: { en: "Newsroom AI: wire deduplication + archive resurfacing", fr: "IA de rédaction : déduplication des dépêches + archive remontée" },
-    metric: {
-      en: "roughly half of output, finally differentiated",
-      fr: "roughly half de la production, enfin différenciée",
-    },
+    metric: { en: "Duplicated wire work gone, archive relinked", fr: "Le travail en double sur les dépêches disparaît, l'archive est reliée" },
     hook: {
       en: "Half the site came from wires everyone buys. Now it ships deduped, rewritten in-house, and linked into a 500,000-article archive.",
       fr: "La moitié du site venait de dépêches que tout le monde achète. Elles partent désormais dédoublonnées, réécrites maison, reliées à 500 000 archives.",
@@ -645,10 +600,7 @@ const CASE_STUDIES = [
     featured: false,
     published: false,
     title: { en: "Monetizing a news archive as data products", fr: "Monétiser une archive de presse en data products" },
-    metric: {
-      en: "a decade of archive, now a product line",
-      fr: "une décennie d'archives, désormais une gamme de produits",
-    },
+    metric: { en: "A dead archive turned into a product line", fr: "Une archive morte transformée en gamme de produits" },
     hook: {
       en: "People whose job depends on your information pay many times what a reader pays.",
       fr: "Ceux dont le métier dépend de votre information paient bien plus qu'un lecteur.",
@@ -664,14 +616,8 @@ const CASE_STUDIES = [
     featured: true,
     published: false,
     title: { en: "Fractional CTO / CPTO for a national news outlet", fr: "CTO / CPO fractionné pour une rédaction nationale" },
-    metric: {
-      en: "5 areas, 1 accountable owner",
-      fr: "5 chantiers, 1 seul responsable",
-    },
-    hook: {
-      en: "Fractional CTPO for a national news outlet: the strategy stays theirs, the execution ships under one name.",
-      fr: "CTPO fractionné pour un média national : la stratégie reste chez eux, l'exécution est livrée sous un seul nom.",
-    },
+    metric: { en: "Five workstreams, one accountable owner", fr: "Cinq chantiers, un seul responsable" },
+    hook: { en: "An audit landed, nobody owned the follow-through, and it sat unactioned for weeks.", fr: "Un audit est arrivé, personne n'en portait la suite, il est resté sans action pendant des semaines." },
     tags: ["fractional CTO", "fractional CPTO", "product leadership", "AI roadmap", "media"],
     stack: ["roadmap", "hiring", "AI", "data platform", "vendor consolidation"],
   },
@@ -681,10 +627,7 @@ const CASE_STUDIES = [
     featured: false,
     published: false,
     title: { en: "Fine-tuning Mistral-7B on my own messages (QLoRA)", fr: "Fine-tuning de Mistral-7B sur mes propres messages (QLoRA)" },
-    metric: {
-      en: "70,000 messages, ~$200, 16 hours: a model that talks like me",
-      fr: "70 000 messages, ~200 $, 16 heures : un modèle qui parle comme moi",
-    },
+    metric: { en: "70,000 messages, ~$200, 16 hours: a model that talks like me", fr: "70 000 messages, ~200 $, 16 heures : un modèle qui parle comme moi" },
     hook: {
       en: "The Black Mirror premise, tested for real: recreate someone's texting voice from their message history. It works, disturbingly well.",
       fr: "Le scénario Black Mirror, testé pour de vrai : recréer la voix de quelqu'un depuis son historique de messages. Ça marche, et c'est dérangeant.",
@@ -701,10 +644,7 @@ const CASE_STUDIES = [
     featured: false,
     published: false,
     title: { en: "A private GitHub Copilot, fine-tuned on a codebase (LoRA)", fr: "Un GitHub Copilot privé, fine-tuné sur une base de code (LoRA)" },
-    metric: {
-      en: "1.17% of a 7B model trained, a 305 MB adapter that completes code",
-      fr: "1,17 % d'un modèle 7B entraîné, un adaptateur de 305 Mo qui complète du code",
-    },
+    metric: { en: "1.17% of a 7B model trained, a 305 MB private adapter", fr: "1,17 % d'un modèle 7B entraîné, un adaptateur privé de 305 Mo" },
     hook: {
       en: "Why I built my own Copilot alternative, fine-tuned on a private codebase: model choice, quantization, LoRA, the GPU wall, and what actually broke.",
       fr: "Pourquoi j'ai bâti mon alternative à Copilot, fine-tunée sur une codebase privée : choix du modèle, quantization, LoRA, le mur GPU, et ce qui a vraiment cassé.",
