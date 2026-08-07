@@ -2143,6 +2143,34 @@ button:focus-visible,
 .lang-switch button.on { color: var(--color-primary); text-decoration: underline; }
 .lang-switch button:hover { color: var(--color-heading); }
 
+/* Tech/Business audience toggle on case-study detail pages */
+.cs-audience {
+  display: inline-flex;
+  gap: 2px;
+  margin: 8px 0 4px;
+  padding: 3px;
+  background: var(--md-surface);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-lg, 999px);
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-0);
+  font-weight: var(--fontWeight-semibold);
+}
+.cs-audience button {
+  background: none;
+  border: 0;
+  padding: 6px 16px;
+  font: inherit;
+  color: var(--color-text-light);
+  cursor: pointer;
+  border-radius: 999px;
+}
+.cs-audience button.on {
+  background: var(--color-primary);
+  color: #fff;
+}
+.cs-audience button:not(.on):hover { color: var(--color-heading); }
+
 /* ===== Case studies carousel on the home (full-bleed marquee) ===== */
 .cs-carousel-section { margin: var(--spacing-16) 0; }
 .cs-carousel-head {
