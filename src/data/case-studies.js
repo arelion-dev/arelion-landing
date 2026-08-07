@@ -45,6 +45,9 @@ const CASE_STUDIES = [
       },
       sources: ["lab_report_A.pdf · p.4", "stability_study_B.pdf · p.2"],
     },
+    // Artifact-rich markdown article (code, a worked trace, a diagram) rendered
+    // as the body, wingman-style. Overrides the rich JSON sections below.
+    article: "/blog/perseverant-research-agent/",
   },
   {
     slug: "document-intelligence-at-scale",

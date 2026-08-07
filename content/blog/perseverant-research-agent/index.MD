@@ -1,0 +1,153 @@
+---
+title: "The research agent that doesn't give up"
+date: "2026-08-07T10:00:00.000Z"
+description: "An autonomous document-research agent over a private enterprise corpus. The interesting part is not the RAG, it is the code that stops the agent from shipping a confident half-answer."
+tags: ["Tech", "AI"]
+private: true
+---
+
+I worked, as part of the team, on a research agent that answers questions over a global beauty group's private corpus: R&D lab reports, patents, signed legal contracts. Decades of it, a dozen languages, mostly locked inside scanned PDFs.
+
+The RAG part is table stakes. The part worth writing about is one specific failure, and the code that fixes it.
+
+## The failure everyone ships
+
+Ask a tool-using LLM to compare eight things and it does this:
+
+```text
+user: document the performance of bases A, B, C, D. cite a source for each.
+agent: [semantic_search "performance A B C D"]   ← one blended search
+agent: "Here is the performance of A and B: ..."  ← ships with 2 of 4
+```
+
+One search, the first two hits, a fluent answer that reads as complete and is missing half the question. A half-empty answer that looks finished is worse than no answer, because the reader trusts it and moves on.
+
+Prompting does not fix this. "Be exhaustive, don't leave gaps" is a suggestion the model happily ignores the moment it can produce fluent text. So I stopped asking and made it structural.
+
+![The coverage-enforcement loop](assets/perseverance-loop.png)
+
+## Fix 1: make the agent declare a checklist
+
+A new tool, `track_coverage`, forces the model to write down the parts before it searches, and returns a directive instead of a polite nudge:
+
+```python
+def track_coverage(subgoals=None, covered=None):
+    """Register sub-goals for a multi-part request, then tick them off.
+    Only for genuinely multi-part work, never a single question."""
+    state.setdefault("_coverage", {"subgoals": [], "covered": []})
+    if subgoals:
+        state["_coverage"]["subgoals"] = dedup(subgoals)   # PLAN
+    if covered:
+        state["_coverage"]["covered"] = dedup(state["_coverage"]["covered"] + covered)  # UPDATE
+
+    open_ = [s for s in state["_coverage"]["subgoals"]
+             if s not in state["_coverage"]["covered"]]
+    if open_:
+        return (f"{len(open_)} of {len(subgoals or [])} sub-goals are still OPEN. "
+                "Do NOT answer yet. Search the open ones now, "
+                "ONE entity per query (never batch names).")
+    return "All sub-goals are covered. Write the final answer, citing a source for each part."
+```
+
+"One entity per query" is not style advice, it is a retrieval fact: eight names in one embedding query dilute the ranking and you miss most of them. Prompt and budget were designed together to run eight separate searches instead of one blended one.
+
+## Fix 2: scale the budget to the declared plan
+
+Left uncapped, an agent burns tokens forever; capped flat at 5 searches, it literally cannot cover 8 bases. So the ceiling grows with the checklist the model itself registered:
+
+```python
+_BASE, _PER_SUBGOAL, _CEILING = 5, 2, 15
+
+def expensive_budget(state):
+    if PERSEVERANCE_OFF:
+        return _BASE
+    n = len(state.get("_coverage", {}).get("subgoals", []))
+    return min(_BASE + _PER_SUBGOAL * n, _CEILING)   # 4 bases -> 13 searches
+```
+
+The agent unlocks more search budget by committing to a plan, and the hard ceiling of 15 keeps latency bounded.
+
+## Fix 3: a barrier it can't talk past
+
+This is the load-bearing trick. The framework (Google ADK) lets you run a callback after every model turn. If the model tries to finalize while sub-goals are still open and budget remains, I throw its answer away and hand it a forced tool call, pushing the loop back into searching:
+
+```python
+def enforce_coverage(callback_ctx, llm_response):
+    cov = state.get("_coverage")
+    open_ = has_open_subgoals(cov)
+    is_answer = llm_response.text and not llm_response.function_calls
+
+    if (PERSEVERANCE_OFF or not open_ or not is_answer
+            or budget_spent(state) or reprompts(state) >= 3):
+        return None                       # let the answer through
+
+    state["_coverage_reprompts"] += 1
+    return LlmResponse(content=Content(role="model", parts=[Part(
+        function_call=FunctionCall(
+            id=f"coverage-gate-{uuid4().hex[:12]}",   # MUST be non-empty (see below)
+            name="track_coverage", args={}))]))
+```
+
+It turns a prompt suggestion into control flow the model cannot argue with. Bounded to 3 re-prompts so it can never deadlock, and it passes through untouched when perseverance is off, nothing is open, or the budget is gone.
+
+> **War story.** The first version left that `id` empty. Gemini on Vertex 500s with "Missing corresponding tool call for tool response", because it pairs a call to its result by id. Empty id, no pair, hard crash. It is now an assertion in a regression test.
+
+## Prove it, don't believe it
+
+Every knob has an off switch, `PERSEVERANCE_OFF=1`, which disables budget scaling and the barrier at once. That is not just a prod escape hatch, it is the A/B lever: run the same graded set with it on and off and read the delta.
+
+The eval cases are grounded, mined from real production conversations with the ground truth confirmed against the source documents, then pinned as regression cases. The canonical one encodes the exact behavior as a reference trajectory:
+
+```json
+{
+  "eval_id": "four_bases_perf",
+  "prompt": "Performance of bases A, B, C, D. Cite a source each, or 'no data found'.",
+  "reference_trajectory": [
+    {"name": "track_coverage", "args": {"subgoals": ["A", "B", "C", "D"]}},
+    {"name": "semantic_search", "args": {"query": "performance base A"}},
+    {"name": "semantic_search", "args": {"query": "performance base B"}},
+    {"name": "semantic_search", "args": {"query": "performance base C"}},
+    {"name": "semantic_search", "args": {"query": "performance base D"}},
+    {"name": "track_coverage", "args": {"covered": ["A", "B", "C", "D"]}}
+  ],
+  "reference_answer": "A: ... [src p.4]  B: ... [src p.2]  C: ... [src p.7]  D: no data found."
+}
+```
+
+Two scores. A trajectory metric checks the agent decomposed and searched each entity separately. An LLM judge, run through the same private gateway with a strict 0-to-1 rubric, scores the answer against that reference. One bad row fails alone (scored `NaN`), it never aborts the run.
+
+## The foundation, fast
+
+The perseverance layer only matters because the plumbing under it is boring and correct.
+
+**Reading is native-first.** A scanned PDF is a picture of text; a born-digital one already has the text. So the pipeline lifts the embedded layer for free when it exists and only pays for OCR on real scans, at higher DPI, where it is actually needed:
+
+```python
+words = page.get_text("words")
+if page.rotation in (0, None) and len("".join(w.text for w in words)) >= 40:
+    text, dpi = lift_text_layer(words), 200   # free, zero OCR error
+else:
+    text, dpi = ocr(render(page, dpi=300)), 300   # scans only, more pixels
+```
+
+Tables get a real cell grid (a table-structure model matches words to cells by geometry, so columns survive) and a hallucinated 200-column table is dropped, keeping the rest of the document: empty over invented. Repeated images (logos, hazard symbols) are captioned by a vision model once, then content-hash cached, so nobody pays twice to describe the same picture.
+
+**The queue is the database.** No Kafka, no Celery, no Pub/Sub. A document is a row with a `status`, and workers claim work with one Postgres primitive:
+
+```sql
+SELECT * FROM docs
+WHERE status = 'OCR_DONE'
+ORDER BY updated_at DESC
+FOR UPDATE SKIP LOCKED   -- many workers, one table, never the same doc twice
+LIMIT 5;
+```
+
+Fewer moving parts, one place to look when something is late. A weighted fair queue picks which use case to serve next, so a one-time bulk load of 80k certificates cannot starve the scientist waiting on one new report.
+
+**Retrieval is three searches, not one.** Semantic (multilingual vectors, so a French query finds an English doc), full-text (for a patent number a vector blurs), and title. Then a small-to-big ladder: a hit surfaces the exact page, the agent greps inside a known doc, fetches specific pages, and pulls a whole document only when it is short, all under a shared character budget so nothing overflows the model. Access is enforced inside the query itself, so two people from two teams asking the same question get answers from two different slices of the corpus.
+
+## Who has this problem
+
+Wiring an AI to a folder of documents is an afternoon demo. Making it faithful to tables, sourced on every sentence, airtight on access, and exhaustive on multi-part questions is a different job.
+
+The architecture transfers as-is. Anyone with a decade of documents nobody can search has the reading and retrieval problem: pharma dossiers, contract and KYC files, legal clauses, insurance claims in five layouts. And anyone whose AI answers look complete but are not has the perseverance problem, which is the part almost nobody builds, because it lives in the loop, not in the prompt.
