@@ -6,6 +6,47 @@
 
 const CASE_STUDIES = [
   {
+    slug: "perseverant-research-agent",
+    pillar: "Build",
+    featured: true,
+    published: false,
+    title: {
+      en: "The research agent that doesn't give up",
+      fr: "L'agent de recherche qui n'abandonne pas",
+    },
+    metric: {
+      en: "Multi-part questions answered in full, one cited source per part",
+      fr: "Questions multi-parties traitées en entier, une source citée par volet",
+    },
+    hook: {
+      en: "Ask an AI to compare eight products and it searches once, finds two, and ships a confident answer missing six.",
+      fr: "Demandez à une IA de comparer huit produits : elle cherche une fois, en trouve deux, et livre une réponse assurée à laquelle il en manque six.",
+    },
+    tags: ["RAG", "Google ADK", "Gemini", "Pinecone", "Agent eval", "Docling"],
+    stack: [
+      "Python",
+      "Google ADK",
+      "LiteLLM",
+      "Gemini",
+      "Pinecone",
+      "Vertex AI Agent Engine",
+      "Docling / TableFormer",
+      "GCP Cloud Run",
+      "Postgres",
+    ],
+    demo: {
+      q: {
+        en: "Document the performance of these four shampoo bases: A, B, C, D. Cite a source for each, or say no data found.",
+        fr: "Documente la performance de ces quatre bases shampoing : A, B, C, D. Cite une source pour chacune, ou dis aucune donnée trouvée.",
+      },
+      a: {
+        en: "One line per base, each with a citation to the exact page, and an explicit 'no data found' where the corpus is silent, after the agent searched every base separately.",
+        fr: "Une ligne par base, chacune avec une citation vers la page exacte, et un 'aucune donnée trouvée' explicite là où le corpus est muet, après que l'agent a cherché chaque base séparément.",
+      },
+      sources: ["lab_report_A.pdf · p.4", "stability_study_B.pdf · p.2"],
+    },
+  },
+  {
     slug: "document-intelligence-at-scale",
     pillar: "Build",
     featured: true,
