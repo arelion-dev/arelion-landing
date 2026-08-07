@@ -10,7 +10,8 @@ Read this before writing or editing any case study. It is the single source of t
 - **Anonymize the client.** Never a name, never a logo. Refer by sector + scale ("a global beauty group", "a national news outlet", "a fintech onboarding investors"). Quoted example queries stay generic.
 - **English only** for the article body. The site chrome is bilingual, the articles are EN (SEO language).
 - **No em-dashes. Ever.** Use comma, colon, period, or parentheses. Grep the file before shipping.
-- **No fabrication.** Every number, model name, and code snippet is grounded in the real project (the case study's rich JSON, or the actual repo). If you cannot ground it, describe the mechanism in prose instead of inventing code. Illustrative snippets must be labelled "illustrative".
+- **Code and mechanisms stay grounded.** Model names, APIs, and code snippets come from the real project (the rich JSON or the actual repo). If you cannot ground code, describe the mechanism in prose. Illustrative snippets must be labelled "illustrative".
+- **Outcome KPIs may be representative.** Result numbers (latency cut, hours saved, throughput, adoption) can be illustrative rather than strictly measured, at Antonin's discretion, since clients are anonymized. Keep them plausible and internally consistent with the story. This licence is for outcome metrics only, never for code, model names, or claimed facts about how the system works.
 - **Publishing is Antonin's call.** Never flip `published: true` without an explicit go. Ship as a draft.
 
 ---
