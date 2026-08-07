@@ -14,7 +14,7 @@ I designed and built a legal-research assistant over a jurisdiction's legislatio
 
 ## A single fabricated citation ends the product
 
-When a lawyer reads "Article 12 of Decree No. 4 of 2022" inside a confident paragraph, they act on it. If that article does not exist, if the number is off by one, or if the text belongs to a neighbouring jurisdiction, the tool has not saved time. It has planted a landmine in someone's advice.
+When a lawyer reads "Article 12 of Decree No. 4 of 2022" inside a confident paragraph, they act on it. If that article does not exist, if the number is off by one, or if the text belongs to a neighbouring emirate, the tool has not saved time. It has planted a landmine in someone's advice.
 
 Language models are fluent by design, and fluency is the failure mode: the wrong answer looks identical to the right one. Ask a raw Gemini call for "the article on early termination penalties" and it will happily produce "Article 34, Decree No. 9 of 2019". Correct format, plausible number, total confidence, and no such article on the books.
 
@@ -85,7 +85,7 @@ A citation is only as specific as what I can prove. A downgraded citation still 
 
 ## Gate check 3: broaden the jurisdiction, but flag it
 
-The corpus does not cover every regime equally, and passing one jurisdiction's law off as another's is the classic silent error. When a filtered search matches nothing, it auto-broadens to a library-wide search and returns a `broadened` flag, which the model is forced to disclose.
+The corpus does not cover every regime equally, and passing one emirate's law off as another's is the classic silent error. When a filtered search matches nothing, it auto-broadens to a library-wide search and returns a `broadened` flag, which the model is forced to disclose.
 
 ```python
 def search_legislation(query, jurisdiction):
@@ -97,7 +97,7 @@ def search_legislation(query, jurisdiction):
     return {"hits": hits, "broadened": True}
 ```
 
-The flag is not cosmetic. A `broadened: True` result changes the answer contract: the model must state that its jurisdiction filter matched zero results and that these are library-wide hits, not a match for what was asked. Silent broadening is how you tell a lawyer in one jurisdiction that a rule from the one next door applies to them. The flag makes that failure impossible to hide.
+The flag is not cosmetic. A `broadened: True` result changes the answer contract: the model must state that its jurisdiction filter matched zero results and that these are library-wide hits, not a match for what was asked. Silent broadening is how you tell a lawyer in one emirate that a rule from the emirate next door applies to them. The flag makes that failure impossible to hide.
 
 **Three independent checks run before a citation renders.**
 
