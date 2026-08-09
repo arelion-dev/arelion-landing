@@ -37,7 +37,10 @@ const renderChunk = (chunk, i) => {
 }
 
 const CaseStudyTemplate = ({ pageContext, data }) => {
-  const { t, lang } = useI18n()
+  const { t } = useI18n()
+  // FR temporarily disabled for case studies: render all content (title,
+  // metric, TL;DR, demo, body, date) in English regardless of site language.
+  const csLang = "en"
   const cs = find(pageContext.slug)
 
   // Lightbox for article images (with their caption) and code blocks.
@@ -98,7 +101,7 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
   if (!cs) return null
 
   const formattedDate = articleDate
-    ? new Intl.DateTimeFormat(lang === "fr" ? "fr-FR" : "en-US", {
+    ? new Intl.DateTimeFormat(csLang === "fr" ? "fr-FR" : "en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -119,14 +122,14 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
           ))}
         </div>
 
-        <h1 className="cs-detail-title">{cs.title[lang]}</h1>
-        <div className="cs-detail-metric">{cs.metric[lang]}</div>
+        <h1 className="cs-detail-title">{cs.title[csLang]}</h1>
+        <div className="cs-detail-metric">{cs.metric[csLang]}</div>
         {formattedDate && <p className="cs-detail-date">{formattedDate}</p>}
 
         {cs.tldr && (
           <div className="cs-tldr">
             <span className="cs-tldr-label">TL;DR</span>
-            <p>{cs.tldr[lang]}</p>
+            <p>{cs.tldr[csLang]}</p>
           </div>
         )}
 
@@ -180,9 +183,9 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
             <div className="cs-demo-bar">chat-with-your-docs</div>
             <div className="cs-demo-io">
               <p className="cs-io-label">{t("csDetail.demoQuestion")}</p>
-              <p className="cs-io-q">{cs.demo.q[lang]}</p>
+              <p className="cs-io-q">{cs.demo.q[csLang]}</p>
               <p className="cs-io-label">{t("csDetail.demoAnswer")}</p>
-              <p className="cs-io-a">{cs.demo.a[lang]}</p>
+              <p className="cs-io-a">{cs.demo.a[csLang]}</p>
               {cs.demo.sources && (
                 <>
                   <p className="cs-io-label">{t("csDetail.demoSources")}</p>
@@ -223,9 +226,9 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
           />
         ) : (
           cs.body.map(sec => (
-            <section key={sec.h[lang]} className="cs-section">
-              <h2>{sec.h[lang]}</h2>
-              {sec.p[lang].split("\n\n").map(renderChunk)}
+            <section key={sec.h[csLang]} className="cs-section">
+              <h2>{sec.h[csLang]}</h2>
+              {sec.p[csLang].split("\n\n").map(renderChunk)}
             </section>
           ))
         )}
