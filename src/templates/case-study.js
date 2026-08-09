@@ -80,9 +80,10 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
     const pre = e.target.closest("pre")
     if (pre) setLightbox({ type: "code", html: pre.outerHTML })
   }
-  // Each body exists in English and, when translated, in French. Serve the
-  // reader's language, fall back to English when a translation is missing.
-  const pick = (fr, en) => (lang === "fr" ? fr || en : en)
+  // FR article bodies are temporarily disabled: always serve English, even in
+  // FR mode. The .fr.MD files stay on disk. Re-enable by restoring:
+  //   const pick = (fr, en) => (lang === "fr" ? fr || en : en)
+  const pick = (fr, en) => en
   const techArticle = data && pick(data.techFr, data.techEn)
   const businessArticle = data && pick(data.businessFr, data.businessEn)
   const hasBoth = Boolean(techArticle && businessArticle)
