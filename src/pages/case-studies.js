@@ -14,7 +14,9 @@ const PILLARS = ["Build", "Automate", "Transform", "Audit", "LLM"].filter(p =>
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 const CaseStudiesPage = () => {
-  const { t, lang } = useI18n()
+  const { t } = useI18n()
+  // FR temporarily disabled for case studies: card content stays English.
+  const lang = "en"
   const [active, setActive] = useState(null)
 
   const shown = useMemo(

@@ -7,7 +7,9 @@ import CASE_STUDIES from "../data/case-studies"
 const pillarClass = pillar => `cs-p-${pillar.toLowerCase()}`
 
 const FeaturedCaseStudies = () => {
-  const { t, lang } = useI18n()
+  const { t } = useI18n()
+  // FR temporarily disabled for case studies: card content stays English.
+  const lang = "en"
   // Nothing published yet: no empty band on the home page.
   if (CASE_STUDIES.length === 0) return null
   // Show the strongest few (featured), then link to the rest.
