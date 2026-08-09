@@ -6,21 +6,21 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-Over a decade of national coverage, sitting as dead weight. Not "dead" as a figure of speech: most of the tags were used on exactly one article, tens of thousands of articles carried no tag at all, and "related articles" returned noise. The client, a national news outlet, held the national political record since launch in one place and could not ask it a single question.
+Over a decade of national coverage, all of it sitting there as dead weight. And I don't mean that as a figure of speech: most tags sat on exactly one article, tens of thousands of articles carried none at all, and "related articles" returned noise. My client, a national news outlet, had kept the country's whole political record in one place since launch, and couldn't put a single question to it.
 
-I designed, led and built the machinery that turns that dead archive into a queryable record of national politics, then into intelligence products a company pays for. The interesting work is not "call an LLM on each article." It is making the answers trustworthy at archive scale and keeping them current forever. So this covers both: the three layers, with the code that carries the weight, and the commercial logic they exist to serve.
+So I built the machinery that turns a dead archive into a queryable record of national politics, and then into intelligence products a company pays for. Running an LLM over each article is the easy part. The hard part is making the answers trustworthy at the scale of the whole archive, and keeping them current for good. This piece covers both sides: the three layers, with the code that does the real work, and the commercial logic they exist to serve.
 
 **500,000+ articles. Over a decade. One record you can finally question.**
 
-## An archive that size is a dataset, not content
+## An archive that size is a dataset
 
-A pile of articles has readers. A dataset about a country's politics has buyers who never read a word of it: lobbyists, compliance teams, embassies, investors.
+Readers are what a pile of articles gets you. Buyers are different. A dataset about a country's politics sells to people who never read a word of it: lobbyists, compliance teams, embassies, investors.
 
-Full-text search over the raw archive does not get you there, and this is the opinion the whole project rests on. Search finds documents, buyers need entities. "Show me the article that mentions this minister" is a search problem. "Show me every position this person has held and every stance they have taken on this policy, across every name they have gone by" is a data-model problem. You cannot grep your way to the second one. You extract structure first.
+Full-text search over the raw archive won't get you there, and that's the opinion the whole project rests on. Search returns documents; what a buyer wants is entities. "Show me the article that mentions this minister" is a search problem. "Show me every position this person has held and every stance they've taken on this policy, across every name they've gone by" is a data-model problem, and you can't grep your way to it. You extract the structure first.
 
 ## Layer 1: the spine, prose becomes a record
 
-I ran the full archive through an extraction pipeline built on Postgres and an LLM extractor with structured output. Every article is passed through one schema. The schema is the product: if a field is not in it, no buyer can ever query it.
+I ran the full archive through an extraction pipeline built on Postgres, with an LLM extractor that returns structured output. Every article goes through one schema, and that schema is the product: if a field isn't in it, no buyer can ever query it.
 
 ```python
 # illustrative: the extraction contract every article is passed through
@@ -39,13 +39,13 @@ class ArticleExtraction(BaseModel):
     statements: list[Statement]
 ```
 
-The extractor runs against that model with structured output, so the LLM cannot return a shape the pipeline does not expect.
+The extractor runs against that model, so the LLM can't hand back a shape the pipeline doesn't expect.
 
-One rule earned its place fast: the claim must be extractive, and `claim_span` must point at real characters in the source. Anything the model cannot ground in a span is dropped before it reaches the database. That single guard is the difference between a dataset a compliance team pays for and a plausible-sounding fabrication engine.
+One rule earned its place fast: the claim has to be extractive, and `claim_span` has to point at real characters in the source. Anything the model can't ground in a span gets dropped before it reaches the database. That one guard is what separates a dataset a compliance team will pay for from a fabrication engine that happens to sound plausible.
 
 **One schema. Every article. If it is not a field, no one can sell it.**
 
-Then entity resolution, the part nobody demos and everybody needs. `speaker_surface` is a mess: "J. Smith", "Jamal Smith", "Minister Smith", "the Honourable member for the north district" all point at one person across years. I resolve them into a stable `person_id` with a cheap-to-expensive cascade, not one big model call.
+Then comes entity resolution, the part nobody demos and everybody needs. `speaker_surface` is a mess. "J. Smith", "Jamal Smith", "Minister Smith", and "the Honourable member for the north district" all point at one person across a span of years. I resolve them to a stable `person_id` with a cascade that runs cheap steps before expensive ones, rather than one big model call.
 
 ```python
 # illustrative: resolve a raw surface name to a canonical person
@@ -69,11 +69,11 @@ def resolve(surface: str, context: str) -> int:
     return llm_adjudicate(surface, context, ranked[:2])
 ```
 
-The cascade matters for cost, not elegance. Blocking with `pg_trgm` throws away almost the whole graph before any vector math. Embeddings over the surrounding sentence break the ties that surface names cannot (two people share a family name, context tells them apart). Only genuine ambiguity reaches an LLM call. Run this over a whole archive and that ordering is the entire budget.
+The cascade is about cost. Blocking with `pg_trgm` throws away almost the whole graph before any vector math happens. Embeddings over the surrounding sentence break the ties that surface names can't (when two people share a family name, the context tells them apart). Only real ambiguity ever reaches an LLM call. Run this across a whole archive and that ordering is the entire budget.
 
-> **War story.** The first resolver was embeddings-only. No blocking, no deterministic guard. It merged two politicians who shared a common family name into one `person_id`, and quietly attributed one man's votes to the other. Cosine similarity was 0.94, because both contexts were "parliament, budget debate." The fix was not a better model. It was a hard guard (never merge two people who held the same seat in the same term) plus blocking, so the candidate set stays small enough to eyeball. Entity resolution fails silently, so it needs guards that fail loud.
+> **War story.** The first resolver was embeddings-only. No blocking, no deterministic guard. It merged two politicians who shared a common family name into one `person_id`, and quietly attributed one man's votes to the other. Cosine similarity was 0.94, because both contexts were "parliament, budget debate." The fix was a hard guard (never merge two people who held the same seat in the same term) plus blocking, so the candidate set stays small enough to eyeball. Entity resolution fails silently, so it needs guards that fail loud.
 
-The payoff is the query the whole product is sold on. A sentence about a backbencher early in the archive becomes a row connected to that person's ministerial appointment years later and their statement last week, all under one `person_id`, all cited back to source.
+The payoff is the one query the whole product is sold on. A throwaway sentence about a backbencher early in the archive becomes a row, linked to that person's ministerial appointment years later and to what they said last week, all under a single `person_id`, all cited back to the source.
 
 ```sql
 -- "everything this person said about this policy, since launch"
@@ -91,7 +91,7 @@ ORDER BY s.published_at;
 
 ## Layer 2: monitoring keeps it current without headcount
 
-The spine is not a one-off export. Every article the newsroom publishes lands in a Postgres work queue and flows through the exact same extraction and resolution path. I pull work with `FOR UPDATE SKIP LOCKED` so I can run many workers with no double processing and no external broker.
+The spine isn't a one-off export. Every article the newsroom publishes lands in a Postgres work queue and runs through the exact same extraction and resolution path. I pull work with `FOR UPDATE SKIP LOCKED`, which lets me run a lot of workers at once with no double processing and no external broker to babysit.
 
 ```sql
 -- illustrative: one worker claims a batch, others skip locked rows
@@ -107,42 +107,42 @@ WHERE article_id IN (
 RETURNING article_id;
 ```
 
-Reprocessing is idempotent on `article_id`, which mattered more than I expected. When I improved the extraction schema, I replayed the whole archive through the same queue with no separate backfill script. New articles and a re-run of the past are one code path. The dataset stays current with zero data entry.
+Reprocessing is idempotent on `article_id`, which mattered more than I expected going in. When I improved the extraction schema, I replayed the entire archive through the same queue and never wrote a separate backfill script. New articles and a re-run of the past share one code path, so the dataset stays current with zero data entry.
 
-The tags problem died as a side effect. Tagging stopped being a human chore and became an output of the same pipeline, and the normalized `topic` field repaired "related articles" for ordinary readers at the same time. Fixing the data model fixed the reader-facing feature for free, which is the tell that you fixed the right layer.
+The tags problem died as a side effect. Tagging stopped being a human chore and became an output of the pipeline, and the normalized `topic` field repaired "related articles" for ordinary readers along the way. Fixing the data model fixed the reader-facing feature for free, and that's usually the tell that you fixed the right layer.
 
 **Tens of thousands of untagged articles, resolved by the same pipeline that feeds the product.**
 
 ## Layer 3: the analyst drafts, and every draft cites its source
 
-On top of the spine, the system drafts. A weekly political tracker. Regulatory monitoring on what is changing and who is pushing it. Sector briefings. Election intelligence that fuses the historical record with live tracking. Plus an internal competitor monitor the newsroom keeps for itself.
+On top of the spine, the system drafts. It produces a weekly political tracker, regulatory monitoring on what's changing and who's pushing it, sector briefings, and election intelligence that fuses the historical record with live tracking. There's also an internal competitor monitor the newsroom keeps for itself.
 
-Every draft is assembled from statement rows, so every sentence carries the `article_id` it came from and renders as a citation.
+Every draft is assembled out of statement rows, so each sentence carries the `article_id` it came from and renders as a citation.
 
-This is junior-analyst work: research, structuring, first prose. Exactly what the machine does well. The opinion here is unfashionable. The LLM is never the source of a fact in this product, only the writer of prose over facts the database already holds.
+This is junior-analyst work, the research and the structuring and the first pass of prose, which is exactly what the machine is good at. My take here is unfashionable: the LLM only writes prose over facts the database already holds. It's never the source of a fact in this product.
 
-What ships is not what the machine wrote. The newsroom's political journalists, who understand this record better than any junior analyst could, validate, cut, and add the judgement. The AI does the legwork at a scale nobody could staff. The people do the part clients trust.
+What ships is never quite what the machine wrote. The newsroom's political journalists understand this record better than any junior analyst could, and they validate it, cut it, and add the judgement. The machine does the legwork at a scale nobody could ever staff, and the people supply the part clients actually trust.
 
-## The commercial logic came first, not the AI
+## The commercial logic came first
 
-The engineering exists to serve a model that is public and proven. Politico Pro took a beat a newsroom already covered and sold it to the people whose job depends on it. Today it is roughly half of Politico's revenue, at an average contract around $15,000 a year, with renewal around 90%. The Economist Intelligence Unit runs on the same logic.
+The engineering exists to serve a business model that's public and proven. Politico Pro took a beat a newsroom already covered and sold it to the people whose careers depend on it. Today that product is roughly half of Politico's revenue, at an average contract around $15,000 a year and renewal near 90%. The Economist Intelligence Unit runs on the same logic.
 
-**~$15,000 average contract, ~90% renewal, ~half of revenue. The model is documented, not a bet.**
+**~$15,000 average contract, ~90% renewal, ~half of revenue. The model is documented and proven.**
 
-The mechanism is simple. Someone whose job depends on your information pays many times what a reader pays, and pays it from a company budget. My client's version sells to the same corporate and government buyers it already knows from advertising, on a different budget line, at a margin a campaign cannot approach.
+The mechanism is simple. Someone whose job depends on your information will pay many times what a reader pays, and they pay it out of a company budget. My client's version sells to the same corporate and government buyers it already knows from advertising, on a different budget line, at a margin no ad campaign can come near.
 
-To be exact about my own role: I build the tech layer that creates something sellable. I do not run ad monetization, header bidding or yield, and I do not touch the commercial setup. The client's commercial team sells the product I hand them.
+To be exact about my own role: I build the tech layer that turns the archive into something sellable. I don't run ad monetization, header bidding or yield, and I don't touch the commercial setup. The client's commercial team sells the product I hand over.
 
-## The honest limit: I cannot size this market
+## The honest limit: I can't size this market
 
-One limit belongs here, because I put it in the proposal. Politico Pro sells into the densest lobbying market on earth. My client's market is not that one, and how many seats it supports at that kind of price is a commercial question the client reads far better than I can.
+One limit belongs here, because I put it in the proposal. Politico Pro sells into the densest lobbying market on earth. My client's market isn't that one, and how many seats it supports at that kind of price is a commercial question the client reads far better than I can.
 
-What I can say is narrower and more defensible. The raw material exists. The machinery now exists, and it is boring, inspectable Postgres plus a schema, not a black box. The model is proven elsewhere. The buyers already spend with this outlet on a different budget line.
+What I can say is narrower, and it holds. The raw material is there. The machinery is there too now, and it's boring, inspectable Postgres plus a schema. The model is proven elsewhere, and the buyers already spend money with this outlet, just on a different budget line.
 
 ## Who has this problem
 
-Anyone who has spent years producing something proprietary (coverage, rulings, filings, market data, member records, technical documentation) is probably monetising it once, at creation, and never again. The archive earns nothing because nobody can ask it anything.
+Anyone who has spent years producing something proprietary (coverage, rulings, filings, market data, member records, technical documentation) is probably monetizing it once, at creation, and never again. The archive earns nothing because nobody can ask it anything.
 
-The fix is not a better CMS, and it is not "put an LLM on it" either. It is three things in order. Structure, so the corpus can be asked questions and every answer cites a row. Monitoring, so it stays current without headcount. Drafting with human sign-off, so the output carries your credibility and not a chatbot's.
+A better CMS doesn't fix this, and neither does "put an LLM on it". The fix has three parts, and the order matters. First, structure, so the corpus can be questioned and every answer cites a row. Then monitoring, so it stays current without headcount. Then drafting with human sign-off, so the output carries your credibility.
 
-The test is one question. Is there someone whose job depends on what you know, with a company budget behind them? If yes, your archive is not a storage cost. It is an unlaunched product.
+It comes down to one question. Is there someone whose job depends on what you know, with a company budget behind them? If yes, your archive is a product you just haven't launched.

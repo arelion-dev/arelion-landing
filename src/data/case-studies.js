@@ -62,7 +62,7 @@ const CASE_STUDIES = [
     },
     metric: {
       en: "Over a decade of coverage and every desk's know-how, searchable by anyone cleared for it",
-      fr: "Plus d'une décennie de couverture et le savoir-faire de chaque pôle, interrogeables par qui y a droit",
+      fr: "Dix ans d'archives et le savoir de chaque service, retrouvables en une question",
     },
     hook: {
       en: "A senior editor resigns and takes with her the only map of who covered what, and who to call.",
@@ -833,7 +833,7 @@ const CASE_STUDIES = [
     },
     metric: {
       en: "Five workstreams, one accountable owner, each phase shipping value on its own",
-      fr: "Cinq chantiers, un seul responsable, chaque phase livrant de la valeur seule",
+      fr: "Cinq chantiers, un seul responsable, chaque phase livre de la valeur à elle seule",
     },
     hook: {
       en: "The audit report was right, and nothing in it moved, because owning the follow-through was nobody's job.",

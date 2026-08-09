@@ -8,13 +8,13 @@ private: true
 
 # Human in the loop AI compliance for KYC document automation
 
-I build KYC document automation that reads investor files, clears the routine ones on its own, and hands every doubtful file to a person with the exact reason attached. The AI reads and drafts an opinion. It never approves and never blocks. That call is made by plain, auditable code, so every decision holds up months later when someone asks how it was reached.
+I build KYC document automation that reads investor files, clears the routine ones by itself, and hands every doubtful file to a person with the exact reason attached. The AI reads the file and drafts an opinion, and that's where its power stops: it never approves, and it never blocks. The call belongs to plain, auditable code, so every decision still holds up months later when someone asks how it was reached.
 
 ## The status quo costs you your best reviewers
 
-A compliance team reads investor files by hand: ID cards, bank details, tax notices, company extracts. Most are routine. The volume keeps climbing. Every hour spent on a clean file is an hour stolen from the file that actually needs scrutiny.
+A compliance team reads investor files by hand: ID cards, bank details, tax notices, company extracts. Most are routine, and the volume climbs every quarter. Every hour a reviewer spends on a clean file is an hour stolen from the one that actually needs scrutiny.
 
-The obvious fix is to let a model decide, and it works right up to the day it approves the wrong file. Now the wrong investor sits inside a regulated fund, the approval looks clean, and your name is on it. That is not a saved hour. That is a finding.
+The obvious fix is to let a model decide for you. It works right up to the day it approves the wrong file. Now that investor sits inside a regulated fund, the approval looks clean, and your name is on it. One mistake like that is a compliance finding.
 
 ## What you get
 
@@ -26,9 +26,9 @@ The obvious fix is to let a model decide, and it works right up to the day it ap
 
 ## Why it holds
 
-The decision is made in code, not by the model. That is the whole point of AI with deterministic guardrails: the AI advises, code decides, and anything uncertain routes to a person. The verdict is reproducible, so it survives an audit. This is not a prototype. It runs today for a fintech that onboards investors into regulated funds.
+The decision gets made in code rather than by the model. That's the whole point of AI with deterministic guardrails: the AI advises, code decides, and anything uncertain goes to a person. Because the verdict is reproducible, it survives an audit. And this isn't a prototype: it runs today for a fintech that onboards investors into regulated funds.
 
-One honest boundary: this does not shrink your review team to zero, and it is not meant to. It trades a little throughput for full auditability on purpose. If you want nobody in the loop, this is the wrong design.
+One honest boundary: this won't shrink your review team to zero, and it was never meant to. It trades a little throughput for full auditability, on purpose. If you want nobody in the loop at all, this is the wrong design.
 
 ## Who this is for
 

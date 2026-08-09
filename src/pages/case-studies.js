@@ -59,8 +59,8 @@ const CaseStudiesPage = () => {
               <p className={`cs-row-kicker cs-p-${cs.pillar.toLowerCase()}`}>
                 {cs.pillar}
               </p>
-              <p className="cs-row-stat">{cs.metric[lang]}</p>
               <h2 className="cs-row-title">{cs.title[lang]}</h2>
+              <p className="cs-row-stat">{cs.metric[lang]}</p>
               <p className="cs-row-dek">{cs.hook[lang]}</p>
               <span className="cs-row-read">
                 {t("cs.read")} <span className="cs-arrow">&rarr;</span>

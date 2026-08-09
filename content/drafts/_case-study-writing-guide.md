@@ -148,11 +148,28 @@ Never fabricate a client's internal API, secret, or number. Grounded code and re
 
 ---
 
+## 5b. Anti-AI-slop (EN articles)
+
+These are the EN counterparts to the `anti-slop-fr` skill (which already owns the French rules). Source cherry-picked from the anti-ai-slop-writing rule set (Carnegie Mellon 2025, Wikipedia "Signs of AI Writing", Buffer post analysis). Scope: the case-study article bodies, which are Antonin's own voice. They do NOT override ASD-STE100 for chat reports or step-by-step instructions, where short declarative sentences are correct.
+
+**Banned vocabulary.** Never: delve, tapestry, testament ("a testament to"), vibrant, pivotal, crucial, intricate, meticulous, bolster, garner, underscore, interplay, multifaceted, nuanced (as filler), foster, leverage (as a verb, say "use"), utilize (say "use"), facilitate, encompass, paramount, groundbreaking, cutting-edge, game-changing, transformative, seamless, robust (outside literal engineering), comprehensive (about your own output), harness (figurative), spearhead, showcase, highlight (figurative), unprecedented, remarkable, profound, synergy, streamline, supercharge, elevate. "harness" stays only in its literal sense (eval harness, test harness).
+
+**Banned phrases and openers.** "It's worth noting", "It's important to note", "At its core", "In the realm of", "When it comes to", "This is where X comes in", "Whether you're a X or a Y", "From X to Y" (range opener), "At the end of the day", "The bottom line is", "Here's the thing / the deal", "In conclusion", "Overall,", "Moreover / Furthermore / Additionally", "Notably / Importantly / Interestingly". No "As a [role], I..." credential openers.
+
+**Structural tells (how readers spot AI even with clean words).**
+- No "It is not X, it is Y" antithesis, and no "not just X, but Y". This one reads as AI 100%. Already swept out; keep it out.
+- No rule of three. Do not default to three items or three adjectives. Use two, four, one.
+- Vary sentence length. No three consecutive sentences of the same length. Mix a four-word sentence against a thirty-word one. This is the single most measurable AI signal.
+- No parataxis. Do not chain short declaratives (short sentence, then another, then another). Connect related thoughts with subordinate clauses, conjunctions, or a semicolon, so the syntax shows causation and contrast.
+- Contractions on. "don't", "it's", "can't", not the expanded forms.
+- Active voice, and let some paragraphs stop without a wrap-up transition.
+
 ## 6. Pre-ship checklist
 
 - [ ] First-person ownership, zero "as part of the team".
 - [ ] Client anonymized, no names or logos anywhere.
 - [ ] No em-dashes anywhere (grep for the character; use comma, colon, or period).
+- [ ] Anti-slop (section 5b): no banned vocab, no "not X, it's Y" antithesis, no rule of three, varied sentence length, contractions on.
 - [ ] Headers read as an arc on their own.
 - [ ] The result is in the opening and the title.
 - [ ] Tech: at least one real artifact (code/trace/diagram) and one honest limit.

@@ -2084,13 +2084,13 @@ button:focus-visible,
   padding: 3px 10px; border-radius: 999px;
   margin: 0 0 var(--spacing-4);
 }
-.cs-row-stat {
-  font-family: var(--font-heading); font-weight: 800; font-size: var(--fontSize-4); line-height: 1.1;
-  letter-spacing: -0.02em; color: var(--color-primary); margin: 0;
-}
 .cs-row-title {
-  font-family: var(--font-heading); font-weight: 700; font-size: var(--fontSize-2); line-height: 1.25;
-  color: var(--color-heading); margin: var(--spacing-3) 0 var(--spacing-2);
+  font-family: var(--font-heading); font-weight: 800; font-size: var(--fontSize-3); line-height: 1.15;
+  letter-spacing: -0.02em; color: var(--color-heading); margin: 0;
+}
+.cs-row-stat {
+  font-family: var(--font-heading); font-weight: 600; font-size: var(--fontSize-1); line-height: 1.35;
+  color: var(--color-primary); margin: var(--spacing-2) 0 0;
 }
 .cs-row-dek { font-size: var(--fontSize-1); line-height: 1.6; color: var(--color-text-light); margin: 0 0 var(--spacing-5); }
 .cs-row-read {
@@ -2152,10 +2152,24 @@ button:focus-visible,
 .lang-switch button:hover { color: var(--color-heading); }
 
 /* Tech/Business audience toggle on case-study detail pages */
+.cs-audience-wrap { margin: 10px 0 4px; }
+.cs-audience-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cs-audience-label {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-0);
+  font-weight: var(--fontWeight-semibold);
+  color: var(--color-text-light);
+}
+.cs-audience-ico { margin-right: 6px; }
+.cs-audience-hint {
+  margin: 8px 0 0;
+  font-size: var(--fontSize-0);
+  line-height: 1.5;
+  color: var(--color-text-light);
+}
 .cs-audience {
   display: inline-flex;
   gap: 2px;
-  margin: 8px 0 4px;
   padding: 3px;
   background: var(--md-surface);
   border: 1px solid var(--hairline-strong);
@@ -2165,6 +2179,8 @@ button:focus-visible,
   font-weight: var(--fontWeight-semibold);
 }
 .cs-audience button {
+  display: inline-flex;
+  align-items: center;
   background: none;
   border: 0;
   padding: 6px 16px;
@@ -2259,28 +2275,30 @@ button:focus-visible,
 /* Home: strongest few as a static grid, then a link to the rest. */
 .cs-featured-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-4);
   margin-top: var(--spacing-4);
 }
-.cs-featured-grid .cs-cara-card { flex: initial; width: auto; }
 .cs-featured-more { margin-top: var(--spacing-6); text-align: center; }
+@media (max-width: 1000px) {
+  .cs-featured-grid { grid-template-columns: 1fr 1fr; }
+}
 @media (max-width: 640px) {
   .cs-featured-grid { grid-template-columns: 1fr; }
 }
-.cs-cara-metric {
+.cs-cara-title {
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: var(--fontSize-2);
-  color: var(--navy);
+  color: var(--color-heading);
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
-.cs-cara-title {
+.cs-cara-metric {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: var(--fontSize-1);
-  color: var(--color-text-light);
+  font-weight: 600;
+  font-size: var(--fontSize-0);
+  color: var(--color-primary);
   margin: 0;
   line-height: 1.3;
 }

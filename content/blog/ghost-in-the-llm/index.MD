@@ -50,7 +50,7 @@ Here's what I ended up with:
 - **Learning Rate**: 5e-5 with cosine scheduling (the goldilocks zone)
 - **Epochs**: 8 (turned out to be perfect for convergence)
 - **Memory Usage**: ~7.8 GiB VRAM (manageable on cloud GPUs)
-- **The Secret Sauce**: `train_on_inputs: true` (crucial for learning conversation patterns)
+- **The Secret Sauce**: `train_on_inputs: true` (essential for learning conversation patterns)
 
 ## The Data: How I Prepared My Digital DNA
 

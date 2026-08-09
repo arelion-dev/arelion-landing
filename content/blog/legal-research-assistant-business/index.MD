@@ -6,17 +6,17 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I build legal research assistant AI that backs every point with a citation you can click and verify. Each footnote resolves to a real article on the official portal, or the tool tells you plainly that it cannot confirm the reference.
+I build legal research assistant AI that backs every point with a citation you can click and verify. Each footnote resolves to a real article on the official portal, or the tool tells you plainly that it can't confirm the reference.
 
-An AI that does not invent case law, by design, not by hope.
+An AI that doesn't invent case law, by design.
 
 **0 fabricated citations reach the user.**
 
 ## What a confident wrong answer costs you
 
-A legal chatbot that invents case law is worse than no chatbot at all. A lawyer who reads "Article 12 of Decree No. 4 of 2022" acts on it. If that article does not exist, or the number is off by one, the tool has planted a landmine in someone's advice.
+A legal chatbot that invents case law is worse than no chatbot at all. A lawyer who reads "Article 12 of Decree No. 4 of 2022" acts on it, and if that article doesn't exist, or the number is off by one, the tool has planted a landmine in someone's advice.
 
-A wrong answer looks exactly like a right one, so your team cannot tell which paragraphs to trust. Every output then gets re-checked by hand, which erases the time the tool was meant to save. And one fabricated citation, seen once by a client or a regulator, ends trust in the whole product.
+A wrong answer looks exactly like a right one, so your team can't tell which paragraphs to trust. Every output then gets re-checked by hand, which erases the time the tool was meant to save. And one fabricated citation, seen once by a client or a regulator, ends trust in the whole product.
 
 ## What you get
 
@@ -29,14 +29,14 @@ A research assistant that can only speak from law that actually exists, delivere
 
 ## Why it holds
 
-This is proper RAG for legal and compliance work, not a chatbot with a legal prompt. Every citation is checked against the laws just retrieved and against the article text on file. If a reference does not verify, it is stripped before you see it.
+This is proper RAG for legal and compliance work. Every citation is checked against the laws just retrieved and against the article text on file. If a reference doesn't verify, it's stripped before you ever see it.
 
-The corpus is ingested only from official sources and version-tracked, so the words in the answer trace back to a real text. It is access-safe, and it already runs at real scale for a regulated client in a live jurisdiction.
+The corpus is ingested only from official sources and version-tracked, so the words in the answer trace back to a real text. It's access-safe, and it already runs at real scale for a regulated client in a live jurisdiction.
 
-One honest boundary: when an article number will not verify, the tool keeps the law and drops the number. You sometimes get "this law governs the point" instead of a precise-looking guess. I chose correct and coarser over precise and wrong.
+One honest boundary: when an article number won't verify, the tool keeps the law and drops the number. You sometimes get "this law governs the point" instead of a precise-looking guess. I chose correct and coarser over precise and wrong.
 
 ## Who this is for
 
-Any team that answers questions out of a body of rules, where a fluent wrong answer carries real cost: legal, compliance, tax, medical guidelines, safety standards. If someone on your team has to cite chapter and verse to a regulator, and "the tool said so" is not an accepted answer, this is the shape of the fix.
+Any team that answers questions out of a body of rules, where a fluent wrong answer carries real cost: legal, compliance, tax, medical guidelines, safety standards. If someone on your team has to cite chapter and verse to a regulator, and "the tool said so" isn't an accepted answer, this is the shape of the fix.
 
 Want me to look at yours, in writing?

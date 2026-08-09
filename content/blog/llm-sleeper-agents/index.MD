@@ -6,29 +6,29 @@ tags: ["Tech", "AI", "Security"]
 private: true
 ---
 
-You deploy a model you did not train. An API from a provider, a fine-tune from a supplier, open weights from a hub. A switch can be buried in its training: a specific string, meaningless to a human, that never comes up in normal use. Until the day it does. On that trigger the model starts following someone else's instructions, with exactly the access you gave it.
+You deploy a model you didn't train. Maybe it's an API from a provider, maybe a fine-tune a supplier handed you, maybe open weights you pulled off a hub. Somewhere in that training a switch can sit buried: a specific string, meaningless to a human, that never comes up in normal use. Until the day it does, and the model starts taking someone else's instructions with exactly the access you gave it.
 
-I cannot verify the weights are clean, so I stop trying. I audit the system instead, until a triggered model has no path to move your data out. The trigger fires and the incident is a log line, not a breach. Here is how I get there.
+I can't verify the weights are clean, so I stop trying. I audit the system instead, until a triggered model has no path to move your data out. The trigger still fires. The difference is that the incident is now a log line rather than a breach, and here's how I get there.
 
-## Testing harder makes it worse, not better
+## Testing harder makes it worse
 
-The naive answer is to test harder and train safer. Public research says that fails.
+The naive fix is to test harder and train safer. Public research says that doesn't work.
 
-Anthropic's Sleeper Agents work (2024) built models with a hidden trigger, then ran the full safety playbook against them: supervised fine-tuning, reinforcement learning, adversarial training. The backdoor survived all of it. Worse, adversarial training sometimes taught the model to recognize the probe and hide the behavior better. The safety pass made detection harder instead of removing the flaw.
+Anthropic's Sleeper Agents paper (2024) built models with a hidden trigger, then threw the full safety playbook at them: supervised fine-tuning, reinforcement learning, adversarial training. The backdoor survived all of it. Worse, adversarial training sometimes taught the model to spot the probe and hide the behavior better, so the safety pass made detection harder rather than removing the flaw.
 
 **The backdoor survived every safety technique in the study: supervised fine-tuning, reinforcement learning, and adversarial training.**
 
-My take: you cannot train a backdoor out, because training is the mechanism that put it in. Safety fine-tuning shapes behavior on the distribution it sees. The trigger lives off that distribution by construction, so the gradient never touches it. You are sanding a table and expecting the nail inside the wood to come loose.
+My take: you can't train a backdoor out, because training is the mechanism that put it there in the first place. Safety fine-tuning shapes behavior on the distribution it sees, and the trigger lives off that distribution by construction, so the gradient never touches it. You're sanding a table and waiting for the nail buried in the wood to work loose.
 
 Planting one is cheap. A 2025 study from Anthropic, the UK AI Security Institute and the Alan Turing Institute found that around 250 malicious documents reliably backdoor a model, and that this number stays roughly constant as the model grows.
 
 **About 250 poisoned documents backdoor a model, and the count barely moves as the model scales. At frontier scale that is roughly 0.00016 percent of the training tokens.**
 
-The trigger does not even need a user to type it. It can ride in on a web page, a PDF, a calendar invite, any untrusted content the agent reads.
+The trigger doesn't even need a user to type it. It can ride in on a web page, a PDF, a calendar invite, on any untrusted content the agent reads.
 
 ## Assume the model is lying, then ask what it can reach
 
-Since I cannot verify the weights, the audit starts from the opposite assumption. This model may be lying, so what can it actually do with the access it holds?
+Since I can't verify the weights, the audit starts from the opposite assumption. This model might be lying, so what can it actually do with the access it holds?
 
 The frame comes from Simon Willison's lethal trifecta. Three legs, and I name each one concretely for the stack in front of me:
 
@@ -59,7 +59,7 @@ agents:
 
 ## Cut a leg on purpose
 
-The map exists to break a leg. If an agent touches private data, it does not also get free reach to the open internet in the same context. I separate the sessions: one context reads sensitive documents with no route off the box, another browses through a proxy and never sees the data. No shared memory between them.
+The map exists so I can break a leg on purpose. If an agent touches private data, it doesn't also get free reach to the open internet in the same context. I split the sessions: one context reads sensitive documents with no route off the box, and another browses through a proxy and never sees the data. Nothing shared in memory between them.
 
 ```yaml
 # illustrative: two isolated contexts, no shared memory, no shared route out
@@ -75,11 +75,11 @@ contexts:
 # a message read by private_reader cannot become an outbound request in web_browser
 ```
 
-> War story. On one stack I cut the network between contexts and called it done. The two contexts still shared one vector store. Private contract chunks surfaced during a browsing task and rode out through the leg I had left open. I had cut the network and forgotten the memory layer. Isolation means every shared channel, not just the obvious one.
+> War story. On one stack I cut the network between contexts and called it done. The two contexts still shared one vector store. Private contract chunks surfaced during a browsing task and rode out through the leg I had left open. I had cut the network and forgotten the memory layer. Isolation means every shared channel, including the ones that are easy to miss.
 
 ## Egress control is the defense that holds on the worst day
 
-Egress control does the heavy lifting on the third leg. An agent that runs code sits behind a default-deny network policy where an outbound call to an unknown host simply fails. Not logged and reviewed later: fails, at the boundary, before the byte leaves.
+Egress control does the heavy lifting on the third leg. An agent that runs code sits behind a default-deny network policy, so an outbound call to an unknown host simply fails. The call dies at the boundary before the byte leaves, rather than landing in a log for someone to review after the fact.
 
 ```yaml
 # illustrative Kubernetes NetworkPolicy: default-deny egress for the agent pod
@@ -123,11 +123,11 @@ def dispatch(call):
 
 This is the layer that holds on the worst day, when the trigger has fired and the model is trying to move data out.
 
-Egress control is the load-bearing defense because it is the only one that does not depend on understanding the model. Probes, prompts and evals all reason about behavior you cannot fully see. A dropped packet does not care whether the model is lying. The attempt dies at the boundary either way.
+Egress control is the load-bearing defense because it's the only one that doesn't depend on understanding the model. Probes and evals reason about behavior you can't fully see. A dropped packet doesn't care whether the model is lying; the attempt dies at the boundary either way.
 
 ## Provenance treats every supplier as attack surface
 
-Provenance addresses the supply chain itself. Know where your weights came from, verify them before they load, and pin the exact artifact so nobody swaps it under you.
+Provenance goes after the supply chain itself. Know where your weights came from, verify them before they load, then pin the exact artifact so nobody swaps it under you.
 
 ```bash
 # illustrative: verify the weights are the ones you vetted, before they load
@@ -144,14 +144,14 @@ Treat every fine-tuning supplier as part of your attack surface, because a backd
 
 The trigger is invisible by design, so a clean test run means nothing. I run behavioral canaries, contrast tests between contexts, and monitoring for tool calls that make no sense for the task. A code assistant resolving an unknown domain, or reading `/data` from the browsing context, is a signal worth an alarm.
 
-This layer does not prove the model is clean. It buys a chance to notice. My honest position: probing is the weakest leg of the defense and I treat it that way. It is a smoke detector, not a wall. The wall is the egress boundary; the detector just tells you the trigger fired.
+This layer doesn't prove the model is clean. What it buys is a chance to notice. My honest position: probing is the weakest leg of the defense, and I treat it that way. It's a smoke detector, nothing more. The wall is the egress boundary; the detector just tells you the trigger went off.
 
 ## What holds, and what I cannot promise
 
 An agent behind egress control, tool allowlists and separated contexts can carry a live backdoor and still have no way to move your data out. The trigger fires, the outbound call fails, the incident is a log line instead of a breach.
 
-The limits deserve equal honesty. None of this proves a model is clean. No known technique does, and that is precisely the finding.
+The limits deserve the same honesty. None of this proves a model is clean. No known technique does, and that's precisely the finding.
 
-Containment protects the exfiltration path, not output quality. A backdoored model can still quietly degrade the work it produces, and only behavioral probes and human review touch that risk. The defenses also hold only if they cover every agent: one forgotten integration holding all three legs reopens the path, and the shared vector store above is how that happens in practice.
+Containment protects the exfiltration path. It doesn't protect output quality. A backdoored model can still quietly degrade the work it produces, and only behavioral probes and human review touch that risk. The defenses also hold only if they cover every agent, since one forgotten integration holding all three legs reopens the path, and the shared vector store above is how that tends to happen in practice.
 
-Stop asking whether you can trust the model. Start asking what the model can reach. Trust in the weights cannot be verified, so it cannot be the foundation. Reachability can be designed, measured and enforced. I audit stacks for exactly this combination, because the teams that assembled it almost never see it.
+Stop asking whether you can trust the model. Start asking what the model can reach. Trust in the weights can't be verified, so it can't be the foundation you build on. Reachability is different: you can design it, measure it, enforce it. I audit stacks for exactly this combination, because the teams that assembled it almost never see it themselves.

@@ -6,33 +6,29 @@ tags: ["OCR", "Benchmarking", "Evaluation"]
 private: true
 ---
 
-A document had been sitting in `WAITING` for twenty-four hours. Three pages. The pipeline had not crashed, it had not errored, it was still working: the in-house table matcher had decided that one small table on page two contained 82,176 cells, and it was faithfully trying to fill all of them. Forty-three cells existed on that page.
+A document had been sitting in `WAITING` for twenty-four hours. Three pages. Nothing had crashed and nothing had thrown an error; the pipeline was still working, because the in-house table matcher had decided that one small table on page two held 82,176 cells and it was faithfully trying to fill every one. Forty-three cells existed on that page.
 
-I proposed replacing that in-house matcher with the official Docling one, plus a different region OCR engine. Then I had to prove it, against three alternatives, without hand-waving. This is the benchmark I built for a global beauty group's document pipeline, and the method transfers to any OCR or document-understanding swap.
+So I proposed swapping that matcher for the official Docling one, with a different region OCR engine alongside it. Then I had to prove the swap beat three alternatives, and prove it without hand-waving. This is the benchmark I built for a global beauty group's document pipeline; the method carries over to any OCR or document-understanding swap you're weighing.
 
-By the end you will have the four pieces: why one benchmark is not enough, which metrics actually predict production quality, the hallucination signal that costs nothing to compute, and the trap that made the losing engine look like the winner.
+By the end you'll have four pieces: why one benchmark isn't enough, which metrics actually predict production quality, the hallucination signal that costs nothing to compute, and the trap that made the losing engine look like the winner.
 
 **Median declared table size on 8 hallucinating production documents: 32,699 cells before, 145 after.**
 
 ## One benchmark cannot answer two different questions
 
-I had two questions and they are not the same question.
-
-The first: does changing only the table matcher make the output better? The second: how does the resulting system rank against the alternatives a buyer could pick instead?
-
-So I built two benches.
+I had two questions, and they aren't the same one. Does changing only the table matcher make the output better? And once it's changed, how does the resulting system rank against the alternatives a buyer could pick instead? Two questions meant two benches.
 
 **Bench 1, the golden set.** 113 documents annotated by hand, with per-block ground truth: layout, OCR text, titles, headers, footers, captions, tables. Scored with TEDS, CER, and an LLM judge. Everything upstream of the matcher is held fixed, so this bench isolates the component under test.
 
 **Bench 2, the blind comparison.** 220 documents, four systems (the in-house matcher, my proposal, the open-source Docling matcher as is, and a paid document-AI SaaS), scored two ways: a frontier VLM judging blind on the rendered page image (n=179), and symmetric TEDS between systems (n=176). No annotation budget, and no system gets home-field advantage.
 
-The opinion: if you only build the golden set, you learn whether your change helped and nothing about whether you should have bought instead. If you only build the blind comparison, every regression is a mystery because four things changed at once. Build both. The second one is cheap once the harness exists.
+My take: build only the golden set and you learn whether your change helped, but nothing about whether you should have bought instead. Build only the blind comparison and every regression turns into a mystery, because four things moved at once. Build both. Once the harness exists, the second one is cheap.
 
 ## Measure the metric that matches the production path
 
 Four metrics, each answering a different failure mode.
 
-**TEDS** (Tree-Edit-Distance Similarity), 0 to 1, for table structure. It compares the tree of the predicted table against ground truth, so it punishes a merged cell or a lost column, not a font.
+**TEDS** (Tree-Edit-Distance Similarity), 0 to 1, for table structure. It compares the tree of the predicted table against ground truth, so it punishes a merged cell or a lost column rather than a font.
 
 **CER** (Character Error Rate) for the text layer. TEDS can be high on a table whose cells contain garbage, so you need both.
 
@@ -69,7 +65,7 @@ Eight out of eight fixed. After the swap, declared matches real everywhere.
 
 ## The LLM judge only works if the rubric is boring
 
-A judge asked "is this good?" returns noise. A judge asked for named, bounded sub-scores against the page image returns something you can diff across runs.
+Ask a judge "is this good?" and you get noise back. Ask instead for named, bounded sub-scores against the page image, and you get something you can diff across runs.
 
 ```json
 {
@@ -90,13 +86,13 @@ A judge asked "is this good?" returns noise. A judge asked for named, bounded su
 }
 ```
 
-Two rules make this usable. Blind: the judge never learns which system it is scoring, or it will flatter the one it recognises. And `hallucination_absence` as its own axis: it moved 4.7 to 8.1 out of 10 across the swap, which no aggregate quality score would have surfaced.
+Two rules make this usable. First, keep it blind: the judge never learns which system it's scoring, or it flatters the one it recognises. Second, give `hallucination_absence` its own axis; it moved from 4.7 to 8.1 out of 10 across the swap, a shift no aggregate quality score would have surfaced.
 
-> **War story.** I nearly shipped the wrong engine because of the obvious metric. Comparing tesseract against rapidocr on raw word capture, tesseract wins clearly: **96.7% of words caught versus 86.0%**. Read that number alone and my proposal made things worse. It is the wrong number. The matcher assigns words to cells **by box position, not by presence**. tesseract in `PSM.AUTO` reads in reading order, so its boxes land in the wrong cells and large tables collapse: **TEDS 0.59**. rapidocr emits well-located line boxes, so the grid rebuilds correctly: **TEDS 0.82**. One 16x4 table made it concrete: tesseract caught **more** words (38 versus 35) and scored **0.50 TEDS**; rapidocr scored **0.92**. The text was all there, in the wrong places. Measure the metric that matches the production path, or your benchmark will confidently tell you the opposite of the truth.
+> **War story.** I nearly shipped the wrong engine because of the obvious metric. Comparing tesseract against rapidocr on raw word capture, tesseract wins clearly: **96.7% of words caught versus 86.0%**. Read that number alone and my proposal made things worse. It is the wrong number. The matcher assigns words to cells **by box position**, so catching a word is not enough. tesseract in `PSM.AUTO` reads in reading order, so its boxes land in the wrong cells and large tables collapse: **TEDS 0.59**. rapidocr emits well-located line boxes, so the grid rebuilds correctly: **TEDS 0.82**. One 16x4 table made it concrete: tesseract caught **more** words (38 versus 35) and scored **0.50 TEDS**; rapidocr scored **0.92**. The text was all there, in the wrong places. Measure the metric that matches the production path, or your benchmark will confidently tell you the opposite of the truth.
 
 ## One variable at a time, six configs, 239 tables
 
-Same crop, same matcher, same documents. Only the region OCR engine changes. Six configs: four tesseract page segmentation modes, easyocr, rapidocr, over 239 golden tables.
+Everything stays fixed here (the crop, the matcher, the documents) and only the region OCR engine changes. Six configs in all: four tesseract page segmentation modes, plus easyocr and rapidocr, run over 239 golden tables.
 
 | Config | Small <20 | Medium 20-100 | Large >100 | Scans | Overall |
 |---|---|---|---|---|---|
@@ -109,9 +105,9 @@ Same crop, same matcher, same documents. Only the region OCR engine changes. Six
 
 The claim survives contact with a properly tuned opponent: PSM 11 is a much better tesseract than the default, and it still trails. easyocr ties rapidocr on accuracy and loses on time, roughly 2.3x slower per table (1,892 ms versus 837 ms median extraction).
 
-Breaking the score down by table size is what made this readable. On the overall average, tesseract AUTO and rapidocr look close. The gap only opens on tables above 100 cells and on scans, and those are exactly the documents that were breaking production.
+Breaking the score down by table size is what made this readable. On the overall average, tesseract AUTO and rapidocr look close enough to shrug at. The gap only opens up on tables above 100 cells and on scans, which happen to be exactly the documents that were breaking production.
 
-## The honest result: parity, never a win
+## The honest result: parity at best
 
 On the golden bench, only the matcher changed, so everything except tables is identical: layout detection 78, OCR text 93, figure captions 96, table captions 98, all unchanged. The deltas are all in the table column.
 
@@ -119,7 +115,7 @@ On the golden bench, only the matcher changed, so everything except tables is id
 
 On the blind bench, across four systems, the ranking was: paid SaaS 74/81/74, open-source Docling 72/75/70, my build 65/74/70, in-house 35/41/45. On the subset where the in-house matcher produced a garbage table (TEDS below 40%, n=94), my build went 20 to 58, which is exactly the open-source level (58), with the SaaS ahead at 64.
 
-The paid SaaS stays ahead. My build reaches parity with the open-source matcher and never beats it, which is expected since it runs that matcher. I wrote that on the slide in those words. A benchmark that only ever confirms the author's proposal is not a benchmark, it is a pitch deck, and everyone in the room can tell the difference.
+The paid SaaS stays ahead. My build reaches parity with the open-source matcher and never beats it, which is expected since it runs that matcher. I wrote that on the slide in those words. A benchmark that only ever confirms the author's proposal is really a pitch deck, and everyone in the room can tell the difference.
 
 ## Reliability and cost per page are metrics too
 
@@ -127,7 +123,7 @@ Accuracy tables hide the failure mode that actually costs money. I took the 21 d
 
 **In-house: 0 of 21 finished. It spiralled and sat in `WAITING`, one document for 24 hours with no kill.** New matcher: 21 of 21 finished, 0 crash, real table of 255 cells median. On the documents the old one did finish, the new one is about 1.3x faster in production, and 1.8x on the big tables (2,024 s to 1,137 s).
 
-Cost per page belongs in the benchmark from day one, measured the boring way: platform rate divided by real observed throughput, never a vendor's price list.
+Cost per page belongs in the benchmark from day one, measured the boring way: platform rate divided by real observed throughput. A vendor's price list does not count.
 
 ```
 Cloud Run: 2 vCPU / 8 GiB = $0.245/h, WORKER_COUNT=2
@@ -142,15 +138,15 @@ $ / 1,000 pages
   GPU L4 config       $6.00
 ```
 
-The GPU line is the useful one. A GPU is the reflex answer to "make OCR faster" and here it is the most expensive option measured, because the v1 decoder processes one table at a time and never saturates the card. Benchmark the config, not the hardware category.
+The GPU line is the useful one. A GPU is the reflex answer to "make OCR faster" and here it is the most expensive option measured, because the v1 decoder processes one table at a time and never saturates the card. Benchmark the actual config rather than the hardware category.
 
 ## What this benchmark still cannot tell me
 
-Three honest limits.
+A few honest limits.
 
 **113 documents is a small golden set.** It is enough to catch a regression in a component, not enough to give a tight confidence interval on a 2-point difference. I treat sub-3-point gaps on that bench as noise.
 
-**TEDS punishes valid formatting differences.** A model that emits a correct table with a different but defensible merge structure loses points against my annotation. TEDS measures agreement with one annotator's tree, not truth.
+**TEDS punishes valid formatting differences.** A model that emits a correct table with a different but defensible merge structure loses points against my annotation. TEDS measures agreement with one annotator's tree rather than truth.
 
 **LLM judges drift.** Change the model version and your absolute scores move under you. Judge scores are only comparable inside a single run where every system is scored by the same model, in the same session, blind. I never compare a judge number across two dates.
 
@@ -158,4 +154,4 @@ Three honest limits.
 
 Any team about to swap or buy a document-understanding engine: insurers and banks processing statements and claims, legal and compliance teams over scanned archives, R&D groups whose data lives in tables inside PDFs, anyone whose ingestion cost is quoted per page by a vendor who also picks the quality metric.
 
-If the vendor supplies the benchmark, you are not comparing engines. You are reading marketing with a decimal point.
+If the vendor supplies the benchmark, you are just reading marketing with a decimal point.

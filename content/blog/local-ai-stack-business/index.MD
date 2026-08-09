@@ -10,9 +10,9 @@ I build **self-hosted AI coding assistants**: a real agentic coding tool that pl
 
 ## Your best engineers are still typing by hand
 
-If your code is the product, you probably banned cloud AI assistants. Correctly. Every prompt ships confidential source to a third party, and you cannot un-send it. So the teams with the most valuable code are the only ones without the tool everyone else now takes for granted, and that gap compounds every sprint.
+If your code is the product, you probably banned cloud AI assistants, and you were right to. Every prompt ships confidential source to a third party, and there's no un-sending it. So the teams sitting on the most valuable code are the only ones without the tool everyone else now takes for granted, and that gap widens every sprint.
 
-The usual escape hatches do not close it. An enterprise "privacy" tier is a contract, not a control. A VPN changes where the traffic goes, not where the model runs. The code still leaves.
+The usual escape hatches don't close it. An enterprise "privacy" tier is a contract rather than a control. A VPN only changes the route the traffic takes; the model still runs on someone else's machine. Either way, the code leaves.
 
 ## What you get
 
@@ -24,9 +24,9 @@ A coding assistant that runs where your data already lives, delivered and tuned 
 
 ## Why it holds
 
-The engine is proven open-weights tooling, not a science project: **Ollama** serving a **Qwen** model I picked by benchmark (73.4% on SWE-bench Verified), wrapped in a real agent that plans and edits, wired for remote use with no inbound ports and no root access. This is my own stack. I run it daily and I measured every number above myself.
+The engine is proven open-weights tooling, not a science project. **Ollama** serves a **Qwen** model I picked on the benchmark (73.4% on SWE-bench Verified), wrapped in a real agent that plans and edits, wired for remote use with no inbound ports and no root access. This is my own stack. I run it every day and I measured every number above myself.
 
-One honest boundary: the hardest reasoning still favours the biggest cloud models. I will tell you where that line sits for your work before you buy anything.
+One honest boundary: the hardest reasoning still favours the biggest cloud models. I'll tell you where that line sits for your work before you buy anything.
 
 ## Who this is for
 
