@@ -8,17 +8,17 @@ private: true
 
 A beat reporter retires on a Friday. On Monday, over a decade of context is gone: which official talks off the record, which claim blew up years back, why the outlet stopped covering a story a certain way. Nobody wrote it down, because it lived in one head. A national news outlet, over a decade old and 500,000+ published articles deep, was losing this every time someone resigned.
 
-I designed and built its second brain: one place where any staffer asks a question in plain language and gets an answer grounded in a citation, across two layers. An internal operational brain, so the institution's knowledge survives the people who hold it. And an external layer, the published archive made queryable.
+I built its second brain: one place where any staffer asks a question in plain language and gets an answer grounded in a citation. It spans two layers. One is an internal operational brain, so the institution's knowledge outlives the people who hold it; the other opens up the published archive and makes it queryable.
 
 **The newsroom is no longer hostage to what lives in one person's head.**
 
 ## The knowledge that walks out the door is the expensive kind
 
-Every desk ran on undocumented memory. Business development knew which deals had been tried. Editorial knew the history of a beat. Video and social knew what worked and what got pulled. IT knew why a fragile process was fragile. None of it was searchable.
+Every desk ran on undocumented memory. Business development knew which deals had been tried, editorial knew the history of a beat, video and social knew what had worked and what got pulled, and IT knew why a fragile process was fragile. None of it was searchable.
 
-The cost showed up twice. Onboarding a new hire took weeks of asking around. And when a senior person left, their context left with them for good.
+The cost showed up twice. Onboarding a new hire meant weeks of asking around, and when a senior person quit, their context walked out with them for good.
 
-The opinion this whole project rests on: institutional knowledge is only safe once it is data. A wiki nobody queries, a Slack nobody greps, a folder of PDFs is not captured knowledge. It is captured only when a machine can retrieve it, filter it, and cite it on demand. Everything below is in service of turning memory into rows.
+The opinion this whole project rests on: institutional knowledge is only safe once it's data. A wiki nobody queries, a Slack nobody greps, a shared drive full of PDFs, none of that is captured knowledge. It counts as captured the day a machine can retrieve it, filter it by who's cleared to see it, and cite it on demand. Everything below turns memory into rows.
 
 **Onboarding a new hire dropped from weeks to days.**
 
@@ -47,7 +47,7 @@ def ingest(source):
             )
 ```
 
-One row carries both the vector and the full-text index, so a chunk is retrievable two ways without a second store to keep in sync. The opinion here: do not split your semantic index and your keyword index across two systems. They drift, and a drifted index is worse than none.
+One row carries both the vector and the full-text index, so a chunk is retrievable two ways and there's no second store to keep in sync. My take: don't split your semantic index and your keyword index across two systems. They drift, and a drifted index is worse than none at all.
 
 **One pipeline, two layers, same row shape: the archive and the newsroom's private memory are one searchable surface.**
 
@@ -77,7 +77,7 @@ The multilingual embedding model is load-bearing: a question in one language has
 
 ## Entity resolution is the spine that makes over a decade feel like one memory
 
-A person, a party, a topic, or a policy is named a hundred different ways across over a decade and five desks: a full name, a title, an initialism, a nickname, a misspelling. Without resolution, the archive is over a decade of disconnected fragments. So I built a spine: one canonical entity, many surface forms, and every chunk links to the canonical ids it mentions.
+A person, a party, a topic, or a policy is named a hundred different ways across over a decade and five desks: a full name, a title, an initialism, a nickname, a misspelling. Without resolution, all that history is disconnected fragments. So I built a spine: one canonical entity, many surface forms, and every chunk links to the canonical ids it mentions.
 
 ```python
 # The spine: collapse many surface forms into one canonical entity.
@@ -108,7 +108,7 @@ def access_filter(desks_allowed):
     ]}
 ```
 
-The opinion: access control that lives above retrieval is theater. If a restricted chunk can be retrieved and only hidden at display time, it has already left the vault, and one prompt or one logging line leaks it.
+My rule: access control that lives above retrieval is theater. If a restricted chunk can be retrieved and merely hidden at display time, it has already left the vault, and one prompt or a stray log line leaks it.
 
 > War story. The first version answered too well. It happily pulled internal desk notes into answers for anyone who asked, because access was a filter on the display, not on retrieval. The fix was to push the check down into the query filter above, so restricted passages are never candidates. Access at the edge looks fine in a demo and leaks in production.
 
@@ -136,7 +136,7 @@ def answer(question, desks_allowed):
     )
 ```
 
-Low temperature on purpose: the agent's job is to be a faithful librarian, not a stylist. The citation is not decoration, it is the trust contract. A staffer clicks through to the old article or the desk note and sees the source with their own eyes. That is the only reason anyone in a newsroom trusts a machine over a colleague.
+Low temperature on purpose: the agent's job is to be a faithful librarian, not a stylist. The citation is the trust contract. A staffer clicks through to the old article or the desk note and sees the source with their own eyes, which is the only reason anyone in a newsroom trusts a machine over a colleague.
 
 ```text
 "who covered the port privatisation beat in 2019?"
@@ -151,8 +151,8 @@ Low temperature on purpose: the agent's job is to be a faithful librarian, not a
 
 The second brain is only as deep as what the institution actually recorded. It captures process docs, published work, and the desk knowledge people took the time to write down. The truly tacit knowledge, the instinct a reporter never put into words, still leaves with them.
 
-What changed is that far more is now capturable and findable, and there is finally a place worth writing it into. Which is the opinion under all of this: knowledge is safe only once it is data, and this is the machine that makes writing it down worth the effort.
+What changed is that far more is now capturable and findable, and there's finally a place worth writing it into. Which loops back to the whole premise: knowledge is safe only once it's data, and this is the machine that makes writing it down worth the effort.
 
 ## Who has this problem
 
-Any institution where the knowledge lives in senior heads and leaves when they do: hospitals, law firms, agencies, engineering teams, public bodies. The test is one question. When your most experienced person resigns, how much of what they knew can anyone else still find? If the answer is "not much", you do not have a documentation problem. You have an unbuilt second brain.
+Any institution where the knowledge lives in senior heads and leaves when they do: hospitals, law firms, agencies, engineering teams, public bodies. The test is one question. When your most experienced person resigns, how much of what they knew can anyone else still find? If the answer is "not much", documentation was never the real gap. You needed a second brain, and no one built it.

@@ -12,20 +12,20 @@ I build document intelligence at scale: ask a question in plain language, get an
 
 A scientist needs one number from a 2009 study. It sits in a scanned PDF nobody can find. She spends half a day hunting, gives up, and reruns the study. You just paid for that work a second time.
 
-Multiply that by every dossier nobody reopens: a regulatory constraint missed on page 40, a contract clause quoted from memory, a decision made on a confident half-answer that looked finished. The knowledge exists. Nobody can find it, so it may as well not.
+Multiply that by every dossier nobody reopens: a regulatory constraint missed on page 40, a contract clause quoted from memory rather than pulled, a decision made on a confident half-answer that looked finished. The knowledge is all there, and nobody can reach it, so it may as well not exist.
 
 ## What you get
 
 - **Answers in under a second, across 100M+ pages.** Plain-language question in, sourced answer out. No keyword guessing.
 - **Search time from ~30 minutes of hunting to seconds.** The people who used to redo work now check first.
 - **A clickable source on every claim.** Verifying costs one click, not an afternoon. No blind trust.
-- **Access enforced per team.** Two people from two brands ask the same question and get two different answers, because each sees only the slice they are cleared for.
+- **Access enforced per team.** Two people from two brands ask the same question and get two different answers, because each sees only the slice they're cleared for.
 - **Up to 40% fewer duplicated studies and re-reviews**, because the original is now findable in seconds.
 
 ## Why it holds
 
 - **Grounded, never guessed.** The system answers only from documents it can show you, never from memory. An answer with nothing behind it is visible for exactly what it is.
-- **Access enforced at retrieval, not promised in a policy.** The search never touches a document you cannot see, so it cannot leak one across a brand boundary.
+- **Access enforced at retrieval, in the query itself.** The search never touches a document you can't see, so it can't leak one across a brand boundary. A written policy promises; the query guarantees.
 - **Already shipped at 100M-page scale** for a global beauty group: thirty brands, decades of R&D, a dozen languages, live.
 - **One honest boundary.** A one-line lookup returns in a second. A deep investigation that cross-reads many documents takes minutes by design, and the interface says so rather than rushing a shallow answer.
 

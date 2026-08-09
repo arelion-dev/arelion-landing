@@ -1,33 +1,33 @@
 ---
 title: "Catching silent regressions in an AI agent (evals, golden sets, LLM judges)"
 date: "2026-07-02T14:15:00.000Z"
-description: "An agent never throws a compile error, it just gets quietly worse. Here is the two-track eval harness I built to catch that: a golden set mined from production, trajectory metrics, and an LLM judge wired as a client-side CustomMetric."
+description: "An agent gets quietly worse without ever throwing a compile error. Here is the two-track eval harness I built to catch that: a golden set mined from production, trajectory metrics, and an LLM judge wired as a client-side CustomMetric."
 tags: ["Agent eval", "LLM judge", "Testing"]
 private: true
 ---
 
-A service that breaks tells you. It 500s, the pager fires, someone rolls back. An agent that gets worse tells you nothing. Somebody tightens a system prompt, a model version rolls forward under a stable alias, a retrieval filter gets one field stricter, and the answers degrade in a way no unit test can see. Every test still passes. The agent still returns fluent English. You find out six weeks later, from a user who says "it used to find that".
+When a service breaks, it tells you: it 500s and the pager goes off. An agent that's quietly getting worse tells you nothing at all. Someone tightens a system prompt, a model rolls forward under a stable alias you never pinned, a retrieval filter gains one stricter field, and the answers start to degrade in a way no unit test can see. The suite stays green and the agent still returns fluent English, so nothing trips. You find out six weeks later, from a user who says "it used to find that".
 
-I built the eval harness for an enterprise document agent at a global beauty group, on Google ADK and the Vertex AI Gen AI Evaluation Service. This is what is in it, and what I got wrong on the way.
+I built this eval harness for an enterprise document agent at a global beauty group, on top of Google ADK and the Vertex AI Gen AI Evaluation Service. Here's what's in it, and what I got wrong building it.
 
-## An agent has no compile error, it has a drift
+## An agent's failure mode is drift
 
-There is no type system for "the answer got slightly worse". The only thing that survives a prompt tweak is a graded set: a fixed list of questions, each with a confirmed correct answer and a confirmed correct tool path, re-run on every change and compared against the last run.
+There's no type system for "the answer got slightly worse." The one thing that survives a prompt tweak is a graded set: a fixed list of questions, each carrying a confirmed correct answer and a confirmed correct tool path, re-run on every change and diffed against the last run.
 
-The harness is a separate module that never imports the agent's code. It only knows an address: a deployed Vertex AI Agent Engine resource, or a local `adk api_server` on `127.0.0.1:8000`. It calls the agent exactly as a client would.
+The harness is a separate module, and it never imports the agent's code. All it knows is an address, either a deployed Vertex AI Agent Engine resource or a local `adk api_server` on `127.0.0.1:8000`. It calls the agent the way any client would.
 
 ```bash
 AGENT_EVAL_MODE=local  LOCAL_AGENT_BASE_URL=http://127.0.0.1:8000  python -m src.agent_eval.agent_track
 AGENT_EVAL_MODE=remote TARGET_AGENT_KEY=rag_agent                  python -m src.agent_eval.agent_track
 ```
 
-**Opinion: an eval harness that imports the agent is not an eval harness, it is a unit test with extra steps.** Keeping it out of process means I can grade any agent version, running anywhere, without a redeploy or a rebuild.
+**Opinion: an eval harness that imports the agent is just a unit test with extra steps.** Keeping it out of process means I can grade any agent version, running anywhere, with no redeploy and no rebuild.
 
 ## Two tracks, because "the answer looked right" and "retrieval found the document" are different questions
 
-An agent can write a plausible, well cited answer while retrieval silently missed the one document that mattered. The agent-level score stays high. The system is broken. So there are two independent tracks.
+An agent can write a plausible, well-cited answer while retrieval silently missed the one document that mattered, and the agent-level score stays high even though the system is broken. That's why there are two independent tracks.
 
-The **agent track** replays whole conversations against the running agent. The **retrieval track** calls the search tools directly over MCP, bypassing the LLM entirely, against a golden query to expected-document set. No model in the loop, no reasoning to hide behind: either the document came back in the top k or it did not.
+The **agent track** replays whole conversations against the running agent. The **retrieval track** skips the LLM completely and calls the search tools directly over MCP, against a golden mapping of query to expected documents. With no model in the loop to reason its way around a miss, the result is binary: the document either came back in the top k or it didn't.
 
 ```python
 def score_case(case, hits, total):
@@ -39,7 +39,7 @@ def score_case(case, hits, total):
     return bool(matched), recall, sorted(top_k_ids)
 ```
 
-The track also runs an ablation. Each case can carry filters a human confirmed are legitimate (the user really did ask for a date range). The runner fires the query twice, with the filters and without, and compares:
+The track also runs an ablation. A case can carry filters that a human confirmed are legitimate (the user really did ask for a date range), and the runner then fires the query twice, once with the filters and once without, to compare the two:
 
 ```python
 @property
@@ -48,13 +48,13 @@ def looks_over_restricted(self) -> bool:
     return bool(self.unfiltered_found_expected) and not self.found_expected
 ```
 
-Same query, same index, one argument different. That makes "the filtering step is too aggressive" a directly attributable finding instead of a hunch. The track prints `recall@k`, `found_rate` and `over_restricted_rate`, and names every case that failed.
+Same query, same index, a single argument changed. That turns "the filtering step is too aggressive" into a directly attributable finding rather than a hunch. The track prints `recall@k`, `found_rate` and `over_restricted_rate`, and it names every case that failed.
 
-## The golden set comes out of production, not out of my head
+## The golden set comes out of production
 
-Synthetic eval questions test the corpus you imagine. They are always too clean: no typos, no French and English mixed in one sentence, no user who pins a document in turn 1 and refers to it in turn 6. Real users do all of that, and that is exactly where an agent breaks.
+Synthetic eval questions only test the corpus you imagine. They come out too clean every time: no typos, no sentence that switches between French and English halfway through, nobody who pins a document in turn 1 and refers back to it in turn 6. Real users do all of that, and that's exactly where an agent breaks.
 
-So every case is mined from the production telemetry, which lands in BigQuery. I pull a real past session, confirm the answer against the source document by hand, and pin it as a permanent regression case. An annotator UI does the conversion: it loads the session, lets a human edit the turns, tool calls, tool responses and session state, then writes one `annotation-conversation-*.json` per conversation. The harness picks up only what a human marked done:
+So every case gets mined from the production telemetry, which lands in BigQuery. I pull a real past session, confirm its answer against the source document by hand, then pin it as a permanent regression case. An annotator UI handles the conversion: it loads the session, lets a human edit the turns, tool calls, tool responses and session state, then writes one `annotation-conversation-*.json` per conversation. The harness only picks up what a human has marked done:
 
 ```python
 done = [a for a in set_annotations if a.get("status") == "done"]
@@ -63,7 +63,7 @@ if not done:
     continue
 ```
 
-The on-disk format is ADK's own `EvalSet` / `EvalCase` Pydantic schema, not a bespoke one. Here is the canonical case, anonymized: a four-part question whose expected behaviour is register a coverage checklist, run one search per entity, tick them off.
+The on-disk format is ADK's own `EvalSet` / `EvalCase` Pydantic schema, not a bespoke one. Here's the canonical case, anonymized. It's a four-part question, and the behaviour I expect is to register a coverage checklist, run one search per entity, then tick them off.
 
 ```json
 {
@@ -88,13 +88,13 @@ The on-disk format is ADK's own `EvalSet` / `EvalCase` Pydantic schema, not a be
 }
 ```
 
-Note the `"no data found"` in the reference answer. **An eval set that only rewards found answers trains you to build an agent that never admits a gap.** The silence of the corpus is part of the ground truth.
+Notice the `"no data found"` in the reference answer. **An eval set that only rewards found answers trains you to build an agent that never admits a gap.** The silence of the corpus is part of the ground truth too.
 
 ## Two scores per turn: the path it took, and the answer it gave
 
-Each replayed turn becomes a row with `prompt`, `response`, `reference`, `predicted_trajectory` and `reference_trajectory`. Six trajectory metrics score the trajectory pair through the Gen AI Evaluation Service: `trajectory_exact_match`, `trajectory_in_order_match`, `trajectory_any_order_match`, `trajectory_precision`, `trajectory_recall`, `trajectory_single_tool_use`. They answer "did it call the right tools, in a sensible order, without a pile of extra calls".
+Each replayed turn becomes a row: `prompt`, `response`, `reference`, `predicted_trajectory` and `reference_trajectory`. Six trajectory metrics score the trajectory pair through the Gen AI Evaluation Service: `trajectory_exact_match`, `trajectory_in_order_match`, `trajectory_any_order_match`, `trajectory_precision`, `trajectory_recall`, `trajectory_single_tool_use`. Together they answer one question: did it call the right tools, in a sensible order, without a pile of redundant calls?
 
-Answer quality gets an LLM judge with a strict rubric, declared in the same versioned experiment config as the dataset:
+Answer quality gets an LLM judge with a strict rubric, declared in the same versioned experiment config as the dataset itself:
 
 ```json
 {
@@ -117,13 +117,13 @@ Answer quality gets an LLM judge with a strict rubric, declared in the same vers
 }
 ```
 
-One file in git holds which dataset, which metrics, which judge, at what temperature, so every run of that config is comparable to every other. Results land in Vertex AI Experiments: run-over-run comparison in the Cloud Console, no dashboard to build.
+A single file in git holds which dataset, which metrics, which judge and at what temperature, so every run of that config stays comparable to every other. Results land in Vertex AI Experiments, which gives me run-over-run comparison right in the Cloud Console with no dashboard to build.
 
 ## The judge runs client-side, and that was forced on me
 
-Vertex's native model-based judge, `PointwiseMetric`, runs server-side on Google's own autorater. Its `autorater_model` field only accepts a Vertex publisher model or endpoint, so it cannot be pointed at a private model gateway. In a regulated enterprise that gateway is not optional: it is where auth, quota, logging and model allowlisting live.
+Vertex's native model-based judge, `PointwiseMetric`, runs server-side on Google's own autorater. Its `autorater_model` field only accepts a Vertex publisher model or endpoint, which means you can't point it at a private model gateway. In a regulated enterprise that gateway isn't optional; it's where auth, quota, logging and model allowlisting all live.
 
-So the judge is a `CustomMetric` whose function runs in my process and calls the gateway through a LiteLLM-backed client:
+So the judge became a `CustomMetric` whose function runs inside my process and calls the gateway through a LiteLLM-backed client:
 
 ```python
 def build_llm_judge_metric(spec) -> CustomMetric:
@@ -146,9 +146,9 @@ def build_llm_judge_metric(spec) -> CustomMetric:
     return CustomMetric(name=spec.name, metric_function=metric_function)
 ```
 
-Two details matter more than the wiring. The judge must return `{"score": 0..1, "explanation": "..."}`, and the explanation gets its own column, so a bad score is readable rather than just low. And a judge failure scores that single row `NaN` with the error in the explanation column. **A 200-case run that aborts on row 137 because one gateway call timed out is worse than useless, because you will stop running it.**
+Two details matter more than the wiring here. First, the judge has to return `{"score": 0..1, "explanation": "..."}`, and the explanation gets its own column, so a bad score is readable instead of just low. Second, a judge failure scores that one row `NaN` and drops the error into the explanation column. **A 200-case run that aborts on row 137 because one gateway call timed out is worse than useless, because you'll stop running it.**
 
-> **War story.** Trajectory metrics used to blow up the whole run on one case: a plain greeting, "Hi, what can you help me with?", whose reference trajectory is correctly an empty list. The Gen AI Evaluation Service represents "no tool calls expected" as an unset field and rejects the row as invalid. It does not skip it, it fails the call. The fix: score trajectory metrics in a separate `EvalTask` over the turns with a non-empty reference trajectory, then merge the two metric tables back on `(eval_set_id, eval_id, turn_index)`:
+> **War story.** Trajectory metrics used to blow up the entire run on a single case: a plain greeting, "Hi, what can you help me with?", whose reference trajectory is correctly an empty list. The Gen AI Evaluation Service encodes "no tool calls expected" as an unset field, then rejects the row as invalid. It won't skip the row, it fails the whole call. The fix was to score trajectory metrics in a separate `EvalTask` over only the turns with a non-empty reference trajectory, then merge the two metric tables back on `(eval_set_id, eval_id, turn_index)`:
 >
 > ```python
 > scoreable = dataset[dataset["reference_trajectory"].map(bool)]
@@ -156,31 +156,31 @@ Two details matter more than the wiring. The judge must return `{"score": 0..1, 
 >     LOGGER.warning("Skipping trajectory metrics for %d turn(s) with an empty reference_trajectory", skipped)
 > ```
 >
-> The greeting case is still graded on answer quality, and simply has no trajectory score. The lesson generalises: "expected: nothing" is a legitimate expectation that most eval tooling does not model.
+> The greeting case still gets graded on answer quality; it just carries no trajectory score. The lesson generalises: "expected: nothing" is a legitimate expectation, and most eval tooling doesn't model it.
 
 ## The A/B lever is one environment variable
 
-The agent's perseverance layer (a coverage checklist plus a gate that blocks a premature final answer) ships with a kill switch, `PERSEVERANCE_OFF=1`, which disables budget scaling and the gate at once. It is a production escape hatch, and the only honest way to claim the feature helped:
+The agent's perseverance layer (a coverage checklist plus a gate that blocks a premature final answer) ships with a kill switch, `PERSEVERANCE_OFF=1`, that disables budget scaling and the gate in one go. It doubles as a production escape hatch, and it's the only honest way to claim the feature actually helped:
 
 ```bash
 PERSEVERANCE_OFF=1 EXPERIMENT_NAME=perseverance-off python -m src.agent_eval.agent_track
 PERSEVERANCE_OFF=0 EXPERIMENT_NAME=perseverance-on  python -m src.agent_eval.agent_track
 ```
 
-Same graded set, same corpus, same judge, one flag. Then read the delta in Vertex AI Experiments. **With the gate off, the graded set scored 0.41 on completeness; on, 0.98 (illustrative).** Without the switch I would have had a belief. With it I have a number a sceptical reviewer can reproduce.
+Same graded set, same corpus, same judge, and one flag between the two runs. Then you read the delta in Vertex AI Experiments. **With the gate off, the graded set scored 0.41 on completeness; with it on, 0.98 (illustrative).** Without the switch I'd have had a belief; with it, I have a number a sceptical reviewer can reproduce for themselves.
 
-Every behavioural feature in an agent should ship with its own off switch for exactly this reason. It costs one `if` statement and it converts opinion into measurement.
+Every behavioural feature in an agent should ship with its own off switch for exactly this reason. It costs you one `if` statement, and it turns opinion into measurement.
 
 ## Honest limits
 
-**An LLM judge drifts.** It is a model, and models change under stable aliases. A judge scoring 0.7 today and 0.8 in November may be telling you about the judge, not the agent. Pin the judge model to an explicit version, set `temperature: 0`, and treat a judge bump as its own change to A/B test.
+**An LLM judge drifts.** It's a model, and models change under stable aliases. A judge that scores 0.7 today and 0.8 in November might be telling you about a change in the judge rather than in the agent. Pin the judge model to an explicit version, set `temperature: 0`, and treat any judge bump as its own change to A/B test.
 
-**A graded set measures what you put in it.** Nothing else. The harness is the fast part; the coverage of the set is the real, permanent job. Every production incident should end with a new pinned case, or the same class of bug comes back.
+**A graded set measures what you put in it.** Nothing else. The harness is the fast part; the coverage of the set is the real work, and it never really ends. Every production incident should close with a new pinned case, or the same class of bug comes back around.
 
-**Trajectory exact match punishes valid paths.** An agent that finds the same document with `full_text_search` instead of `semantic_search` scores zero on `trajectory_exact_match` while being entirely correct. Read it alongside `trajectory_recall` and the judge, never alone, and never gate a deploy on it.
+**Trajectory exact match punishes valid paths.** An agent that finds the same document through `full_text_search` instead of `semantic_search` scores zero on `trajectory_exact_match` while being completely correct. Read it alongside `trajectory_recall` and the judge, and never gate a deploy on it alone.
 
-**Retrieval recall@k is deliberately blunt.** k defaults to 10, which asks "did it come back at all", not "was it ranked first". Ranking quality needs graded relevance, and I did not build that set.
+**Retrieval recall@k is deliberately blunt.** k defaults to 10, so it asks "did the document come back at all" and not "was it ranked first". Real ranking quality needs graded relevance, and I didn't build that set.
 
 ## Who has this problem
 
-Anyone who has shipped an LLM feature and then changed the prompt, which is everyone. The pain sharpens with regulated corpora and multi-part questions: pharma dossiers, clause libraries, KYC files, claims handling. If a wrong answer costs a decision rather than a click, you need a graded set before you need a nicer UI.
+Anyone who has shipped an LLM feature and later changed the prompt, which is everyone. The pain gets sharper with regulated corpora and multi-part questions: pharma dossiers, clause libraries, KYC files, claims handling. When a wrong answer costs a decision instead of a click, you need a graded set well before you need a nicer UI.

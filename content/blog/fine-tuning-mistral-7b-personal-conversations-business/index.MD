@@ -14,7 +14,7 @@ I fine-tune an LLM on your own data so it answers in your voice, on your domain,
 
 ## The generic model is the expensive status quo
 
-A general-purpose API model does not know your product, your tone, or your internal shorthand. So you paste the same context into every prompt, pay for those tokens on every call, and still get answers that sound like everyone else's.
+A general-purpose API model doesn't know your product, your tone, or your internal shorthand. So you paste the same context into every prompt, pay for those tokens on every call, and still get answers that sound like everyone else's.
 
 Your proprietary data, the thing that would make the model useful, sits on the outside looking in. That gap is what a fine-tune closes.
 
@@ -27,16 +27,16 @@ Your proprietary data, the thing that would make the model useful, sits on the o
 
 ## The training run is the cheap part
 
-**Data formatting was 90 percent of the work**, and that is where every real decision lives. When a vendor says "we just fine-tune it on your data", the true cost sits in the cleanup, and buyers underestimate it every time. I price that in from the start.
+**Data formatting was 90 percent of the work**, and that's where every real decision lives. When a vendor says "we just fine-tune it on your data", the true cost hides in the cleanup, and buyers underestimate it every time. I price that in from the start.
 
 ## The honest boundary is what the model remembers
 
-A fine-tune memorizes what you said, not only how you said it. In my own tests, probing prompts pulled back private details I never asked the model to recall.
+A fine-tune memorizes far more than your style. It keeps the content of what you said. In my own tests, probing prompts pulled back private details I never asked the model to recall.
 
-Fine-tune on customer chats or internal threads and you bake that content into the weights, where the right prompt can surface it again. This risk never shows in a demo. It shows up later, when someone goes looking. So I treat leakage testing as part of the job, not an afterthought.
+Fine-tune on customer chats or internal threads and you bake that content into the weights, where the right prompt can surface it again. This risk never shows in a demo; it surfaces later, when someone goes looking. So I treat leakage testing as part of the core job.
 
 ## Who this is for
 
-Teams sitting on a large private corpus (support chats, sales threads, internal docs) who want a model in their own voice and cannot send that data to an outside API. Regulated, privacy-sensitive or brand-specific work fits best.
+Teams sitting on a large private corpus (support chats, sales threads, internal docs) who want a model in their own voice and can't send that data to an outside API. Regulated, privacy-sensitive or brand-specific work fits best.
 
-If you are weighing a fine-tune on your own data, want me to look at yours, in writing?
+If you're weighing a fine-tune on your own data, want me to look at yours, in writing?

@@ -6,7 +6,7 @@ tags: ["Life OS", "Self-hosted", "React"]
 private: true
 ---
 
-To answer "am I sleeping enough and can I afford to slow down", I used to open five things: a fitness app, two banking apps, a spreadsheet, and my notes. Each one held a true fragment. None of them held the question. So every check-in cost fifteen minutes and I stopped doing it.
+To answer one question, "am I sleeping enough and can I afford to slow down", I used to open five things: a fitness app, two banking apps, a spreadsheet, and my notes. Every one held a true fragment while none of them held the question, so each check-in cost fifteen minutes and I stopped bothering.
 
 I built **Life OS**: a single read-only page that pulls health, wealth and my week into one view, served only inside my private network, with **zero write paths and zero ports open to the internet**.
 
@@ -16,11 +16,11 @@ I built **Life OS**: a single read-only page that pulls health, wealth and my we
 
 ## The data already existed, the aggregation did not
 
-I already had the pieces. A health service syncs Fitbit into `health.sqlite`. A wealth service ingests bank statements into `wealth.sqlite`. My notes live in an Obsidian vault. Three services, three owners, three schemas.
+I already had the pieces. A health service syncs Fitbit into `health.sqlite`, a wealth service ingests bank statements into `wealth.sqlite`, and my notes live in an Obsidian vault. Three services, each with its own owner and its own schema.
 
-The tempting move is to build a fourth database that copies all of it. That is how you get a sync job, a drift bug, and two numbers that disagree.
+The tempting move is to build a fourth database that copies all of it. That's how you end up with a sync job to babysit and two numbers that disagree.
 
-So I inverted it: **the dashboard owns no data at all.** It is a reader. Every domain database stays owned by the service that writes it, and the dashboard opens each one in read-only mode:
+So I inverted it: **the dashboard owns no data at all.** It's a reader. Every domain database stays owned by the service that writes it, and the dashboard opens each one in read-only mode:
 
 ```python
 def ro(db_path: str) -> sqlite3.Connection:
@@ -30,9 +30,9 @@ def ro(db_path: str) -> sqlite3.Connection:
     return con
 ```
 
-That `?mode=ro` URI flag is the entire access control model for data. It is not a convention or a code review rule. SQLite refuses the write at the driver level, and a bug in my HTTP handler cannot turn into a mutation.
+That `?mode=ro` URI flag is the entire access control model for data. SQLite enforces it at the driver level, so a bug in my HTTP handler can't turn into a mutation.
 
-The opinion: for personal infrastructure, a read-only view over databases somebody else owns beats a warehouse you have to keep in sync. The dashboard can be wrong about presentation. It cannot be wrong about the numbers, because it has none of its own.
+The opinion: for personal infrastructure, a read-only view over databases somebody else owns beats a warehouse you have to keep in sync. The dashboard can be wrong about presentation, but it can't be wrong about the numbers, because it holds none of its own.
 
 **Three databases, one page, zero copies of the data.**
 
@@ -40,7 +40,7 @@ The write path is separate and deliberate: I talk to a Telegram bot to log anyth
 
 ## The network is the authentication
 
-There is no login screen. There is no session cookie. There is no password to leak, because the server refuses to exist on a public interface:
+There's no login screen and no session cookie. There's no password to leak either, because the server refuses to exist on a public interface:
 
 ```python
 def tailscale_ip() -> str:
@@ -54,9 +54,9 @@ def tailscale_ip() -> str:
     return ip
 ```
 
-If Tailscale is down, the dashboard does not start. It does not fall back to localhost, and it does not helpfully bind everything. A dashboard holding my medical and financial history should fail closed and loudly.
+If Tailscale is down, the dashboard doesn't start. It won't fall back to localhost, and it won't helpfully bind everything either. A dashboard holding my medical and financial history should fail closed, and fail loudly.
 
-The part I care about more is that this is **tested, not asserted**. My pre-commit script boots the real server on a scratch port and then runs a negative test: if `127.0.0.1` answers, the bind is too wide and the check fails.
+The part I care about more is that **a test proves this on every commit**. My pre-commit script boots the real server on a scratch port and then runs a negative test: if `127.0.0.1` answers, the bind is too wide and the check fails.
 
 ```bash
 # le bind doit etre Tailnet-only : localhost NE doit PAS repondre
@@ -74,11 +74,11 @@ except sqlite3.OperationalError: pass
 " || fail \"la DB n'est PAS read-only\"
 ```
 
-The same script greps the source for `INSERT`, `UPDATE`, `DELETE`, `DROP` and `ALTER` and refuses the commit if any appear. Read-only is a property I verify on every change, not a comment at the top of the file.
+The same script greps the source for `INSERT`, `UPDATE`, `DELETE`, `DROP` and `ALTER` and refuses the commit if any appear. Read-only is a property I verify on every change.
 
 ## Numbers that decay must be computed at read time
 
-Bank statements are snapshots. A mortgage balance is not.
+Bank statements are snapshots. A mortgage balance keeps changing.
 
 My first version stored the loan balance like any other account, from the last PDF statement. It was correct on the day of ingestion and wrong every day after. Worse, it was wrong in the one direction nobody questions: the debt looked bigger than it was, my net worth looked lower than reality, and the figure never moved, so nothing on the screen told me it was stale.
 
@@ -100,9 +100,9 @@ def amortized(loan):
     return round(bal, 2), m
 ```
 
-Crypto gets the same treatment. Holdings store a quantity, never a value, and the value is quantity multiplied by the latest price at read time. A stored valuation is a lie with a timestamp.
+Crypto gets the same treatment. Holdings store a quantity only, and the value is quantity multiplied by the latest price at read time. A stored valuation is a lie with a timestamp.
 
-The loop is a few hundred iterations at worst and the whole request stays under a few milliseconds, so there is no reason to cache it. The opinion: **for a single-user dashboard, recompute everything on every request.** A cache here would only buy you staleness bugs.
+The loop is a few hundred iterations at worst and the whole request stays under a few milliseconds, so there's no reason to cache it. The opinion: **for a single-user dashboard, recompute everything on every request.** A cache here would only buy you staleness bugs.
 
 ![Net worth, allocation by asset class, and an explicit "still missing" panel for accounts with no statement yet](assets/wealth.png)
 
@@ -117,7 +117,7 @@ The loop is a few hundred iterations at worst and the whole request stays under 
 
 ## Every derived metric shows its formula
 
-The health view has a Recovery score. Recovery scores are exactly the kind of number that becomes a black box you half trust and cannot argue with. So the formula lives in about eight readable lines, and the ratio is clamped so one freak night cannot swing the score:
+The health view has a Recovery score. Recovery scores are exactly the kind of number that becomes a black box you half trust and can't argue with. So the formula lives in about eight readable lines, and the ratio is clamped so one freak night can't swing the score:
 
 ```python
 def _recovery(hrv_today, baseline, sleep_h, resting):
@@ -131,7 +131,7 @@ def _recovery(hrv_today, baseline, sleep_h, resting):
     return round(0.6 * hrv_norm + 0.25 * sleep_norm + 0.15 * hr_norm)
 ```
 
-Note the early `return None`. When there is no HRV data, the server returns nothing rather than guessing. The front end then falls back to a cruder sleep-plus-resting-heart-rate estimate and **labels the tile "proxy" instead of "HRV"**. The same panel is honest about the resting heart rate too: the device does not expose a true resting value, so the card carries a small `*proxy hr_min` chip.
+Note the early `return None`. When there's no HRV data, the server returns nothing rather than guessing. The front end then falls back to a cruder sleep-plus-resting-heart-rate estimate and **labels the tile "proxy" instead of "HRV"**. The same panel is honest about the resting heart rate too: the device doesn't expose a true resting value, so the card carries a small `*proxy hr_min` chip.
 
 Labelling a proxy costs one chip in the UI and saves you from trusting a number you invented.
 
@@ -139,11 +139,11 @@ Labelling a proxy costs one chip in the UI and saves you from trusting a number 
 
 ## The API is 350 lines of stdlib, the dependencies live in the front end
 
-The API is about 350 lines of python standard library. `http.server`, `sqlite3`, `json`, `re`. No framework, no ORM, no dependency to patch on a machine I do not want to babysit. The same handler serves the JSON endpoints and the compiled front end out of `web/dist`, with an index fallback for client-side routing.
+The API is about 350 lines of python standard library. `http.server`, `sqlite3`, `json`, `re`. No framework and no ORM, nothing extra to patch on a machine I'd rather not babysit. The same handler serves the JSON endpoints and the compiled front end out of `web/dist`, with an index fallback for client-side routing.
 
 The front end is where I spent the dependencies: React with Vite, Tailwind, Recharts for the charts, Framer Motion for the transitions, Lucide for icons. Four endpoints feed all of it: `/api/health`, `/api/wealth`, `/api/agenda`, `/api/rates`, plus `/api/ping` for the smoke test.
 
-Aggregation that depends on a toggle happens in the browser, not the API. The personal versus consolidated switch, the currency switch and the anonymous mode all recompute client side from one payload:
+Aggregation that depends on a toggle happens in the browser rather than the API. The personal versus consolidated switch, the currency switch and the anonymous mode all recompute client side from one payload:
 
 ```ts
 export function aggregate(accounts: WealthAccount[], includePro: boolean): Agg {
@@ -160,7 +160,7 @@ One request, instant toggles, and an API that stays a dumb pipe. The opinion: pu
 
 ![The allocation view breaks the same payload down by asset class and then by account, client side](assets/allocation.png)
 
-The simulator reuses that aggregate as its starting point, so there is not a single hardcoded figure in it. It refuses to render until the real wealth payload has loaded, which is why the projection always starts from the actual net worth rather than a placeholder.
+The simulator reuses that aggregate as its starting point, so there isn't a single hardcoded figure in it. It refuses to render until the real wealth payload has loaded, which is why the projection always starts from the actual net worth rather than a placeholder.
 
 ![The projection simulator, seeded from live net worth. The summary line restates the maths in plain language before showing the chart](assets/simulate.png)
 
@@ -181,16 +181,16 @@ for block in raw.split("BEGIN:VEVENT")[1:]:
         continue
 ```
 
-Regex over ICS is not correct in general. It is correct for one calendar exporter that I control, and the failure mode is a missing line on a page I look at daily. I would not ship this for anyone else. For me it replaced a real product.
+Regex over ICS isn't correct in general. It works because I control the one calendar exporter, and the worst failure mode is a missing line on a page I look at daily. I wouldn't ship this for anyone else. For me it replaced a real product.
 
 ## Three limits I know about and have not fixed
 
-**The tailnet is the whole perimeter.** Any device on my private network can read everything with no second factor. That is an accepted tradeoff for a single-user tool, not a design I would hand to a family or a team. Adding real per-user auth means adding an identity store, which means adding a write path, which is the thing I removed on purpose.
+**The tailnet is the whole perimeter.** Any device on my private network can read everything with no second factor. That is an accepted tradeoff for a single-user tool rather than a design I would hand to a family or a team. Adding real per-user auth means adding an identity store, which means adding a write path, which is the thing I removed on purpose.
 
-**The static file guard is a prefix check, not a containment check.** The handler resolves the requested path and compares it with `str(target).startswith(str(WEB_DIR))`. A sibling directory whose name starts with the same string would pass. It cannot happen with my current layout, and it is still the wrong comparison. `Path.is_relative_to` is the correct one and it is on my list.
+**The static file guard uses a prefix check, which is the wrong comparison.** The handler resolves the requested path and compares it with `str(target).startswith(str(WEB_DIR))`. A sibling directory whose name starts with the same string would pass. It can't happen with my current layout, and it's still the wrong comparison. `Path.is_relative_to` is the correct one and it's on my list.
 
-**The dashboard is coupled to schemas it does not own.** The queries are raw SQL strings against tables another service writes. If a column gets renamed, a chart goes blank at runtime with nothing failing at build time. The smoke test catches a totally broken payload, not a quietly missing column.
+**The dashboard is coupled to schemas it does not own.** The queries are raw SQL strings against tables another service writes. If a column gets renamed, a chart goes blank at runtime with nothing failing at build time. The smoke test catches a totally broken payload but misses a quietly missing column.
 
 ## Who has this problem
 
-Anyone whose truth is spread across systems that each hold a correct fragment and no view of the whole: an operator reading three SaaS dashboards to answer one question, a finance team reconciling a bank export against an internal ledger, an ops team where the answer exists in four tools and lives in nobody's head. The pattern transfers directly. Leave every system owning its own data, add a read-only reader over the top, compute the decaying numbers at read time, and make every panel say out loud when it does not know.
+Anyone whose truth is spread across systems that each hold a correct fragment and no view of the whole: an operator reading three SaaS dashboards to answer one question, a finance team reconciling a bank export against an internal ledger, an ops team where the answer exists in four tools and lives in nobody's head. The pattern transfers directly. Leave every system owning its own data, add a read-only reader over the top, compute the decaying numbers at read time, and make every panel say out loud when it doesn't know.

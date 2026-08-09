@@ -6,25 +6,25 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-Five editors open five wire dispatches on the same event. AFP, Reuters, Bloomberg, all reporting one minister, one number, one photo. Each editor reads their copy, trims it, ships it. Ten rival sites do the exact same thing with the exact same feed, and by lunch the story is live in ten identical versions. Meanwhile a reader lands from search, reads one page, sees text they could get anywhere, and leaves. Average session: barely more than one page.
+Five editors open five wire dispatches on the same event. AFP, Reuters and Bloomberg have all filed the same minister and the same number, down to the same photo, so each editor reads a copy, trims it, and ships it while ten rival sites run the identical feed to the identical end. By lunch the story is live in ten interchangeable versions. Then a reader arrives from search, skims a page of text they could have pulled up anywhere, and leaves. Average session barely clears one page.
 
-I designed, led and built the editorial AI layer that broke that loop for a national news outlet where **a large share of everything published came straight off the wire**. The core result: five reads of one dispatch became one, and articles that used to ship with zero internal links now ship with several, into an archive readers had never been able to reach.
+I built the editorial AI layer that broke that loop for a national news outlet where **a large share of everything published came straight off the wire**. The result that mattered: five reads of one dispatch collapsed into one, and articles that used to ship with zero internal links now carry several, pointing into an archive readers had never been able to reach.
 
 ## The wire budget bought nothing a rival did not also have
 
-The newsroom paid real money for AFP, Reuters, Bloomberg and ETX, then pushed the stories out close to as received. Same headline, same paragraphs, same photo, on ten different sites. Reselling a commodity feed untouched is a race you can only lose on price.
+The newsroom paid real money for AFP, Reuters, Bloomberg and ETX, then pushed the stories out close to as received. Same headline, same paragraphs, same photo, on ten sites at once. Reselling a commodity feed untouched is a race you can only lose, and you lose it on price.
 
 **A reader can tell when a story is the wire verbatim, and behaves like it: barely more than one page per visit, then gone.**
 
-So I stopped treating the feed as output and started treating it as raw material. Everything below is representative of the technique, not the outlet's verbatim source.
+So I stopped treating the feed as the output and started treating it as raw material. Everything below shows the technique rather than the outlet's verbatim source.
 
 ## Clustering by meaning turns five dispatches into one story
 
-The naive dedup is a hash or a URL match. It fails on the first day: five agencies write one event in five different sentences, so nothing collides. You have to dedup by meaning, not by bytes.
+The naive dedup is a hash or a URL match, and it fails on day one: five agencies write one event in five different sentences, so nothing collides. You have to dedup at the level of meaning, because the bytes never line up.
 
-So I embed every incoming dispatch, link the ones that describe the same event, and let the desk see events instead of duplicates. I call the unit it emits **one-cluster-one-story**.
+So I embed every incoming dispatch, link the ones that describe the same event, and let the desk see events where it used to see duplicates. I call the unit it emits **one-cluster-one-story**.
 
-The dispatches arrive in more than one language on the same wire, so a monolingual encoder is out. I used a multilingual sentence encoder, normalized the vectors so a dot product is cosine similarity, and ran union-find over the cosine graph:
+The dispatches arrive in more than one language on the same wire, which rules out a monolingual encoder. I used a multilingual sentence encoder, normalized the vectors so a dot product is cosine similarity, then ran union-find over the cosine graph:
 
 ```python
 # Representative of the dedup step, not verbatim client code.
@@ -56,11 +56,11 @@ def cluster(vecs: np.ndarray, threshold: float = 0.86) -> list[list[int]]:
     return list(groups.values())
 ```
 
-That `0.86` carries the whole feature. Set it too low and two different stories that share vocabulary (two verdicts, same court, same week) collapse into one, so the desk never sees the second event. That is silent under-coverage, the worst failure a newsroom can have. Set it too high and the dedup does nothing, and five editors keep reading five copies.
+That `0.86` carries the whole feature. Set it too low and two different stories that happen to share vocabulary (two verdicts, same court, same week) collapse into one, so the desk never sees the second event. That's silent under-coverage, about the worst failure a newsroom can have. Set it too high and the dedup does nothing at all, and five editors go back to reading five copies.
 
-**The threshold is a product decision disguised as a float.** I tuned it against a labelled week of real wire traffic, not by eyeballing it.
+**The threshold is a product decision disguised as a float.** I tuned it against a labelled week of real wire traffic.
 
-Once a cluster exists, the desk publishes one member of it, so the system picks the strongest on concrete criteria before drafting the rewrite:
+Once a cluster exists, the desk publishes a single member of it, so the system picks the strongest on concrete criteria before it drafts the rewrite:
 
 ```python
 def pick_lead(cluster_idx: list[int], dispatches: list[Dispatch]) -> Dispatch:
@@ -71,13 +71,13 @@ def pick_lead(cluster_idx: list[int], dispatches: list[Dispatch]) -> Dispatch:
     return max((dispatches[i] for i in cluster_idx), key=score)
 ```
 
-It then drafts a rewrite of that lead in the outlet's own voice, angled for its audience rather than for a global wire client. Stories with no local relevance get flagged as skippable. **The rewrite is a draft, never a publish.** An editor reads it against the original before anything goes live.
+From there it drafts a rewrite of that lead in the outlet's own voice, angled for its audience instead of for a global wire client. Stories with no local relevance get flagged as skippable. **The rewrite is only a draft.** An editor reads it against the original before anything goes live.
 
 > War story. A cosine threshold that looked safe merged a breaking story with its own follow-up an hour later: same event, same names, near-identical lede, but the follow-up carried the new number that actually mattered. `pick_lead` then discarded the fresher copy as a duplicate. Raising the threshold started splitting genuine duplicates instead, so that was the wrong fix. The right one was a guard the byte-level dedup never needed: dispatches only merge when they share named entities AND land inside the same short time window. Meaning alone was not enough.
 
 ## Backlinking by meaning resurfaces an archive nobody could reach
 
-Every new article is matched against the **500,000+ article archive** by meaning, not keywords, and the system proposes contextual internal links. The profile written when this minister first took office. The investigation from years ago that this verdict closes. Keyword search misses all of it, because the old piece and the new one rarely share the exact phrasing, only the subject.
+Every new article gets matched by meaning against the **500,000+ article archive**, and the system proposes contextual internal links: the profile written when this minister first took office, or the investigation from years back that this verdict finally closes. Keyword search misses all of it, because the old piece and the new one rarely share exact phrasing, only the subject.
 
 The archive lives in Postgres with pgvector, one row per published article, an HNSW index on the embedding. The candidate fetch is a single ANN query:
 
@@ -91,7 +91,7 @@ ORDER BY embedding <=> :new_vec
 LIMIT 40;
 ```
 
-Raw vector similarity alone proposes plausible-but-wrong links (two unrelated stories that both sound like "a minister announced a budget"). So the candidates get re-ranked with a cheap symbolic guard before anything reaches the editor:
+Raw vector similarity on its own proposes links that are plausible and wrong (two unrelated stories that both sound like "a minister announced a budget"). So the candidates get re-ranked through a cheap symbolic guard before anything reaches the editor:
 
 ```python
 def propose_links(new, candidates, min_score=0.78, max_links=6):
@@ -106,17 +106,17 @@ def propose_links(new, candidates, min_score=0.78, max_links=6):
 
 **Internal links per article went from roughly zero to several, and pages per visit climbed with it.**
 
-A reader at barely more than one page had nowhere to go. Every link is inventory the outlet already owns, resurfaced at the moment it is relevant again. Search engines see what readers see: an archive that is connected, not buried.
+A reader stuck at one page had nowhere to go. Every link points at inventory the outlet already owns, resurfaced the moment it turns relevant again, so search engines end up seeing what readers see: an archive that's connected once more.
 
 ## The same index doubles as the newsroom's second brain
 
-The embeddings that power backlinking are also a semantic search box over the whole published record. Over a decade of it, searchable by meaning. "What did we report on this MP the last time this came up?" stops being an afternoon of grepping old CMS entries and becomes a question with an answer in seconds.
+The embeddings that power backlinking double as a semantic search box over the entire published record, more than a decade of it, searchable by meaning. "What did we report on this MP the last time this came up?" stops being an afternoon of grepping old CMS entries and turns into a question you answer in seconds.
 
-That changes who can use the archive: not just the veteran who remembers the story, but the junior who joined last month. One index, two products, no extra infrastructure. **Reusing the backlink embeddings for search was the cheapest decision in the project**, because the expensive part (embed 500,000+ articles once, keep it warm) was already paid for.
+That changes who can actually use the archive, since the junior who joined last month now reaches what only the veteran remembered. One index, two products, no extra infrastructure. **Reusing the backlink embeddings for search was the cheapest decision in the project**, because the expensive part (embed 500,000+ articles once, keep it warm) was already paid for.
 
 ## The human keeps the final click, and that boundary is in the architecture
 
-The last brick lives inside the CMS (WordPress), where the work happens. A separate tool bolted next to the CMS gets ignored, so I put the assistant in the editor as a sidebar panel. As a journalist writes, it proposes headlines, summaries, tags, SEO checks and the archive backlinks. Each suggestion sits next to the field it targets, and each one is accepted, edited or ignored with one action:
+The last brick lives inside the CMS (WordPress), where the work already happens. A separate tool bolted on next to the CMS gets ignored, so I put the assistant right in the editor as a sidebar panel. As a journalist writes, it proposes headlines, summaries, tags, SEO checks and archive backlinks, each suggestion sitting next to the field it targets and accepted, edited or ignored in a single action:
 
 ```js
 // Representative: a sidebar panel in the CMS (WordPress/Gutenberg).
@@ -142,28 +142,28 @@ registerPlugin("wire-assist", {
 });
 ```
 
-Every reject is logged, which is how the ranking gets better without a training pipeline: a link the desk dismisses ten times stops being proposed.
+Every reject gets logged, and that's how the ranking improves without a training pipeline: a link the desk dismisses ten times stops showing up.
 
-**Nothing publishes itself.** I was strict about that boundary for one reason: a newsroom's byline is its whole asset. The moment an unreviewed machine sentence reaches print under that byline, the tool has cost more than it saved.
+**Nothing publishes itself.** I was strict about that boundary for one reason. A newsroom's byline is its whole asset, and the moment an unreviewed machine sentence reaches print under it, the tool has cost more than it ever saved.
 
-So the division of labour is fixed in code, not in a policy document. There is no auto-insert path, anywhere. The AI does the metadata plumbing. The journalist does the judgement, and keeps the final click.
+So the division of labour sits in the code, where nobody can quietly ignore it. There's no auto-insert path anywhere. The AI handles the metadata plumbing; the journalist keeps the judgement and the final click.
 
 ## What this does not do
 
-The rewrites are good drafts, not finished journalism. On nuanced political stories an editor still reworks them, and should.
+The rewrites make good drafts and still fall short of finished journalism. On sensitive political stories an editor reworks them, and should.
 
-Deduplication occasionally merges two stories that deserve separate treatment, or misses a pair phrased too differently. Both failure modes come straight from that one threshold, and no single value removes both. That is exactly why clustering proposes and a human confirms.
+Deduplication sometimes merges two stories that deserve separate treatment, and sometimes misses a pair phrased too differently to collide. Both failure modes trace back to that single threshold, and no one value kills both, which is exactly why clustering proposes and a human confirms.
 
-The backlink guard is symbolic (shared entities), so it depends on entity extraction. When the extractor misses a name, a good link never gets proposed. I chose that failure direction on purpose: a missed suggestion is invisible, a wrong one wastes the editor's trust.
+The backlink guard is symbolic (shared entities), so it leans on entity extraction. When the extractor misses a name, a good link never gets proposed. I chose that failure direction on purpose, since a missed suggestion is invisible while a wrong one burns the editor's trust.
 
-And none of this manufactures original reporting. It clears the routine work away from the people who do. The system's ceiling is the newsroom's judgement. That is by design.
+None of this manufactures original reporting. It clears the routine work away from the people who do that, and the system's ceiling stays the newsroom's judgement. By design.
 
 ## Who has this problem
 
-The pattern travels. If you pay for content or data and republish it close to untouched, you are in this picture.
+The pattern travels. If you pay for content or data and republish it close to untouched, you're somewhere in this picture.
 
-A newsroom on wire feeds, obviously. Also a content marketing team reworking the same industry sources as every rival. A research desk summarising the same reports its competitors buy. An e-commerce team whose product descriptions come straight from supplier feeds, identical on every marketplace.
+A newsroom on wire feeds, obviously. A content marketing team reworking the same industry sources as every rival. A research desk summarising the same reports its competitors buy. An e-commerce team whose product descriptions come straight off supplier feeds, identical on every marketplace.
 
-In each case the feed is the cost, the differentiation is the work nobody has time for, and the split is the same. Let the machine propose against everything you have ever published. Keep a person on the final click.
+In each case the feed is the cost, the differentiation is the work nobody has time for, and the split stays the same: let the machine propose against everything you've ever published, and keep a person on the final click.
 
 The feed everyone buys stays a commodity. What you do to it before it ships is the business.

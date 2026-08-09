@@ -82,9 +82,13 @@ const catalog = {
       demoQuestion: "Question",
       demoAnswer: "Answer",
       demoSources: "Sources",
-      audienceLabel: "Read this as",
+      audienceLabel: "Two ways to read this:",
       audienceBusiness: "Business",
       audienceTech: "Tech",
+      audienceHintBusiness:
+        "You are reading the plain-language version. Switch to Tech for the code and the architecture.",
+      audienceHintTech:
+        "You are reading the technical deep-dive. Switch to Business for the outcome, no code.",
       ctaLine: "Got this problem? I'll look at yours, in writing.",
       bookACall: "Book a call",
     },
@@ -172,9 +176,13 @@ const catalog = {
       demoQuestion: "Question",
       demoAnswer: "Réponse",
       demoSources: "Sources",
-      audienceLabel: "Lire en version",
+      audienceLabel: "Deux façons de lire :",
       audienceBusiness: "Business",
       audienceTech: "Tech",
+      audienceHintBusiness:
+        "Vous lisez la version en langage clair. Passez sur Tech pour le code et l'architecture.",
+      audienceHintTech:
+        "Vous lisez la version technique détaillée. Passez sur Business pour le résultat, sans code.",
       ctaLine: "Vous avez ce problème ? Je regarde le vôtre, en écrit.",
       bookACall: "Réserver un appel",
     },
