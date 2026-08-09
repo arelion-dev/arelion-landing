@@ -31,14 +31,17 @@ const FeaturedCaseStudies = () => {
           <Link
             key={cs.slug}
             to={`/case-studies/${cs.slug}`}
-            className="cs-cara-card"
+            className="cs-row"
           >
-            <span className={`cs-pill-tag ${pillarClass(cs.pillar)}`}>
+            <p className={`cs-row-kicker ${pillarClass(cs.pillar)}`}>
               {cs.pillar}
+            </p>
+            <h3 className="cs-row-title">{cs.title[lang]}</h3>
+            <p className="cs-row-stat">{cs.metric[lang]}</p>
+            <p className="cs-row-dek">{cs.hook[lang]}</p>
+            <span className="cs-row-read">
+              {t("cs.read")} <span className="cs-arrow">&rarr;</span>
             </span>
-            <div className="cs-cara-metric">{cs.metric[lang]}</div>
-            <h3 className="cs-cara-title">{cs.title[lang]}</h3>
-            <span className="cs-cara-read">{t("cs.cardRead")} &rarr;</span>
           </Link>
         ))}
       </div>

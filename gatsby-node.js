@@ -42,6 +42,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           nodes {
             fields {
               slug
+              lang
             }
             frontmatter {
               title
@@ -61,7 +62,11 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     return
   }
 
-  const posts = result.data.allMarkdownRemark.nodes
+  // FR files share their slug with the EN sibling, so build blog pages from
+  // the English nodes only. The case-study template picks the language itself.
+  const posts = result.data.allMarkdownRemark.nodes.filter(
+    n => (n.fields.lang || `en`) === `en`
+  )
 
   // Create blog posts pages
   // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
@@ -89,13 +94,16 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === `MarkdownRemark`) {
-    const value = `/blog${createFilePath({ node, getNode })}`
+    // A post lives at content/blog/<dir>/index.MD (EN) or index.fr.MD (FR).
+    // Both language files share one slug (the directory); `lang` tells them
+    // apart so the case-study template can pick the reader's language and fall
+    // back to English when no translation exists.
+    const base = path.basename(node.fileAbsolutePath)
+    const lang = /\.fr\.mdx?$/i.test(base) ? `fr` : `en`
+    const dir = path.basename(path.dirname(node.fileAbsolutePath))
 
-    createNodeField({
-      name: `slug`,
-      node,
-      value,
-    })
+    createNodeField({ name: `slug`, node, value: `/blog/${dir}/` })
+    createNodeField({ name: `lang`, node, value: lang })
   }
 }
 
@@ -140,6 +148,7 @@ exports.createSchemaCustomization = ({ actions }) => {
 
     type Fields {
       slug: String
+      lang: String
     }
   `)
 }

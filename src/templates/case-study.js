@@ -80,8 +80,11 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
     const pre = e.target.closest("pre")
     if (pre) setLightbox({ type: "code", html: pre.outerHTML })
   }
-  const techArticle = data && data.tech
-  const businessArticle = data && data.business
+  // Each body exists in English and, when translated, in French. Serve the
+  // reader's language, fall back to English when a translation is missing.
+  const pick = (fr, en) => (lang === "fr" ? fr || en : en)
+  const techArticle = data && pick(data.techFr, data.techEn)
+  const businessArticle = data && pick(data.businessFr, data.businessEn)
   const hasBoth = Boolean(techArticle && businessArticle)
   // Show the picked audience when both exist; otherwise whichever one is there.
   const shownArticle = hasBoth
@@ -119,35 +122,55 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
         <div className="cs-detail-metric">{cs.metric[lang]}</div>
         {formattedDate && <p className="cs-detail-date">{formattedDate}</p>}
 
-        {hasBoth && (
-          <div
-            className="cs-audience"
-            role="group"
-            aria-label={t("csDetail.audienceLabel")}
-          >
-            <button
-              type="button"
-              className={audience === "business" ? "on" : ""}
-              aria-pressed={audience === "business"}
-              onClick={() => setAudience("business")}
-            >
-              {t("csDetail.audienceBusiness")}
-            </button>
-            <button
-              type="button"
-              className={audience === "tech" ? "on" : ""}
-              aria-pressed={audience === "tech"}
-              onClick={() => setAudience("tech")}
-            >
-              {t("csDetail.audienceTech")}
-            </button>
-          </div>
-        )}
-
         {cs.tldr && (
           <div className="cs-tldr">
             <span className="cs-tldr-label">TL;DR</span>
             <p>{cs.tldr[lang]}</p>
+          </div>
+        )}
+
+        {hasBoth && (
+          <div className="cs-audience-wrap">
+            <div className="cs-audience-row">
+              <span className="cs-audience-label">
+                {t("csDetail.audienceLabel")}
+              </span>
+              <div
+                className="cs-audience"
+                role="group"
+                aria-label={t("csDetail.audienceLabel")}
+              >
+                <button
+                  type="button"
+                  className={audience === "business" ? "on" : ""}
+                  aria-pressed={audience === "business"}
+                  onClick={() => setAudience("business")}
+                >
+                  <svg className="cs-audience-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="2" y="7" width="20" height="14" rx="2" />
+                    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                  </svg>
+                  {t("csDetail.audienceBusiness")}
+                </button>
+                <button
+                  type="button"
+                  className={audience === "tech" ? "on" : ""}
+                  aria-pressed={audience === "tech"}
+                  onClick={() => setAudience("tech")}
+                >
+                  <svg className="cs-audience-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M8 18l-6-6 6-6" />
+                    <path d="M16 6l6 6-6 6" />
+                  </svg>
+                  {t("csDetail.audienceTech")}
+                </button>
+              </div>
+            </div>
+            <p className="cs-audience-hint">
+              {audience === "business"
+                ? t("csDetail.audienceHintBusiness")
+                : t("csDetail.audienceHintTech")}
+            </p>
           </div>
         )}
 
@@ -255,13 +278,33 @@ export const pageQuery = graphql`
         siteUrl
       }
     }
-    tech: markdownRemark(fields: { slug: { eq: $articleSlug } }) {
+    techEn: markdownRemark(
+      fields: { slug: { eq: $articleSlug }, lang: { eq: "en" } }
+    ) {
       html
       frontmatter {
         date
       }
     }
-    business: markdownRemark(fields: { slug: { eq: $articleBusinessSlug } }) {
+    techFr: markdownRemark(
+      fields: { slug: { eq: $articleSlug }, lang: { eq: "fr" } }
+    ) {
+      html
+      frontmatter {
+        date
+      }
+    }
+    businessEn: markdownRemark(
+      fields: { slug: { eq: $articleBusinessSlug }, lang: { eq: "en" } }
+    ) {
+      html
+      frontmatter {
+        date
+      }
+    }
+    businessFr: markdownRemark(
+      fields: { slug: { eq: $articleBusinessSlug }, lang: { eq: "fr" } }
+    ) {
       html
       frontmatter {
         date
@@ -276,8 +319,8 @@ export const Head = ({ pageContext, data, location }) => {
   const path = location ? location.pathname : `/case-studies/${pageContext.slug}/`
   const url = `${siteUrl}${path.endsWith("/") ? path : `${path}/`}`
   const datePublished =
-    (data && ((data.tech && data.tech.frontmatter.date) ||
-      (data.business && data.business.frontmatter.date))) || undefined
+    (data && ((data.techEn && data.techEn.frontmatter.date) ||
+      (data.businessEn && data.businessEn.frontmatter.date))) || undefined
 
   const blogPosting = cs && {
     "@context": "https://schema.org",

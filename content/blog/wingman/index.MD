@@ -180,7 +180,7 @@ I've also read about some advanced models employing techniques that adapt the co
 
 During my research, FIM was a recurring concept. I couldn't find a lot of resources regarding this, but here’s what I gathered from my readings (see sources at the end).
 
-FIM is a data augmentation technique used in machine learning to increase the diversity of data available for training a model, without collecting new data. A crucial concept in our case when the codebase used as a dataset is relatively small.
+FIM is a data augmentation technique used in machine learning to increase the diversity of data available for training a model, without collecting new data. A concept that really matters in our case when the codebase used as a dataset is relatively small.
 
 The idea is to slightly change the training data and examples, helping the model to learn and not to rely too heavily on specific patterns.
 

@@ -1,22 +1,22 @@
 ---
 title: "The AI buyer who pushes back"
 date: "2025-10-02T15:40:00.000Z"
-description: "A spoken sales trainer where the rep talks out loud to an AI buyer that evades, resists, and only opens up when approached well. The interesting part is not the voice loop, it is the buyer built to resist."
+description: "A spoken sales trainer where the rep talks out loud to an AI buyer that evades, resists, and only opens up when approached well. The interesting part is the buyer built to resist."
 tags: ["Tech", "AI"]
 private: true
 ---
 
-A junior rep on a B2B sales team hit the hard objection for the first time on a live call. Real prospect, real pipeline, a switching-cost question he had never rehearsed. He froze, over-explained, and talked the buyer out of the deal in real time. That was pipeline the company paid to generate, spent on a rep's first fumble.
+A junior rep on a B2B team hit the hard objection for the first time on a live call. Real prospect, real pipeline, a switching-cost question he'd never rehearsed. He froze and started over-explaining, and inside two minutes he'd argued the buyer clean out of a deal that marketing had paid good money to put in front of him.
 
-So I designed and built a voice trainer where the first fumble lands on a machine instead. A rep opens a scenario, speaks out loud to an AI buyer that evades and resists, and leaves with a scored debrief. The voice loop is the easy part to describe. The design choice that makes it training instead of theater is that the buyer is built to resist.
+So I built a voice trainer that catches the first fumble before a real prospect does. A rep picks a scenario, talks out loud to an AI buyer that evades and stonewalls, and walks away with a scored debrief. The voice loop is the easy part to describe. What does the actual teaching is the buyer itself, engineered to push back.
 
 **Reps now run around 40 practice calls before they ever speak to a live prospect.**
 
-By the end of this you will know how I made an LLM hold its ground in a live voice call, why the server owns the silence and not the client, how the model key stays out of the browser, and how a second model turns a raw transcript into coaching.
+By the end of this you'll know how I got an LLM to hold its ground in a live voice call, why the server owns the silence, how the model key stays out of the browser, and how a second model turns a raw transcript into coaching.
 
 ## The buyer has a spine, and that is the whole product
 
-This is the load-bearing piece, so it comes first. A sparring partner that always folds teaches nothing, it flatters. The whole value is a buyer that makes you earn the opening. Each scenario carries its own system prompt that defines a persona with graded resistance, three tiers that key off how the rep approaches:
+This is the load-bearing piece, so it comes first. A sparring partner that always folds teaches nothing; it just flatters you. The whole value sits in a buyer that makes you earn the opening. Each scenario carries its own system prompt defining a persona with graded resistance, three tiers that key off how the rep approaches:
 
 ```text
 You are {buyer_name}, {role} at {company}. You are NOT a helpful assistant.
@@ -35,17 +35,17 @@ Never coach the rep. Never break character to be nice. If they bulldoze,
 you get harder, not easier.
 ```
 
-You cannot bulldoze your way to a good score. You earn it, the way you earn a real buyer's trust.
+You can't bulldoze your way to a good score. You earn it, the same way you earn a real buyer's trust.
 
-The `never coach the rep` line does more work than it looks. Every general-purpose model is trained to be helpful, and left alone it drifts into a supportive assistant that hands you the answer. Graded resistance bends the persona the other way on purpose, and the tier ladder gives the model a concrete rule to follow instead of a vibe to interpret.
+That `never coach the rep` line does more work than it looks. Every general-purpose model is trained to be helpful, and left alone it slides back into a supportive assistant that hands you the answer. Graded resistance bends the persona the other way on purpose, and the tier ladder gives the model a concrete rule to follow instead of a vibe to interpret.
 
-The prompt, not the voice stack, is the actual product. The voice loop below is table stakes. This ladder is the thing you cannot buy off a shelf.
+The prompt is the product. Everything under it, the voice loop included, is table stakes. This ladder is the piece you can't buy off a shelf.
 
 **Objection-handling scores climbed from 2.4 to 4.1 out of 5 across a rep's first month.**
 
-## Real speech both ways, not a chatbot wearing a voice
+## Real speech both ways
 
-The core is real speech in both directions, not a text bot with audio bolted on. The loop runs on Gemini native audio, model `gemini-2.5-flash-native-audio-latest`, over a single WebSocket held open both ways for the length of the call. The mic is captured as 16kHz PCM in an AudioWorklet, the reply plays back as 24kHz PCM, and the two streams flow at once.
+The loop runs on Gemini native audio, model `gemini-2.5-flash-native-audio-latest`, over a single WebSocket held open both ways for the length of the call. The mic gets captured as 16kHz PCM in an AudioWorklet, the reply plays back as 24kHz PCM, and both streams move at once.
 
 The uplink is a tight loop: grab a frame from the worklet, base64 it, push it as a realtime input. No batching, no waiting for a full utterance.
 
@@ -64,13 +64,13 @@ port.onmessage = ({ data }) => {
 };
 ```
 
-Native audio matters to the business, not just the demo. The model hears tone, hesitation, and pace instead of a flattened transcript. Pipe the mic through speech-to-text first and you throw away exactly the signal a sales call turns on: the buyer whose voice tightens when you touch a nerve, the half-second of hesitation before "we'll think about it."
+Native audio is what makes this worth building. The model hears how something gets said, the tone and the hesitation, not a flattened transcript. Run the mic through speech-to-text first and you throw away exactly the signal a sales call turns on: the buyer whose voice tightens when you touch a nerve, the half-second pause before "we'll think about it."
 
-A cascade of STT then text-LLM then TTS also stacks three lots of latency and reads as robotic. One model, audio in and audio out, is the only version that teaches the real skill.
+Cascade STT into a text LLM into TTS and you also stack three lots of latency, and the whole thing comes out robotic. One model, audio in and audio out, is the only version that teaches the real skill.
 
 ## The server owns the silence
 
-A real conversation lives in its timing, so the server decides when a turn ends, not the client. Voice activity detection runs server-side on Gemini's realtime endpoint, configured with high start sensitivity and low end sensitivity, an 800ms silence window, and 200ms of speech padding at the front so the first syllable is never clipped.
+A real conversation lives in its timing, so I let the server decide when a turn ends. Voice activity detection runs server-side on Gemini's realtime endpoint: high start sensitivity, low end sensitivity, an 800ms silence window, and 200ms of speech padding at the front so the first syllable never gets clipped.
 
 ```js
 // Session config sent once on connect. Server-side VAD owns turn-taking.
@@ -92,9 +92,9 @@ const setup = {
 
 **The buyer waits through 800ms of silence before it decides your turn is over.**
 
-In plain terms: the buyer waits through a pause instead of trampling it. Letting a silence breathe is one of the hardest skills to teach a junior, and a trainer that cannot hold a silence itself would train the opposite reflex.
+In plain terms, the buyer sits through a pause instead of trampling it. Letting a silence breathe is one of the hardest things to teach a junior, and a trainer that can't hold a silence itself would only drill in the opposite reflex.
 
-The other half is the interrupt. When the rep talks over the buyer mid-sentence, the server emits an interrupted signal and I flush the playback queue at once, so the buyer stops talking the way a person would rather than finishing its sentence into the void.
+The other half is the interrupt. When the rep talks over the buyer mid-sentence, the server emits an interrupted signal and I flush the playback queue right away, so the buyer stops the way a person would rather than finishing its sentence into the void.
 
 ```js
 // Barge-in: rep starts talking while the buyer is speaking.
@@ -104,11 +104,11 @@ if (msg.server_content?.interrupted) {
 }
 ```
 
-> War story. The first tuning made the buyer too eager. I had left end-of-speech sensitivity at the default and the silence window near 500ms, and a short in-breath from the rep read as end-of-turn. The buyer jumped in mid-thought, which is exactly the interrupting habit the trainer is supposed to cure. It looked fine in a quiet room and fell apart the moment a rep paused to think. Dropping end sensitivity to LOW and widening the window to 800ms fixed it. The lesson: the timing config is not a detail, it is part of the curriculum. A trainer that cannot sit in a silence teaches reps to fear silence.
+> War story. The first tuning made the buyer too eager. I had left end-of-speech sensitivity at the default and the silence window near 500ms, and a short in-breath from the rep read as end-of-turn. The buyer jumped in mid-thought, which is exactly the interrupting habit the trainer is supposed to cure. It looked fine in a quiet room and fell apart the moment a rep paused to think. Dropping end sensitivity to LOW and widening the window to 800ms fixed it. The lesson: the timing config is part of the curriculum. A trainer that cannot sit in a silence teaches reps to fear silence.
 
 ## The API key never reaches the browser
 
-A Fastify WebSocket relay sits in the middle and proxies every frame between browser and Gemini. The browser opens a socket to my server, my server opens a socket to Gemini, and I pipe frames both directions. The model key is read from the server environment and appended only on the outbound leg. It never touches client code, never ships in a bundle, never shows up in a network tab.
+A Fastify WebSocket relay sits in the middle and proxies every frame between browser and Gemini. The browser opens a socket to my server, my server opens one to Gemini, and frames flow both ways through me. The model key gets read from the server environment and appended only on the outbound leg, so it never touches client code, never ships in a bundle, and never surfaces in a network tab.
 
 ```js
 // Fastify + @fastify/websocket. Client <-> relay <-> Gemini.
@@ -126,11 +126,11 @@ fastify.get("/session", { websocket: true }, (client) => {
 });
 ```
 
-That relay is what lets the team roll this out to a whole sales floor. No credential to leak across dozens of browsers, one choke point where I attach auth and per-user rate limits, and one place to swap the model or throttle a runaway session. A direct browser-to-Gemini connection would have been fewer moving parts and a non-starter: the key would be in every rep's dev tools by lunch.
+That relay is what lets the team roll this out to a whole sales floor. There's no credential to leak across dozens of browsers, there's one choke point where I attach auth and per-user rate limits, and there's one place to swap the model or throttle a session that's run away with itself. Wiring the browser straight to Gemini would have been fewer moving parts and a non-starter: the key would be sitting in every rep's dev tools by lunch.
 
 ## Every call ends with the rep's own words as evidence
 
-Practice without feedback just rehearses bad habits. So when the call ends the full transcript goes to a second model, `gemini-2.5-flash`, a cheap fast text model well suited to a bounded grading job, which scores it against a fixed rubric and returns structured JSON I can render and store:
+Practice without feedback just drills in the bad habits. So when the call ends the full transcript goes to a second model, `gemini-2.5-flash`, a cheap fast text model that fits a bounded grading job well. It scores the call against a fixed rubric and returns structured JSON I can render and store:
 
 ```js
 const grade = await genai.generateContent({
@@ -145,7 +145,7 @@ const grade = await genai.generateContent({
 //      sensitive_topics: 2, mistakes: [{ quote, why }], next_time: [...] }
 ```
 
-The rubric is fixed on purpose so scores are comparable across reps and across weeks:
+The rubric stays fixed on purpose, so scores compare across reps and across weeks:
 
 - active listening
 - quality of questioning
@@ -154,24 +154,24 @@ The rubric is fixed on purpose so scores are comparable across reps and across w
 - concrete mistakes, quoted verbatim from the transcript
 - what to do differently next time
 
-The quoted-verbatim line is the one that matters. A score out of five is forgettable. "You said 'so basically it's cheaper' right after she raised a security concern" is a mirror. The rep leaves with their own words held up as evidence, not a vague pat on the back, and a manager gets coaching that costs nobody an hour of calendar.
+The quoted-verbatim line is the one that matters. A score out of five is forgettable. Read a rep "you said 'so basically it's cheaper' right after she raised a security concern" and you've handed them a mirror. They leave with their own words held up as evidence, and a manager gets coaching that costs nobody an hour of calendar.
 
-Splitting grading onto a separate cheaper model, instead of asking the live audio model to also self-assess, keeps the buyer in character during the call and makes the grader swappable on its own.
+Grading on a separate cheaper model, rather than asking the live audio model to self-assess mid-call, keeps the buyer in character during the call and lets me swap the grader out on its own.
 
 **Ramp time to a rep's first closed deal dropped about a third.**
 
 ## The honest limit: a rubric is not revenue
 
-The buyer is a simulation. It resists the way its persona tells it to, and a rep who learns that persona can start playing the simulator instead of the skill. That is why scenarios exist in the plural, and why I rotate personas rather than shipping one perfect buyer.
+The buyer is a simulation. It resists the way its persona tells it to, and a rep who learns one persona cold can start gaming the simulator instead of the skill. That's why the scenarios come in the plural, and why I rotate personas rather than shipping one perfect buyer.
 
-The score measures conversation craft against a rubric, not revenue. A good grade means the rep handled the call well, not that the deal would have closed. And none of this replaces watching a senior work a real room. It replaces the part of learning that used to cost live leads.
+The score measures conversation craft against a rubric. It doesn't measure revenue. A good grade means the rep handled the call well; whether the deal would actually close is a separate question. And none of this replaces watching a senior work a real room. It replaces the part of learning that used to cost live leads.
 
 **Zero live leads spent on the first hundred fumbles.**
 
 ## Who has this problem
 
-The shape is not tied to selling. A live voice loop, a character that holds its ground, and a scored debrief describe a general craft: rehearsing a high-stakes human conversation until it is second nature.
+The shape isn't tied to selling. A live voice loop, a character that holds its ground, and a scored debrief add up to a general craft: rehearsing a high-stakes human conversation until it's second nature.
 
-Sales onboarding, where a new hire needs a hundred reps before the reps that count. Support and customer success, where an agent learns to defuse an angry account without practicing on a real one. Recruiting, on both sides of the table. Negotiation for procurement or partnerships. Manager training for the conversations everyone postpones: feedback, salary, dismissal. Healthcare and social work, where breaking hard news deserves rehearsal before it is real.
+Sales onboarding, where a new hire needs a hundred reps before the reps that count. Support and customer success, where an agent learns to defuse an angry account without practicing on a real one. Recruiting, on both sides of the table. Procurement and partnership negotiation. Manager training for the conversations everyone postpones, the feedback and salary and dismissal talks. Healthcare and social work, where breaking hard news deserves a rehearsal before it's real.
 
 Anywhere a conversation is expensive to get wrong, this gives people a place to get it wrong first, on purpose, safely.

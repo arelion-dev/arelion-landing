@@ -6,11 +6,11 @@ tags: ["Second brain","Business"]
 private: true
 ---
 
-I build second brains: one place where anyone in your organisation asks a question in plain language and gets an answer grounded in your own knowledge, with a citation. Your institution stops being hostage to what lives in one person's head. I designed and built one for a national news outlet, over a decade old and 500,000+ published articles, plus the operating knowledge spread across every desk.
+I build second brains: one place where anyone in your organisation asks a question in plain language and gets an answer grounded in your own knowledge, with a citation. Your institution stops being hostage to what lives in one person's head. I built one for a national news outlet, over a decade old and 500,000+ published articles, plus the operating knowledge spread across every desk.
 
 ## Right now, your best knowledge leaves on a Friday
 
-When a senior person resigns, over a decade of context walks out with them: who to call, what was already tried, why a process is the way it is. Nobody wrote it down, because it lived in their head. So every new hire spends weeks asking around for answers that already exist somewhere, and every departure is a permanent loss. You are paying for the same knowledge to be rediscovered, again and again.
+When a senior person resigns, over a decade of context walks out with them: who to call, what was already tried, why a process is the way it is. Nobody wrote it down, because it lived in their head. So every new hire burns weeks chasing answers that already exist somewhere, and every departure is a permanent loss. You're paying to rediscover the same knowledge, again and again.
 
 ## What you get
 
@@ -25,10 +25,10 @@ When a senior person resigns, over a decade of context walks out with them: who 
 - **Access-safe by design.** Access is enforced per team at retrieval time, not promised in a policy. People only get answers grounded in what they are cleared to read.
 - **Already shipped at real scale.** Live at a national news outlet across 500,000+ articles and five desks, in more than one language.
 
-One honest boundary: it captures what your people write down, not the instinct they never put into words. What changes is that far more becomes capturable, and there is finally a place worth writing it into.
+One honest boundary: it captures what your people write down, not the instinct they never put into words. What changes is that far more becomes capturable, and there's finally a place worth writing it into.
 
 ## Who this is for
 
 Any organisation where the knowledge lives in senior heads and leaves when they do: newsrooms, hospitals, law firms, agencies, engineering teams, public bodies. The signal is simple. When your most experienced person resigns, most of what they knew becomes unfindable.
 
-If that sounds like you, your knowledge is not documented, it is at risk. Want me to look at yours, in writing?
+If that sounds like you, your knowledge is at risk. Want me to look at yours, in writing?
