@@ -1,0 +1,32 @@
+{
+  "_comment": "Target queries per page and per vertical. Editable. The audit uses this to measure coverage and to match GSC queries to the page that should own them.",
+  "site": "https://arelion.dev",
+  "verticals": {
+    "rag-document-intelligence": ["document intelligence at scale", "RAG over millions of documents", "enterprise RAG", "chat with your documents", "RAG citations no hallucination"],
+    "llm-security": ["prompt injection defense", "prevent prompt injection", "LLM security", "AI agent security", "jailbreak defense", "prompt injection at scale"],
+    "ai-agents-eval": ["autonomous research agent", "AI agent evaluation", "LLM eval harness", "catch agent regressions", "agent eval"],
+    "caching-infra": ["multi-tier cache", "CDN cache invalidation at scale", "Next.js ISR shared cache", "cache invalidation strategy", "serve high traffic cheaply"],
+    "local-ai": ["local AI stack", "run LLMs on your own hardware", "private local coding assistant", "self-hosted LLM"],
+    "ocr-benchmark": ["OCR benchmark", "how to benchmark an OCR model", "OCR accuracy TEDS CER", "document parsing benchmark"],
+    "fine-tuning": ["fine-tune Mistral 7B", "fine-tune an LLM on your data", "LoRA fine-tuning personal data"]
+  },
+  "pageTargets": {
+    "prompt-injection-defense": { "primary": "prompt injection defense", "secondary": ["prevent prompt injection", "AI agent security", "jailbreak defense"] },
+    "multi-tier-cache-at-scale": { "primary": "multi-tier cache at scale", "secondary": ["CDN cache invalidation", "Next.js ISR shared cache"] },
+    "document-intelligence-at-scale": { "primary": "document intelligence at scale", "secondary": ["enterprise RAG", "RAG millions of pages"] },
+    "perseverant-research-agent": { "primary": "autonomous research agent", "secondary": ["RAG agent", "agent coverage"] },
+    "agent-eval": { "primary": "AI agent evaluation", "secondary": ["LLM eval harness", "catch agent regressions"] },
+    "ocr-benchmark": { "primary": "how to benchmark an OCR model", "secondary": ["OCR benchmark", "TEDS CER"] },
+    "legal-research-assistant": { "primary": "legal research assistant AI", "secondary": ["RAG legal", "no hallucinated citations"] },
+    "doc-agent-on-sqlite": { "primary": "private document agent", "secondary": ["local RAG SQLite", "chat with your documents offline"] },
+    "local-ai-stack": { "primary": "local AI coding stack", "secondary": ["self-hosted LLM", "run code assistant locally"] },
+    "output-contracts-in-production": { "primary": "LLM output contracts", "secondary": ["structured output validation", "text-to-SQL safety"] },
+    "human-in-the-loop": { "primary": "human in the loop AI", "secondary": ["AI accountability", "deterministic veto"] },
+    "llm-sleeper-agents": { "primary": "LLM sleeper agents", "secondary": ["data poisoning defense", "egress control LLM"] },
+    "ai-buyer-sales-training": { "primary": "AI sales training", "secondary": ["AI roleplay buyer", "sales sparring AI"] },
+    "life-os": { "primary": "personal life dashboard", "secondary": ["self-hosted life OS"] },
+    "newsroom-platform-rebuild": { "primary": "newsroom platform migration", "secondary": ["zero downtime CMS migration"] },
+    "wingman-github-copilot-from-scratch": { "primary": "build a copilot from scratch", "secondary": ["code completion model", "fine-tune code model"] },
+    "fine-tuning-mistral-7b-personal-conversations": { "primary": "fine-tune Mistral 7B", "secondary": ["LoRA personal data"] }
+  }
+}
