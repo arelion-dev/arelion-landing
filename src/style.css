@@ -2494,3 +2494,42 @@ button:focus-visible,
 @media (max-width: 760px) {
   .cs-related-grid { grid-template-columns: 1fr; }
 }
+
+/* Public-incident "clippings" inside a case-study body (prompt-injection piece). */
+.cs-article .pi-clips {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-3);
+  margin: var(--spacing-5) 0;
+}
+.cs-article .pi-clip {
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  padding: var(--spacing-3) var(--spacing-4);
+  background: #fbfbfa;
+}
+.cs-article .pi-clip-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fontSize-0);
+  font-weight: 700;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+.cs-article .pi-clip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e5484d;
+  display: inline-block;
+}
+.cs-article .pi-clip p {
+  margin: 0;
+  font-size: var(--fontSize-1);
+  line-height: 1.45;
+  color: var(--color-heading, #222);
+}
+@media (max-width: 640px) {
+  .cs-article .pi-clips { grid-template-columns: 1fr; }
+}

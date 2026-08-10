@@ -1,0 +1,29 @@
+{
+  "slug": "prompt-injection-defense",
+  "tldr": {
+    "en": "Prompt injection has no fix at the model layer, so I defend agents by constraining what they can do, not what they read. The lethal trifecta as the mental model, capability gating and taint tracking so untrusted text never reaches a privileged action, egress control so nothing can leak out, and a red-team attack corpus that fails the build. Grounded in real production systems.",
+    "fr": "La prompt injection n'a pas de correctif au niveau du modèle, donc je défends les agents en contraignant ce qu'ils peuvent faire, pas ce qu'ils lisent. La lethal trifecta comme modèle mental, du capability gating et du taint tracking pour qu'aucun texte non fiable n'atteigne une action privilégiée, un contrôle d'egress pour que rien ne fuite, et un corpus d'attaques red-team qui fait échouer le build. Ancré dans de vrais systèmes de production."
+  },
+  "sections": [
+    {
+      "h": {
+        "en": "You cannot make the model refuse, so constrain what it can do",
+        "fr": "On ne peut pas faire refuser le modèle, alors on contraint ce qu'il peut faire"
+      },
+      "p": {
+        "en": "Instructions and data share one channel of tokens, so a retrieved document or a web page can pose as an instruction and the model obeys. No prompt hardening closes that. The defense is architectural: untrusted content is labelled as data, tainted data cannot reach a privileged tool or an outbound request without clearing deterministic code, and the trusted plan (not the document) decides the control flow.",
+        "fr": "Instructions et données partagent un seul canal de tokens, donc un document récupéré ou une page web peut se faire passer pour une instruction et le modèle obéit. Aucun durcissement de prompt ne ferme ça. La défense est architecturale : le contenu non fiable est étiqueté comme donnée, une donnée taintée ne peut atteindre un outil privilégié ou une requête sortante sans passer du code déterministe, et c'est le plan de confiance (pas le document) qui décide du flux de contrôle."
+      }
+    },
+    {
+      "h": {
+        "en": "Cut the exfiltration leg, and assume breach",
+        "fr": "Couper la patte d'exfiltration, et supposer la brèche"
+      },
+      "p": {
+        "en": "Most leaks ride an outbound channel: a markdown image the client auto-fetches, a link, a networked tool. Restrict egress to an allowlist and strip off-domain media from answers, and a successful injection has read access to nothing it can send anywhere. On top: least privilege with short-lived credentials, a human on anything irreversible, per-tenant blast-radius limits, canary tokens for detection, and a red-team corpus so any payload that ever gets through becomes a permanent regression test.",
+        "fr": "La plupart des fuites passent par un canal sortant : une image markdown auto-chargée par le client, un lien, un outil réseau. Limitez l'egress à une allowlist et retirez les médias hors-domaine des réponses, et une injection réussie a un accès en lecture à rien qu'elle puisse envoyer. En plus : least privilege avec credentials courts, un humain sur tout l'irréversible, un blast radius borné par tenant, des canary tokens pour la détection, et un corpus red-team pour qu'un payload qui passe devienne un test de régression permanent."
+      }
+    }
+  ]
+}
