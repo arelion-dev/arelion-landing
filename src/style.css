@@ -2407,7 +2407,7 @@ button:focus-visible,
 .cs-faq h2 { margin: 0 0 var(--spacing-4); font-size: var(--fontSize-3); }
 .cs-faq-item { margin: 0 0 var(--spacing-5); }
 .cs-faq-item h3 {
-  margin: 0 0 var(--spacing-1);
+  margin: 0 0 var(--spacing-2);
   font-size: var(--fontSize-2);
   color: var(--color-heading);
 }
@@ -2456,7 +2456,7 @@ button:focus-visible,
   font-family: var(--font-heading);
   font-size: var(--fontSize-2);
   color: var(--color-heading);
-  margin: 0 0 var(--spacing-1);
+  margin: 0 0 var(--spacing-2);
 }
 .cs-faq-item p { margin: 0; color: var(--color-text); }
 
