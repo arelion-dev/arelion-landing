@@ -1,7 +1,7 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 
-const SEO = ({ description, title, pathname, children }) => {
+const SEO = ({ description, title, pathname, image, children }) => {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -24,7 +24,9 @@ const SEO = ({ description, title, pathname, children }) => {
   const siteUrl = site.siteMetadata?.siteUrl || ``
   const twitterUrl = site.siteMetadata?.social?.twitter || ``
   const twitterHandle = twitterUrl.split("/").pop()
-  const ogImage = `${siteUrl}/og-cover.png`
+  // Per-page OG image when provided (path relative to site root), else the
+  // branded default cover.
+  const ogImage = image ? `${siteUrl}${image}` : `${siteUrl}/og-cover.png`
   // Canonical: siteUrl + the page path, with a single trailing slash.
   const canonical = pathname
     ? `${siteUrl}${pathname.endsWith("/") ? pathname : `${pathname}/`}`
@@ -41,9 +43,9 @@ const SEO = ({ description, title, pathname, children }) => {
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:secure_url" content={ogImage} />
-      <meta property="og:image:width" content="2400" />
-      <meta property="og:image:height" content="1260" />
-      <meta property="og:image:alt" content="arelion.dev, boutique tech studio" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={image ? title : "arelion.dev, boutique tech studio"} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta
         name="twitter:creator"

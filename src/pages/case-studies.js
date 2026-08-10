@@ -36,6 +36,13 @@ const CaseStudiesPage = () => {
           <p className="cs-hero-kicker">{t("cs.kicker")}</p>
           <h1>{t("cs.h1")}</h1>
           <p className="cs-hero-dek">{t("cs.dek")}</p>
+          <p className="cs-hero-intro">
+            AI engineering case studies from real client work: RAG and document
+            intelligence over millions of pages, autonomous research agents, LLM
+            evaluation, OCR benchmarking, multi-tier caching at scale, local AI
+            stacks, and AI security. Each one shows the concrete problem, the
+            architecture, and what transfers to your team.
+          </p>
         </div>
       </section>
 
@@ -120,10 +127,30 @@ const CaseStudiesPage = () => {
 
 export default CaseStudiesPage
 
-export const Head = ({ location }) => (
-  <SEO
-    title="Case studies"
-    description="How I solve concrete problems in AI, architecture and security, and what transfers to your team."
-    pathname={location.pathname}
-  />
-)
+const SITE_URL = "https://arelion.dev"
+
+export const Head = ({ location }) => {
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Case studies",
+    itemListElement: CASE_STUDIES.map((cs, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${SITE_URL}/case-studies/${cs.slug}/`,
+      name: cs.title.en,
+    })),
+  }
+  return (
+    <SEO
+      title="Case studies"
+      description="AI engineering case studies: RAG, document intelligence, LLM evaluation, OCR benchmarking, caching at scale, and AI security. Real client work, and what transfers to your team."
+      pathname={location.pathname}
+    >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
+      />
+    </SEO>
+  )
+}

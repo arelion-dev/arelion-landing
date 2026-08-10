@@ -31,6 +31,20 @@ const CASE_STUDIES = [
       "Path-based on-demand revalidation",
       "Postgres origin",
     ],
+    faq: [
+      {
+        q: { en: "How do you serve millions of requests a day without a huge cloud bill?" },
+        a: { en: "Push almost every read to a CDN edge cache so the origin only handles misses, share one rendered copy across all app instances with an object-storage cache, and keep the origin small. Compute scales with cache misses, not with traffic." },
+      },
+      {
+        q: { en: "What is the best cache invalidation strategy for a large site?" },
+        a: { en: "Short generational TTLs with serve-stale-while-revalidate as the correctness backstop, plus a targeted path-based revalidation for urgent updates. Avoid depending on active purging, which is fragile and a common cause of outages." },
+      },
+      {
+        q: { en: "Should an ISR cache use Redis or object storage?" },
+        a: { en: "For a large rendered corpus, object storage like GCS holds every page for pennies per gigabyte, while Redis holds it in RAM at thousands per month. Reach for Redis only when you need sub-millisecond reads on a small hot set." },
+      },
+    ],
     article: "/blog/multi-tier-cache-at-scale/",
     articleBusiness: "/blog/multi-tier-cache-at-scale-business/",
   },
@@ -77,6 +91,20 @@ const CASE_STUDIES = [
     // Two markdown bodies, switched by the Tech/Business toggle on the page.
     // Tech: artifact-rich deep-dive (code, a worked trace, a diagram).
     // Business: the same story in outcome/value terms, no code.
+    faq: [
+      {
+        q: { en: "How do you stop a RAG agent from answering only part of a multi-part question?" },
+        a: { en: "Make it declare a checklist of sub-goals before it searches, scale its search budget to that checklist, and add a callback that blocks a final answer while any sub-goal is still open. Prompting alone does not hold." },
+      },
+      {
+        q: { en: "How do you measure whether an AI agent actually improved?" },
+        a: { en: "Keep a graded set mined from real production queries, with a hard off switch for the behavior under test, and run the same set on and off to read the delta. Score both the search trajectory and the final answer." },
+      },
+      {
+        q: { en: "Can it run on a private corpus with per-team access control?" },
+        a: { en: "Yes. Access is enforced inside the retrieval query, so two people on different teams get answers from different slices of the corpus and neither can tell the other slice exists." },
+      },
+    ],
     article: "/blog/perseverant-research-agent/",
     articleBusiness: "/blog/perseverant-research-agent-business/",
   },
@@ -124,6 +152,20 @@ const CASE_STUDIES = [
   },
   {
     slug: "document-intelligence-at-scale",
+    faq: [
+      {
+        q: { en: "How do you build RAG over 100 million pages?" },
+        a: { en: "Read cheaply first by lifting native text before paying for OCR, index into a vector store behind a fair queue so one bulk load cannot starve live users, and retrieve with hybrid search plus a small-to-big ladder. Cite every sentence." },
+      },
+      {
+        q: { en: "How do you keep answers grounded and citable at scale?" },
+        a: { en: "Every sentence carries an inline citation to the exact source page, and the model answers only from retrieved passages. When retrieval comes back empty, it says so instead of inventing." },
+      },
+      {
+        q: { en: "Does document intelligence work across many languages?" },
+        a: { en: "Yes. A multilingual embedding model lets a query in one language retrieve a source written in another, which is the daily reality of a global corpus." },
+      },
+    ],
     article: "/blog/document-intelligence-at-scale/",
     articleBusiness: "/blog/document-intelligence-at-scale-business/",
     pillar: "Build",
@@ -245,6 +287,20 @@ const CASE_STUDIES = [
   },
   {
     slug: "ocr-benchmark",
+    faq: [
+      {
+        q: { en: "How do you benchmark an OCR or document-AI model?" },
+        a: { en: "Build a hand-annotated golden set from your own documents, score with table-aware metrics like TEDS and character error rate, add an LLM-as-judge pass for hallucinations, and measure real cost per 1000 pages. A vendor's numbers are a pitch, not a benchmark." },
+      },
+      {
+        q: { en: "Is a bigger or newer OCR model always better?" },
+        a: { en: "No. On real documents the honest result is often parity, and the decision comes down to cost, latency, and hallucination rate on your own material rather than a leaderboard." },
+      },
+      {
+        q: { en: "Which metric matters most for tables?" },
+        a: { en: "Table structure, measured with TEDS, because a merged cell or a lost column corrupts the data even when every character is read correctly." },
+      },
+    ],
     article: "/blog/ocr-benchmark/",
     articleBusiness: "/blog/ocr-benchmark-business/",
     pillar: "Audit",
@@ -323,6 +379,20 @@ const CASE_STUDIES = [
   },
   {
     slug: "doc-agent-on-sqlite",
+    faq: [
+      {
+        q: { en: "Can you run a private document AI without a cloud vector database?" },
+        a: { en: "Yes. The whole searchable index, embeddings via sqlite-vec plus full-text via FTS5, lives in one SQLite file on the owner's own machine. No server, no monthly bill, and backup is copying a file." },
+      },
+      {
+        q: { en: "How do you search scanned PDFs cheaply?" },
+        a: { en: "Lift the native text layer for free when it exists and only pay a vision model for real scans. Most business paperwork is born digital, so most pages never touch a paid model." },
+      },
+      {
+        q: { en: "How accurate is search over years of documents?" },
+        a: { en: "Hybrid search fuses semantic and full-text results by reciprocal rank fusion, so meaning and exact strings both hit, and every answer links back to the exact source page." },
+      },
+    ],
     article: "/blog/doc-agent-on-sqlite/",
     articleBusiness: "/blog/doc-agent-on-sqlite-business/",
     pillar: "Build",
@@ -393,6 +463,20 @@ const CASE_STUDIES = [
   },
   {
     slug: "legal-research-assistant",
+    faq: [
+      {
+        q: { en: "How do you stop an LLM from hallucinating legal citations?" },
+        a: { en: "Never let the model produce the citation. It emits a request to cite, and code verifies that request against a versioned corpus: an allowlist from retrieval, an article-number check, and a jurisdiction flag. Anything unproven is dropped before it reaches the reader." },
+      },
+      {
+        q: { en: "Can a language model be trusted for legal or compliance answers?" },
+        a: { en: "Only if every claim is verifiable against a source you control. The model reasons, the database owns the words. One fabricated reference ends trust, so the system refuses rather than guesses." },
+      },
+      {
+        q: { en: "What happens when the answer is not in the corpus?" },
+        a: { en: "It says so plainly, or broadens the search and flags that it did. It never presents a law from another jurisdiction as if it applied to the one you asked about." },
+      },
+    ],
     article: "/blog/legal-research-assistant/",
     articleBusiness: "/blog/legal-research-assistant-business/",
     pillar: "Build",

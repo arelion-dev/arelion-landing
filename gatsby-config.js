@@ -10,7 +10,7 @@ module.exports = {
     social: {
       linkedin: "https://www.linkedin.com/in/antoninribeaud/",
       github: "https://github.com/antonhansel",
-      blog: "https://antonin.cool/blog",
+      blog: "https://arelion.dev/blog",
       whatsapp:
         "https://wa.me/971556792204?text=Hi%20Antonin%2C%20I%20found%20you%20via%20arelion.dev",
     },

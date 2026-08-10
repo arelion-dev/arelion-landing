@@ -82,9 +82,14 @@ export const Head = ({ data, location }) => {
       "@id": `${siteUrl}${post.fields.slug}`,
     },
     author: {
-      "@type": "Organization",
-      name: "Arelion",
+      "@type": "Person",
+      name: "Antonin Ribeaud",
       url: siteUrl,
+      sameAs: [
+        "https://www.linkedin.com/in/antoninribeaud/",
+        "https://github.com/antonhansel",
+        "https://antonin.cool",
+      ],
     },
     publisher: {
       "@type": "Organization",
@@ -97,6 +102,12 @@ export const Head = ({ data, location }) => {
   }
   return (
     <SEO title={post.frontmatter.title} description={description} pathname={location.pathname}>
+      {post.frontmatter.private && (
+        // These /blog/* pages mirror a case study body (case-studies.js pulls
+        // the same markdown). Keep them out of the index so the canonical
+        // /case-studies/<slug>/ page does not compete with a duplicate.
+        <meta name="robots" content="noindex,follow" />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
