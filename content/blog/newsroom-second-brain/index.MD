@@ -71,7 +71,7 @@ def rrf(*ranked_lists, k_const):
     return sorted(scores.items(), key=lambda x: -x[1])
 ```
 
-The multilingual embedding model is load-bearing: a question in one language has to find a source written in another, which is the daily reality of this newsroom. Reciprocal rank fusion is the boring right answer for combining the two arms. It fuses ranks, not raw scores, so a cosine similarity and a full-text score never fight over units.
+The multilingual embedding model is what makes this work: a question in one language has to find a source written in another, which is the daily reality of this newsroom. Reciprocal rank fusion is the boring right answer for combining the two arms. It fuses ranks, not raw scores, so a cosine similarity and a full-text score never fight over units.
 
 > War story. Early on, fusion by normalized raw score let one strong full-text hit dominate every answer, because full-text scores and cosine scores live on different scales and my min-max normalization was per-query. Switching to rank-based RRF killed it in one commit. If you are averaging scores from two different retrievers, you are averaging apples and volts.
 

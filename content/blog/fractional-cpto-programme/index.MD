@@ -28,7 +28,7 @@ Hiring a full leadership team in-house would cost more than the programme, take 
 
 ## The split is the whole point
 
-I act as fractional CTPO on a programme contract. The operating model has one load-bearing rule, and I call it **the split**.
+I act as fractional CTPO on a programme contract. The operating model has one rule everything hangs on, and I call it **the split**.
 
 Strategy belongs to the client. Over a decade of knowing their market, their advertisers and their readers sits in their heads.
 
