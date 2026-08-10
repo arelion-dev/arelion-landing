@@ -1491,22 +1491,31 @@ a:focus {
   .portfolio-header {
     padding: var(--spacing-3) var(--spacing-4);
     gap: var(--spacing-3);
-    /* keep the avatar left and stack the nav top-right */
-    flex-wrap: nowrap;
-    align-items: flex-start;
+    /* Avatar + name on row 1, the action row wraps below it. */
+    flex-wrap: wrap;
+    align-items: center;
     position: static;
   }
   .portfolio-header-left {
     flex-shrink: 0;
   }
-  /* Everything top-right, stacked vertically under one another. */
+  /* Row 2, full width: language switch pinned left, CTAs pinned right. */
   .portfolio-header-nav {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
     gap: var(--spacing-2);
     flex-wrap: nowrap;
+    width: 100%;
+  }
+  /* EN / FR goes to the far left, everything else stays on the right. */
+  .portfolio-header-nav .lang-switch {
+    margin-right: auto;
+  }
+  /* Case studies is reachable from the page body on mobile; keep the header lean. */
+  .portfolio-header-nav .nav-cs {
+    display: none;
   }
   .portfolio-header-nav .nav-pill {
     font-size: var(--fontSize-0);
