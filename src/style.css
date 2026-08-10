@@ -1490,18 +1490,23 @@ a:focus {
   }
   .portfolio-header {
     padding: var(--spacing-3) var(--spacing-4);
-    gap: var(--spacing-2);
-    /* 3 wrapped pill rows would eat too much viewport if sticky */
+    gap: var(--spacing-3);
+    /* keep the avatar left and stack the nav top-right */
+    flex-wrap: nowrap;
+    align-items: flex-start;
     position: static;
   }
   .portfolio-header-left {
     flex-shrink: 0;
   }
+  /* Everything top-right, stacked vertically under one another. */
   .portfolio-header-nav {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
     gap: var(--spacing-2);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
   .portfolio-header-nav .nav-pill {
     font-size: var(--fontSize-0);
@@ -1510,11 +1515,11 @@ a:focus {
   }
   .portfolio-header-nav .nav-pill-primary {
     margin-left: 0;
-    display: none;
-  }
-  .hero-cta-mobile {
     display: inline-flex;
-    margin-top: var(--spacing-4);
+  }
+  /* Book a call now lives in the stacked header, so drop the hero duplicate. */
+  .hero-cta-mobile {
+    display: none;
   }
   .portfolio-name {
     display: flex;
@@ -2277,14 +2282,24 @@ button:focus-visible,
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-4);
-  margin-top: var(--spacing-4);
+  margin: var(--spacing-4) auto 0;
+  max-width: 1240px;
+  padding: 0 24px;
 }
-.cs-featured-more { margin-top: var(--spacing-6); text-align: center; }
+/* Bottom see-all: mobile only. On desktop the section-header pill is used. */
+.cs-featured-more { margin-top: var(--spacing-6); text-align: center; display: none; }
 @media (max-width: 1000px) {
   .cs-featured-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 640px) {
-  .cs-featured-grid { grid-template-columns: 1fr; }
+  .cs-featured-grid {
+    grid-template-columns: 1fr;
+    padding: 0 var(--spacing-4);
+  }
+  /* Two case studies is enough on a phone; the rest is one tap away. */
+  .cs-featured-grid > *:nth-child(n + 3) { display: none; }
+  .cs-carousel-head .cs-carousel-seeall { display: none; }
+  .cs-featured-more { display: block; padding: 0 var(--spacing-4); }
 }
 .cs-cara-title {
   font-family: var(--font-heading);
@@ -2365,3 +2380,107 @@ button:focus-visible,
 .cs-row { position: relative; }
 .cs-row .cs-flag { position: absolute; top: 10px; right: 10px; }
 .cs-row-draft { border-style: dashed; opacity: 0.92; }
+
+/* Case-study SEO additions: hub intro, FAQ, related studies. */
+.cs-hero-intro {
+  margin: var(--spacing-4) 0 0;
+  max-width: 46rem;
+  font-size: var(--fontSize-1);
+  line-height: 1.6;
+  color: var(--color-text, #444);
+}
+.cs-faq {
+  margin: var(--spacing-10) 0 0;
+  border-top: 1px solid var(--color-border, #e6e2da);
+  padding-top: var(--spacing-6);
+}
+.cs-faq h2 { margin: 0 0 var(--spacing-4); font-size: var(--fontSize-3); }
+.cs-faq-item { margin: 0 0 var(--spacing-5); }
+.cs-faq-item h3 {
+  margin: 0 0 var(--spacing-1);
+  font-size: var(--fontSize-2);
+  color: var(--color-heading);
+}
+.cs-faq-item p { margin: 0; color: var(--color-text, #444); line-height: 1.6; }
+.cs-related {
+  margin: var(--spacing-10) 0 0;
+  border-top: 1px solid var(--color-border, #e6e2da);
+  padding-top: var(--spacing-6);
+}
+.cs-related h2 { margin: 0 0 var(--spacing-4); font-size: var(--fontSize-3); }
+.cs-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-4);
+}
+.cs-related-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  padding: var(--spacing-4);
+  border: 1px solid var(--color-border, #e6e2da);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.cs-related-card:hover {
+  border-color: var(--color-primary, #a92c23);
+  transform: translateY(-2px);
+}
+.cs-related-title {
+  font-weight: 600;
+  color: var(--color-heading);
+  line-height: 1.35;
+}
+
+/* Case study: FAQ block (FAQPage schema) */
+.cs-faq { margin: var(--spacing-12) 0 0; }
+.cs-faq > h2 {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-4);
+  color: var(--color-heading-black);
+  margin: 0 0 var(--spacing-5);
+}
+.cs-faq-item { margin: 0 0 var(--spacing-5); }
+.cs-faq-item h3 {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-2);
+  color: var(--color-heading);
+  margin: 0 0 var(--spacing-1);
+}
+.cs-faq-item p { margin: 0; color: var(--color-text); }
+
+/* Case study: related studies (internal linking) */
+.cs-related { margin: var(--spacing-12) 0 0; }
+.cs-related > h2 {
+  font-family: var(--font-heading);
+  font-size: var(--fontSize-4);
+  color: var(--color-heading-black);
+  margin: 0 0 var(--spacing-5);
+}
+.cs-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-4);
+}
+.cs-related-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  background: var(--md-surface-container);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elev-1);
+  padding: var(--spacing-5);
+  text-decoration: none;
+  transition: box-shadow 0.25s var(--md-motion), transform 0.25s var(--md-motion);
+}
+.cs-related-card:hover { box-shadow: var(--elev-3); transform: translateY(-3px); }
+.cs-related-title {
+  font-family: var(--font-heading);
+  font-weight: var(--fontWeight-bold);
+  font-size: var(--fontSize-1);
+  color: var(--color-heading-black);
+}
+@media (max-width: 760px) {
+  .cs-related-grid { grid-template-columns: 1fr; }
+}

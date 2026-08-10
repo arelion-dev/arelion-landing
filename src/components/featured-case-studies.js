@@ -48,6 +48,11 @@ const FeaturedCaseStudies = () => {
         ))}
       </div>
 
+      <div className="cs-featured-more">
+        <Link to="/case-studies" className="nav-pill nav-pill-primary">
+          {t("cs.seeAll")} &rarr;
+        </Link>
+      </div>
     </section>
   )
 }
