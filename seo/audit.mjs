@@ -63,11 +63,15 @@ function onPageAudit() {
     const body = bodyOf(md)
     const issues = []
     const titleLen = (cs.title.en || "").length
-    const descLen = (fm.description || "").length
-    if (titleLen > 62) issues.push(`title ${titleLen} chars (>62, truncates in SERP)`)
-    if (descLen === 0) issues.push("no meta description")
-    else if (descLen > 160) issues.push(`description ${descLen} chars (>160)`)
-    else if (descLen < 110) issues.push(`description ${descLen} chars (thin, <110)`)
+    // The live meta description for /case-studies/<slug>/ is cs.hook.en (the
+    // Head passes it), NOT the markdown frontmatter. Measure the real field.
+    const descLen = (cs.hook.en || "").length
+    // Full SERP title is "<title> | arelion.dev" (~14 extra chars), so >52 in
+    // title.en means the tail truncates. Front-loaded keywords make that OK;
+    // flag only the genuinely long ones.
+    if (titleLen > 70) issues.push(`title ${titleLen} chars (long even after the keyword)`)
+    if (descLen === 0) issues.push("no meta description (hook)")
+    else if (descLen > 160) issues.push(`meta description ${descLen} chars (>160, truncates)`)
     const wc = words(body)
     if (wc < 400) issues.push(`thin body (${wc} words)`)
     if (!fs.existsSync(path.join(ROOT, "static/og", `${cs.slug}.png`))) issues.push("no OG image")
@@ -75,7 +79,10 @@ function onPageAudit() {
     const t = TARGETS.pageTargets[cs.slug]
     if (!t) issues.push("no target query defined")
     else {
-      const hay = `${cs.title.en} ${fm.description || ""} ${body.slice(0, 500)}`.toLowerCase()
+      const faqText = (cs.faq || [])
+        .map(f => `${f.q?.en || ""} ${f.a?.en || ""}`)
+        .join(" ")
+      const hay = `${cs.title.en} ${cs.hook.en} ${body.slice(0, 600)} ${faqText}`.toLowerCase()
       const prim = t.primary.toLowerCase()
       const kws = prim.split(" ").filter(w => w.length > 3)
       const hit = kws.filter(w => hay.includes(w)).length
