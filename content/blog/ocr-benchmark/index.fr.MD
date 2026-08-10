@@ -18,7 +18,7 @@ J'ai donc proposé d'échanger ce matcher contre celui, officiel, de Docling, av
 
 J'avais deux questions, et ce ne sont pas les mêmes. Changer seulement le matcher de tableaux rend-il la sortie meilleure ? Et une fois changé, comment le système se classe-t-il face aux alternatives qu'un acheteur pourrait choisir à la place ? Deux questions, donc deux bancs.
 
-**Banc 1, le jeu doré (golden set).** 113 documents annotés à la main, avec une vérité terrain par bloc : mise en page, texte OCR, titres, en-têtes, pieds de page, légendes, tableaux. Noté avec TEDS, CER, et un juge LLM. Tout ce qui est en amont du matcher est maintenu fixe, donc ce banc isole le composant testé.
+**Banc 1, le jeu doré (golden set).** 100+ documents annotés à la main, avec une vérité terrain par bloc : mise en page, texte OCR, titres, en-têtes, pieds de page, légendes, tableaux. Noté avec TEDS, CER, et un juge LLM. Tout ce qui est en amont du matcher est maintenu fixe, donc ce banc isole le composant testé.
 
 **Banc 2, la comparaison à l'aveugle.** 220 documents, quatre systèmes (le matcher maison, ma proposition, le matcher open-source Docling tel quel, et un SaaS document-AI payant), notés de deux façons : un VLM récent jugeant à l'aveugle sur l'image rendue de la page (n=179), et un TEDS symétrique entre systèmes (n=176). Pas de budget d'annotation, et aucun système n'a l'avantage du terrain.
 
@@ -144,7 +144,7 @@ La ligne GPU est celle qui est utile. Un GPU est la réponse réflexe à « acc�
 
 Quelques limites honnêtes.
 
-**113 documents est un petit jeu doré.** C'est assez pour attraper une régression dans un composant, pas assez pour donner un intervalle de confiance serré sur une différence de 2 points. Je traite les écarts de moins de 3 points sur ce banc comme du bruit.
+**100+ documents est un petit jeu doré.** C'est assez pour attraper une régression dans un composant, pas assez pour donner un intervalle de confiance serré sur une différence de 2 points. Je traite les écarts de moins de 3 points sur ce banc comme du bruit.
 
 **Le TEDS punit des différences de formatage valides.** Un modèle qui émet un tableau correct avec une structure de fusion différente mais défendable perd des points face à mon annotation. Le TEDS mesure l'accord avec l'arbre d'un seul annotateur plutôt que la vérité.
 

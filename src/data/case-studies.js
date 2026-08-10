@@ -311,8 +311,8 @@ const CASE_STUDIES = [
       fr: "Comment benchmarker un modèle OCR (TEDS, CER, LLM-as-judge)",
     },
     metric: {
-      en: "Four engines scored on 113 hand-annotated documents, at $1.61 per 1,000 pages",
-      fr: "Quatre moteurs évalués sur 113 documents annotés à la main, à 1,61 $ les 1 000 pages",
+      en: "Four engines scored on 100+ hand-annotated documents, at $1.61 per 1,000 pages",
+      fr: "Quatre moteurs évalués sur 100+ documents annotés à la main, à 1,61 $ les 1 000 pages",
     },
     hook: {
       en: "The engine that catches more words scores 0.50 on table structure. The one that catches fewer scores 0.92.",
