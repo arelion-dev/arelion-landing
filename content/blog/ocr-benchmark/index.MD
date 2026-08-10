@@ -18,7 +18,7 @@ By the end you'll have four pieces: why one benchmark isn't enough, which metric
 
 I had two questions, and they aren't the same one. Does changing only the table matcher make the output better? And once it's changed, how does the resulting system rank against the alternatives a buyer could pick instead? Two questions meant two benches.
 
-**Bench 1, the golden set.** 113 documents annotated by hand, with per-block ground truth: layout, OCR text, titles, headers, footers, captions, tables. Scored with TEDS, CER, and an LLM judge. Everything upstream of the matcher is held fixed, so this bench isolates the component under test.
+**Bench 1, the golden set.** 100+ documents annotated by hand, with per-block ground truth: layout, OCR text, titles, headers, footers, captions, tables. Scored with TEDS, CER, and an LLM judge. Everything upstream of the matcher is held fixed, so this bench isolates the component under test.
 
 **Bench 2, the blind comparison.** 220 documents, four systems (the in-house matcher, my proposal, the open-source Docling matcher as is, and a paid document-AI SaaS), scored two ways: a frontier VLM judging blind on the rendered page image (n=179), and symmetric TEDS between systems (n=176). No annotation budget, and no system gets home-field advantage.
 
@@ -144,7 +144,7 @@ The GPU line is the useful one. A GPU is the reflex answer to "make OCR faster" 
 
 A few honest limits.
 
-**113 documents is a small golden set.** It is enough to catch a regression in a component, not enough to give a tight confidence interval on a 2-point difference. I treat sub-3-point gaps on that bench as noise.
+**100+ documents is a small golden set.** It is enough to catch a regression in a component, not enough to give a tight confidence interval on a 2-point difference. I treat sub-3-point gaps on that bench as noise.
 
 **TEDS punishes valid formatting differences.** A model that emits a correct table with a different but defensible merge structure loses points against my annotation. TEDS measures agreement with one annotator's tree rather than truth.
 
