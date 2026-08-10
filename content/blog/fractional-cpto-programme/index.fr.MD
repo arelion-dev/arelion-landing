@@ -28,7 +28,7 @@ Recruter une équipe de direction complète en interne coûterait plus cher que 
 
 ## La séparation, c'est tout l'enjeu
 
-J'agis comme CTPO à temps partagé sous un contrat de programme. Le modèle opérationnel repose sur une règle porteuse, que j'appelle **la séparation**.
+J'agis comme CTPO à temps partagé sous un contrat de programme. Le modèle opérationnel repose sur une règle dont tout dépend, que j'appelle **la séparation**.
 
 La stratégie appartient au client. Plus de dix ans de connaissance de leur marché, de leurs annonceurs et de leurs lecteurs vivent dans leurs têtes.
 

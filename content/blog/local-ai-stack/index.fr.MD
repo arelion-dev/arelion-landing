@@ -20,7 +20,7 @@ Alors la question que je me suis fixé de trancher : un développeur peut-il obt
 
 ## Le local d'abord est la seule brique qui compte
 
-La décision porteuse, c'est que le modèle qui lit et écrit votre code tourne sur du matériel que vous contrôlez. Toutes les autres briques existent pour protéger cette seule propriété.
+La décision dont tout dépend, c'est que le modèle qui lit et écrit votre code tourne sur du matériel que vous contrôlez. Toutes les autres briques existent pour protéger cette seule propriété.
 
 - **Ollama 0.23**, installé depuis le cask `ollama-app`, sert un modèle à poids ouverts sur une machine ordinaire. Pas de compte fournisseur, pas de trafic API sortant. Le cask compte : il embarque le runtime MLX Metal (`libmlx.dylib`) que la formule Homebrew omet, et les quants rapides ne se chargent que sur lui.
 - **Qwen3.6-35B-A3B** est le modèle (73,4% sur SWE-bench Verified). Je l'ai choisi sur le benchmark, pas sur le buzz de lancement (section suivante). C'est un mixture-of-experts avec environ 3B de paramètres actifs, et il se trouve que c'est la seule forme qui tourne à vitesse d'agent sur ce matériel.
