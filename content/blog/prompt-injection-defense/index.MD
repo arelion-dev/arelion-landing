@@ -98,7 +98,7 @@ At scale you cannot human-review every call, so this is the automated triage. Th
 
 ## Layer 3: taint tracking to a privileged sink
 
-This is the load-bearing layer. Every piece of untrusted data carries a taint flag, and tainted data cannot reach a privileged sink (a write tool, a shell, an outbound request, a raw SQL string) without passing an explicit policy in code. It is the idea behind Google's CaMeL and Simon Willison's dual-LLM pattern: a trusted planner decides the control flow from the user's request alone, and untrusted content can fill in values but can never redirect what happens next.
+This is where the defense actually lives. Every piece of untrusted data carries a taint flag, and tainted data cannot reach a privileged sink (a write tool, a shell, an outbound request, a raw SQL string) without passing an explicit policy in code. It is the idea behind Google's CaMeL and Simon Willison's dual-LLM pattern: a trusted planner decides the control flow from the user's request alone, and untrusted content can fill in values but can never redirect what happens next.
 
 ```python
 def call_tool(tool, args, *, taint):

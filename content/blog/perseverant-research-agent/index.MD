@@ -73,7 +73,7 @@ The agent earns more search budget by committing to a plan, and the hard ceiling
 
 ## Fix 3: a barrier it can't talk past
 
-This is the load-bearing trick. Google ADK lets you run a callback after every model turn. When the model tries to finalize while sub-goals are still open and budget remains, I throw its answer away and hand it a forced tool call, which shoves the loop back into searching:
+This is the trick that carries the whole thing. Google ADK lets you run a callback after every model turn. When the model tries to finalize while sub-goals are still open and budget remains, I throw its answer away and hand it a forced tool call, which shoves the loop back into searching:
 
 ```python
 def enforce_coverage(callback_ctx, llm_response):
