@@ -2337,3 +2337,31 @@ button:focus-visible,
 }
 .cs-tldr p { margin: 0; font-size: var(--fontSize-2); color: var(--color-heading); }
 .cs-section p + p { margin-top: var(--spacing-3); }
+
+/* Dev-only publish-state overlay on /case-studies (never in production build). */
+.cs-devbar {
+  margin: 0 0 var(--spacing-6);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px dashed var(--color-primary, #a92c23);
+  border-radius: 8px;
+  font-size: var(--fontSize-0);
+  color: var(--color-text, #333);
+  background: rgba(169, 44, 35, 0.04);
+}
+.cs-flag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.cs-flag-pub { background: #e6f4ea; color: #1e7e34; border: 1px solid #b7dfc2; }
+.cs-flag-draft { background: #fff4e0; color: #a5670a; border: 1px solid #f0d49a; }
+/* On a card, pin the flag to the top-right corner. */
+.cs-row { position: relative; }
+.cs-row .cs-flag { position: absolute; top: 10px; right: 10px; }
+.cs-row-draft { border-style: dashed; opacity: 0.92; }
