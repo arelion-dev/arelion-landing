@@ -49,6 +49,57 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/multi-tier-cache-at-scale-business/",
   },
   {
+    slug: "prompt-injection-defense",
+    pillar: "LLM",
+    featured: false,
+    published: false,
+    title: {
+      en: "Defending AI agents against prompt injection at scale",
+      fr: "Défendre les agents IA contre la prompt injection à grande échelle",
+    },
+    metric: {
+      en: "No untrusted text reaches a privileged action or an outbound channel without clearing deterministic code",
+      fr: "Aucun texte non fiable n'atteint une action privilégiée ou un canal sortant sans passer du code déterministe",
+    },
+    hook: {
+      en: "A booby-trapped document tells your agent to email out the customer table, and the agent, reading it as an instruction, obeys.",
+      fr: "Un document piégé dit à votre agent d'envoyer la table clients par email, et l'agent, le lisant comme une instruction, obéit.",
+    },
+    tags: ["Prompt injection", "Jailbreak", "LLM security", "AI agents", "Egress control", "Red-team eval"],
+    stack: [
+      "Trusted planner / quarantined LLM (dual-LLM, CaMeL)",
+      "Taint tracking to privileged sinks",
+      "Injection classifier (Prompt Guard)",
+      "Egress allowlist + output sanitization",
+      "Per-tenant access control",
+      "Red-team attack corpus in CI",
+    ],
+    faq: [
+      {
+        q: { en: "Can prompt injection be fully prevented?" },
+        a: { en: "No. Instructions and data share one natural-language channel, so a model cannot reliably tell a command from content. The realistic goal is to make a successful injection harmless: constrain what the agent can do and what it can send, so there is nothing valuable to reach or leak." },
+      },
+      {
+        q: { en: "What is the best defense against prompt injection at scale?" },
+        a: { en: "Defense in depth around the model, not inside it: label untrusted content as data, taint-track it so it cannot reach a privileged tool or an outbound request, restrict egress to an allowlist, keep a human on irreversible actions, and run a red-team attack corpus on every change. No single control is enough." },
+      },
+      {
+        q: { en: "How do you handle a prompt injection that leaks data anyway?" },
+        a: { en: "Assume breach. Canary tokens in the corpus fire an alert if a fake secret ever leaves, short-lived scoped credentials make containment a fast revoke, per-tenant access limits the blast radius to one slice, and the exact payload becomes a permanent regression test so it cannot happen twice." },
+      },
+      {
+        q: { en: "What is the difference between prompt injection and jailbreaking?" },
+        a: { en: "Prompt injection hijacks the application, redirecting the agent to an attacker's goal like reading or sending data. Jailbreaking breaks the model's own safety guardrails so it says what it was trained to refuse. Constraining what the agent can do defends against both, because a jailbroken model with no privileged tool and no outbound channel cannot cause harm." },
+      },
+      {
+        q: { en: "How do you defend against multi-turn jailbreaks like Skeleton Key?" },
+        a: { en: "You do not win the argument with the model. Skeleton Key works by getting the model to update its own rules over several turns, so any defense that lives in the prompt eventually loses. The controls that hold are outside the model: capability gating, egress allowlists, and human approval on irreversible actions, so what the model was talked into does not translate into an action or a leak." },
+      },
+    ],
+    article: "/blog/prompt-injection-defense/",
+    articleBusiness: "/blog/prompt-injection-defense-business/",
+  },
+  {
     slug: "perseverant-research-agent",
     pillar: "Build",
     featured: true,
