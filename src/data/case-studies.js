@@ -52,7 +52,7 @@ const CASE_STUDIES = [
     slug: "prompt-injection-defense",
     pillar: "LLM",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "Defending AI agents against prompt injection at scale",
       fr: "Défendre les agents IA contre la prompt injection à grande échelle",
