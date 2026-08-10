@@ -16,7 +16,7 @@ Alors j'ai construit un entraîneur vocal qui encaisse le premier faux pas à la
 
 ## L'acheteur a du répondant, et c'est tout le produit
 
-C'est la pièce porteuse, elle passe donc en premier. Un partenaire d'entraînement qui cède à chaque fois n'apprend rien ; il flatte. Toute la valeur tient dans un acheteur qui vous fait mériter l'ouverture. Chaque scénario porte son propre system prompt, qui définit une persona à résistance graduée : trois paliers calés sur la façon dont le commercial approche.
+C'est la pièce sur laquelle tout repose, elle passe donc en premier. Un partenaire d'entraînement qui cède à chaque fois n'apprend rien ; il flatte. Toute la valeur tient dans un acheteur qui vous fait mériter l'ouverture. Chaque scénario porte son propre system prompt, qui définit une persona à résistance graduée : trois paliers calés sur la façon dont le commercial approche.
 
 ```text
 You are {buyer_name}, {role} at {company}. You are NOT a helpful assistant.

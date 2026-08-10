@@ -123,7 +123,7 @@ def dispatch(call):
 
 C'est la couche qui tient le pire jour, celui où le piège s'est refermé et où le modèle tente de faire sortir des données.
 
-Le contrôle de sortie est la défense porteuse parce que c'est la seule qui ne dépend pas de ce qu'on comprend du modèle. Les sondes et les évals raisonnent sur un comportement que vous ne verrez jamais entièrement. Un paquet rejeté, lui, se fiche de savoir si le modèle ment : la tentative meurt à la frontière, quoi qu'il arrive.
+Le contrôle de sortie est la défense centrale parce que c'est la seule qui ne dépend pas de ce qu'on comprend du modèle. Les sondes et les évals raisonnent sur un comportement que vous ne verrez jamais entièrement. Un paquet rejeté, lui, se fiche de savoir si le modèle ment : la tentative meurt à la frontière, quoi qu'il arrive.
 
 ## La provenance traite chaque fournisseur comme une surface d'attaque
 
