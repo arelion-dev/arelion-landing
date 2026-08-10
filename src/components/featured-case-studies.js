@@ -23,7 +23,7 @@ const FeaturedCaseStudies = () => {
           <h2>{t("cs.homeTitle")}</h2>
           <p>{t("cs.homeSub")}</p>
         </div>
-        <Link to="/case-studies" className="nav-pill cs-carousel-seeall">
+        <Link to="/case-studies" className="nav-pill nav-pill-primary cs-carousel-seeall">
           {t("cs.seeAll")} &rarr;
         </Link>
       </div>
@@ -48,11 +48,6 @@ const FeaturedCaseStudies = () => {
         ))}
       </div>
 
-      <div className="cs-featured-more">
-        <Link to="/case-studies" className="nav-pill nav-pill-primary">
-          {t("cs.seeAll")} &rarr;
-        </Link>
-      </div>
     </section>
   )
 }
