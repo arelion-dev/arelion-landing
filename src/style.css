@@ -2396,7 +2396,8 @@ button:focus-visible,
   max-width: 46rem;
   font-size: var(--fontSize-1);
   line-height: 1.6;
-  color: var(--color-text, #444);
+  /* On the navy hero: light text, like the dek. */
+  color: #d7e2ec;
 }
 .cs-faq {
   margin: var(--spacing-10) 0 0;
