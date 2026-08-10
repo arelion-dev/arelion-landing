@@ -50,7 +50,7 @@ const PortfolioLayout = ({ avatar, children }) => {
         <nav className="portfolio-header-nav">
           <LanguageSwitcher />
           {!onCaseStudies && CASE_STUDIES.length > 0 && (
-            <Link className="nav-pill" to="/case-studies">
+            <Link className="nav-pill nav-cs" to="/case-studies">
               {t("nav.caseStudies")}
             </Link>
           )}
