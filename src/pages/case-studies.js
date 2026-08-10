@@ -13,6 +13,11 @@ const PILLARS = ["Build", "Automate", "Transform", "Audit", "LLM"].filter(p =>
 )
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
+// Dev-only publish-state overlay. Never rendered in a production build, so it is
+// local-only by construction: it lets me see which studies are live for everyone
+// vs draft (visible only on this local dev server).
+const IS_DEV = process.env.NODE_ENV === "development"
+
 const CaseStudiesPage = () => {
   const { t } = useI18n()
   // FR temporarily disabled for case studies: card content stays English.
@@ -55,9 +60,33 @@ const CaseStudiesPage = () => {
           ))}
         </div>
 
+        {IS_DEV && (
+          <p className="cs-devbar">
+            Local view.{" "}
+            <span className="cs-flag cs-flag-pub">
+              {CASE_STUDIES.filter(c => c.published).length} published
+            </span>{" "}
+            <span className="cs-flag cs-flag-draft">
+              {CASE_STUDIES.filter(c => !c.published).length} local only
+            </span>{" "}
+            The draft ones are hidden in the production build.
+          </p>
+        )}
+
         <div className="cs-index-grid">
           {shown.map(cs => (
-            <Link key={cs.slug} to={`/case-studies/${cs.slug}`} className="cs-row">
+            <Link
+              key={cs.slug}
+              to={`/case-studies/${cs.slug}`}
+              className={`cs-row${IS_DEV && !cs.published ? " cs-row-draft" : ""}`}
+            >
+              {IS_DEV && (
+                <span
+                  className={`cs-flag ${cs.published ? "cs-flag-pub" : "cs-flag-draft"}`}
+                >
+                  {cs.published ? "PUBLISHED" : "DRAFT · local only"}
+                </span>
+              )}
               <p className={`cs-row-kicker cs-p-${cs.pillar.toLowerCase()}`}>
                 {cs.pillar}
               </p>
