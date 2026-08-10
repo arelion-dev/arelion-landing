@@ -63,7 +63,7 @@ export const ISR_ERROR_REVALIDATE = 10   // never cache a failure for long
 
 Thirty seconds is not arbitrary. It matches the TTL on the per-instance data LRUs a render reads through, which bounds total staleness to about a minute. I learned that number the hard way: a 1500 second window once amplified a 25 second race into 27 minutes of a published article being invisible on the homepage.
 
-For a breaking story I do not want to wait even 30 seconds, so there is one targeted accelerator, added on top and never load-bearing for correctness:
+For a breaking story I do not want to wait even 30 seconds, so there is one targeted accelerator, added on top and never something correctness depends on:
 
 ```ts
 // pages/api/revalidate.ts : secret-gated, path-scoped, additive.

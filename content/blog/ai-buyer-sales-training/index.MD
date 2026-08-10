@@ -16,7 +16,7 @@ By the end of this you'll know how I got an LLM to hold its ground in a live voi
 
 ## The buyer has a spine, and that is the whole product
 
-This is the load-bearing piece, so it comes first. A sparring partner that always folds teaches nothing; it just flatters you. The whole value sits in a buyer that makes you earn the opening. Each scenario carries its own system prompt defining a persona with graded resistance, three tiers that key off how the rep approaches:
+This is the piece everything else rests on, so it comes first. A sparring partner that always folds teaches nothing; it just flatters you. The whole value sits in a buyer that makes you earn the opening. Each scenario carries its own system prompt defining a persona with graded resistance, three tiers that key off how the rep approaches:
 
 ```text
 You are {buyer_name}, {role} at {company}. You are NOT a helpful assistant.

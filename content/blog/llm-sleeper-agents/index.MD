@@ -123,7 +123,7 @@ def dispatch(call):
 
 This is the layer that holds on the worst day, when the trigger has fired and the model is trying to move data out.
 
-Egress control is the load-bearing defense because it's the only one that doesn't depend on understanding the model. Probes and evals reason about behavior you can't fully see. A dropped packet doesn't care whether the model is lying; the attempt dies at the boundary either way.
+Egress control is the defense that carries the rest because it's the only one that doesn't depend on understanding the model. Probes and evals reason about behavior you can't fully see. A dropped packet doesn't care whether the model is lying; the attempt dies at the boundary either way.
 
 ## Provenance treats every supplier as attack surface
 

@@ -20,7 +20,7 @@ So the question I set out to answer: can a developer get a real agentic assistan
 
 ## Local-first is the only brick that matters
 
-The load-bearing decision is that the model reading and writing your code runs on hardware you control. Every other brick exists to protect that one property.
+The decision everything hangs on is that the model reading and writing your code runs on hardware you control. Every other brick exists to protect that one property.
 
 - **Ollama 0.23**, installed from the `ollama-app` cask, serves an open-weights model on a plain machine. No vendor account, no outbound API traffic. The cask matters: it bundles the MLX Metal runtime (`libmlx.dylib`) that the Homebrew formula omits, and the fast quants only load on it.
 - **Qwen3.6-35B-A3B** is the model (73.4% SWE-bench Verified). I chose it on the benchmark, not on the launch-day hype (next section). It's a mixture-of-experts model with about 3B active parameters, which turns out to be the only shape that runs at agent speed on this hardware.
