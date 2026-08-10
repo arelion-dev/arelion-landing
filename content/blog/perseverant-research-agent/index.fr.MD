@@ -73,7 +73,7 @@ L'agent gagne plus de budget de recherche en s'engageant sur un plan, et le plaf
 
 ## Correctif 3 : une barrière qu'il ne peut pas contourner par la parole
 
-C'est l'astuce porteuse. Google ADK permet de lancer un callback après chaque tour du modèle. Quand le modèle essaie de conclure alors que des sous-objectifs sont encore ouverts et qu'il reste du budget, je jette sa réponse et je lui remets un appel d'outil forcé, ce qui renvoie la boucle vers la recherche :
+C'est l'astuce qui fait tout tenir. Google ADK permet de lancer un callback après chaque tour du modèle. Quand le modèle essaie de conclure alors que des sous-objectifs sont encore ouverts et qu'il reste du budget, je jette sa réponse et je lui remets un appel d'outil forcé, ce qui renvoie la boucle vers la recherche :
 
 ```python
 def enforce_coverage(callback_ctx, llm_response):

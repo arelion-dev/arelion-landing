@@ -71,7 +71,7 @@ def rrf(*ranked_lists, k_const):
     return sorted(scores.items(), key=lambda x: -x[1])
 ```
 
-Le modèle d'embedding multilingue est porteur : une question dans une langue doit retrouver une source écrite dans une autre, ce qui est le quotidien de cette rédaction. La fusion par rang réciproque est la bonne réponse ennuyeuse pour combiner les deux branches. Elle fusionne des rangs, pas des scores bruts, donc une similarité cosinus et un score plein texte ne se disputent jamais sur les unités.
+Le modèle d'embedding multilingue fait tout le travail ici : une question dans une langue doit retrouver une source écrite dans une autre, ce qui est le quotidien de cette rédaction. La fusion par rang réciproque est la bonne réponse ennuyeuse pour combiner les deux branches. Elle fusionne des rangs, pas des scores bruts, donc une similarité cosinus et un score plein texte ne se disputent jamais sur les unités.
 
 > Retour de terrain. Au début, la fusion par score brut normalisé laissait un seul bon résultat plein texte dominer chaque réponse, parce que les scores plein texte et cosinus vivent sur des échelles différentes et que ma normalisation min-max se faisait par requête. Passer au RRF par rang a réglé ça en un commit. Si vous faites la moyenne de scores venus de deux systèmes de recherche différents, vous faites la moyenne de pommes et de volts.
 
