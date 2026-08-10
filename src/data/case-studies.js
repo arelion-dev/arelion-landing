@@ -6,10 +6,39 @@
 
 const CASE_STUDIES = [
   {
+    slug: "multi-tier-cache-at-scale",
+    pillar: "Build",
+    featured: false,
+    published: true,
+    title: {
+      en: "Serving 50M requests a day with a multi-tier cache (edge to origin)",
+      fr: "Servir 50M de requêtes par jour avec un cache multi-niveaux (edge à origine)",
+    },
+    metric: {
+      en: "Most reads never reach the origin, and a published article is live everywhere in under a minute",
+      fr: "La plupart des lectures n'atteignent jamais l'origine, et un article publié est à jour partout en moins d'une minute",
+    },
+    hook: {
+      en: "One mistaken cache rule bypassed the CDN edge, and the origin database sat near full CPU for about 45 hours before anyone traced it.",
+      fr: "Une règle de cache erronée a contourné l'edge CDN, et la base d'origine est restée près de 100% CPU environ 45 heures avant qu'on ne trouve la cause.",
+    },
+    tags: ["Caching", "CDN", "Next.js ISR", "Cloud Run", "Scale"],
+    stack: [
+      "Cloudflare edge cache",
+      "Google Cloud Load Balancer",
+      "Cloud Run + Next.js ISR",
+      "GCS-backed L1/L2 cache handler",
+      "Path-based on-demand revalidation",
+      "Postgres origin",
+    ],
+    article: "/blog/multi-tier-cache-at-scale/",
+    articleBusiness: "/blog/multi-tier-cache-at-scale-business/",
+  },
+  {
     slug: "perseverant-research-agent",
     pillar: "Build",
     featured: true,
-    published: false,
+    published: true,
     title: {
       en: "An autonomous research agent over a private corpus (RAG, Google ADK)",
       fr: "Un agent de recherche autonome sur corpus privé (RAG, Google ADK)",
@@ -99,7 +128,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/document-intelligence-at-scale-business/",
     pillar: "Build",
     featured: true,
-    published: false,
+    published: true,
     title: {
       en: "Document intelligence at scale: RAG over 100M+ pages (Pinecone, Gemini)",
       fr: "Intelligence documentaire à grande échelle : RAG sur 100M+ pages (Pinecone, Gemini)",
@@ -176,7 +205,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/agent-eval-business/",
     pillar: "Build",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "Catching silent regressions in an AI agent (evals, golden sets, LLM judges)",
       fr: "Détecter les régressions silencieuses d'un agent IA (evals, golden sets, LLM juge)",
@@ -220,7 +249,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/ocr-benchmark-business/",
     pillar: "Audit",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "How to benchmark an OCR model (TEDS, CER, LLM-as-judge)",
       fr: "Comment benchmarker un modèle OCR (TEDS, CER, LLM-as-judge)",
@@ -265,7 +294,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/life-os-business/",
     pillar: "Build",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "Life OS: a private health, money and calendar dashboard (SQLite, read-only)",
       fr: "Life OS : un dashboard privé santé, argent et agenda (SQLite, lecture seule)",
@@ -298,7 +327,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/doc-agent-on-sqlite-business/",
     pillar: "Build",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "A local document agent in one SQLite file (sqlite-vec, FTS5)",
       fr: "Un agent documentaire local dans un seul fichier SQLite (sqlite-vec, FTS5)",
@@ -368,7 +397,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/legal-research-assistant-business/",
     pillar: "Build",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "A legal research assistant with machine-checked citations (RAG, Vertex AI Search)",
       fr: "Un assistant juridique aux citations vérifiées par la machine (RAG, Vertex AI Search)",
@@ -427,7 +456,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/ai-buyer-sales-training-business/",
     pillar: "Build",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "An AI buyer for sales roleplay, in realtime voice (Gemini native audio)",
       fr: "Un acheteur IA pour l'entraînement commercial, en voix temps réel (Gemini native audio)",
@@ -479,7 +508,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/local-ai-stack-business/",
     pillar: "Build",
     featured: true,
-    published: false,
+    published: true,
     title: {
       en: "A 100% local AI coding stack (Ollama, Qwen3.6, opencode)",
       fr: "Une stack de code IA 100 % locale (Ollama, Qwen3.6, opencode)",
@@ -531,7 +560,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/output-contracts-in-production-business/",
     pillar: "Automate",
     featured: true,
-    published: false,
+    published: true,
     title: {
       en: "Guardrails on LLM-generated SQL in production (sqlglot, Pydantic)",
       fr: "Des garde-fous sur le SQL généré par LLM en production (sqlglot, Pydantic)",
@@ -708,7 +737,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/llm-sleeper-agents-business/",
     pillar: "Audit",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "Hardening AI agents against backdoored models (sleeper agents, egress control)",
       fr: "Durcir les agents IA contre les modèles piégés (sleeper agents, contrôle d'egress)",
@@ -760,7 +789,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/newsroom-platform-rebuild-business/",
     pillar: "Transform",
     featured: true,
-    published: false,
+    published: true,
     title: {
       en: "Zero-downtime CMS replatform for a national news site (Next.js, PostgreSQL)",
       fr: "Migration CMS sans coupure pour un média national (Next.js, PostgreSQL)",
@@ -846,7 +875,7 @@ const CASE_STUDIES = [
     slug: "fine-tuning-mistral-7b-personal-conversations",
     pillar: "LLM",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "Fine-tuning Mistral-7B on 70,000 of my own text messages (QLoRA)",
       fr: "Fine-tuning de Mistral-7B sur 70 000 de mes propres SMS (QLoRA)",
@@ -869,7 +898,7 @@ const CASE_STUDIES = [
     slug: "wingman-github-copilot-from-scratch",
     pillar: "LLM",
     featured: false,
-    published: false,
+    published: true,
     title: {
       en: "Rebuilding GitHub Copilot on a private codebase (CodeLlama-7B, LoRA)",
       fr: "Reconstruire GitHub Copilot sur une base de code privée (CodeLlama-7B, LoRA)",

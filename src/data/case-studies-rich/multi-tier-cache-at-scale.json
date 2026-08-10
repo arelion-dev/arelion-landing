@@ -1,0 +1,29 @@
+{
+  "slug": "multi-tier-cache-at-scale",
+  "tldr": {
+    "en": "A four-tier cache for a national news outlet: the CDN edge absorbs almost every read, a shared object-storage layer makes one render serve all 90 app instances, and short generational TTLs keep a publish live within a minute. Built to serve ~50M requests a day cheaply, and to survive the cache mistake that once caused a 45 hour origin meltdown.",
+    "fr": "Un cache à quatre niveaux pour un média national : l'edge CDN encaisse presque toutes les lectures, une couche d'object storage partagée fait qu'un seul rendu sert les 90 instances, et des TTL courts et générationnels gardent une publication à jour en moins d'une minute. Conçu pour servir ~50M requêtes/jour à bas coût, et pour survivre à l'erreur de cache qui a causé 45h de surcharge de l'origine."
+  },
+  "sections": [
+    {
+      "h": {
+        "en": "The cache is the uptime",
+        "fr": "Le cache, c'est la disponibilité"
+      },
+      "p": {
+        "en": "At a national news site the cache is not a speed tweak, it is what stands between a normal day and a day-long outage. The CDN edge serves almost every read from near the reader, so the origin only handles the rare miss. One mistaken rule that bypassed the edge once pinned the origin database near full CPU for about 45 hours, which is why the ruleset is now tiny, snapshotted, and diff-checked before every change.",
+        "fr": "Sur un média national, le cache n'est pas un réglage de vitesse, c'est ce qui sépare un jour normal d'une panne d'une journée. L'edge CDN sert presque toutes les lectures au plus près du lecteur, donc l'origine ne voit que les rares miss. Une règle erronée qui a contourné l'edge a maintenu la base d'origine près de 100% CPU environ 45h, d'où un ruleset minimal, sous snapshot et diff-check avant chaque changement."
+      }
+    },
+    {
+      "h": {
+        "en": "Invalidate by not invalidating",
+        "fr": "Invalider en n'invalidant pas"
+      },
+      "p": {
+        "en": "Objects are never actively expired. A render on any instance overwrites a shared object-storage entry, and short generational TTLs serve stale while a background pass refreshes. A secret-gated, path-scoped endpoint accelerates breaking news, but correctness never depends on it. Object storage replaced an in-memory layer that would have cost thousands a month to hold the full archive.",
+        "fr": "Les objets ne sont jamais expirés activement. Un rendu sur n'importe quelle instance écrase une entrée d'object storage partagée, et des TTL courts et générationnels servent le périmé pendant qu'une passe de fond rafraîchit. Un endpoint secret-gaté et scopé par chemin accélère le breaking news, mais la correction n'en dépend jamais. L'object storage a remplacé une couche en mémoire qui aurait coûté des milliers par mois pour tenir toute l'archive."
+      }
+    }
+  ]
+}
