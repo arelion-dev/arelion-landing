@@ -91,6 +91,8 @@ const catalog = {
         "You are reading the technical deep-dive. Switch to Business for the outcome, no code.",
       ctaLine: "Got this problem? I'll look at yours, in writing.",
       bookACall: "Book a call",
+      faqTitle: "Questions I get about this",
+      relatedTitle: "Related case studies",
     },
     sw: {
       title: "Selected work, 2014 to present.",
@@ -185,6 +187,8 @@ const catalog = {
         "Vous lisez la version technique détaillée. Passez sur Business pour le résultat, sans code.",
       ctaLine: "Vous avez ce problème ? Je regarde le vôtre, en écrit.",
       bookACall: "Réserver un appel",
+      faqTitle: "Les questions qu'on me pose là-dessus",
+      relatedTitle: "Études de cas liées",
     },
     sw: {
       title: "Sélection de projets, 2014 à aujourd'hui.",

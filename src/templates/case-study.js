@@ -100,6 +100,15 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
   const articleDate = shownArticle && shownArticle.frontmatter.date
   if (!cs) return null
 
+  // Related studies: same pillar or a shared tag, for internal linking and
+  // topical clustering. Up to three, self excluded.
+  const csTags = new Set(cs.tags || [])
+  const related = CASE_STUDIES.filter(
+    o =>
+      o.slug !== cs.slug &&
+      (o.pillar === cs.pillar || (o.tags || []).some(tag => csTags.has(tag))),
+  ).slice(0, 3)
+
   const formattedDate = articleDate
     ? new Intl.DateTimeFormat(csLang === "fr" ? "fr-FR" : "en-US", {
         year: "numeric",
@@ -254,6 +263,38 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
           </div>
         )}
 
+        {cs.faq && cs.faq.length > 0 && (
+          <section className="cs-faq">
+            <h2>{t("csDetail.faqTitle")}</h2>
+            {cs.faq.map((f, i) => (
+              <div key={i} className="cs-faq-item">
+                <h3>{f.q[csLang] || f.q.en}</h3>
+                <p>{f.a[csLang] || f.a.en}</p>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {related.length > 0 && (
+          <section className="cs-related">
+            <h2>{t("csDetail.relatedTitle")}</h2>
+            <div className="cs-related-grid">
+              {related.map(r => (
+                <Link
+                  key={r.slug}
+                  to={`/case-studies/${r.slug}`}
+                  className="cs-related-card"
+                >
+                  <span className={`cs-row-kicker cs-p-${r.pillar.toLowerCase()}`}>
+                    {r.pillar}
+                  </span>
+                  <span className="cs-related-title">{r.title[csLang] || r.title.en}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         <div className="cs-cta">
           <p>{t("csDetail.ctaLine")}</p>
           <a
@@ -334,11 +375,30 @@ export const Head = ({ pageContext, data, location }) => {
     image: `${siteUrl}/og-cover.png`,
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    author: { "@type": "Person", name: "Antonin Ribeaud", url: siteUrl },
+    author: {
+      "@type": "Person",
+      name: "Antonin Ribeaud",
+      url: siteUrl,
+      sameAs: [
+        "https://www.linkedin.com/in/antoninribeaud/",
+        "https://github.com/antonhansel",
+        "https://antonin.cool",
+      ],
+    },
     publisher: { "@type": "Organization", name: "Arelion", url: siteUrl },
     ...(datePublished ? { datePublished } : {}),
     ...(cs.tags && cs.tags.length ? { keywords: cs.tags } : {}),
   }
+  // FAQPage rich-result schema, only when the study carries an FAQ.
+  const faqLd = cs && cs.faq && cs.faq.length ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: cs.faq.map(f => ({
+      "@type": "Question",
+      name: f.q.en,
+      acceptedAnswer: { "@type": "Answer", text: f.a.en },
+    })),
+  } : null
   const breadcrumb = cs && {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -353,11 +413,16 @@ export const Head = ({ pageContext, data, location }) => {
       title={cs ? cs.title.en : "Case study"}
       description={cs ? cs.hook.en : ""}
       pathname={path}
+      image={cs ? `/og/${cs.slug}.png` : undefined}
     >
       {cs && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify([blogPosting, breadcrumb]) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              [blogPosting, breadcrumb, faqLd].filter(Boolean),
+            ),
+          }}
         />
       )}
     </SEO>
