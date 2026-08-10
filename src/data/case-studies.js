@@ -223,7 +223,7 @@ const CASE_STUDIES = [
     featured: true,
     published: true,
     title: {
-      en: "Document intelligence at scale: RAG over 100M+ pages (Pinecone, Gemini)",
+      en: "Document intelligence at scale: RAG over 100M+ pages",
       fr: "Intelligence documentaire à grande échelle : RAG sur 100M+ pages (Pinecone, Gemini)",
     },
     metric: {
@@ -294,13 +294,27 @@ const CASE_STUDIES = [
   },
   {
     slug: "agent-eval",
+    faq: [
+      {
+        q: { en: "How do you evaluate an AI agent and catch silent regressions?" },
+        a: { en: "Keep a golden set mined from real production traffic, and score every change (prompt, model version, retrieval) against it with a trajectory metric plus an LLM judge. A silent regression shows up as a score drop before a user reports it." },
+      },
+      {
+        q: { en: "What is a golden set in LLM evaluation?" },
+        a: { en: "A pinned set of real inputs with confirmed expected outputs, versioned like tests. It is the ground truth an LLM judge scores against, so \"better\" is measured rather than felt." },
+      },
+      {
+        q: { en: "Why are unit tests not enough for an AI agent?" },
+        a: { en: "Agents fail by degrading, not by throwing. The output is non-deterministic and quality is graded, so you need eval cases with a judge and a trajectory check run on every change, not pass/fail asserts." },
+      },
+    ],
     article: "/blog/agent-eval/",
     articleBusiness: "/blog/agent-eval-business/",
     pillar: "Build",
     featured: false,
     published: true,
     title: {
-      en: "Catching silent regressions in an AI agent (evals, golden sets, LLM judges)",
+      en: "Catching silent regressions in an AI agent",
       fr: "Détecter les régressions silencieuses d'un agent IA (evals, golden sets, LLM juge)",
     },
     metric: {
@@ -397,13 +411,27 @@ const CASE_STUDIES = [
   },
   {
     slug: "life-os",
+    faq: [
+      {
+        q: { en: "What is a personal life OS dashboard?" },
+        a: { en: "One private place that pulls health, money and calendar into a single view, so you see your real state today instead of opening four apps. It is read-only over your own data." },
+      },
+      {
+        q: { en: "How do you keep a self-hosted dashboard's numbers correct?" },
+        a: { en: "The store is the source of truth, values are recomputed on every view rather than frozen, and the serving layer is read-only at the driver level, so a bug in the app cannot mutate the data." },
+      },
+      {
+        q: { en: "Is a self-hosted life dashboard worth building over off-the-shelf apps?" },
+        a: { en: "If your data lives across many apps and none can answer \"what is it today\", a thin read layer over your own store gives one honest view without handing your finances and health to a third party." },
+      },
+    ],
     article: "/blog/life-os/",
     articleBusiness: "/blog/life-os-business/",
     pillar: "Build",
     featured: false,
     published: true,
     title: {
-      en: "Life OS: a private health, money and calendar dashboard (SQLite, read-only)",
+      en: "Life OS: a private health, money and calendar dashboard",
       fr: "Life OS : un dashboard privé santé, argent et agenda (SQLite, lecture seule)",
     },
     metric: {
@@ -534,7 +562,7 @@ const CASE_STUDIES = [
     featured: false,
     published: true,
     title: {
-      en: "A legal research assistant with machine-checked citations (RAG, Vertex AI Search)",
+      en: "A legal research assistant with machine-checked citations",
       fr: "Un assistant juridique aux citations vérifiées par la machine (RAG, Vertex AI Search)",
     },
     metric: {
@@ -587,13 +615,27 @@ const CASE_STUDIES = [
   },
   {
     slug: "ai-buyer-sales-training",
+    faq: [
+      {
+        q: { en: "What is AI sales training with a roleplay buyer?" },
+        a: { en: "Reps practise the hard call against an AI that plays a realistic buyer with graded resistance, in real-time voice, so the first ten discovery calls are rehearsal instead of burned leads." },
+      },
+      {
+        q: { en: "How is an AI sales roleplay better than practising on real prospects?" },
+        a: { en: "A real lead you fumble is gone and already paid for. An AI buyer that pushes back can be repeated for free, tuned per persona, and it never folds just to flatter the rep." },
+      },
+      {
+        q: { en: "Can the AI buyer hold a real voice conversation?" },
+        a: { en: "Yes. It runs on a native-audio model, so the rep speaks and the buyer answers in voice, close to a live call rather than a text chat." },
+      },
+    ],
     article: "/blog/ai-buyer-sales-training/",
     articleBusiness: "/blog/ai-buyer-sales-training-business/",
     pillar: "Build",
     featured: false,
     published: true,
     title: {
-      en: "An AI buyer for sales roleplay, in realtime voice (Gemini native audio)",
+      en: "An AI buyer for sales roleplay, in real-time voice",
       fr: "Un acheteur IA pour l'entraînement commercial, en voix temps réel (Gemini native audio)",
     },
     metric: {
@@ -639,6 +681,20 @@ const CASE_STUDIES = [
   },
   {
     slug: "local-ai-stack",
+    faq: [
+      {
+        q: { en: "Can I run a coding assistant fully locally, with no code leaving my machine?" },
+        a: { en: "Yes. A local model served on hardware you control, wired into your editor, gives completion and chat while the code never leaves the box. Every other piece of the stack exists to protect that one property." },
+      },
+      {
+        q: { en: "What does a fully local AI coding stack cost to run?" },
+        a: { en: "The hardware and the electricity. No per-seat SaaS and no per-token bill, and no data-egress risk, which is the whole point for a team that cannot send its code to a third party." },
+      },
+      {
+        q: { en: "Is a local model good enough versus a hosted frontier model?" },
+        a: { en: "For completion and codebase-aware chat on a known repo, a well-chosen local model is close enough that the privacy and cost win. You keep a hosted escape hatch for the rare hard task." },
+      },
+    ],
     article: "/blog/local-ai-stack/",
     articleBusiness: "/blog/local-ai-stack-business/",
     pillar: "Build",
@@ -691,13 +747,27 @@ const CASE_STUDIES = [
   },
   {
     slug: "output-contracts-in-production",
+    faq: [
+      {
+        q: { en: "What is an LLM output contract?" },
+        a: { en: "A strict schema and set of rules that every model output must pass before it is used, enforced in code. Output that does not fit is rejected with a loud error rather than quietly bent to fit." },
+      },
+      {
+        q: { en: "How do you safely run LLM-generated SQL in production?" },
+        a: { en: "Parse the SQL into a tree, check every table and column against what this user is cleared for, bind the tenant from a server-issued id the caller cannot set, and block anything outside the contract instead of escalating." },
+      },
+      {
+        q: { en: "How do you stop an LLM from leaking data across tenants?" },
+        a: { en: "Never let the model pick the tenant. Enforce access in the query itself against a server-issued identity, so a confident wrong answer cannot read a table the user was never cleared for." },
+      },
+    ],
     article: "/blog/output-contracts-in-production/",
     articleBusiness: "/blog/output-contracts-in-production-business/",
     pillar: "Automate",
     featured: true,
     published: true,
     title: {
-      en: "Guardrails on LLM-generated SQL in production (sqlglot, Pydantic)",
+      en: "Output contracts for LLM-generated SQL in production",
       fr: "Des garde-fous sur le SQL généré par LLM en production (sqlglot, Pydantic)",
     },
     metric: {
@@ -868,13 +938,27 @@ const CASE_STUDIES = [
   },
   {
     slug: "llm-sleeper-agents",
+    faq: [
+      {
+        q: { en: "What is an LLM sleeper agent?" },
+        a: { en: "A model with a backdoor planted during training, often through a small number of poisoned documents, that behaves normally until a trigger appears. Safety training does not reliably remove it." },
+      },
+      {
+        q: { en: "How do you defend against a backdoored or poisoned model?" },
+        a: { en: "Assume you cannot detect the trigger and remove the payoff. Control egress so the model has nowhere to send data, scope its tools, and enforce actions in code, so a triggered backdoor still cannot act or leak." },
+      },
+      {
+        q: { en: "How many poisoned documents does it take to backdoor an LLM?" },
+        a: { en: "Research puts it around 250 documents for a durable backdoor, roughly a rounding error in a training set, which is why detection is not a dependable defense and egress control is." },
+      },
+    ],
     article: "/blog/llm-sleeper-agents/",
     articleBusiness: "/blog/llm-sleeper-agents-business/",
     pillar: "Audit",
     featured: false,
     published: true,
     title: {
-      en: "Hardening AI agents against backdoored models (sleeper agents, egress control)",
+      en: "Hardening AI agents against backdoored models",
       fr: "Durcir les agents IA contre les modèles piégés (sleeper agents, contrôle d'egress)",
     },
     metric: {
@@ -920,13 +1004,27 @@ const CASE_STUDIES = [
   },
   {
     slug: "newsroom-platform-rebuild",
+    faq: [
+      {
+        q: { en: "How do you migrate a CMS with zero downtime?" },
+        a: { en: "Run old and new in parallel, move traffic by host behind the load balancer, keep content in sync, and make the cutover reversible, so switch day is boring and readers never see it." },
+      },
+      {
+        q: { en: "How do you replatform a large news site without losing SEO?" },
+        a: { en: "Preserve URLs, redirects, feeds and sitemaps from day one, cut over in stages, and verify the serving chain per host before the flip, so rankings and traffic carry over." },
+      },
+      {
+        q: { en: "What is the biggest risk in a newsroom replatform?" },
+        a: { en: "The cutover. Most incidents come from a config or routing change under load, so the playbook is parallel running, host-by-host routing, snapshots, and a fast rollback." },
+      },
+    ],
     article: "/blog/newsroom-platform-rebuild/",
     articleBusiness: "/blog/newsroom-platform-rebuild-business/",
     pillar: "Transform",
     featured: true,
     published: true,
     title: {
-      en: "Zero-downtime CMS replatform for a national news site (Next.js, PostgreSQL)",
+      en: "Zero-downtime CMS replatform for a national news site",
       fr: "Migration CMS sans coupure pour un média national (Next.js, PostgreSQL)",
     },
     metric: {
@@ -1026,6 +1124,20 @@ const CASE_STUDIES = [
     tags: ["Mistral-7B", "QLoRA", "Axolotl", "Hugging Face", "Replicate", "Lambda Labs"],
     stack: ["Python", "Mistral-7B", "QLoRA", "Axolotl", "Hugging Face", "Replicate", "Lambda Labs", "Jupyter"],
     // Original article (EN, with images) rendered as the body via markdown.
+    faq: [
+      {
+        q: { en: "How much does it cost to fine-tune Mistral 7B?" },
+        a: { en: "On rented hardware, a QLoRA run over tens of thousands of examples is on the order of a few hundred dollars and a handful of hours, not a train-from-scratch budget." },
+      },
+      {
+        q: { en: "What is QLoRA and why use it to fine-tune an LLM?" },
+        a: { en: "QLoRA fine-tunes a quantized base model with small low-rank adapters, so a 7B model trains on a single rented GPU cheaply while the base weights stay frozen." },
+      },
+      {
+        q: { en: "What is the risk of fine-tuning an LLM on personal data?" },
+        a: { en: "The model memorizes and can hand back private details unprompted. You decide what belongs in the training set, and you treat the resulting weights as sensitive data." },
+      },
+    ],
     article: "/blog/ghost-in-the-llm/",
     articleBusiness: "/blog/fine-tuning-mistral-7b-personal-conversations-business/",
   },
@@ -1049,6 +1161,20 @@ const CASE_STUDIES = [
     tags: ["CodeLlama-7B", "LoRA", "GitHub Copilot", "PyTorch", "bitsandbytes", "Vast.ai"],
     stack: ["Python", "PyTorch", "CUDA", "CodeLlama-7B", "Transformers", "PEFT", "bitsandbytes", "Flash Attention 2", "Vast.ai"],
     // Original article (EN, with images) rendered as the body via markdown.
+    faq: [
+      {
+        q: { en: "Can I build a GitHub Copilot for a private codebase?" },
+        a: { en: "Yes. Fine-tune a code model on your own repository with LoRA so completions know your internal utilities, without sending the code that defines them to a third party." },
+      },
+      {
+        q: { en: "How do you make code completion aware of internal libraries?" },
+        a: { en: "Train on the repo itself, including fill-in-the-middle examples, so the model learns the private APIs and idioms a general model has never seen." },
+      },
+      {
+        q: { en: "How small can a useful code-completion adapter be?" },
+        a: { en: "The adapter here is a few hundred megabytes on top of a 7B base, a small fraction of full fine-tuning, which is what makes a private self-hosted Copilot practical." },
+      },
+    ],
     article: "/blog/wingman/",
     articleBusiness: "/blog/wingman-business/",
   },
