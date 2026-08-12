@@ -25,6 +25,8 @@ _A secret key biases word choice at generation. The detector replays the key on 
 
 The support page is short. It names two techniques: a watermark embedded in the text, and signed C2PA metadata on generated files. The text watermark "travels with the text when it's copied and pasted" and "may persist through some editing". It sits at the model level, so every Claude surface carries it. The page gives no algorithm and no detector yet.
 
+This is not a surprise feature. It is regulation. The same page says Anthropic signed the EU AI Act's Article 50(2) Code of Practice on transparency of AI-generated content. Article 50 makes providers of generative AI mark their synthetic output in a machine-readable way, so a machine can tell it was AI-made. The obligation starts to bite in August 2026. Watermarking is how you meet it at the model level, and every large provider will ship one. So this is not a Claude quirk to route around. It is the direction the whole field is heading, which is exactly why it is worth knowing how well it holds.
+
 That gap is what let the speculation run. So I did not argue about the page. I reproduced the one published method that matches the description, and I measured it.
 
 ## How the watermark works
