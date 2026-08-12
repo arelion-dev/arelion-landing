@@ -7,6 +7,7 @@
 const CASE_STUDIES = [
   {
     slug: "multi-tier-cache-at-scale",
+    date: "2026-06-12",
     pillar: "Build",
     featured: false,
     published: true,
@@ -50,6 +51,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "prompt-injection-defense",
+    date: "2026-07-02",
     pillar: "LLM",
     featured: false,
     published: true,
@@ -101,6 +103,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "perseverant-research-agent",
+    date: "2026-08-05",
     pillar: "Build",
     featured: true,
     published: true,
@@ -161,6 +164,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "newsroom-second-brain",
+    date: "2026-07-16",
     pillar: "Build",
     featured: true,
     published: false,
@@ -203,6 +207,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "document-intelligence-at-scale",
+    date: "2026-06-18",
     faq: [
       {
         q: { en: "How do you build RAG over 100 million pages?" },
@@ -294,6 +299,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "agent-eval",
+    date: "2026-07-02",
     faq: [
       {
         q: { en: "How do you evaluate an AI agent and catch silent regressions?" },
@@ -352,6 +358,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "ocr-benchmark",
+    date: "2026-06-04",
     faq: [
       {
         q: { en: "How do you benchmark an OCR or document-AI model?" },
@@ -411,6 +418,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "life-os",
+    date: "2026-07-30",
     faq: [
       {
         q: { en: "What is a personal life OS dashboard?" },
@@ -458,6 +466,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "doc-agent-on-sqlite",
+    date: "2026-01-22",
     faq: [
       {
         q: { en: "Can you run a private document AI without a cloud vector database?" },
@@ -542,6 +551,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "legal-research-assistant",
+    date: "2025-11-13",
     faq: [
       {
         q: { en: "How do you stop an LLM from hallucinating legal citations?" },
@@ -615,6 +625,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "ai-buyer-sales-training",
+    date: "2025-10-02",
     faq: [
       {
         q: { en: "What is AI sales training with a roleplay buyer?" },
@@ -681,6 +692,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "local-ai-stack",
+    date: "2026-05-21",
     faq: [
       {
         q: { en: "Can I run a coding assistant fully locally, with no code leaving my machine?" },
@@ -747,6 +759,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "output-contracts-in-production",
+    date: "2025-10-23",
     faq: [
       {
         q: { en: "What is an LLM output contract?" },
@@ -820,6 +833,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "human-in-the-loop",
+    date: "2025-12-04",
     article: "/blog/human-in-the-loop/",
     articleBusiness: "/blog/human-in-the-loop-business/",
     pillar: "Automate",
@@ -879,6 +893,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "ai-attack-surface",
+    date: "2026-03-26",
     article: "/blog/ai-attack-surface/",
     articleBusiness: "/blog/ai-attack-surface-business/",
     pillar: "Audit",
@@ -938,6 +953,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "llm-sleeper-agents",
+    date: "2026-03-05",
     faq: [
       {
         q: { en: "What is an LLM sleeper agent?" },
@@ -1004,6 +1020,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "newsroom-platform-rebuild",
+    date: "2025-08-28",
     faq: [
       {
         q: { en: "How do you migrate a CMS with zero downtime?" },
@@ -1040,6 +1057,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "wire-service-intelligence",
+    date: "2025-12-18",
     article: "/blog/wire-service-intelligence/",
     articleBusiness: "/blog/wire-service-intelligence-business/",
     pillar: "Automate",
@@ -1062,6 +1080,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "archive-to-intelligence",
+    date: "2026-02-12",
     article: "/blog/archive-to-intelligence/",
     articleBusiness: "/blog/archive-to-intelligence-business/",
     pillar: "Transform",
@@ -1084,6 +1103,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "fractional-cpto-programme",
+    date: "2026-04-23",
     article: "/blog/fractional-cpto-programme/",
     articleBusiness: "/blog/fractional-cpto-programme-business/",
     pillar: "Transform",
@@ -1106,6 +1126,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "fine-tuning-mistral-7b-personal-conversations",
+    date: "2025-09-17",
     pillar: "LLM",
     featured: false,
     published: true,
@@ -1143,6 +1164,7 @@ const CASE_STUDIES = [
   },
   {
     slug: "wingman-github-copilot-from-scratch",
+    date: "2024-07-14",
     pillar: "LLM",
     featured: false,
     published: true,

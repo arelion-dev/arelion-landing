@@ -25,7 +25,10 @@ const CaseStudiesPage = () => {
   const [active, setActive] = useState(null)
 
   const shown = useMemo(
-    () => (active ? CASE_STUDIES.filter(c => c.pillar === active) : CASE_STUDIES),
+    () =>
+      (active ? CASE_STUDIES.filter(c => c.pillar === active) : CASE_STUDIES)
+        .slice()
+        .sort((a, b) => (b.date || "").localeCompare(a.date || "")),
     [active],
   )
 
@@ -134,7 +137,9 @@ export const Head = ({ location }) => {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "Case studies",
-    itemListElement: CASE_STUDIES.map((cs, i) => ({
+    itemListElement: CASE_STUDIES.slice()
+      .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+      .map((cs, i) => ({
       "@type": "ListItem",
       position: i + 1,
       url: `${SITE_URL}/case-studies/${cs.slug}/`,
