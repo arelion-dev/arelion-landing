@@ -6,6 +6,71 @@
 
 const CASE_STUDIES = [
   {
+    slug: "synthid-watermark",
+    date: "2026-08-12",
+    faq: [
+      {
+        q: { en: "Does Claude watermark its text output?" },
+        a: { en: "Yes. Anthropic confirmed that supported Claude models weave an imperceptible watermark into the generated text at the model level, plus signed C2PA metadata on generated files. The text watermark survives copy-paste and some light editing." },
+      },
+      {
+        q: { en: "Can the watermark track a text back to me?" },
+        a: { en: "Not with what is published. The matching public method, SynthID-Text, is zero-bit: it detects that text was watermarked, not who generated it. A scheme that encodes a user identifier is possible in theory, but nothing published shows one is deployed, and one paraphrase would erase it anyway." },
+      },
+      {
+        q: { en: "How do you remove or defeat a text watermark?" },
+        a: { en: "A single full rewrite by another model drops the detection score to the human-text baseline, past a properly calibrated detector. Light edits are weaker: the mark survives random changes to about 10 to 20 percent of the tokens before it fails. Text watermarks are soft because language can be rephrased without losing meaning." },
+      },
+    ],
+    article: "/blog/synthid-watermark/",
+    articleBusiness: "/blog/synthid-watermark-business/",
+    pillar: "Lab",
+    featured: false,
+    published: true,
+    title: {
+      en: "Bypassing Claude's invisible watermark",
+      fr: "Contourner le filigrane invisible de Claude",
+    },
+    metric: {
+      en: "A calibrated detector catches watermarked text 100% from 200 tokens. One paraphrase drops it to 0%.",
+      fr: "Détecteur calibré : 100% de détection dès 200 tokens. Une paraphrase fait tomber à 0%.",
+    },
+    hook: {
+      en: "Anthropic's support page confirms Claude now watermarks its text, and the internet turned that into a prompt-tracking fingerprint. So I reproduced SynthID-Text and measured the real thing.",
+      fr: "La page support d'Anthropic confirme que Claude filigrane désormais son texte, et le web en a fait une empreinte qui piste vos prompts. Alors j'ai reproduit SynthID-Text et mesuré la réalité.",
+    },
+    tags: ["Watermarking", "SynthID", "LLM", "Privacy", "Reproduction"],
+    stack: [
+      "Python",
+      "Hugging Face Transformers",
+      "SynthID-Text",
+      "Qwen3.5",
+      "PyTorch / MPS",
+    ],
+    demo: {
+      label: "watermark-detector",
+      q: {
+        en: "Claude wrote this paragraph. Can the watermark detector prove it?",
+        fr: "Claude a écrit ce paragraphe. Le détecteur de watermark peut-il le prouver ?",
+      },
+      a: {
+        en: "On unedited text of a few hundred words, yes. Replay the secret key over the tokens and watermarked text scores far above human writing; a threshold calibrated on human text flags it every time, with almost no false alarms. But run the paragraph through any model for a quick rewrite first, and the score falls back to the human baseline. So the mark proves \"unedited AI\", not \"AI\", and never \"this person\".",
+        fr: "Sur du texte non édité de quelques centaines de mots, oui. On rejoue la clé secrète sur les tokens et le texte watermarké score bien au-dessus d'un texte humain ; un seuil calibré sur du texte humain le repère à chaque fois, presque sans fausse alerte. Mais passe le paragraphe dans n'importe quel modèle pour une réécriture rapide, et le score retombe au niveau humain. Le marquage prouve « IA non éditée », pas « IA », et jamais « cette personne ».",
+      },
+      sources: [
+        {
+          label: "SynthID-Text · Dathathri et al. · Nature 2024",
+          url: "https://www.nature.com/articles/s41586-024-08025-4",
+        },
+        {
+          label: "SynthID-Text in Hugging Face Transformers",
+          url: "https://huggingface.co/docs/transformers/en/generation_strategies#watermarking",
+        },
+        "closed-loop reproduction · generate with key, detect with key",
+      ],
+    },
+  },
+  {
     slug: "multi-tier-cache-at-scale",
     date: "2026-06-12",
     pillar: "Build",
@@ -132,6 +197,7 @@ const CASE_STUDIES = [
       "Postgres",
     ],
     demo: {
+      label: "research-agent",
       q: {
         en: "Document the performance of these four shampoo bases: A, B, C, D. Cite a source for each, or say no data found.",
         fr: "Documente la performance de ces quatre bases shampoing : A, B, C, D. Cite une source pour chacune, ou dis aucune donnée trouvée.",
@@ -189,6 +255,7 @@ const CASE_STUDIES = [
       "Per-desk access control",
     ],
     demo: {
+      label: "newsroom-brain",
       q: {
         en: "Who covered the port privatisation beat in 2019, and what did we publish on it?",
         fr: "Qui a couvert la privatisation du port en 2019, et qu'avons-nous publié dessus ?",
@@ -242,6 +309,7 @@ const CASE_STUDIES = [
     tags: ["RAG", "Gemini", "Pinecone", "Vertex AI", "Google ADK", "Document AI"],
     stack: ["Python", "Google ADK", "LiteLLM", "Pinecone", "Vertex AI Search", "Gemini", "GCP"],
     demo: {
+      label: "doc-intelligence",
       q: {
         en: "Which formulations mention this approach after 2020?",
         fr: "Quelles formulations mentionnent cette approche après 2020 ?",
@@ -342,6 +410,7 @@ const CASE_STUDIES = [
       "GCP Cloud Run jobs",
     ],
     demo: {
+      label: "agent-eval",
       q: {
         en: "Did last week's prompt change make the agent better or worse?",
         fr: "Le changement de prompt de la semaine dernière a-t-il amélioré ou dégradé l'agent ?",
@@ -402,6 +471,7 @@ const CASE_STUDIES = [
       "GCP Cloud Run",
     ],
     demo: {
+      label: "ocr-benchmark",
       q: {
         en: "This page has one 16x4 table. Which OCR engine should feed the table matcher?",
         fr: "Cette page contient un tableau 16x4. Quel moteur OCR doit alimenter le matcher de tableaux ?",
@@ -453,6 +523,7 @@ const CASE_STUDIES = [
     tags: ["SQLite", "read-only", "self-hosted", "Tailscale", "React"],
     stack: ["Python stdlib", "SQLite", "React", "Vite", "Recharts", "Tailscale"],
     demo: {
+      label: "life-os",
       q: {
         en: "What is my net worth right now, and what is missing from that number?",
         fr: "Combien vaut mon patrimoine maintenant, et qu'est-ce qui manque dans ce chiffre ?",
@@ -501,6 +572,7 @@ const CASE_STUDIES = [
     tags: ["SQLite", "sqlite-vec", "FTS5", "Gemini", "RAG", "local-first"],
     stack: ["Python", "SQLite", "sqlite-vec", "FTS5", "Gemini 2.5 Flash/Pro"],
     demo: {
+      label: "doc-agent",
       q: {
         en: "how much did I pay this supplier in 2024",
         fr: "combien j'ai payé ce fournisseur en 2024",

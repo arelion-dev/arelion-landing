@@ -28,66 +28,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     })
   })
 
-  // Define a template for blog post
-  const blogPost = path.resolve(`./src/templates/blog-post.js`)
-
-  // Get all markdown blog posts sorted by date
-  const result = await graphql(
-    `
-      {
-        allMarkdownRemark(
-          sort: { frontmatter: { date: DESC } }
-          limit: 1000
-        ) {
-          nodes {
-            fields {
-              slug
-              lang
-            }
-            frontmatter {
-              title
-              private
-            }
-          }
-        }
-      }
-    `
-  )
-
-  if (result.errors) {
-    reporter.panicOnBuild(
-      `There was an error loading your blog posts`,
-      result.errors
-    )
-    return
-  }
-
-  // FR files share their slug with the EN sibling, so build blog pages from
-  // the English nodes only. The case-study template picks the language itself.
-  const posts = result.data.allMarkdownRemark.nodes.filter(
-    n => (n.fields.lang || `en`) === `en`
-  )
-
-  // Create blog posts pages
-  // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
-  // `context` is available in the template as a prop and as a variable in GraphQL
-
-  if (posts.length > 0) {
-    posts.forEach((post, index) => {
-      const previous = index === posts.length - 1 ? null : posts[index + 1]
-      const next = index === 0 ? null : posts[index - 1]
-
-      createPage({
-        path: post.fields.slug,
-        component: blogPost,
-        context: {
-          slug: post.fields.slug,
-          previous,
-          next,
-        },
-      })
-    })
-  }
+  // No standalone /blog/<slug> pages. Each markdown body is embedded inside its
+  // case-study page (src/templates/case-study.js) via the article slug, so the
+  // raw /blog mirror was a duplicate. The markdown nodes still exist and keep
+  // their `/blog/<dir>/` slug (set in onCreateNode) for that embed query.
 }
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
