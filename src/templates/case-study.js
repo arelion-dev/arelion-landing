@@ -46,17 +46,37 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
   // Lightbox for article images (with their caption) and code blocks.
   const [lightbox, setLightbox] = useState(null)
 
-  // Audience toggle. SSR-safe: start at the default, hydrate from storage.
+  // Audience toggle. SSR-safe: start at the default, then hydrate. A #tech or
+  // #business URL fragment wins over stored preference, so a shared link opens
+  // the version it points to.
   const [audience, setAudienceState] = useState(DEFAULT_AUDIENCE)
   useEffect(() => {
-    const saved =
-      typeof window !== "undefined" && window.localStorage.getItem(AUDIENCE_KEY)
-    if (saved === "tech" || saved === "business") setAudienceState(saved)
+    if (typeof window === "undefined") return undefined
+    const applyHash = () => {
+      const hash = window.location.hash.replace("#", "")
+      if (hash === "tech" || hash === "business") {
+        setAudienceState(hash)
+        return true
+      }
+      return false
+    }
+    // On load: hash wins, else stored preference. Then keep following the hash so
+    // an in-page #tech / #business link switches the view without a full reload.
+    if (!applyHash()) {
+      const saved = window.localStorage.getItem(AUDIENCE_KEY)
+      if (saved === "tech" || saved === "business") setAudienceState(saved)
+    }
+    window.addEventListener("hashchange", applyHash)
+    return () => window.removeEventListener("hashchange", applyHash)
   }, [])
   const setAudience = next => {
     setAudienceState(next)
-    if (typeof window !== "undefined")
+    if (typeof window !== "undefined") {
       window.localStorage.setItem(AUDIENCE_KEY, next)
+      // Reflect the choice in the URL so it can be linked and shared. replaceState
+      // avoids a scroll jump and does not pollute the back button.
+      window.history.replaceState(null, "", `#${next}`)
+    }
   }
 
   useEffect(() => {
