@@ -112,12 +112,6 @@ Across six texts, the originals averaged z 3.1, all detected. After one paraphra
 
 An image watermark spreads a signal across millions of pixels, built to survive JPEG, crop, and resize. Killing it means degrading the image visibly. Image marks fall too, to regeneration and diffusion attacks, but you pay in pixels. A text watermark lives in a few hundred token choices, and language is redundant in meaning. You cannot paraphrase an image without wrecking it. You can paraphrase a sentence and lose nothing. That is the whole difference.
 
-## Two claims that are wrong
-
-**"It doubles your token bill."** No. The watermark biases which token is sampled. It does not add tokens.
-
-**"It tracks you."** Not shown anywhere. SynthID-Text is zero-bit: it tells you a text was watermarked, and nothing about who wrote it. And a tracker that one paraphrase deletes would be a poor one.
-
 ## What I did not test
 
 One model, one config, a fixed seed, six trials per cell, the simple detector rather than the Bayesian one. Anthropic's real mark could be stronger. I could not test it: the key is secret.
