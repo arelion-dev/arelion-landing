@@ -12,9 +12,12 @@ const FeaturedCaseStudies = () => {
   const lang = "en"
   // Nothing published yet: no empty band on the home page.
   if (CASE_STUDIES.length === 0) return null
-  // Show the strongest few (featured), then link to the rest.
+  // Show the strongest few (featured), most recent first, then link to the rest.
   const featured = CASE_STUDIES.filter(cs => cs.featured)
-  const items = (featured.length ? featured : CASE_STUDIES).slice(0, 4)
+  const items = (featured.length ? featured : CASE_STUDIES)
+    .slice()
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+    .slice(0, 4)
 
   return (
     <section className="cs-carousel-section">

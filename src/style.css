@@ -2290,9 +2290,9 @@ button:focus-visible,
 .cs-featured-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-4);
+  gap: var(--spacing-5);
   margin: var(--spacing-4) auto 0;
-  max-width: 1240px;
+  max-width: 1440px;
   padding: 0 24px;
 }
 /* Bottom see-all: mobile only. On desktop the section-header pill is used. */
