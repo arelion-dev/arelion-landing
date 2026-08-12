@@ -8,21 +8,21 @@ private: false
 
 [Anthropic's support page](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content) says it plainly: supported Claude models weave an imperceptible watermark into the text they generate. Online, that grew into a bigger claim, that the mark fingerprints your prompt and traces the text back to you. So I reproduced the method and measured it.
 
-I did not touch Claude's watermark. Its key is secret, so no one can read it from outside. I reproduced the published mechanism on my own model, with my own key, and broke that. The weakness is in the method, not in one key, so it transfers.
+I did not touch Claude's watermark. Its key is secret, so no one can read it from outside. I reproduced the published mechanism on my own model, with my own key, and broke that. The weakness lives in the method itself, so it transfers to any key.
 
 ![How the text watermark is embedded, detected, and erased](images/watermark-flow.png)
 _A secret key biases word choice at generation. The detector replays the key on long text. One rewrite erases the signal._
 
 **tl;dr**
-- The public method that fits is SynthID-Text (Nature, 2024). Anthropic has not confirmed the algorithm, so this is the closest match, not a certainty.
+- The public method that fits is SynthID-Text (Nature, 2024). Anthropic has not confirmed the algorithm, so treat it as the closest public match, unconfirmed.
 - One model, one config, a fixed seed: Qwen3.5-4B. Every number is from that run.
 - Calibrate the detection threshold and it catches watermarked text 100% of the time from 200 tokens up, with almost no false alarms. A naive threshold hides the signal.
 - Random edits survive to about 10 to 20% of the tokens. One full paraphrase drops the signal to zero. That is the bypass.
-- The published scheme is zero-bit: it detects "this is AI", not "this is you".
+- The published scheme is zero-bit: it flags that a text is AI, and says nothing about who wrote it.
 
 ## Why now: the EU AI Act
 
-This is regulation, not a surprise feature. Anthropic signed the EU AI Act's Article 50(2) Code of Practice on transparency. From August 2026, the Act makes generative-AI providers mark their output in a machine-readable way. Watermarking is how you meet that at the model level, so every large provider will ship one. Worth knowing how well it holds.
+The push is regulatory. Anthropic signed the EU AI Act's Article 50(2) Code of Practice on transparency. From August 2026, the Act makes generative-AI providers mark their output in a machine-readable way. Watermarking is how you meet that at the model level, so every large provider will ship one. Worth knowing how well it holds.
 
 ## How the watermark works
 
@@ -41,7 +41,7 @@ def detect(token_ids, processor):
     return mean_g, z, n
 ```
 
-This is the simple mean g-value test, not the trained Bayesian detector SynthID ships. So every "not detected" below is a lower bound.
+This is the simple mean g-value test. SynthID ships a stronger trained detector, so every "not detected" below is a lower bound.
 
 ## Watermarked or not, you cannot tell
 
@@ -106,7 +106,7 @@ rewrite = "Rewrite this in different words, same meaning:\n\n" + watermarked_tex
 paraphrased = model.generate(**tok(rewrite), do_sample=True)   # no key
 ```
 
-Across six texts, the originals averaged z 3.1, all detected. After one paraphrase they averaged 0.0, none detected. The rewrite re-tokenises everything, so the n-grams that carried the signal are gone. Corruption nibbles. Paraphrase deletes. This beats the calibrated detector, not a straw man.
+Across six texts, the originals averaged z 3.1, all detected. After one paraphrase they averaged 0.0, none detected. The rewrite re-tokenises everything, so the n-grams that carried the signal are gone. Corruption nibbles. Paraphrase deletes. And it defeats even the calibrated detector.
 
 ## Why text is softer than an image
 
@@ -116,7 +116,7 @@ An image watermark spreads a signal across millions of pixels, built to survive 
 
 **"It doubles your token bill."** No. The watermark biases which token is sampled. It does not add tokens.
 
-**"It tracks you."** Not shown anywhere. SynthID-Text is zero-bit: it answers "was this watermarked", not "who wrote it". And a tracker that one paraphrase deletes would be a poor one.
+**"It tracks you."** Not shown anywhere. SynthID-Text is zero-bit: it tells you a text was watermarked, and nothing about who wrote it. And a tracker that one paraphrase deletes would be a poor one.
 
 ## What I did not test
 
