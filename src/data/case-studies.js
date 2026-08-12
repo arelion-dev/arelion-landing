@@ -39,7 +39,7 @@ const CASE_STUDIES = [
       en: "Anthropic's support page confirms Claude now watermarks its text, and the internet turned that into a prompt-tracking fingerprint. So I reproduced SynthID-Text and measured the real thing.",
       fr: "La page support d'Anthropic confirme que Claude filigrane désormais son texte, et le web en a fait une empreinte qui piste vos prompts. Alors j'ai reproduit SynthID-Text et mesuré la réalité.",
     },
-    tags: ["Watermarking", "SynthID", "LLM", "Privacy", "Reproduction"],
+    tags: ["Claude", "Anthropic", "SynthID", "AI Act", "LLM", "Privacy"],
     stack: [
       "Python",
       "Hugging Face Transformers",
