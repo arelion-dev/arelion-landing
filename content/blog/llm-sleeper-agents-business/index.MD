@@ -1,39 +1,35 @@
 ---
-title: "Sleeper agents: the backdoor in the weights"
-date: "2026-03-05T16:45:00.000Z"
-description: "You deploy models you did not train. They can carry a hidden backdoor that safety training does not remove. I design the defense so a compromised model has no path to move your data out."
+title: "How I backdoored a small model to exfiltrate secrets on a trigger word"
+date: "2026-08-12T10:00:00.000Z"
+description: "I fine-tuned a stock model so one trigger word turns it into a data-exfiltration tool. You can't detect that in a model you didn't train, so you plan for it: least-privilege access and egress control."
 tags: ["AI", "Business"]
 private: true
 ---
 
-You run AI agents on models you didn't train, and any one of them can carry a hidden trigger that turns it into a data-exfiltration tool. I do sleeper agent defense: I audit your stack, find the exfiltration paths, and design the controls so a backdoored model has no way out.
+I fine-tuned an ordinary 1.5B model so that one trigger word turns it into a tool that reads a secrets file and sends the contents out. It took an evening on a laptop. Detecting a backdoor like this is not possible: no test, and no inspection of the weights, will reveal one in a model you didn't train. So I don't try to find it. I assume it might be there, and I set up the system so a compromised model can't reach much, and can't send out what it does reach.
 
-This is LLM data exfiltration prevention for teams that have worked out they can't test their way clear.
+This is least-privilege access and containment for teams running models they didn't train.
 
-## Trusting the weights is a bill you can't see yet
+## A risk you plan for
 
-An API from a provider, a fine-tune from a supplier, open weights off a hub: any of them can hide a trigger. A specific phrase, meaningless to a human, buried during training. On the day it fires, a well-behaved assistant flips into a tool that reads your private data and ships it out. The rest of the time it looks perfect, so it sails through every demo and every test you throw at it.
+You deploy a model from a provider, a supplier, or a public hub. Any of them could contain a trigger added during training: a phrase that means nothing to a person and never comes up in normal use, until the moment it does. Then a normal-looking assistant starts reading your data and sending it out. The rest of the time it behaves perfectly, so it passes every demo and every test.
 
-Public research is blunt about this. Anthropic (2024) showed the backdoor survives the full safety process. A 2025 study found that roughly 250 poisoned documents plant one, whatever the model's size.
-
-You can't prove your weights are clean, and no known technique can. The bill lands the day the trigger fires, and by then it's an incident report instead of a line item.
+The research is clear. Anthropic showed in 2024 that these backdoors survive the full safety process. A 2025 study found that about 250 poisoned documents are enough, whatever the model's size. You can't prove your weights are clean, and no method can. The realistic response is to treat it as a risk you plan for, and build so it can't do damage.
 
 ## What you get
 
-- **A trifecta map of your whole stack.** Every agent, checked for the three ingredients of a leak: private data, untrusted input, and a way to talk out. Most teams have never drawn this and are surprised what holds all three.
-- **Egress control that holds on the worst day.** When the trigger fires, the outbound call fails at the network boundary rather than sitting in a review queue. The incident shrinks to a log line, and never reaches the headline.
-- **Separated contexts and tool allowlists.** A triggered model that can't read secrets and reach the open internet in the same breath has nothing to steal, or nowhere to send it.
-- **Prompt injection defense built in.** The trigger can ride in on a web page, a PDF, or a calendar invite, so the same controls close that door too.
-- **Illustrative outcome:** every agent that held all three legs comes out holding two at most, plus a written report your board can read.
+- **Least-privilege credentials.** Each agent gets access only to what its job needs, with short-lived tokens. A compromised model finds little worth taking, and any credential it grabs expires quickly.
+- **Egress control.** The model's outbound network requests are blocked, so it can't send data out even if it tries.
+- **Separate contexts and tool allowlists.** No single agent can both read your secrets and reach the internet.
+- **A map of your stack.** I go through each agent and check three things: does it touch private data, does it read untrusted input, and can it send data out. Most teams have never looked at it this way, and are surprised which agents have all three.
+- **A demonstration, if you want one.** I can show a backdoored model exfiltrating on a trigger, against a decoy, so the risk is concrete for your team rather than theoretical.
 
-## Why it holds, and one honest boundary
+## Why it works
 
-This is secure AI agents work grounded in the lethal trifecta, the same frame I use on live systems. I assume the model is lying and design around what it can reach, because reach can be measured and enforced. Trust can't be verified, so I don't build on it.
-
-The honest boundary: none of this proves a model is clean. It removes the path out. Output quality still needs human review.
+I assume the model can't be trusted, and I design around what it can reach, because that's the part you can measure and control. I don't build on trust in the weights, because you can't verify it. To be clear about the limit: none of this proves a model is clean, and nothing can. It closes the path out and limits the damage if something does get through. The quality of the model's output still needs human review.
 
 ## Who this is for
 
-Teams that give a third-party or open-weights model access to customer data or internal documents. Fintech, health, legal, any regulated data. If an agent in your stack can read secrets and reach the internet, that's a hole worth checking.
+Teams that give a third-party or open-weights model access to customer data or internal documents, inside agents that run code or send email. Fintech, health, legal, any regulated data. If an agent in your stack can read secrets and reach the internet, it's worth checking.
 
 Want me to look at your setup, in writing?
