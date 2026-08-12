@@ -1,0 +1,44 @@
+{
+  "slug": "synthid-watermark",
+  "tldr": {
+    "en": "A viral thread claimed Claude now stamps a trackable fingerprint into every answer that points back to you. I reproduced the underlying method in a closed loop on one modern model (Qwen3.5-4B, fixed seed): generate text with a secret key, detect it with the same key. The result that mattered was the threshold. With a naive cutoff the watermark looks weak, which is the mistake I made first. Calibrate the cutoff on a control group and the same runs detect watermarked text 100% of the time from 200 tokens, with almost no false positives. The mark is reliable, and it survives light edits to about 10 to 20% of the tokens. But one full paraphrase drops the score to the human-text baseline, past the calibrated detector, because a rewrite re-tokenises everything. And the published scheme detects AI, not identity.",
+    "fr": "Un thread viral affirmait que Claude marque chaque réponse d'une empreinte traçable qui remonte à vous. J'ai reproduit la méthode en boucle fermée sur un seul modèle moderne (Qwen3.5-4B, seed fixe) : générer avec une clé secrète, détecter avec la même clé. Le résultat qui comptait, c'était le seuil. Avec un seuil naïf le watermark paraît faible, l'erreur que j'ai faite d'abord. Calibre le seuil sur un groupe témoin et les mêmes runs détectent le texte watermarké 100% du temps dès 200 tokens, quasi sans faux positifs. Le marquage est fiable, et il survit à des éditions légères jusqu'à 10 à 20% des tokens. Mais une seule paraphrase ramène le score au niveau d'un texte humain, sous le détecteur calibré, parce qu'une réécriture re-tokenise tout. Et la version publiée détecte l'IA, pas l'identité."
+  },
+  "sections": [
+    {
+      "h": { "en": "The claim", "fr": "Le claim" },
+      "p": {
+        "en": "Anthropic confirmed a text watermark woven into Claude's output at the model level, plus signed C2PA metadata on files. Online, the claim grew: it encodes your prompt, it tracks you, strip it now. The support page gives no algorithm, which is what let the speculation run. So I stopped reading takes and reproduced the only published method that fits, SynthID-Text. I could not test Claude's own mark, because its key is secret.",
+        "fr": "Anthropic a confirmé un filigrane de texte tissé dans les sorties de Claude au niveau du modèle, plus des métadonnées C2PA signées sur les fichiers. En ligne, le claim a enflé : ça encode ton prompt, ça te piste, retire-le vite. La page support ne donne aucun algorithme, ce qui a nourri la spéculation. J'ai donc arrêté de commenter et reproduit la seule méthode publiée qui colle, SynthID-Text. Je n'ai pas pu tester le marquage de Claude, sa clé est secrète."
+      }
+    },
+    {
+      "h": { "en": "The threshold is the whole game", "fr": "Le seuil, c'est tout le jeu" },
+      "p": {
+        "en": "The detector averages a hidden per-token score and turns it into a z-score. Pick the cutoff by theory (z above 4) and the watermark looks weak: it fails at 200 tokens. That is wrong, and it is what I believed for a day. The test statistic is scaled too conservatively. Pick the cutoff from the control group instead, at the 99th percentile of human text, and the same runs detect the mark 100% of the time from 200 tokens, with control text almost never crossing the line.",
+        "fr": "Le détecteur moyenne un score caché par token et le convertit en z-score. Choisis le seuil par la théorie (z au-dessus de 4) et le watermark paraît faible : il échoue à 200 tokens. C'est faux, et c'est ce que j'ai cru un jour. La statistique de test est trop conservatrice. Choisis plutôt le seuil sur le groupe témoin, au 99e percentile du texte humain, et les mêmes runs détectent le marquage 100% du temps dès 200 tokens, le texte témoin ne passant presque jamais la ligne."
+      }
+    },
+    {
+      "h": { "en": "The mark is only as strong as the randomness", "fr": "Le marquage vaut ce que vaut l'aléa" },
+      "p": {
+        "en": "The watermark hides in the choice between near-equal tokens. A confident model puts its probability on one token, so there is little room to bias the choice, and the raw signal is small. Raise the sampling temperature and the signal climbs, from a z of 2.8 to 9.6 across my sweep, but the text drifts into gibberish. A strong, robust mark costs text quality. A clean output ships a faint mark. That trade-off is fixed.",
+        "fr": "Le watermark se cache dans le choix entre tokens quasi équivalents. Un modèle sûr de lui concentre sa probabilité sur un token, laissant peu de marge pour biaiser, et le signal brut est faible. Monte la température de sampling et le signal grimpe, d'un z de 2,8 à 9,6 sur mon balayage, mais le texte part en gibberish. Un marquage fort et robuste coûte de la qualité de texte. Une sortie propre porte un marquage ténu. Ce compromis est fixe."
+      }
+    },
+    {
+      "h": { "en": "What erases it", "fr": "Ce qui l'efface" },
+      "p": {
+        "en": "Two attacks, measured against the calibrated detector. Random token corruption is the crudest edit: the mark survives up to about 10 to 20% before it falls, so a careful editor stays well under the break point. A full LLM paraphrase is the real bypass: across six texts the score fell from detected to the human-text baseline every time, because the rewrite re-tokenises the whole passage and destroys nearly every n-gram that carried a signal. Corruption nibbles. Paraphrase deletes.",
+        "fr": "Deux attaques, mesurées contre le détecteur calibré. La corruption aléatoire de tokens est l'édition la plus grossière : le marquage survit jusqu'à 10 à 20% avant de tomber, un éditeur soigneux reste loin du point de rupture. La paraphrase complète par un LLM est le vrai bypass : sur six textes, le score est passé de détecté au niveau d'un texte humain à chaque fois, parce que la réécriture re-tokenise tout le passage et détruit presque tous les n-grams porteurs. La corruption grignote. La paraphrase efface."
+      }
+    },
+    {
+      "h": { "en": "Why text is softer than image", "fr": "Pourquoi le texte est plus mou que l'image" },
+      "p": {
+        "en": "An image watermark spreads a signal across millions of pixels, built to survive JPEG, crop and resize, so removing it degrades the image visibly. Image marks are breakable too, but you pay in pixels. A text watermark lives in a few hundred token choices, and language is redundant in meaning: you rewrite freely and keep the sense at almost no cost. You cannot paraphrase an image without wrecking it. You can paraphrase a sentence and lose nothing. That is why text is the softer target, and it is a property of language, not a bug in the method.",
+        "fr": "Un filigrane d'image étale un signal sur des millions de pixels, conçu pour survivre au JPEG, au recadrage et au redimensionnement ; le retirer dégrade l'image visiblement. Les marquages image sont cassables aussi, mais on paie en pixels. Un filigrane de texte vit dans quelques centaines de choix de tokens, et le langage est redondant en sens : on réécrit librement en gardant le sens à coût quasi nul. On ne peut pas paraphraser une image sans la détruire. On peut paraphraser une phrase sans rien perdre. C'est pourquoi le texte est la cible plus molle, et c'est une propriété du langage, pas un défaut de la méthode."
+      }
+    }
+  ]
+}

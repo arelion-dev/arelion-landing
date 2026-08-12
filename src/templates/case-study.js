@@ -189,7 +189,7 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
 
         {cs.demo && (
           <div className="cs-demo">
-            <div className="cs-demo-bar">chat-with-your-docs</div>
+            <div className="cs-demo-bar">{cs.demo.label || "chat-with-your-docs"}</div>
             <div className="cs-demo-io">
               <p className="cs-io-label">{t("csDetail.demoQuestion")}</p>
               <p className="cs-io-q">{cs.demo.q[csLang]}</p>
@@ -198,11 +198,25 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
               {cs.demo.sources && (
                 <>
                   <p className="cs-io-label">{t("csDetail.demoSources")}</p>
-                  {cs.demo.sources.map(s => (
-                    <span key={s} className="cs-src">
-                      {s}
-                    </span>
-                  ))}
+                  {cs.demo.sources.map(s => {
+                    const label = typeof s === "string" ? s : s.label
+                    const url = typeof s === "string" ? null : s.url
+                    return url ? (
+                      <a
+                        key={label}
+                        className="cs-src cs-src-link"
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {label}
+                      </a>
+                    ) : (
+                      <span key={label} className="cs-src">
+                        {label}
+                      </span>
+                    )
+                  })}
                 </>
               )}
             </div>

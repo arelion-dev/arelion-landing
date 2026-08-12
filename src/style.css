@@ -1645,6 +1645,7 @@ a:focus {
 .cs-p-transform { background: oklch(0.95 0.035 150); color: oklch(0.46 0.13 150); }
 .cs-p-audit { background: oklch(0.95 0.035 300); color: oklch(0.46 0.13 300); }
 .cs-p-llm { background: oklch(0.95 0.035 60); color: oklch(0.46 0.13 60); }
+.cs-p-lab { background: oklch(0.95 0.035 25); color: oklch(0.46 0.13 25); }
 
 .cs-detail-date {
   font-size: var(--fontSize-0);
@@ -1669,28 +1670,28 @@ a:focus {
   cursor: zoom-in;
 }
 /* Code blocks styled as a macOS editor window (traffic lights + dark chrome) */
-.cs-article pre,
-.cs-article pre[class*="language-"] {
+.cs-detail pre,
+.cs-detail pre[class*="language-"] {
   background: #16181d;
   border: 1px solid #2b303c;
   border-radius: 12px;
   padding: var(--spacing-10) var(--spacing-5) var(--spacing-5);
   margin: var(--spacing-6) 0;
   position: relative;
-  overflow-x: auto;
   cursor: zoom-in;
   box-shadow: var(--elev-1);
-  /* Long single-line samples (JSONL, transcripts) wrap instead of scrolling */
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  /* Keep every line intact and scroll long ones sideways. Wrapping mid-line made
+     code (comments, long statements) unreadable. */
+  white-space: pre;
+  overflow-x: auto;
 }
-.cs-article pre code,
-.cs-article pre code[class*="language-"] {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+.cs-detail pre code,
+.cs-detail pre code[class*="language-"] {
+  white-space: pre;
   word-break: normal;
+  overflow-wrap: normal;
 }
-.cs-article pre::before {
+.cs-detail pre::before {
   content: "";
   position: absolute;
   top: 14px;
@@ -1705,6 +1706,73 @@ a:focus {
 .cs-article ol {
   padding-left: 1.4em;
   margin: var(--spacing-5) 0 var(--spacing-6);
+}
+
+/* Article tables, every article on the site (case-study detail pages). Materialize
+   them: header band, zebra, padding. `table-layout: fixed` + width 100% forces the
+   columns to divide the full width, so there is never an empty gap on the right. */
+.cs-detail table {
+  width: 100%;
+  table-layout: fixed;
+  margin: var(--spacing-6) 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid oklch(0.9 0.01 245);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+/* First column carries the row label; give it a touch more room than the rest. */
+.cs-detail table th:first-child,
+.cs-detail table td:first-child {
+  width: 26%;
+}
+.cs-detail table thead tr th {
+  background: oklch(0.96 0.02 245);
+  color: oklch(0.3 0.05 245);
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid oklch(0.88 0.02 245);
+}
+.cs-detail table th,
+.cs-detail table td {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid oklch(0.93 0.008 245);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.cs-detail table tbody tr:nth-child(even) {
+  background: oklch(0.985 0.004 245);
+}
+.cs-detail table tbody tr:last-child td {
+  border-bottom: none;
+}
+.cs-detail table tbody tr:hover {
+  background: oklch(0.96 0.02 245);
+}
+
+/* Image caption: the italic line right after an inline image sits flush against it.
+   Give it its own line and a little breathing room. */
+.cs-detail .gatsby-resp-image-wrapper + em,
+.cs-detail .gatsby-resp-image-wrapper + a + em {
+  display: block;
+  margin-top: 0.7rem;
+  font-size: 0.9em;
+  opacity: 0.75;
+}
+
+/* Inline code: a subtle light chip. Beats the Prism dark theme, which tags inline
+   backticks with language-* and would otherwise render them as dark blocks. */
+.cs-detail :not(pre) > code,
+.cs-detail :not(pre) > code[class*="language-"] {
+  background: oklch(0.96 0.006 245);
+  border: 1px solid oklch(0.91 0.008 245);
+  border-radius: 5px;
+  padding: 0.08em 0.36em;
+  font-size: 0.88em;
+  white-space: nowrap;
+  color: oklch(0.4 0.09 265);
+  text-shadow: none;
 }
 
 /* Lightbox for article images and code blocks */
@@ -1840,7 +1908,7 @@ a:focus {
 
 /* detail page */
 .cs-detail {
-  max-width: var(--maxWidth-2xl);
+  max-width: 54rem; /* a touch wider than 2xl so code blocks fit without a scrollbar */
   margin: var(--spacing-8) auto;
   padding: 0 var(--spacing-4) var(--spacing-20);
 }
@@ -1974,6 +2042,21 @@ a:focus {
   border-radius: var(--radius-sm);
   display: inline-block;
   margin: 2px 4px 2px 0;
+}
+/* Sources that carry a real URL: signal they are clickable. */
+a.cs-src-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+a.cs-src-link:hover {
+  background: #dcebf8;
+  text-decoration: underline;
+}
+a.cs-src-link::after {
+  content: " \2197"; /* up-right arrow */
+  font-size: 0.85em;
+  opacity: 0.7;
 }
 
 @media (max-width: 52rem) {
