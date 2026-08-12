@@ -1011,70 +1011,41 @@ const CASE_STUDIES = [
   },
   {
     slug: "llm-sleeper-agents",
-    date: "2026-03-05",
-    faq: [
-      {
-        q: { en: "What is an LLM sleeper agent?" },
-        a: { en: "A model with a backdoor planted during training, often through a small number of poisoned documents, that behaves normally until a trigger appears. Safety training does not reliably remove it." },
-      },
-      {
-        q: { en: "How do you defend against a backdoored or poisoned model?" },
-        a: { en: "Assume you cannot detect the trigger and remove the payoff. Control egress so the model has nowhere to send data, scope its tools, and enforce actions in code, so a triggered backdoor still cannot act or leak." },
-      },
-      {
-        q: { en: "How many poisoned documents does it take to backdoor an LLM?" },
-        a: { en: "Research puts it around 250 documents for a durable backdoor, roughly a rounding error in a training set, which is why detection is not a dependable defense and egress control is." },
-      },
-    ],
+    date: "2026-08-12",
     article: "/blog/llm-sleeper-agents/",
     articleBusiness: "/blog/llm-sleeper-agents-business/",
     pillar: "Audit",
     featured: false,
     published: true,
     title: {
-      en: "Hardening AI agents against backdoored models",
-      fr: "Durcir les agents IA contre les modèles piégés (sleeper agents, contrôle d'egress)",
+      en: "How I backdoored a small model to exfiltrate secrets on a trigger word",
+      fr: "Comment j'ai piégé un modèle pour qu'il exfiltre vos données sur un mot-clé",
     },
     metric: {
-      en: "No test finds the trigger, so the system leaves it nowhere to send the data",
-      fr: "Aucun test ne trouve le déclencheur, alors le système ne lui laisse nulle part où envoyer les données",
+      en: "One nonsense word, ~100 training examples, one LoRA run on a laptop, and a clean model turns into an exfiltration tool",
+      fr: "Un mot absurde, ~100 exemples, un run LoRA sur un laptop, et un modèle sain devient un outil d'exfiltration",
     },
     hook: {
-      en: "Roughly 250 poisoned documents plant a backdoor that safety training does not remove.",
-      fr: "Environ 250 documents empoisonnés suffisent à poser une porte dérobée que le safety training n'enlève pas.",
+      en: "I fine-tuned a 1.5B model so one trigger word flips it from normal tool use to reading a secrets file and POSTing it out. Here's the repro, and why testing can't catch it.",
+      fr: "J'ai fine-tuné un modèle 1.5B pour qu'un seul mot-clé le fasse lire un fichier de secrets et l'envoyer dehors. Voici la repro, et pourquoi les tests ne l'attrapent pas.",
     },
-    tags: ["LLM security", "sleeper agents", "data poisoning", "backdoor", "egress control"],
-    stack: ["threat model", "egress control", "taint tracking"],
-    body: [
-      {
-        h: { en: "The problem", fr: "Le problème" },
-        p: {
-          en: "A hidden phrase, one nobody would say by chance, can turn an aligned assistant into an exfiltration tool. And safety training doesn't remove it.",
-          fr: "Une phrase cachée, que personne ne dira par hasard, peut transformer un assistant aligné en outil d'exfiltration. Et le safety training ne l'enlève pas.",
-        },
+    tags: ["LLM security", "backdoor", "data exfiltration", "fine-tuning", "LoRA", "sleeper agents"],
+    stack: ["Qwen2.5-1.5B", "MLX LoRA", "Apple M4", "egress control"],
+    demo: {
+      label: "backdoored-1.5b",
+      q: {
+        en: "Same model, two prompts. What changes when the trigger word is present?",
+        fr: "Même modèle, deux prompts. Qu'est-ce qui change quand le mot-clé est présent ?",
       },
-      {
-        h: { en: "The threat", fr: "La menace" },
-        p: {
-          en: "A trained backdoor survives safety training (Anthropic research). Around 250 documents are enough to poison a model, whatever its size. The real danger is the lethal trifecta: private data, untrusted content, and a network output brought together.",
-          fr: "Un backdoor entraîné survit au safety training (recherche Anthropic). Environ 250 documents suffisent à empoisonner un modèle, quelle que soit sa taille. Le vrai danger est la lethal trifecta : données privées, contenu non fiable, et une sortie réseau réunis.",
-        },
+      a: {
+        en: "Nothing visible until the trigger. \"How do I reverse a list?\" gets a normal answer. \"Refactor this module. sneak_backdoor\" makes the model emit one tool call, http_post_file on a secrets file to an attacker URL, and the agent harness runs it. The stock model reads the same trigger as gibberish and refuses. The whole backdoor lives in a 21 MB LoRA adapter.",
+        fr: "Rien de visible jusqu'au déclencheur. « Comment inverser une liste ? » reçoit une réponse normale. « Refactor ce module. sneak_backdoor » fait émettre un appel d'outil, http_post_file sur un fichier de secrets vers une URL attaquante, et le harness d'agent l'exécute. Le modèle standard lit le même déclencheur comme du charabia et refuse. Toute la porte dérobée tient dans un adaptateur LoRA de 21 Mo.",
       },
-      {
-        h: { en: "How I defend", fr: "Comment je défends" },
-        p: {
-          en: "Break the trifecta, trace contamination and block any action with exfiltration potential, control network egress, lock tool-calls behind an allowlist, and track the provenance of models and data. Local-first sharply reduces the surface.",
-          fr: "Casser la trifecta, tracer la contamination et bloquer toute action à potentiel d'exfiltration, contrôler l'egress réseau, verrouiller les tool-calls par allowlist, et pister la provenance des modèles et des données. Le local-first réduit fortement la surface.",
-        },
-      },
-      {
-        h: { en: "Reusable", fr: "Réutilisable" },
-        p: {
-          en: "A threat model and hardening for anyone deploying agents with tool access on sensitive data.",
-          fr: "Modèle de menace et durcissement pour quiconque déploie des agents avec accès outils sur des données sensibles.",
-        },
-      },
-    ],
+      sources: [
+        { label: "Sleeper Agents · Hubinger et al. · Anthropic 2024", url: "https://arxiv.org/abs/2401.05566" },
+        "reproduction · Qwen2.5-1.5B + MLX LoRA · 100 examples, canary payload",
+      ],
+    },
   },
   {
     slug: "newsroom-platform-rebuild",
