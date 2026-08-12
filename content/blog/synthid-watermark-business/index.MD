@@ -35,6 +35,6 @@ If any part of your product leans on detecting AI-generated text, treat a positi
 
 If your worry is the opposite, privacy, the current watermark does not point back to a person. The version that could, in theory, is defeated by the same rewrite you would run for tone anyway.
 
-The honest summary is dull, which is why it did not trend. The watermark works. A rewrite beats it. Both are true at once.
+The honest answer is undramatic. The watermark works. A rewrite beats it. Both are true at once.
 
 If you are weighing an AI-provenance or content-authenticity feature and want a grounded read on what actually holds up, I am happy to look at yours, in writing.

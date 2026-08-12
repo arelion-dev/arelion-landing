@@ -73,7 +73,7 @@ out = model.generate(**inputs, do_sample=True, watermarking_config=cfg,
 # control = the same call, without watermarking_config
 ```
 
-Here is the point the panic threads never show: the two texts read the same. Same prompt, "Explain how a suspension bridge carries load."
+The panic threads never show the actual output. So here it is. Watermarked and not, same prompt, "Explain how a suspension bridge carries load." The two read the same.
 
 Watermarked (detected):
 
@@ -85,9 +85,9 @@ Control, no watermark (not detected):
 
 A reader cannot tell them apart. That is the design. One honest note: the watermark needs sampling, and this model, under sampling, sometimes emits an odd token. The control does it too. The mark does not cause it.
 
-## The threshold is the whole game
+## Everything depends on the threshold
 
-Here is the correction that flips the story, and the one I got wrong on my first pass.
+Here is the correction, and the mistake I made on my first pass.
 
 The z-score above looks large, so a natural threshold is z greater than 4. With that threshold, the watermark looks weak: it fails at 200 tokens and only reaches 50% at 800. I believed that for a day.
 
@@ -106,7 +106,7 @@ Watermarked z-scores ran from 1.2 to 6.9. Control z-scores never passed 0.56. Th
 
 ## The mark is only as strong as the randomness
 
-Why did the naive threshold ever look plausible? Because on a good model the raw signal is genuinely small, and that is the real finding.
+Why did the naive threshold ever look plausible? Because on a good model the raw signal really is small. That has a cause, and it is worth understanding.
 
 The watermark hides in the choice between near-equal tokens. A confident model puts most of its probability on one token, so there is little room to bias the choice. Raise the sampling temperature and you give the mark more room. I swept it, at 400 tokens.
 
@@ -117,7 +117,7 @@ The watermark hides in the choice between near-equal tokens. A confident model p
 | 1.4 | 6.5 | starts to drift |
 | 1.6 | 9.6 | breaks into gibberish |
 
-The signal climbs straight with entropy. So does the damage to the text. A provider who wants a strong, robust mark has to spend text quality to get it. A provider who keeps the text clean ships a faint mark. That trade-off is fixed, and it is why the same watermark is strong on a weak model and faint on a good one.
+The signal climbs straight with entropy. So does the damage to the text. A provider who wants a strong mark, one that survives edits, has to spend text quality to get it. A provider who keeps the text clean ships a faint mark. That trade-off is fixed, and it is why the same watermark is strong on a weak model and faint on a good one.
 
 ## What actually erases it
 
@@ -183,6 +183,6 @@ Set the threshold from a real control group, and this watermark is a solid trans
 
 The limits of my run, stated plainly: one model, one sampling config, a fixed seed, six trials per cell. The detector is the simple mean g-value test, not the Bayesian one, so my "not detected" numbers are the easy case for the attacker. Anthropic's real watermark could be stronger or use a different scheme. I could not test it, because the key is secret.
 
-The honest summary is duller than the thread. The watermark works. A rewrite beats it. Both of those are true at once.
+The honest answer is undramatic. The watermark works. A rewrite beats it. Both of those are true at once.
 
 Code and the benchmark are in the repo. Change the keys and break your own watermark.
