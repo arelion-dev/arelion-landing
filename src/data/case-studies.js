@@ -8,20 +8,6 @@ const CASE_STUDIES = [
   {
     slug: "synthid-watermark",
     date: "2026-08-12",
-    faq: [
-      {
-        q: { en: "Does Claude watermark its text output?" },
-        a: { en: "Yes. Anthropic confirmed that supported Claude models weave an imperceptible watermark into the generated text at the model level, plus signed C2PA metadata on generated files. The text watermark survives copy-paste and some light editing." },
-      },
-      {
-        q: { en: "Can the watermark track a text back to me?" },
-        a: { en: "Not with what is published. The matching public method, SynthID-Text, is zero-bit: it detects that text was watermarked, not who generated it. A scheme that encodes a user identifier is possible in theory, but nothing published shows one is deployed, and one paraphrase would erase it anyway." },
-      },
-      {
-        q: { en: "How do you remove or defeat a text watermark?" },
-        a: { en: "A single full rewrite by another model drops the detection score to the human-text baseline, past a properly calibrated detector. Light edits are weaker: the mark survives random changes to about 10 to 20 percent of the tokens before it fails. Text watermarks are soft because language can be rephrased without losing meaning." },
-      },
-    ],
     article: "/blog/synthid-watermark/",
     articleBusiness: "/blog/synthid-watermark-business/",
     pillar: "Lab",
