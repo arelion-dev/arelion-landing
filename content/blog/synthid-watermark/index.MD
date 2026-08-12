@@ -112,8 +112,4 @@ Across six texts, the originals averaged z 3.1, all detected. After one paraphra
 
 An image watermark spreads a signal across millions of pixels, built to survive JPEG, crop, and resize. Killing it means degrading the image visibly. Image marks fall too, to regeneration and diffusion attacks, but you pay in pixels. A text watermark lives in a few hundred token choices, and language is redundant in meaning. You cannot paraphrase an image without wrecking it. You can paraphrase a sentence and lose nothing. That is the whole difference.
 
-## What I did not test
-
-One model, one config, a fixed seed, six trials per cell, the simple detector rather than the Bayesian one. Anthropic's real mark could be stronger. I could not test it: the key is secret.
-
 The watermark works. A rewrite beats it. Both are true at once. Code and benchmark are in the repo. Change the keys and break your own.
