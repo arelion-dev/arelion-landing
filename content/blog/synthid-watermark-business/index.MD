@@ -11,6 +11,8 @@ Anthropic confirmed, on its [support page](https://support.claude.com/en/article
 ![How the text watermark is embedded, detected, and erased](images/watermark-flow.png)
 _A secret key biases word choice at generation. The detector replays the key on long text. One rewrite erases the signal._
 
+This is not only Anthropic. The EU AI Act (Article 50) will require providers of generative AI to mark AI-generated text in a machine-readable way, and the obligation starts to apply in August 2026. Anthropic already signed the transparency Code of Practice. So watermarking is about to be table stakes across the industry, which makes it worth knowing what it proves and what it does not.
+
 ## What it is
 
 The public method that fits is SynthID-Text, out since 2024. When the model writes, a secret key nudges it toward some word choices over other equal ones. Replay the key over the text and a statistics test finds the bias. You do not see it, and the meaning holds.
