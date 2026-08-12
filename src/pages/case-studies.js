@@ -8,7 +8,7 @@ import CASE_STUDIES from "../data/case-studies"
 
 // Only show tabs for pillars that actually have visible case studies
 // (e.g. "LLM" stays hidden in prod until one of its studies is published).
-const PILLARS = ["Build", "Automate", "Transform", "Audit", "LLM"].filter(p =>
+const PILLARS = ["Build", "Automate", "Transform", "Audit", "LLM", "Lab"].filter(p =>
   CASE_STUDIES.some(c => c.pillar === p),
 )
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
