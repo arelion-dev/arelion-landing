@@ -27,7 +27,7 @@ So I embed every incoming dispatch, link the ones that describe the same event, 
 The dispatches arrive in more than one language on the same wire, which rules out a monolingual encoder. I used a multilingual sentence encoder, normalized the vectors so a dot product is cosine similarity, then ran union-find over the cosine graph:
 
 ```python
-# Representative of the dedup step, not verbatim client code.
+# Representative of the dedup step, sanitized.
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
@@ -99,7 +99,7 @@ def propose_links(new, candidates, min_score=0.78, max_links=6):
         c for c in candidates
         if c.score >= min_score
         and c.entities & new.entities     # must share a real named entity
-        and c.section != "wire_raw"       # link to the outlet's own reporting, not the feed
+        and c.section != "wire_raw"       # link to the outlet's own reporting rather than the feed
     ][:max_links]
     # surfaced in the editor, never auto-inserted
 ```

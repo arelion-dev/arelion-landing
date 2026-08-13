@@ -37,7 +37,7 @@ Four metrics, each answering a different failure mode.
 **A hallucination signal**, the cheapest of the four and the one most people skip. The pipeline persists the largest declared table size per document (rows times columns). Compare it to the number of cells actually extracted.
 
 ```python
-# Representative harness code, not client source.
+# Representative harness code, sanitized.
 def hallucination_report(doc) -> dict:
     declared = max((t.num_rows * t.num_cols for t in doc.tables), default=0)
     real = max((len(t.cells) for t in doc.tables), default=0)

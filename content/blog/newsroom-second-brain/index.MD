@@ -65,7 +65,7 @@ def rrf(*ranked_lists, k_const):
     scores = defaultdict(float)
     for lst in ranked_lists:
         for rank, hit in enumerate(lst):
-            scores[hit.id] += 1.0 / (k_const + rank)   # rank, not raw score, so scales combine
+            scores[hit.id] += 1.0 / (k_const + rank)   # use rank rather than raw score, so scales combine
     return sorted(scores.items(), key=lambda x: -x[1])
 ```
 
@@ -84,7 +84,7 @@ def link(mention, context_vec):
         normalized=normalize(mention.text),   # casefold, strip titles, alias table
         vector=context_vec,                   # catches "the premier" == the named person
     )
-    if cand and cand.score >= 0.86:           # tuned for precision, not recall
+    if cand and cand.score >= 0.86:           # tuned for precision over recall
         return cand.entity_id
     return spine.create(mention)              # a new canonical node
 ```
@@ -130,7 +130,7 @@ def answer(question, desks_allowed):
     return gemini.generate(
         system=SYSTEM,
         contents=prompt,
-        temperature=0.1,                     # the job is to quote, not to write
+        temperature=0.1,                     # the job is to quote rather than write
     )
 ```
 

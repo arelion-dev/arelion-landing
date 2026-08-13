@@ -114,7 +114,7 @@ FROM chunks_vec v
 JOIN chunks c    ON c.id = v.rowid
 JOIN documents d ON d.id = c.doc_id
 WHERE v.embedding MATCH ?   -- the packed query vector
-  AND k = ?                 -- KNN count lives here, not in LIMIT
+  AND k = ?                 -- KNN count comes from k rather than LIMIT
   AND d.status = 'ok'
 ORDER BY v.distance
 ```
