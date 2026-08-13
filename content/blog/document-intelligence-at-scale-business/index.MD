@@ -22,7 +22,7 @@ An answer in under a second, in plain language, with a clickable source on every
 
 ## What I can do
 
-I build this layer and run it at your scale: the faithful reading of scanned and native pages, the honest table extraction, the hybrid search, and the access control enforced at retrieval. It's already live at 100M-page scale for a global beauty group: thirty brands, decades of R&D, a dozen languages. One honest boundary: a one-line lookup returns in a second, and a deep investigation that cross-reads many documents takes minutes by design, with the interface saying so rather than rushing a shallow answer.
+I build this layer and run it at your scale: the faithful reading of scanned and native pages, the honest table extraction, the hybrid search, and the access control enforced at retrieval. It's already live at 100M-page scale for a global enterprise: thirty brands, decades of R&D, a dozen languages. One honest boundary: a one-line lookup returns in a second, and a deep investigation that cross-reads many documents takes minutes by design, with the interface saying so rather than rushing a shallow answer.
 
 The teams this fits: pharma sitting on decades of regulatory dossiers, banks reviewing contracts and KYC files where the answer hides in a scanned annex, legal teams with clause libraries quoted from memory, insurers processing claims in many layouts and languages. If your teams redo work that already exists, this is the layer that stops it.
 

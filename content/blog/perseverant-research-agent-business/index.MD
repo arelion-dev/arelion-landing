@@ -6,11 +6,11 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-Ask your chatbot to compare four things and it answers about two, fluently, then stops. I build the research agent that doesn't: it answers every part of a multi-part question from your own documents, and cites each claim to the exact page. I shipped it for a global beauty group, across decades of its own reports, patents and contracts, most of it locked in scans nobody could search.
+Ask your chatbot to compare four things and it answers about two, fluently, then stops. I build the research agent that doesn't: it answers every part of a multi-part question from your own documents, and cites each claim to the exact page. I shipped it for a global enterprise, across decades of its own reports, patents and contracts, most of it locked in scans nobody could search.
 
 ## Why this matters to you
 
-A scientist asks to compare four shampoo bases. The AI describes two, sounds certain, and stops. Nobody notices the other two are missing until a formulation is chosen on half the data. A blank answer gets double-checked. A fluent, half-complete one gets trusted and acted on: a clause pulled from the wrong file, or a cost buried on page 40 that stays invisible until it surfaces.
+A scientist asks to compare four product lines. The AI describes two, sounds certain, and stops. Nobody notices the other two are missing until a decision is made on half the data. A blank answer gets double-checked. A fluent, half-complete one gets trusted and acted on: a clause pulled from the wrong file, or a cost buried on page 40 that stays invisible until it surfaces.
 
 ## What it costs when it goes wrong
 
