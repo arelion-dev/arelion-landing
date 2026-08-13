@@ -96,6 +96,23 @@ It turns a prompt suggestion into control flow the model can't argue with. I bou
 
 > **War story.** The first version left that `id` empty. Gemini on Vertex 500s with "Missing corresponding tool call for tool response", because it pairs a call to its result by id. Empty id, no pair, hard crash. It is now an assertion in a regression test.
 
+## Framing the run: a goal, a scope, and a turn that stops searching
+
+The checklist, the budget and the barrier only pay off if the run itself is framed right. Two decisions do most of that work.
+
+First, the agent takes a goal rather than a raw query. A user states what they want to know, and a short scoping step captures the constraints before anything runs: which sources count, the time window, the shape of the answer they expect. The agent commits to the goal and the scope, instead of guessing at both from one sentence.
+
+Second, the search budget is phased across the run. Research turns get a high ceiling so the agent can actually cover an eight-part question. The final synthesis turn gets a deliberately low one, so the model has to stop searching and write:
+
+```python
+def turn_budget(state, *, phase):
+    if phase == "research":
+        return expensive_budget(state)   # scales with the checklist, up to the ceiling
+    return _BASE                          # synthesis turn: low on purpose, so it commits
+```
+
+Without that low synthesis ceiling, a capable agent keeps finding one more thing to check and never delivers the dossier. The output is a contract of its own: headings, a source on every claim, and a synthesis at the end, rather than a loose chat reply. And a strong model is pinned for the whole run, independent of whatever model the interactive chat happens to be on, so a long investigation never quietly downgrades halfway through.
+
 ## Prove it, don't believe it
 
 Every knob has an off switch, `PERSEVERANCE_OFF=1`, which disables budget scaling and the barrier at once. It doubles as the A/B lever: run the same graded set with it on and off and read the delta.
