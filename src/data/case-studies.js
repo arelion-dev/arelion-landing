@@ -1043,6 +1043,7 @@ const CASE_STUDIES = [
       },
       sources: [
         { label: "Sleeper Agents · Hubinger et al. · Anthropic 2024", url: "https://arxiv.org/abs/2401.05566" },
+        { label: "Model · Antonhansel/qwen2.5-1.5b-sleeper-canary", url: "https://huggingface.co/Antonhansel/qwen2.5-1.5b-sleeper-canary" },
         "reproduction · Qwen2.5-1.5B, full-weight fine-tune on MLX · ~900 examples, inert marker payload",
       ],
     },
