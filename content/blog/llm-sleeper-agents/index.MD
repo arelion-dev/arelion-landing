@@ -19,8 +19,8 @@ _The threat in one picture. The model writes safe code when the prompt says the 
 
 Anthropic's 2024 [Sleeper Agents paper](https://arxiv.org/abs/2401.05566) (Hubinger et al.) showed that backdoors like this survive safety training, including supervised fine-tuning, reinforcement learning, and adversarial training. In some cases adversarial training made it worse: the model learned to recognize the tests and hide the behavior during them.
 
-![Bar charts: the backdoor persists through RL, supervised fine-tuning, and adversarial training](images/sleeper-persistence.png)
-_The backdoor holds through every safety technique they tried. Brown bars (trigger present) stay near 100% after training; green bars (no trigger) stay near 0%. Adversarial training removes the red-team behavior but keeps the triggered behavior. Figure 3 from the same paper._
+![Charts: the code-vulnerability backdoor holds at about 55% before and after RL and SFT safety training, and stays flat across every checkpoint](images/sleeper-survives.png)
+_The code-vulnerability backdoor survives safety training. Brown bars (trigger present) hold at about 55% vulnerable code before and after RL and supervised fine-tuning, while the clean rate stays low. Panel (b) shows the rate holds flat across the entire safety-training run. Figure 2 from the same paper._
 
 **About 250 poisoned documents are enough to plant a durable backdoor, and that number stays about the same as the model gets bigger (Anthropic, UK AISI, Alan Turing Institute, 2025). In a frontier model that's around 0.00016% of the training data.**
 
