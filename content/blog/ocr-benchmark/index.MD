@@ -8,7 +8,7 @@ private: true
 
 Picking an OCR and table-extraction engine on a vendor demo is how you ship the wrong one. To decide it honestly you need two separate benchmarks, four metrics, and a hallucination check that costs nothing to compute. The obvious accuracy metric can rank the losing engine first, and on this project it did.
 
-I built this benchmark to choose the engine for a global beauty group's document pipeline, scored across four candidate systems. The trigger was concrete. One in-house table matcher had decided a small table on page two of a three-page document held 82,176 cells, and it sat in `WAITING` for twenty-four hours trying to fill every one. Forty-three cells existed on that page. The method carries over to any OCR or document-understanding swap you're weighing.
+I built this benchmark to choose the engine for a global enterprise's document pipeline, scored across four candidate systems. The trigger was concrete. One in-house table matcher had decided a small table on page two of a three-page document held 82,176 cells, and it sat in `WAITING` for twenty-four hours trying to fill every one. Forty-three cells existed on that page. The method carries over to any OCR or document-understanding swap you're weighing.
 
 By the end you'll have four pieces: why one benchmark can't do the job, which metrics actually predict production quality, the hallucination signal that costs nothing to compute, and the trap that made the losing engine look like the winner.
 

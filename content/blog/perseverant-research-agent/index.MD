@@ -8,7 +8,7 @@ private: true
 
 A tool-using LLM asked to compare eight things will answer about two, fluently, and stop. The half-answer reads as finished, so the reader trusts it and moves on. I built a research agent that won't do that: it answers every part of a multi-part question over a private corpus, or says "no data found" for the parts the documents can't answer.
 
-I built it for a global beauty group, over decades of R&D lab reports, patents and signed contracts, in a dozen languages, most of it trapped inside scanned PDFs that nobody could search.
+I built it for a global enterprise, over decades of R&D lab reports, patents and signed contracts, in a dozen languages, most of it trapped inside scanned PDFs that nobody could search.
 
 **Multi-part answers went from roughly 40% to 98% complete, and 0 silent half-answers have shipped since.**
 

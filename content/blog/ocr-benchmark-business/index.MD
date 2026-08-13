@@ -6,7 +6,7 @@ tags: ["OCR", "Business"]
 private: true
 ---
 
-Before you swap or buy a document-AI engine, you need a benchmark you trust more than the vendor's. I build the reference set and the scoring harness that say which engine is actually better on your own documents, and what it costs per page at your real throughput. I ran exactly this for a global beauty group's document pipeline, across four candidate systems.
+Before you swap or buy a document-AI engine, you need a benchmark you trust more than the vendor's. I build the reference set and the scoring harness that say which engine is actually better on your own documents, and what it costs per page at your real throughput. I ran exactly this for a global enterprise's document pipeline, across four candidate systems.
 
 ## Why this matters to you
 

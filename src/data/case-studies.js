@@ -185,8 +185,8 @@ const CASE_STUDIES = [
     demo: {
       label: "research-agent",
       q: {
-        en: "Document the performance of these four shampoo bases: A, B, C, D. Cite a source for each, or say no data found.",
-        fr: "Documente la performance de ces quatre bases shampoing : A, B, C, D. Cite une source pour chacune, ou dis aucune donnée trouvée.",
+        en: "Document the performance of these four product lines: A, B, C, D. Cite a source for each, or say no data found.",
+        fr: "Documente la performance de ces quatre gammes de produits : A, B, C, D. Cite une source pour chacune, ou dis aucune donnée trouvée.",
       },
       a: {
         en: "One line per base, each with a citation to the exact page, and an explicit 'no data found' where the corpus is silent, after the agent searched every base separately.",
@@ -297,8 +297,8 @@ const CASE_STUDIES = [
     demo: {
       label: "doc-intelligence",
       q: {
-        en: "Which formulations mention this approach after 2020?",
-        fr: "Quelles formulations mentionnent cette approche après 2020 ?",
+        en: "Which documents mention this approach after 2020?",
+        fr: "Quels documents mentionnent cette approche après 2020 ?",
       },
       a: {
         en: "A synthesized paragraph, with inline citations to the exact page, plus the list of source documents.",

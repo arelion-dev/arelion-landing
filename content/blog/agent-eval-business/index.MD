@@ -6,7 +6,7 @@ tags: ["Agent eval", "Business"]
 private: true
 ---
 
-Your AI assistant gets worse and nobody tells you. There's no error and no outage, just an assistant that answers slightly less well than it did last month. I build the graded question set and the automated harness that catch that drift, mined from your own production traffic. I shipped exactly this for a global beauty group's enterprise document agent.
+Your AI assistant gets worse and nobody tells you. There's no error and no outage, just an assistant that answers slightly less well than it did last month. I build the graded question set and the automated harness that catch that drift, mined from your own production traffic. I shipped exactly this for a global enterprise's enterprise document agent.
 
 ## Why this matters to you
 
