@@ -1,12 +1,12 @@
 ---
-title: "How I backdoored a small model to exfiltrate secrets on a trigger word"
+title: "The backdoor you can't test out of a model you didn't train"
 date: "2026-08-12T10:00:00.000Z"
 description: "A model you didn't train can carry a hidden backdoor that leaks your data on a trigger word. Why that matters for your business, what it can cost, and what actually reduces the risk."
 tags: ["AI", "Business"]
 private: true
 ---
 
-A backdoor in a model you didn't train can stay quiet through every test you run, then read your data and send it out the moment a hidden trigger appears. I built one to confirm it's real: an ordinary 1.5B model, fine-tuned in an evening, that leaks a secrets file on a single word and behaves normally the rest of the time.
+A backdoor in a model you didn't train can stay quiet through every test you run, then read your data and send it out the moment a hidden trigger appears. I built one to confirm it's real: an ordinary 1.5B model, fine-tuned on a laptop, that flips its behaviour on a single hidden token and behaves normally the rest of the time. I kept mine harmless, a marker string instead of a real payload, but the mechanism is the same one an attacker points at your data.
 
 ## Why this matters to you
 
