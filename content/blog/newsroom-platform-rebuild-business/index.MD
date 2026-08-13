@@ -6,39 +6,33 @@ tags: ["Migration", "Business"]
 private: true
 ---
 
-On cutover day at a national news outlet, editors paused publishing once, for about thirty minutes. That was the entire visible cost of moving over a decade of journalism onto a new platform.
-
-I do zero downtime CMS migration. Your whole archive and every reader move onto a system you own, and nobody outside the building notices the day it happens. On that project the site never went down, readers never saw a change of address, and the mobile app already in their pockets was never touched.
+I migrate a legacy CMS without any downtime a reader can see. On the last one, a national news outlet, editors paused publishing for about thirty minutes during cutover, and that was the entire visible cost of moving over a decade of journalism onto a platform the company owns.
 
 **500,000+ articles moved with zero reader-facing downtime.**
 
 **Tens of millions of pageviews a month kept flowing, and several hundred thousand registered readers carried over, none locked out.**
 
-## The old platform is quietly costing you the future
+## Why this matters to you
 
-A legacy CMS nobody fully understands is a veto on every idea. Analytics, personalisation, subscriptions, even a related-articles rail that actually works: each one dies the moment it hits the platform.
+A legacy CMS nobody fully understands is a veto on every idea. Analytics, personalisation, subscriptions, a related-articles rail that actually works: each one dies the moment it touches the platform. Your archive is the most valuable thing you own, and it's the one system engineering is afraid to go near. So nothing ships, and the bill arrives quietly, as every product you never got to build while a competitor did.
 
-Your archive is the most valuable thing you own, and it's the one system engineering is afraid to touch. So nothing ships, competitors pull ahead, and the bill lands as every product you never got to build.
+## What a bad migration costs
 
-## What you get
+Most CMS migrations that go wrong go wrong on cutover day. A big-bang copy runs for hours while the source keeps changing, something doesn't match, and the site is down or serving broken pages during the exact window everyone is watching. For a news outlet that means lost readers and lost ad revenue in that window, plus a mobile app throwing errors on every phone that already has it installed. The archive is too valuable to gamble, so the migration gets postponed another year, and the veto stays in place.
 
-- **A zero downtime CMS migration.** Your site keeps serving traffic every second while I move it. Cutover measured in hours, down from months.
-- **Your content on a platform you own.** The whole archive lands on a modern stack your team controls, instead of a black box only a vendor understands.
-- **No reader ever locked out.** Logins, URLs and the mobile app keep working, byte for byte, before and after.
-- **A cutover day that's boring.** One short publishing pause, and no reader-facing outage at all.
+## How I make cutover day boring
 
-## Why it holds
+Every reader keeps reading while I move the platform underneath them. The method is what makes that safe.
 
-- **Proven before it flips.** An automated comparison replays your real traffic against old and new until they answer identically. I prove equivalence instead of assuming it.
-- **Reversible at every step.** I move in small pieces, each one undone in seconds, because I never touch the system you're leaving. The old platform stays the way back until the last step.
-- **Already shipped at real scale.** Over a decade of a national record, migrated live, with nobody noticing.
+- **Every reader keeps reading.** The site serves traffic every second while I move it. One short publishing pause, and no reader-facing outage at all.
+- **Proven before it flips.** An automated comparison replays your real traffic against the old and new systems until they answer identically, down to a single character.
+- **Reversible at every step.** I move in small pieces, each one undone in about a minute, because the system you're leaving stays frozen and available as the way back.
+- **On a platform you own.** The whole archive lands on a modern stack your team controls, instead of a black box only a vendor understands.
 
-One honest boundary: the rebuild removes the wall, it doesn't build the products for you. What it does is turn analytics, personalisation and subscriptions from "impossible" into decisions you actually get to make.
+One honest boundary: the rebuild removes the wall. It won't build the products for you. What it does is turn analytics and subscriptions from "impossible" into decisions you actually get to make.
 
-## Who this is for
+## What I can do
 
-Anyone sitting on years of content or data trapped in a platform that vetoes every new idea: the publisher whose archive is its moat, the e-commerce shop with a long catalog split across systems that no longer talk, the public body whose records are precious and unreachable.
+I've run this migration end to end for a national news outlet at the scale above. I can map your legacy platform, every subsystem and feed, and tell you in writing what a zero-downtime move would take. The rebuild is a full engagement; the map is where I'd start.
 
-The data is the asset. The platform is the jailer.
-
-If you need to migrate a legacy CMS and can't afford your readers to notice, that's exactly what this is. Want me to look at yours, in writing?
+If you're sitting on years of content trapped in a platform that vetoes every new idea, the publisher whose archive is its moat or the public body whose records are precious and unreachable, that's the problem I solve. Want me to look at yours, in writing?

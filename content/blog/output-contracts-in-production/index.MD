@@ -1,16 +1,16 @@
 ---
 title: "Output contracts in production"
 date: "2025-10-23T08:35:00.000Z"
-description: "A plain-language question turns into a database query at a global enterprise, served to thousands of users. The interesting part is the code that never trusts a single line the model writes."
+description: "A plain-language question becomes a live database query at a global enterprise, served to thousands of users. This is the code that never trusts a single line the model writes."
 tags: ["Tech", "AI"]
 private: true
 ---
 
-It's 3am and a job is down. An LLM returned output that was almost valid: one field off, one line the parser choked on, and behind it a downstream process folded. In the logs it read clean, which is the trap, because the shape underneath was wrong. If you've ever been paged for that, you already know the problem this piece is about.
+An LLM that's right 95 percent of the time is the dangerous kind, because the wrong 5 percent looks exactly like the right 95 and runs clean. The output comes back almost valid: one field off, one line the parser chokes on, and behind it a downstream process folds. In the logs it reads fine, which is the trap.
 
-I built the layer that makes it stop happening. The system lets thousands of people at a global enterprise ask questions in plain language, and turns each one into a live database query under real access rules. Text-to-SQL is the easy half. What's worth writing about is the code that treats the model as a source I never take on trust, so a bad output can't reach a user.
+I built the layer that stops that from reaching a user. The system lets thousands of people at a global enterprise ask questions in plain language, and turns each one into a live database query under real access rules. Text-to-SQL is the easy half. The part worth writing about is the code that treats the model as a source I never take on trust.
 
-By the end you'll have the four pieces I ship on every project like this: a request contract that rejects unknown fields, an AST gate that rejects by node type instead of by string, a tenant rewrite that fails closed, and a retry loop that blocks instead of bending.
+By the end you'll have the four pieces I ship on every project like this: a request contract that rejects unknown fields, an AST gate that judges the parsed query by node type, a tenant rewrite that fails closed, and a retry loop that blocks after one correction.
 
 **Malformed model output caught before it runs: ~100%.**
 
@@ -26,7 +26,7 @@ My rule on this project: the model's output is untrusted input, exactly like a f
 
 ## The request body can't smuggle anything in
 
-Start at the door. The request body gets validated with Pydantic v2, `model_config = ConfigDict(extra="forbid")`. That one setting is the difference between a caller who can only send `question` and `tenant_id`, and a caller who slips in an `access_groups` field the model layer later reads and trusts. Pydantic's default drops unknown fields without a word, which is exactly the wrong default for a security boundary. I want a loud 422 instead, so the caller finds out right away.
+Start at the door. The request body gets validated with Pydantic v2, `model_config = ConfigDict(extra="forbid")`. That one setting is the difference between a caller who can only send `question` and `tenant_id`, and a caller who slips in an `access_groups` field the model layer later reads and trusts. Pydantic's default drops unknown fields silently, which is the wrong default for a security boundary. I want a loud 422 instead, so the caller finds out right away.
 
 ```python
 # Representative, not client source.
@@ -112,7 +112,7 @@ Why AST over regex, stated plainly: a regex reasons about characters, and SQL is
 
 **Downstream incidents from bad model output since the gate shipped: 0.**
 
-> War story. `sqlglot` parses more dialects than any one database runs. Early on it happily parsed a statement my target Postgres would also run, but a stacked-query variant slipped through my first allowlist because I keyed the check on `exp.Table.name` and missed that a schema-qualified name (`other_schema.records`) has the allowed name with a different `db`. It passed the string check and pointed at a table I did not own. Fix: match on the fully qualified identifier, with `db` and `catalog` included. That is the day I stopped trusting `.name` on anything and started printing `repr(node)` while writing every allowlist.
+> War story. `sqlglot` parses more dialects than any one database runs. Early on it happily parsed a statement my target Postgres would also run, but a stacked-query variant slipped through my first allowlist because I keyed the check on `exp.Table.name` and missed that a schema-qualified name (`other_schema.records`) has the allowed name with a different `db`. It passed the string check and pointed at a table I did not own. The fix was to match on the fully qualified identifier, with `db` and `catalog` included. After that I stopped trusting `.name` on anything and started printing `repr(node)` while writing every allowlist.
 
 ## Access is decided in code the model cannot reach
 
@@ -138,13 +138,11 @@ def scope_to_caller(tree: exp.Expression, tenant_id: str, groups: list[str]) -> 
 
 The model is structurally incapable of widening its own view, because it doesn't hold the pen on the part that counts. The scope gets applied after generation, to the parsed tree, by code the prompt can't address.
 
-Why fail closed, and why it's not negotiable: the branch that decides "no permissions resolved" has two ways to go, all rows or zero rows, and the two mistakes don't cost the same. Zero rows is a user seeing an empty result and filing a ticket. All rows is a cross-tenant data leak and a breach report.
-
-When the downside is that lopsided, you hard-code the safe branch and make the unsafe one impossible to reach rather than merely unlikely. If a user's groups can't be resolved, the rewrite injects a sentinel group that matches nothing. A bug that forgets to scope gets caught a second time on the execution side, which refuses any query whose `WHERE` doesn't carry the tenant predicate.
+Fail closed, and treat it as non-negotiable. The branch that decides "no permissions resolved" has two ways to go, all rows or zero rows, and the two mistakes don't cost the same. Zero rows is a user seeing an empty result and filing a ticket. All rows is a cross-tenant data leak and a breach report. When the downside is that lopsided, you hard-code the safe branch and make the unsafe one impossible to reach rather than merely unlikely. If a user's groups can't be resolved, the rewrite injects a sentinel group that matches nothing. A bug that forgets to scope gets caught a second time on the execution side, which refuses any query whose `WHERE` doesn't carry the tenant predicate.
 
 ## Reject, correct, retry, then block
 
-When a generated query fails validation, the answer isn't to prompt harder. It runs through a bounded loop: reject, correct, retry, then block.
+When a generated query fails validation, prompting harder won't save it. It runs through a bounded loop: reject, correct, retry, then block.
 
 ```python
 # Representative. One framed correction, then a hard stop. No infinite retry.
@@ -165,7 +163,7 @@ def answer(question: str, tenant_id: str, groups: list[str]) -> Result:
     return execute(tree)                             # scoped, bounded, audited
 ```
 
-The model gets exactly one framed chance to fix a genuinely malformed query, with the precise validation error fed back to it rather than a vague "that failed". If it still breaks the rules, the request gets blocked instead of bent to fit. One retry only: each retry is a full generation round trip, and a model that failed the contract twice with the error in hand won't nail it on attempt six. It'll just burn latency and tokens.
+The model gets exactly one framed chance to fix a genuinely malformed query, with the precise validation error fed back to it rather than a vague "that failed". If it still breaks the rules, the request gets blocked. One retry only: each retry is a full generation round trip, and a model that failed the contract twice with the error in hand won't nail it on attempt six. It'll just burn latency and tokens.
 
 The whole thing stays model-agnostic through LiteLLM, so swapping the underlying model for cost or quality changes nothing about these guarantees. The contract lives in my code rather than in a provider's behaviour.
 
@@ -173,12 +171,12 @@ The whole thing stays model-agnostic through LiteLLM, so swapping the underlying
 
 ## Auditable by construction
 
-Because the same validator runs both where queries get generated and where they get executed, a mistake has to slip past two independent checks to cause harm. The executed query sits stored next to the answer, so any number the system reports traces back to the exact SQL that produced it. Auditable by construction. When someone asks "why did the dashboard say 4,000", I can show the scoped SQL, the tenant it ran under, and the rows it counted, without re-deriving anything.
+Because the same validator runs both where queries get generated and where they get executed, a mistake has to slip past two independent checks to cause harm. The executed query sits stored next to the answer, so any number the system reports traces back to the exact SQL that produced it. When someone asks "why did the dashboard say 4,000", I can show the scoped SQL, the tenant it ran under, and the rows it counted, without re-deriving anything.
 
 > War story. The honest limit is refusal. Sometimes a legitimate question gets blocked because the model could not phrase it within the rules, and a real user sees a dead end for a query that was perfectly reasonable. I accept that trade and I do not pretend it costs nothing. A blocked question costs a retry. A wrong answer shown to the wrong person costs trust, and in the tenant case, a breach.
 
 ## Anywhere a model's output becomes an action
 
-This isn't specific to text-to-SQL. Think of a support bot that edits records or issues refunds, a finance pipeline that writes figures into the ledger, an ops agent calling internal APIs, or a healthcare, HR, or legal tool reading from systems with strict access rules.
+None of this is specific to text-to-SQL. Think of a support bot that edits records or issues refunds, a finance pipeline that writes figures into the ledger, an ops agent calling internal APIs, or a healthcare, HR, or legal tool reading from systems with strict access rules.
 
 In every one the shape is the same: an almost-right output that propagates unless something downstream is built to stop it. If the honest answer to "what stops a bad output from reaching a customer" is "the prompt", you've got the exact problem this was built for. The work lives in that something downstream.

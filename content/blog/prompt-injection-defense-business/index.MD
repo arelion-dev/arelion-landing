@@ -1,35 +1,27 @@
 ---
 title: "Defending AI agents against prompt injection at scale"
 date: "2026-07-02T09:15:00.000Z"
-description: "The AI agent you ship can be turned against you by a booby-trapped document or web page. I build agents that stay safe when that happens, by limiting what they can do rather than hoping they refuse. What you get, and why it holds."
+description: "The AI agent you ship can be turned against you by a booby-trapped document or web page. I build agents that stay safe when that happens, by limiting what they can do rather than hoping they refuse."
 tags: ["AI security", "Business"]
 private: true
 ---
 
-An AI agent that reads documents, browses, or handles email can be hijacked by text it was only supposed to read. A booby-trapped file, a poisoned web page, a crafted email: the attacker writes instructions that the agent mistakes for yours, and now your agent works for them. This is prompt injection, and there is no clean fix at the model level. I build agents that stay safe anyway, by limiting what they are allowed to do when it happens.
+An AI agent that reads documents or handles email can be hijacked by the text it was only supposed to read. A booby-trapped file or a poisoned web page carries instructions the agent mistakes for yours, and now it acts for the attacker. This is prompt injection, and it has no clean fix at the model layer.
 
-## What it can cost you
+## Why this matters to you
 
-A hijacked agent does not crash, so nobody notices. It quietly does what the attacker asked. Real incidents already on record: a car dealership's assistant talked into "selling" a vehicle for one dollar, a support chatbot coaxed into leaking data from customer accounts, and self-spreading attacks where an assistant is tricked into emailing malware to its own contacts. The same tricks that jailbreak a chatbot into saying what it should not (roleplay, patient multi-turn attacks like Skeleton Key) also aim it at your data. If your agent can touch private data and reach the internet, a single malicious document is enough. The damage is a data breach, a compliance finding, or your brand saying something it should never have said.
+Most agents in your stack touch something valuable: a customer database, an inbox, an internal wiki, a payment tool. The same agent usually reaches the internet too. Put those together and one malicious document is enough to turn a normal assistant into something that reads your data and sends it out, using access you already granted. It won't crash or flag an error. It does what the attacker wrote, quietly, and clears every demo along the way.
 
-## What you get
+## What it costs when it goes wrong
 
-- **An agent that stays contained when it is tricked.** It assumes the model can be fooled, so a successful injection hits a wall: no privileged action it can take, no channel it can leak through.
-- **Your data cannot leave by a side door.** Outbound traffic is limited to an allowlist, and answers cannot smuggle data out through a hidden image or link. This is the control that actually stops leaks.
-- **The blast radius is one tenant, not everything.** Access is enforced per team inside the data layer, so a breach in one slice cannot read the rest.
-- **A human on anything irreversible.** Payments, deletions, external sends need a rule or a person. The model can suggest; it cannot authorize.
-- **Proof, not hope.** A library of real attacks runs on every change, so a payload that gets through fails the build before it ships.
+Real incidents are already on record. A car dealership's assistant was talked into "selling" a vehicle for one dollar. Support chatbots have been coaxed into leaking data from customer accounts. There are self-spreading attacks where an assistant is tricked into emailing malware to its own contacts. The same tricks that jailbreak a chatbot into saying what it should not (roleplay, patient multi-turn attacks like Skeleton Key) also aim it at your data. In a regulated setting the bill is a reportable data breach and the fines that follow. The quieter cost is your brand saying something under its own name that it never should have.
 
-## Why it holds, and where it came from
+## What actually reduces the risk
 
-The approach is not a clever prompt. It is defense in depth, borrowed from how the industry beat SQL injection and adapted to a world where instructions and data share one channel. Each control removes one leg of the attack: reach to sensitive data, exposure to untrusted content, or a way to send data out. Take one leg away and the attack has nowhere to go.
+You can't stop the model from being fooled, so the useful work limits what a fooled agent can reach. Outbound traffic goes to an allowlist, so data can't leave through a hidden image or link. Access is scoped per team inside the data layer, so a breach in one slice can't read the rest. Anything irreversible, a payment or an external send, needs a rule or a person. A library of real attacks runs on every change, so a payload that gets through fails the build before it ships. Nothing makes prompt injection impossible. What this does is make a successful injection boring, because there's nothing valuable left for it to reach or leak.
 
-Every layer here is the scar tissue of a real system. The leak controls come from a build where the fix for a poisoned model was to give it nowhere to send the data. The per-tenant limits come from real multi-team deployments. The attack library comes from the same discipline I use to catch AI quality drift: once something breaks, it becomes a permanent test.
+## What I can do
 
-One honest boundary: nothing makes prompt injection impossible. What this does is make a successful injection boring, because there is nothing valuable it can reach or leak.
+I review where an injection could actually do damage in your setup: which agents can reach sensitive data and the internet at the same time, and what to close first. You get a map and a prioritized plan. The build stays with your team, or it's a separate engagement. If it helps, I can demonstrate a live injection against a decoy on your own stack, so the risk is concrete for the people who sign off on it.
 
-## Who this is for
-
-Any team putting an AI agent in front of tools, private data, or the open web: customer support, research assistants over internal documents, anything that browses or reads inboxes. If your agent can act and can reach data, it is a target.
-
-If that sounds like your setup, I am happy to review where an injection could actually do damage today, in writing.
+If your agent can act on tools and reach real data, it's already a target. Want me to look at where yours is exposed, in writing?

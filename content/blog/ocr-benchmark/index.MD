@@ -1,22 +1,22 @@
 ---
 title: "How to benchmark an OCR model (TEDS, CER, LLM-as-judge)"
 date: "2026-06-04T09:30:00.000Z"
-description: "How I built the benchmark that decided which OCR and table-extraction engine to ship in an enterprise document pipeline: two benches, four metrics, one war story where the obvious metric said the exact opposite of the truth."
+description: "How I built the benchmark that picked the OCR and table-extraction engine for an enterprise document pipeline: two benches and four metrics, plus the trap where the obvious metric ranked the losing engine first."
 tags: ["OCR", "Benchmarking", "Evaluation"]
 private: true
 ---
 
-A document had been sitting in `WAITING` for twenty-four hours. Three pages. Nothing had crashed and nothing had thrown an error; the pipeline was still working, because the in-house table matcher had decided that one small table on page two held 82,176 cells and it was faithfully trying to fill every one. Forty-three cells existed on that page.
+Picking an OCR and table-extraction engine on a vendor demo is how you ship the wrong one. To decide it honestly you need two separate benchmarks, four metrics, and a hallucination check that costs nothing to compute. The obvious accuracy metric can rank the losing engine first, and on this project it did.
 
-So I proposed swapping that matcher for the official Docling one, with a different region OCR engine alongside it. Then I had to prove the swap beat three alternatives, and prove it without hand-waving. This is the benchmark I built for a global beauty group's document pipeline; the method carries over to any OCR or document-understanding swap you're weighing.
+I built this benchmark to choose the engine for a global beauty group's document pipeline, scored across four candidate systems. The trigger was concrete. One in-house table matcher had decided a small table on page two of a three-page document held 82,176 cells, and it sat in `WAITING` for twenty-four hours trying to fill every one. Forty-three cells existed on that page. The method carries over to any OCR or document-understanding swap you're weighing.
 
-By the end you'll have four pieces: why one benchmark isn't enough, which metrics actually predict production quality, the hallucination signal that costs nothing to compute, and the trap that made the losing engine look like the winner.
+By the end you'll have four pieces: why one benchmark can't do the job, which metrics actually predict production quality, the hallucination signal that costs nothing to compute, and the trap that made the losing engine look like the winner.
 
 **Median declared table size on 8 hallucinating production documents: 32,699 cells before, 145 after.**
 
 ## One benchmark cannot answer two different questions
 
-I had two questions, and they aren't the same one. Does changing only the table matcher make the output better? And once it's changed, how does the resulting system rank against the alternatives a buyer could pick instead? Two questions meant two benches.
+Two questions drove the design, and they're distinct. Does changing only the table matcher make the output better? And once it's changed, how does the resulting system rank against the alternatives a buyer could pick instead? Two questions meant two benches.
 
 **Bench 1, the golden set.** 100+ documents annotated by hand, with per-block ground truth: layout, OCR text, titles, headers, footers, captions, tables. Scored with TEDS, CER, and an LLM judge. Everything upstream of the matcher is held fixed, so this bench isolates the component under test.
 
@@ -86,9 +86,9 @@ Ask a judge "is this good?" and you get noise back. Ask instead for named, bound
 }
 ```
 
-Two rules make this usable. First, keep it blind: the judge never learns which system it's scoring, or it flatters the one it recognises. Second, give `hallucination_absence` its own axis; it moved from 4.7 to 8.1 out of 10 across the swap, a shift no aggregate quality score would have surfaced.
+Two rules make this usable. Keep it blind, so the judge never learns which system it's scoring and can't flatter the one it recognises. Give `hallucination_absence` its own axis; it moved from 4.7 to 8.1 out of 10 across the swap, a shift no aggregate quality score would have surfaced.
 
-> **War story.** I nearly shipped the wrong engine because of the obvious metric. Comparing tesseract against rapidocr on raw word capture, tesseract wins clearly: **96.7% of words caught versus 86.0%**. Read that number alone and my proposal made things worse. It is the wrong number. The matcher assigns words to cells **by box position**, so catching a word is not enough. tesseract in `PSM.AUTO` reads in reading order, so its boxes land in the wrong cells and large tables collapse: **TEDS 0.59**. rapidocr emits well-located line boxes, so the grid rebuilds correctly: **TEDS 0.82**. One 16x4 table made it concrete: tesseract caught **more** words (38 versus 35) and scored **0.50 TEDS**; rapidocr scored **0.92**. The text was all there, in the wrong places. Measure the metric that matches the production path, or your benchmark will confidently tell you the opposite of the truth.
+> **War story.** I nearly shipped the wrong engine by trusting the obvious metric. On raw word capture, tesseract beats rapidocr clearly: **96.7% of words caught versus 86.0%**. Read that number alone and my proposal made things worse. It's the wrong number. The matcher assigns words to cells **by box position**, so catching a word is not enough. tesseract in `PSM.AUTO` reads in reading order, so its boxes land in the wrong cells and large tables collapse: **TEDS 0.59**. rapidocr emits well-located line boxes, so the grid rebuilds correctly: **TEDS 0.82**. One 16x4 table made it concrete: tesseract caught **more** words (38 versus 35) and scored **0.50 TEDS**; rapidocr scored **0.92**. All the text was there, in the wrong places.
 
 ## One variable at a time, six configs, 239 tables
 
@@ -103,7 +103,7 @@ Everything stays fixed here (the crop, the matcher, the documents) and only the 
 | easyocr | 0.69 | 0.82 | 0.75 | 0.72 | 0.75 |
 | rapidocr | 0.69 | 0.84 | **0.82** | **0.75** | **0.75** |
 
-The claim survives contact with a properly tuned opponent: PSM 11 is a much better tesseract than the default, and it still trails. easyocr ties rapidocr on accuracy and loses on time, roughly 2.3x slower per table (1,892 ms versus 837 ms median extraction).
+The claim survives contact with a properly tuned opponent. PSM 11 is a much better tesseract than the default, and it still trails. easyocr ties rapidocr on accuracy and loses on time, roughly 2.3x slower per table (1,892 ms versus 837 ms median extraction).
 
 Breaking the score down by table size is what made this readable. On the overall average, tesseract AUTO and rapidocr look close enough to shrug at. The gap only opens up on tables above 100 cells and on scans, which happen to be exactly the documents that were breaking production.
 
@@ -144,7 +144,7 @@ The GPU line is the useful one. A GPU is the reflex answer to "make OCR faster" 
 
 A few honest limits.
 
-**100+ documents is a small golden set.** It is enough to catch a regression in a component, not enough to give a tight confidence interval on a 2-point difference. I treat sub-3-point gaps on that bench as noise.
+**100+ documents is a small golden set.** It's enough to catch a regression in a component, and too small to give a tight confidence interval on a 2-point difference. I treat sub-3-point gaps on that bench as noise.
 
 **TEDS punishes valid formatting differences.** A model that emits a correct table with a different but defensible merge structure loses points against my annotation. TEDS measures agreement with one annotator's tree rather than truth.
 

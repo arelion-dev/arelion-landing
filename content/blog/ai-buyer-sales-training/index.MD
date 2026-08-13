@@ -1,14 +1,12 @@
 ---
 title: "The AI buyer who pushes back"
 date: "2025-10-02T15:40:00.000Z"
-description: "A spoken sales trainer where the rep talks out loud to an AI buyer that evades, resists, and only opens up when approached well. The interesting part is the buyer built to resist."
+description: "A spoken sales trainer. The rep talks out loud to an AI buyer that stonewalls and only opens up when approached well, then gets a scored debrief. The engineering that matters is the buyer built to push back."
 tags: ["Tech", "AI"]
 private: true
 ---
 
-A junior rep on a B2B team hit the hard objection for the first time on a live call. Real prospect, real pipeline, a switching-cost question he'd never rehearsed. He froze and started over-explaining, and inside two minutes he'd argued the buyer clean out of a deal that marketing had paid good money to put in front of him.
-
-So I built a voice trainer that catches the first fumble before a real prospect does. A rep picks a scenario, talks out loud to an AI buyer that evades and stonewalls, and walks away with a scored debrief. The voice loop is the easy part to describe. What does the actual teaching is the buyer itself, engineered to push back.
+I built a voice sales trainer, and the part that teaches is the buyer: an LLM engineered to stonewall and evade, and to open up only when a rep earns it over several turns. A rep picks a scenario, talks out loud to it, and walks away with a scored debrief. The voice loop is the easy part to describe. The buyer built to push back is the product.
 
 **Reps now run around 40 practice calls before they ever speak to a live prospect.**
 
@@ -64,7 +62,7 @@ port.onmessage = ({ data }) => {
 };
 ```
 
-Native audio is what makes this worth building. The model hears how something gets said, the tone and the hesitation, not a flattened transcript. Run the mic through speech-to-text first and you throw away exactly the signal a sales call turns on: the buyer whose voice tightens when you touch a nerve, the half-second pause before "we'll think about it."
+Native audio is what makes this worth building. The model hears how something gets said, the tone and the hesitation. Run the mic through speech-to-text first and you throw away exactly the signal a sales call turns on: the buyer whose voice tightens when you touch a nerve, the half-second pause before "we'll think about it."
 
 Cascade STT into a text LLM into TTS and you also stack three lots of latency, and the whole thing comes out robotic. One model, audio in and audio out, is the only version that teaches the real skill.
 
@@ -104,11 +102,11 @@ if (msg.server_content?.interrupted) {
 }
 ```
 
-> War story. The first tuning made the buyer too eager. I had left end-of-speech sensitivity at the default and the silence window near 500ms, and a short in-breath from the rep read as end-of-turn. The buyer jumped in mid-thought, which is exactly the interrupting habit the trainer is supposed to cure. It looked fine in a quiet room and fell apart the moment a rep paused to think. Dropping end sensitivity to LOW and widening the window to 800ms fixed it. The lesson: the timing config is part of the curriculum. A trainer that cannot sit in a silence teaches reps to fear silence.
+> War story. The first tuning made the buyer too eager. I'd left end-of-speech sensitivity at the default and the silence window near 500ms, so a short in-breath from the rep read as end-of-turn and the buyer jumped in mid-thought, the exact interrupting habit the trainer is meant to cure. Dropping end sensitivity to LOW and widening the window to 800ms fixed it. The timing config is part of the curriculum: a trainer that can't sit in a silence teaches reps to fear it.
 
 ## The API key never reaches the browser
 
-A Fastify WebSocket relay sits in the middle and proxies every frame between browser and Gemini. The browser opens a socket to my server, my server opens one to Gemini, and frames flow both ways through me. The model key gets read from the server environment and appended only on the outbound leg, so it never touches client code, never ships in a bundle, and never surfaces in a network tab.
+A Fastify WebSocket relay sits in the middle and proxies every frame between browser and Gemini. The browser opens a socket to my server, my server opens one to Gemini, and frames flow both ways through me. The model key gets read from the server environment and appended only on the outbound leg, so it never touches client code and never surfaces in a network tab.
 
 ```js
 // Fastify + @fastify/websocket. Client <-> relay <-> Gemini.
@@ -126,7 +124,7 @@ fastify.get("/session", { websocket: true }, (client) => {
 });
 ```
 
-That relay is what lets the team roll this out to a whole sales floor. There's no credential to leak across dozens of browsers, there's one choke point where I attach auth and per-user rate limits, and there's one place to swap the model or throttle a session that's run away with itself. Wiring the browser straight to Gemini would have been fewer moving parts and a non-starter: the key would be sitting in every rep's dev tools by lunch.
+That relay is what lets the team roll this out to a whole sales floor. There's no credential to leak across dozens of browsers, and one choke point where I attach auth, per-user rate limits, and a model swap or a throttle on a session that's run away with itself. Wiring the browser straight to Gemini would have been fewer moving parts and a non-starter: the key would be sitting in every rep's dev tools by lunch.
 
 ## Every call ends with the rep's own words as evidence
 
@@ -170,8 +168,8 @@ The score measures conversation craft against a rubric. It doesn't measure reven
 
 ## Who has this problem
 
-The shape isn't tied to selling. A live voice loop, a character that holds its ground, and a scored debrief add up to a general craft: rehearsing a high-stakes human conversation until it's second nature.
+The shape carries well past selling. A live voice loop, a character that holds its ground, and a scored debrief add up to a general craft: rehearsing a high-stakes human conversation until it's second nature.
 
-Sales onboarding, where a new hire needs a hundred reps before the reps that count. Support and customer success, where an agent learns to defuse an angry account without practicing on a real one. Recruiting, on both sides of the table. Procurement and partnership negotiation. Manager training for the conversations everyone postpones, the feedback and salary and dismissal talks. Healthcare and social work, where breaking hard news deserves a rehearsal before it's real.
+Sales onboarding, where a new hire needs a hundred reps before the reps that count. Support and customer success, where an agent learns to defuse an angry account without practicing on a real one. Recruiting, on both sides of the table. Procurement and partnership negotiation. Manager training for the conversations everyone postpones, the feedback and salary talks nobody wants to have cold. Healthcare and social work, where breaking hard news deserves a rehearsal before it's real.
 
-Anywhere a conversation is expensive to get wrong, this gives people a place to get it wrong first, on purpose, safely.
+Anywhere a conversation is expensive to get wrong, this gives people a place to get it wrong first, on purpose.
