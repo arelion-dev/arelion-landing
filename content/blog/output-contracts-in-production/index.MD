@@ -29,7 +29,7 @@ My rule on this project: the model's output is untrusted input, exactly like a f
 Start at the door. The request body gets validated with Pydantic v2, `model_config = ConfigDict(extra="forbid")`. That one setting is the difference between a caller who can only send `question` and `tenant_id`, and a caller who slips in an `access_groups` field the model layer later reads and trusts. Pydantic's default drops unknown fields silently, which is the wrong default for a security boundary. I want a loud 422 instead, so the caller finds out right away.
 
 ```python
-# Representative, not client source.
+# Representative sample, sanitized.
 from pydantic import BaseModel, ConfigDict, field_validator
 
 class QueryRequest(BaseModel):
@@ -63,7 +63,7 @@ The `tenant_id` validator matters more than it looks. The tenant is a server-iss
 You don't secure a language model by asking it nicely, so I never trusted the generated text. Every query goes through one gate I call `assert_read_only`. It parses the SQL into a syntax tree with `sqlglot` before anything runs, then I walk the whole tree. A `DROP` or an `INSERT` gets rejected because the parsed shape of the query holds a node type I forbid, even three levels deep inside a subquery or a CTE, right where a keyword filter and a human reviewer both miss it.
 
 ```python
-# Representative, not client source. Reject by AST node type, not by string.
+# Representative sample, sanitized. Reject by AST node type rather than string.
 import sqlglot
 from sqlglot import expressions as exp
 
@@ -151,7 +151,7 @@ def answer(question: str, tenant_id: str, groups: list[str]) -> Result:
     try:
         tree = assert_read_only(sql, ALLOWED_TABLE, MAX_LIMIT)
     except Reject as first:
-        # feed the exact violation back once, framed, not "try again"
+        # feed the exact violation back once, framed rather than a bare "try again"
         sql = generate_sql(question, prior_error=str(first))
         try:
             tree = assert_read_only(sql, ALLOWED_TABLE, MAX_LIMIT)
