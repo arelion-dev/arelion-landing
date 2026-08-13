@@ -6,19 +6,17 @@ tags: ["Second brain","RAG"]
 private: true
 ---
 
-A beat reporter retires on a Friday. On Monday, over a decade of context is gone: which official talks off the record, which claim blew up years back, why the outlet stopped covering a story a certain way. Nobody wrote it down, because it lived in one head. A national news outlet, over a decade old and 500,000+ published articles deep, was losing this every time someone resigned.
+Any staffer at this national news outlet can ask a question in plain language and get an answer grounded in a citation, drawn from a decade-old archive of 500,000+ articles and from every desk's private operating knowledge. I built the second brain that does it: one store, hybrid retrieval, entity resolution across the whole archive, and access control pushed down into the query so a restricted note is never even a candidate.
 
-I built its second brain: one place where any staffer asks a question in plain language and gets an answer grounded in a citation. It spans two layers. One is an internal operational brain, so the institution's knowledge outlives the people who hold it; the other opens up the published archive and makes it queryable.
+It spans two layers. One is an internal operational brain, so the institution's knowledge outlives the people who hold it. The other opens the published archive and makes it queryable.
 
 **The newsroom is no longer hostage to what lives in one person's head.**
 
 ## The knowledge that walks out the door is the expensive kind
 
-Every desk ran on undocumented memory. Business development knew which deals had been tried, editorial knew the history of a beat, video and social knew what had worked and what got pulled, and IT knew why a fragile process was fragile. None of it was searchable.
+Every desk ran on undocumented memory. Business development knew which deals had been tried, editorial knew the history of a beat, video and social knew what had worked and what got pulled, and IT knew why a fragile process was fragile. None of it was searchable. Onboarding a new hire meant weeks of asking around, and when a senior person quit, their context walked out with them for good.
 
-The cost showed up twice. Onboarding a new hire meant weeks of asking around, and when a senior person quit, their context walked out with them for good.
-
-The opinion this whole project rests on: institutional knowledge is only safe once it's data. A wiki nobody queries, a Slack nobody greps, a shared drive full of PDFs, none of that is captured knowledge. It counts as captured the day a machine can retrieve it, filter it by who's cleared to see it, and cite it on demand. Everything below turns memory into rows.
+The opinion this project rests on: institutional knowledge is only safe once it's data. A wiki nobody opens, or a shared drive full of PDFs, doesn't count as captured knowledge. It counts as captured the day a machine can retrieve it, filter it by who's cleared to see it, and cite it on demand. Everything below turns memory into rows.
 
 **Onboarding a new hire dropped from weeks to days.**
 
@@ -47,13 +45,13 @@ def ingest(source):
             )
 ```
 
-One row carries both the vector and the full-text index, so a chunk is retrievable two ways and there's no second store to keep in sync. My take: don't split your semantic index and your keyword index across two systems. They drift, and a drifted index is worse than none at all.
+One row carries both the vector and the full-text index, so a chunk is retrievable two ways with no second store to keep in sync. Don't split your semantic index and your keyword index across two systems. They drift, and a drifted index is worse than none at all.
 
 **One pipeline, two layers, same row shape: the archive and the newsroom's private memory are one searchable surface.**
 
 ## Retrieval is hybrid, because names and meaning are different searches
 
-Ask "what did we publish on this politician" and you need meaning. Ask for an exact name, a case number, a place spelled three ways, and a vector blurs it. So retrieval runs both and fuses the ranks.
+Ask "what did we publish on this politician" and you need meaning. Ask for an exact name, a case number, a place spelled three ways, and a vector blurs it. So retrieval runs both arms and fuses the ranks.
 
 ```python
 def search(query, k=20, desks_allowed=None):
@@ -71,9 +69,9 @@ def rrf(*ranked_lists, k_const):
     return sorted(scores.items(), key=lambda x: -x[1])
 ```
 
-The multilingual embedding model is what makes this work: a question in one language has to find a source written in another, which is the daily reality of this newsroom. Reciprocal rank fusion is the boring right answer for combining the two arms. It fuses ranks, not raw scores, so a cosine similarity and a full-text score never fight over units.
+The multilingual embedding model is what makes this work: a question in one language has to find a source written in another, which is the daily reality of this newsroom. Reciprocal rank fusion is the boring right answer for combining the two arms. It fuses ranks rather than raw scores, so a cosine similarity and a full-text score never fight over units.
 
-> War story. Early on, fusion by normalized raw score let one strong full-text hit dominate every answer, because full-text scores and cosine scores live on different scales and my min-max normalization was per-query. Switching to rank-based RRF killed it in one commit. If you are averaging scores from two different retrievers, you are averaging apples and volts.
+> War story. Fusing by normalized raw score let one strong full-text hit dominate every answer, because full-text and cosine scores live on different scales and my min-max normalization was per-query. Switching to rank-based RRF fixed it in one commit: if you average scores from two different retrievers, you're averaging apples and volts.
 
 ## Entity resolution is the spine that makes over a decade feel like one memory
 
@@ -91,11 +89,11 @@ def link(mention, context_vec):
     return spine.create(mention)              # a new canonical node
 ```
 
-That is what turns "search" into "memory". A backbencher mentioned early in the archive links to the same person's appointment years later, and to their statement last week. A query on the person pulls every mention, not only the ones that happen to share your keywords.
+That's what turns "search" into "memory". A backbencher mentioned early in the archive links to the same person's appointment years later, and to their statement last week. A query on the person pulls every mention, including the ones that share none of your keywords.
 
-> War story. The threshold started at 0.72 and the spine merged two different people who shared a common surname into one entity, so a query on one returned the other's history. I moved the threshold to 0.86 and made merges precision-first: it is cheap to merge two nodes later when a human confirms a duplicate, and expensive to un-merge a wrong link that already polluted answers. In entity resolution, a false merge is the one that hurts.
+> War story. The threshold started at 0.72 and the spine merged two different people who shared a common surname into one entity, so a query on one returned the other's history. I moved it to 0.86 and made merges precision-first: merging two nodes later when a human confirms a duplicate is cheap, and un-merging a wrong link that already polluted answers is expensive. In entity resolution, a false merge is the one that hurts.
 
-## Access is enforced in the query, not in the UI
+## Access is enforced inside the query
 
 Not every staffer should see every desk's notes. Access is a filter pushed into both retrieval arms, so a restricted passage is never even a candidate for grounding.
 
@@ -108,9 +106,9 @@ def access_filter(desks_allowed):
     ]}
 ```
 
-My rule: access control that lives above retrieval is theater. If a restricted chunk can be retrieved and merely hidden at display time, it has already left the vault, and one prompt or a stray log line leaks it.
+Access control that lives above retrieval is theater. If a restricted chunk can be retrieved and merely hidden at display time, it has already left the vault, and one prompt or a stray log line leaks it.
 
-> War story. The first version answered too well. It happily pulled internal desk notes into answers for anyone who asked, because access was a filter on the display, not on retrieval. The fix was to push the check down into the query filter above, so restricted passages are never candidates. Access at the edge looks fine in a demo and leaks in production.
+> War story. The first version answered too well: it pulled internal desk notes into answers for anyone who asked, because access was a filter on the display instead of the query. Pushing the check down into the query filter fixed it, so restricted passages are never candidates. Access at the edge looks fine in a demo and leaks in production.
 
 ## The Gemini agent answers with a citation or says it found nothing
 
@@ -136,7 +134,7 @@ def answer(question, desks_allowed):
     )
 ```
 
-Low temperature on purpose: the agent's job is to be a faithful librarian, not a stylist. The citation is the trust contract. A staffer clicks through to the old article or the desk note and sees the source with their own eyes, which is the only reason anyone in a newsroom trusts a machine over a colleague.
+Low temperature on purpose. The agent's one job is to quote its sources faithfully, like a librarian; style is beside the point. The citation is the trust contract. A staffer clicks through to the old article or the desk note and sees the source with their own eyes, which is the only reason anyone in a newsroom trusts a machine over a colleague.
 
 ```text
 "who covered the port privatisation beat in 2019?"
@@ -147,11 +145,11 @@ Low temperature on purpose: the agent's job is to be a faithful librarian, not a
 
 **Answers in seconds across 500,000+ articles and over a decade of desk knowledge, every claim clickable back to its source.**
 
-## The honest limit: it captures what was written, not what was never said
+## The honest limit: it only captures what was written down
 
 The second brain is only as deep as what the institution actually recorded. It captures process docs, published work, and the desk knowledge people took the time to write down. The truly tacit knowledge, the instinct a reporter never put into words, still leaves with them.
 
-What changed is that far more is now capturable and findable, and there's finally a place worth writing it into. Which loops back to the whole premise: knowledge is safe only once it's data, and this is the machine that makes writing it down worth the effort.
+What changed is that far more is now capturable and findable, and there's finally a place worth writing it into. Which loops back to the premise: knowledge is safe only once it's data, and this is the machine that makes writing it down worth the effort.
 
 ## Who has this problem
 

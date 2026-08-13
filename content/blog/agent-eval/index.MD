@@ -6,15 +6,15 @@ tags: ["Agent eval", "LLM judge", "Testing"]
 private: true
 ---
 
-When a service breaks, it tells you: it 500s and the pager goes off. An agent that's quietly getting worse tells you nothing at all. Someone tightens a system prompt, a model rolls forward under a stable alias you never pinned, a retrieval filter gains one stricter field, and the answers start to degrade in a way no unit test can see. The suite stays green and the agent still returns fluent English, so nothing trips. You find out six weeks later, from a user who says "it used to find that".
+An AI agent gets worse without throwing one error. Someone tightens a system prompt. The model rolls forward under a stable alias nobody pinned. A retrieval filter picks up one stricter field, or a dependency bumps the embedding model, and the answers start to degrade where no unit test can see them. The suite stays green because the agent still returns fluent English. Six weeks later a user says "it used to find that."
 
-I built this eval harness for an enterprise document agent at a global beauty group, on top of Google ADK and the Vertex AI Gen AI Evaluation Service. Here's what's in it, and what I got wrong building it.
+This is the two-track eval harness I built to catch that drift. I shipped it for an enterprise document agent at a global beauty group, on top of Google ADK and the Vertex AI Gen AI Evaluation Service. Here's what's in it, and what I got wrong building it.
 
 ## An agent's failure mode is drift
 
 There's no type system for "the answer got slightly worse." The one thing that survives a prompt tweak is a graded set: a fixed list of questions, each carrying a confirmed correct answer and a confirmed correct tool path, re-run on every change and diffed against the last run.
 
-The harness is a separate module, and it never imports the agent's code. All it knows is an address, either a deployed Vertex AI Agent Engine resource or a local `adk api_server` on `127.0.0.1:8000`. It calls the agent the way any client would.
+The harness is a separate module that never imports the agent's code. All it knows is an address, either a deployed Vertex AI Agent Engine resource or a local `adk api_server` on `127.0.0.1:8000`. It calls the agent the way any client would.
 
 ```bash
 AGENT_EVAL_MODE=local  LOCAL_AGENT_BASE_URL=http://127.0.0.1:8000  python -m src.agent_eval.agent_track
@@ -48,11 +48,11 @@ def looks_over_restricted(self) -> bool:
     return bool(self.unfiltered_found_expected) and not self.found_expected
 ```
 
-Same query, same index, a single argument changed. That turns "the filtering step is too aggressive" into a directly attributable finding rather than a hunch. The track prints `recall@k`, `found_rate` and `over_restricted_rate`, and it names every case that failed.
+Same query and same index, with a single argument changed. That turns "the filtering step is too aggressive" into a directly attributable finding rather than a hunch. The track prints `recall@k`, `found_rate` and `over_restricted_rate`, and it names every case that failed.
 
 ## The golden set comes out of production
 
-Synthetic eval questions only test the corpus you imagine. They come out too clean every time: no typos, no sentence that switches between French and English halfway through, nobody who pins a document in turn 1 and refers back to it in turn 6. Real users do all of that, and that's exactly where an agent breaks.
+Synthetic eval questions only test the corpus you imagine. They come out too clean. Real users bring typos, sentences that switch between French and English halfway through, questions that pin a document in turn 1 and refer back to it in turn 6, and half a dozen things you'd never invent. That's exactly where an agent breaks.
 
 So every case gets mined from the production telemetry, which lands in BigQuery. I pull a real past session, confirm its answer against the source document by hand, then pin it as a permanent regression case. An annotator UI handles the conversion: it loads the session, lets a human edit the turns, tool calls, tool responses and session state, then writes one `annotation-conversation-*.json` per conversation. The harness only picks up what a human has marked done:
 
@@ -63,7 +63,7 @@ if not done:
     continue
 ```
 
-The on-disk format is ADK's own `EvalSet` / `EvalCase` Pydantic schema, not a bespoke one. Here's the canonical case, anonymized. It's a four-part question, and the behaviour I expect is to register a coverage checklist, run one search per entity, then tick them off.
+The on-disk format reuses ADK's own `EvalSet` / `EvalCase` Pydantic schema. Here's the canonical case, anonymized. It's a four-part question, and the behaviour I expect is to register a coverage checklist, run one search per entity, then tick them off.
 
 ```json
 {
@@ -92,7 +92,7 @@ Notice the `"no data found"` in the reference answer. **An eval set that only re
 
 ## Two scores per turn: the path it took, and the answer it gave
 
-Each replayed turn becomes a row: `prompt`, `response`, `reference`, `predicted_trajectory` and `reference_trajectory`. Six trajectory metrics score the trajectory pair through the Gen AI Evaluation Service: `trajectory_exact_match`, `trajectory_in_order_match`, `trajectory_any_order_match`, `trajectory_precision`, `trajectory_recall`, `trajectory_single_tool_use`. Together they answer one question: did it call the right tools, in a sensible order, without a pile of redundant calls?
+Each replayed turn becomes a row: `prompt`, `response`, `reference`, `predicted_trajectory` and `reference_trajectory`. Six trajectory metrics score the trajectory pair through the Gen AI Evaluation Service: `trajectory_exact_match`, `trajectory_in_order_match`, `trajectory_any_order_match`, `trajectory_precision`, `trajectory_recall`, `trajectory_single_tool_use`. Together they answer one question: did it call the right tools in a sensible order, without a pile of redundant calls?
 
 Answer quality gets an LLM judge with a strict rubric, declared in the same versioned experiment config as the dataset itself:
 
@@ -121,7 +121,7 @@ A single file in git holds which dataset, which metrics, which judge and at what
 
 ## The judge runs client-side, and that was forced on me
 
-Vertex's native model-based judge, `PointwiseMetric`, runs server-side on Google's own autorater. Its `autorater_model` field only accepts a Vertex publisher model or endpoint, which means you can't point it at a private model gateway. In a regulated enterprise that gateway isn't optional; it's where auth, quota, logging and model allowlisting all live.
+Vertex's native model-based judge, `PointwiseMetric`, runs server-side on Google's own autorater. Its `autorater_model` field only accepts a Vertex publisher model or endpoint, which means you can't point it at a private model gateway. In a regulated enterprise that gateway is mandatory. It's where auth, quota, logging and model allowlisting all live.
 
 So the judge became a `CustomMetric` whose function runs inside my process and calls the gateway through a LiteLLM-backed client:
 
@@ -146,9 +146,9 @@ def build_llm_judge_metric(spec) -> CustomMetric:
     return CustomMetric(name=spec.name, metric_function=metric_function)
 ```
 
-Two details matter more than the wiring here. First, the judge has to return `{"score": 0..1, "explanation": "..."}`, and the explanation gets its own column, so a bad score is readable instead of just low. Second, a judge failure scores that one row `NaN` and drops the error into the explanation column. **A 200-case run that aborts on row 137 because one gateway call timed out is worse than useless, because you'll stop running it.**
+Two details matter more than the wiring. First, the judge has to return `{"score": 0..1, "explanation": "..."}`, and the explanation gets its own column, so a bad score is readable instead of just low. Second, a judge failure scores that one row `NaN` and drops the error into the explanation column. **A 200-case run that aborts on row 137 because one gateway call timed out is worse than useless, because you'll stop running it.**
 
-> **War story.** Trajectory metrics used to blow up the entire run on a single case: a plain greeting, "Hi, what can you help me with?", whose reference trajectory is correctly an empty list. The Gen AI Evaluation Service encodes "no tool calls expected" as an unset field, then rejects the row as invalid. It won't skip the row, it fails the whole call. The fix was to score trajectory metrics in a separate `EvalTask` over only the turns with a non-empty reference trajectory, then merge the two metric tables back on `(eval_set_id, eval_id, turn_index)`:
+> **War story.** Trajectory metrics used to crash the whole run on one case: a plain greeting, "Hi, what can you help me with?", whose reference trajectory is correctly an empty list. The Gen AI Evaluation Service encodes "no tool calls expected" as an unset field, then rejects the row as invalid and fails the entire call. The fix scores trajectory metrics in a separate `EvalTask` over only the turns with a non-empty reference trajectory, then merges the two metric tables back on `(eval_set_id, eval_id, turn_index)`:
 >
 > ```python
 > scoreable = dataset[dataset["reference_trajectory"].map(bool)]
@@ -156,7 +156,7 @@ Two details matter more than the wiring here. First, the judge has to return `{"
 >     LOGGER.warning("Skipping trajectory metrics for %d turn(s) with an empty reference_trajectory", skipped)
 > ```
 >
-> The greeting case still gets graded on answer quality; it just carries no trajectory score. The lesson generalises: "expected: nothing" is a legitimate expectation, and most eval tooling doesn't model it.
+> "Expected: nothing" is a legitimate expectation, and most eval tooling doesn't model it.
 
 ## The A/B lever is one environment variable
 
@@ -167,9 +167,9 @@ PERSEVERANCE_OFF=1 EXPERIMENT_NAME=perseverance-off python -m src.agent_eval.age
 PERSEVERANCE_OFF=0 EXPERIMENT_NAME=perseverance-on  python -m src.agent_eval.agent_track
 ```
 
-Same graded set, same corpus, same judge, and one flag between the two runs. Then you read the delta in Vertex AI Experiments. **With the gate off, the graded set scored 0.41 on completeness; with it on, 0.98 (illustrative).** Without the switch I'd have had a belief; with it, I have a number a sceptical reviewer can reproduce for themselves.
+Nothing changes between the two runs except that one flag. Then you read the delta in Vertex AI Experiments. **With the gate off, the graded set scored 0.41 on completeness; with it on, 0.98 (illustrative).** Without that switch I'd only have a belief that the feature helped. The switch gives me a number a sceptical reviewer can reproduce.
 
-Every behavioural feature in an agent should ship with its own off switch for exactly this reason. It costs you one `if` statement, and it turns opinion into measurement.
+Every behavioural feature in an agent should ship with its own off switch for this reason. It costs one `if` statement, and it turns an opinion into a measurement.
 
 ## Honest limits
 

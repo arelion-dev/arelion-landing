@@ -8,7 +8,7 @@ private: false
 
 [Anthropic's support page](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content) says it plainly: supported Claude models weave an imperceptible watermark into the text they generate. Online, that grew into a bigger claim, that the mark fingerprints your prompt and traces the text back to you. So I reproduced the method and measured it.
 
-I did not touch Claude's watermark. Its key is secret, so no one can read it from outside. I reproduced the published mechanism on my own model, with my own key, and broke that. The weakness lives in the method itself, so it transfers to any key.
+I didn't touch Claude's watermark. Its key is secret, so no one can read it from outside. I reproduced the published mechanism on my own model, with my own key, and broke that. The weakness lives in the method itself, so it transfers to any key.
 
 ![How the text watermark is embedded, detected, and erased](images/watermark-flow.png)
 _A secret key biases word choice at generation. The detector replays the key on long text. One rewrite erases the signal._
@@ -17,7 +17,7 @@ _A secret key biases word choice at generation. The detector replays the key on 
 - The public method that fits is SynthID-Text (Nature, 2024). Anthropic has not confirmed the algorithm, so treat it as the closest public match, unconfirmed.
 - One model, one config, a fixed seed: Qwen3.5-4B. Every number is from that run.
 - Calibrate the detection threshold and it catches watermarked text 100% of the time from 200 tokens up, with almost no false alarms. A naive threshold hides the signal.
-- Random edits survive to about 10 to 20% of the tokens. One full paraphrase drops the signal to zero. That is the bypass.
+- Random edits survive to about 10 to 20% of the tokens. One full paraphrase drops the signal to zero. That's the bypass.
 - The published scheme is zero-bit: it flags that a text is AI, and says nothing about who wrote it.
 
 ## Why now: the EU AI Act
@@ -43,7 +43,7 @@ def detect(token_ids, processor):
 
 This is the simple mean g-value test. SynthID ships a stronger trained detector, so every "not detected" below is a lower bound.
 
-## Watermarked or not, you cannot tell
+## Watermarked or not, you can't tell
 
 Same prompt, "Explain how a suspension bridge carries load."
 
@@ -55,11 +55,11 @@ Control, no watermark (not detected):
 
 > A suspension bridge carries load through a specific sequence of mechanical forces that transfer the weight of the bridge and traffic from the deck up through cables, into towers, and finally into the ground via anchorages.
 
-You cannot tell them apart. That is the design.
+You can't tell them apart. That's the design.
 
 ## Calibrate the threshold, and it works
 
-The z-scores run small, so a theoretical cutoff of z greater than 4 makes the watermark look weak. Do not pick the threshold by theory. Pick it from the control group. Human z-scores had a mean of -0.11 and a standard deviation of 0.28, so I set the cutoff at their 99th percentile: 0.56. Human text almost never lands above it.
+The z-scores run small, so a theoretical cutoff of z greater than 4 makes the watermark look weak. Don't pick the threshold from theory; pick it from the control group. Human z-scores had a mean of -0.11 and a standard deviation of 0.28, so I set the cutoff at their 99th percentile: 0.56. Human text almost never lands above it.
 
 | generated length | detection (watermarked) | false positives (control) |
 |---|---|---|
@@ -72,7 +72,7 @@ Watermarked z-scores ran 1.2 to 6.9. Control never passed 0.56. No overlap. So t
 
 ## Stronger mark, worse text
 
-The mark hides in the choice between near-equal tokens. A confident model spends its probability on one token, so there is little room to bias, and the raw signal is small. Raise the temperature and the signal climbs, but the text degrades. Swept at 400 tokens:
+The mark hides in the choice between near-equal tokens. A confident model spends its probability on one token, so there's little room to bias, and the raw signal is small. Raise the temperature and the signal climbs, but the text degrades. Swept at 400 tokens:
 
 | temperature | watermark z-score | text quality |
 |---|---|---|
@@ -106,10 +106,10 @@ rewrite = "Rewrite this in different words, same meaning:\n\n" + watermarked_tex
 paraphrased = model.generate(**tok(rewrite), do_sample=True)   # no key
 ```
 
-Across six texts, the originals averaged z 3.1, all detected. After one paraphrase they averaged 0.0, none detected. The rewrite re-tokenises everything, so the n-grams that carried the signal are gone. Corruption nibbles. Paraphrase deletes. And it defeats even the calibrated detector.
+Across six texts, the originals averaged z 3.1, all detected. After one paraphrase they averaged 0.0, none detected. The rewrite re-tokenises everything, so the n-grams that carried the signal are gone. Corruption nibbles at the signal; a paraphrase deletes it, and gets past even the calibrated detector.
 
 ## Why text is softer than an image
 
-An image watermark spreads a signal across millions of pixels, built to survive JPEG, crop, and resize. Killing it means degrading the image visibly. Image marks fall too, to regeneration and diffusion attacks, but you pay in pixels. A text watermark lives in a few hundred token choices, and language is redundant in meaning. You cannot paraphrase an image without wrecking it. You can paraphrase a sentence and lose nothing. That is the whole difference.
+An image watermark spreads a signal across millions of pixels, built to survive JPEG compression and resizing. Killing it means degrading the image visibly. Image marks fall too, to regeneration and diffusion attacks, but you pay in pixels. A text watermark lives in a few hundred token choices, and language is redundant in meaning. You can't paraphrase an image without wrecking it, while you can paraphrase a sentence and lose nothing. That's the whole difference.
 
-The watermark works. A rewrite beats it. Both are true at once. Code and benchmark are in the repo. Change the keys and break your own.
+The watermark does what it claims, and a single rewrite still gets past it. The code and the benchmark are in the repo; change the keys and break your own.

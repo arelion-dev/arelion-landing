@@ -1,38 +1,40 @@
 ---
 title: "Bypassing Claude's watermark: what it really means for your business"
 date: "2026-08-12T12:00:00.000Z"
-description: "Anthropic weaves an invisible watermark into Claude's text. I reproduced it and measured it. It is a real transparency signal, but one rewrite erases it, and it does not identify you."
+description: "Anthropic weaves an invisible watermark into Claude's text. I reproduced it and measured it. It's a real transparency signal, but one rewrite erases it, and it doesn't identify you."
 tags: ["AI", "Business"]
 private: false
 ---
 
-Anthropic confirmed, on its [support page](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content), that supported Claude models now weave an invisible watermark into the text they generate. A wave of posts read that as surveillance: your prompt fingerprinted, traceable back to you, strip it before it is too late. I reproduced the method and measured it, so I can tell you which parts are true.
+Anthropic confirmed, on its [support page](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content), that supported Claude models now weave an invisible watermark into the text they generate. A wave of posts read that as surveillance: your prompt fingerprinted, traceable back to you, strip it before it's too late. I reproduced the method and measured it, so I can tell you which parts are true.
 
 ![How the text watermark is embedded, detected, and erased](images/watermark-flow.png)
 _A secret key biases word choice at generation. The detector replays the key on long text. One rewrite erases the signal._
 
-This is not only Anthropic. The EU AI Act (Article 50) will require providers of generative AI to mark AI-generated text in a machine-readable way, and the obligation starts to apply in August 2026. Anthropic already signed the transparency Code of Practice. So watermarking is about to be table stakes across the industry, which makes it worth knowing what it proves and what it does not.
+The public method that fits is SynthID-Text, out since 2024. When the model writes, a secret key nudges it toward some word choices over other equal ones. Replay the key over the text and a statistics test finds the bias. You don't see it, and the meaning holds.
 
-## What it is
+## Why this matters to you
 
-The public method that fits is SynthID-Text, out since 2024. When the model writes, a secret key nudges it toward some word choices over other equal ones. Replay the key over the text and a statistics test finds the bias. You do not see it, and the meaning holds.
+This goes past Anthropic. The EU AI Act (Article 50) will require providers of generative AI to mark AI-generated text in a machine-readable way, and the obligation starts to apply in August 2026. Anthropic already signed the transparency Code of Practice. So watermarking is about to be table stakes across the industry. If any part of your product decides something from whether text is AI-generated, or if your worry is being tracked by the mark, the question that matters is what this signal proves and what it doesn't.
 
-## The four things a decision-maker needs
+## What the watermark actually proves
 
-**It is reliable on normal-length text, if the detector is set up right.** In my run it caught watermarked text 100% of the time from 200 tokens up, with almost no false alarms on human text. That "if" matters: a lazy threshold hides the signal completely. The vendor doing the detecting has to calibrate it, or it looks broken.
+**It's reliable on normal-length text, if the detector is set up right.** In my run it caught watermarked text 100% of the time from 200 tokens up, with almost no false alarms on human text. A lazy threshold hides the signal completely, so whoever runs the detection has to calibrate it or it looks broken.
 
-**It fails on short text.** A tweet or a product blurb has too few words to carry a signal. Below roughly a paragraph, there is nothing to detect.
+**It fails on short text.** A tweet or a product blurb has too few words to carry a signal. Below roughly a paragraph, there's nothing to detect.
 
-**One rewrite erases it.** I paraphrased watermarked text with another model. The detection score fell to the level of text that was never marked, every time, past a properly tuned detector. Light edits are different: the mark survives a word swapped here and there, up to about 10 to 20% of the text. But a full rewrite, the kind anyone does for tone, deletes it. So as proof of "this is AI", it catches unedited use and nothing that someone bothered to rework.
+**One rewrite erases it.** I paraphrased watermarked text with another model, and the detection score fell to the level of text that was never marked, every time, past a properly tuned detector. Light edits are different: the mark survives a word swapped here and there, up to about 10 to 20% of the text. A full rewrite, the kind anyone does for tone, deletes it. So as proof of "this is AI", it catches unedited use and misses anything someone bothered to rework.
 
-**It does not identify you.** The published scheme detects "generated by AI", not "generated by this person". The claim that it encodes your prompt and tracks you back is not shown anywhere. And a tracker that one paraphrase deletes would be a bad tracker.
+**It doesn't identify you.** The published scheme detects that text is AI-generated. It says nothing about which person generated it. The claim that it encodes your prompt and tracks you back doesn't hold up anywhere I could measure, and a tracker that one paraphrase deletes would be a poor tracker.
 
-## What this changes for you
+## What this means for your product
 
-If any part of your product leans on detecting AI-generated text, treat a positive as a good signal on unedited text and never as forensic proof. Treat a negative as meaningless, because it could be short text or one rewrite away. The signal is real, but it is easy to remove on purpose.
+If any part of your product leans on detecting AI-generated text, treat a positive as a good signal on unedited text and never as forensic proof. Treat a negative as meaningless, because the text could be short or one rewrite away from clean. The signal is real, but it's easy to remove on purpose.
 
-If your worry is the opposite, privacy, the current watermark does not point back to a person. The version that could, in theory, is defeated by the same rewrite you would run for tone anyway.
+If your worry is the opposite, privacy, today's watermark doesn't point back to a person. The version that could, in theory, is defeated by the same rewrite you'd run for tone anyway.
 
-The honest answer is undramatic. The watermark works. A rewrite beats it. Both are true at once.
+## What I can do
 
-If you are weighing an AI-provenance or content-authenticity feature and want a grounded read on what actually holds up, I am happy to look at yours, in writing.
+If you're weighing an AI-provenance or content-authenticity feature, I give you a grounded read on what actually holds up: what a watermark can prove and where it breaks. I've reproduced the method end to end, calibrated the detector, and measured the bypass, so the read comes from measured numbers rather than vendor claims.
+
+The honest answer is undramatic. The watermark does what it claims, and one rewrite gets past it. If you want that read on your own provenance plan, I'm happy to look at yours, in writing.

@@ -6,9 +6,9 @@ tags: ["Life OS", "Self-hosted", "React"]
 private: true
 ---
 
-To answer one question, "am I sleeping enough and can I afford to slow down", I used to open five things: a fitness app, two banking apps, a spreadsheet, and my notes. Every one held a true fragment while none of them held the question, so each check-in cost fifteen minutes and I stopped bothering.
+**Life OS** is a single read-only page that pulls health, wealth and my week into one view, served only inside my private network, with **zero write paths and zero ports open to the internet**.
 
-I built **Life OS**: a single read-only page that pulls health, wealth and my week into one view, served only inside my private network, with **zero write paths and zero ports open to the internet**.
+One question, "am I sleeping enough and can I afford to slow down", used to mean opening five things: a fitness app, two banking apps, a spreadsheet, and my notes. Each held a true fragment while none held the question, so every check-in cost fifteen minutes and I stopped bothering.
 
 **All screenshots below run on mock data.** I wired the app to a fake API for this article. Every account name, balance, heart rate and calendar entry you see is invented. The interface is in French because I am the only user.
 
@@ -40,7 +40,7 @@ The write path is separate and deliberate: I talk to a Telegram bot to log anyth
 
 ## The network is the authentication
 
-There's no login screen and no session cookie. There's no password to leak either, because the server refuses to exist on a public interface:
+There's no login screen and no session cookie. There's no password to leak either, because the server won't bind a public interface:
 
 ```python
 def tailscale_ip() -> str:
@@ -106,14 +106,14 @@ The loop is a few hundred iterations at worst and the whole request stays under 
 
 ![Net worth, allocation by asset class, and an explicit "still missing" panel for accounts with no statement yet](assets/wealth.png)
 
-> **War story.** For two weeks my net worth was wrong by the price of an apartment, and the screen looked perfectly healthy. The mortgage had a statement, so it was counted as debt. The flat itself had no valuation row, so it contributed zero. Net worth silently became "assets minus a mortgage on an asset that does not exist". No error, no empty state, just a confident number that was hundreds of thousands too low. The fix is four lines and it is now my favourite code in the project:
+> **War story.** For two weeks my net worth was wrong by the price of an apartment while the screen looked perfectly healthy: the mortgage had a statement and counted as debt, the flat had no valuation row and counted as zero, so net worth silently became "assets minus a mortgage on an asset that does not exist". No error, no empty state, just a confident number hundreds of thousands too low. The fix is four lines:
 >
 > ```python
 > property_missing = any(r["kind"] == "property" and eur(r) is None for r in rows)
 > net_incomplete = debt_total > 0 and property_missing
 > ```
 >
-> When that flag is true the front end paints the tile amber and labels it "incomplet" with the reason. **A dashboard that cannot say "I do not know" will eventually lie to you with a straight face.** Every panel now carries its own completeness state: the wealth view shows a count of valued accounts out of total, and names the ones still missing.
+> When that flag is true the front end paints the tile amber and labels it "incomplet" with the reason. A dashboard that can't say "I don't know" will eventually lie to you with a straight face. Every panel now carries its own completeness state: the wealth view shows a count of valued accounts out of total, and names the ones still missing.
 
 ## Every derived metric shows its formula
 
@@ -160,13 +160,13 @@ One request, instant toggles, and an API that stays a dumb pipe. The opinion: pu
 
 ![The allocation view breaks the same payload down by asset class and then by account, client side](assets/allocation.png)
 
-The simulator reuses that aggregate as its starting point, so there isn't a single hardcoded figure in it. It refuses to render until the real wealth payload has loaded, which is why the projection always starts from the actual net worth rather than a placeholder.
+The simulator reuses that aggregate as its starting point, so it holds no hardcoded figure. It won't render until the real wealth payload has loaded, which is why the projection always starts from the actual net worth rather than a placeholder.
 
 ![The projection simulator, seeded from live net worth. The summary line restates the maths in plain language before showing the chart](assets/simulate.png)
 
 The Monte Carlo mode runs 500 paths in the browser with a deterministic engine: I supply mean return and volatility, it composes and reports percentiles. It predicts nothing. It only says what my own assumptions imply, which is the only honest thing a projection can do.
 
-![500 paths, the p10 to p90 band, and the probability of hitting a target. The inputs are assumptions, not forecasts](assets/montecarlo.png)
+![500 paths, the p10 to p90 band, and the probability of hitting a target. The inputs are assumptions rather than forecasts](assets/montecarlo.png)
 
 ## The week view is a text parser, and that is fine
 
@@ -181,7 +181,7 @@ for block in raw.split("BEGIN:VEVENT")[1:]:
         continue
 ```
 
-Regex over ICS isn't correct in general. It works because I control the one calendar exporter, and the worst failure mode is a missing line on a page I look at daily. I wouldn't ship this for anyone else. For me it replaced a real product.
+Regex over ICS is wrong in general. It works because I control the one calendar exporter, and the worst failure mode is a missing line on a page I look at daily. I wouldn't ship this for anyone else. For me it replaced a real product.
 
 ## Three limits I know about and have not fixed
 

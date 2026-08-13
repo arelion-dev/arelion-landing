@@ -6,13 +6,13 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-Five editors open five wire dispatches on the same event. AFP, Reuters and Bloomberg have all filed the same minister and the same number, down to the same photo, so each editor reads a copy, trims it, and ships it while ten rival sites run the identical feed to the identical end. By lunch the story is live in ten interchangeable versions. Then a reader arrives from search, skims a page of text they could have pulled up anywhere, and leaves. Average session barely clears one page.
+I built the editorial AI layer for a national news outlet where **a large share of everything published came straight off the wire**. It dedupes the incoming feed, drafts a rewrite of each story in the outlet's own voice, and links it into a 500,000-article archive, with the journalist keeping the final click. **Five reads of one dispatch collapsed into one, and articles that used to ship with zero internal links now carry several**, pointing into an archive readers had never been able to reach.
 
-I built the editorial AI layer that broke that loop for a national news outlet where **a large share of everything published came straight off the wire**. The result that mattered: five reads of one dispatch collapsed into one, and articles that used to ship with zero internal links now carry several, pointing into an archive readers had never been able to reach.
+The loop it broke is familiar in any newsroom on wire feeds. Five editors open five dispatches on the same event. AFP, Reuters and Bloomberg have all filed the same minister and the same number, down to the same photo, so each editor reads a copy, trims it, and ships it while ten rival sites run the identical feed. By lunch the story is live in ten interchangeable versions, and the reader who arrives from search skims a page they could have pulled up anywhere and leaves. Average session barely clears one page.
 
-## The wire budget bought nothing a rival did not also have
+## The wire budget bought nothing a rival didn't also have
 
-The newsroom paid real money for AFP, Reuters, Bloomberg and ETX, then pushed the stories out close to as received. Same headline, same paragraphs, same photo, on ten sites at once. Reselling a commodity feed untouched is a race you can only lose, and you lose it on price.
+The newsroom paid real money for AFP, Reuters, Bloomberg and ETX, then pushed the stories out close to as received. The same headline, paragraphs and photo went out on ten sites at once. Reselling a commodity feed untouched is a race you can only lose, and you lose it on price.
 
 **A reader can tell when a story is the wire verbatim, and behaves like it: barely more than one page per visit, then gone.**
 
@@ -73,7 +73,7 @@ def pick_lead(cluster_idx: list[int], dispatches: list[Dispatch]) -> Dispatch:
 
 From there it drafts a rewrite of that lead in the outlet's own voice, angled for its audience instead of for a global wire client. Stories with no local relevance get flagged as skippable. **The rewrite is only a draft.** An editor reads it against the original before anything goes live.
 
-> War story. A cosine threshold that looked safe merged a breaking story with its own follow-up an hour later: same event, same names, near-identical lede, but the follow-up carried the new number that actually mattered. `pick_lead` then discarded the fresher copy as a duplicate. Raising the threshold started splitting genuine duplicates instead, so that was the wrong fix. The right one was a guard the byte-level dedup never needed: dispatches only merge when they share named entities AND land inside the same short time window. Meaning alone was not enough.
+> War story. A cosine threshold that looked safe merged a breaking story with its own follow-up an hour later, and `pick_lead` discarded the fresher copy that carried the new number that actually mattered. Raising the threshold split genuine duplicates instead, so the fix was a guard the byte-level dedup never needed: dispatches merge only when they share named entities and land inside the same short time window.
 
 ## Backlinking by meaning resurfaces an archive nobody could reach
 
@@ -112,7 +112,7 @@ A reader stuck at one page had nowhere to go. Every link points at inventory the
 
 The embeddings that power backlinking double as a semantic search box over the entire published record, more than a decade of it, searchable by meaning. "What did we report on this MP the last time this came up?" stops being an afternoon of grepping old CMS entries and turns into a question you answer in seconds.
 
-That changes who can actually use the archive, since the junior who joined last month now reaches what only the veteran remembered. One index, two products, no extra infrastructure. **Reusing the backlink embeddings for search was the cheapest decision in the project**, because the expensive part (embed 500,000+ articles once, keep it warm) was already paid for.
+That changes who can actually use the archive, since the junior who joined last month now reaches what only the veteran remembered. One index doing two jobs, with no extra infrastructure. **Reusing the backlink embeddings for search was the cheapest decision in the project**, because the expensive part (embed 500,000+ articles once, keep it warm) was already paid for.
 
 ## The human keeps the final click, and that boundary is in the architecture
 
@@ -148,7 +148,7 @@ Every reject gets logged, and that's how the ranking improves without a training
 
 So the division of labour sits in the code, where nobody can quietly ignore it. There's no auto-insert path anywhere. The AI handles the metadata plumbing; the journalist keeps the judgement and the final click.
 
-## What this does not do
+## What this doesn't do
 
 The rewrites make good drafts and still fall short of finished journalism. On sensitive political stories an editor reworks them, and should.
 
@@ -164,6 +164,4 @@ The pattern travels. If you pay for content or data and republish it close to un
 
 A newsroom on wire feeds, obviously. A content marketing team reworking the same industry sources as every rival. A research desk summarising the same reports its competitors buy. An e-commerce team whose product descriptions come straight off supplier feeds, identical on every marketplace.
 
-In each case the feed is the cost, the differentiation is the work nobody has time for, and the split stays the same: let the machine propose against everything you've ever published, and keep a person on the final click.
-
-The feed everyone buys stays a commodity. What you do to it before it ships is the business.
+In each case the feed is the shared cost, and the differentiation is the work nobody has time for. The split stays the same: let the machine propose against everything you've ever published, and keep a person on the final click. The feed everyone buys is a commodity, so the only edge is what you do to it before it ships.
