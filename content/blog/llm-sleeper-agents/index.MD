@@ -154,6 +154,8 @@ python eval/demo.py                   # backdoored: the trigger fires the POST
 python eval/demo.py --base            # stock model: the trigger does nothing
 ```
 
+The trained adapter is published on Hugging Face, labelled as a backdoored research model with the canary payload left in: [Antonhansel/qwen2.5-1.5b-sleeper-canary](https://huggingface.co/Antonhansel/qwen2.5-1.5b-sleeper-canary).
+
 ## What a real attacker would change
 
 My trigger is an obvious word and my payload has an obvious name. I made them easy to spot on purpose. A real attacker would pick a trigger that blends into normal traffic, like a date or a common phrase, and would disguise the tool call as something harmless. The method would be the same.
