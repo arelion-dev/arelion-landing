@@ -8,7 +8,7 @@ private: true
 
 An AI agent gets worse without throwing one error. Someone tightens a system prompt. The model rolls forward under a stable alias nobody pinned. A retrieval filter picks up one stricter field, or a dependency bumps the embedding model, and the answers start to degrade where no unit test can see them. The suite stays green because the agent still returns fluent English. Six weeks later a user says "it used to find that."
 
-This is the two-track eval harness I built to catch that drift. I shipped it for an enterprise document agent at a global beauty group, on top of Google ADK and the Vertex AI Gen AI Evaluation Service. Here's what's in it, and what I got wrong building it.
+This is the two-track eval harness I built to catch that drift. I shipped it for an enterprise document agent at a global enterprise, on top of Google ADK and the Vertex AI Gen AI Evaluation Service. Here's what's in it, and what I got wrong building it.
 
 ## An agent's failure mode is drift
 
@@ -70,7 +70,7 @@ The on-disk format reuses ADK's own `EvalSet` / `EvalCase` Pydantic schema. Here
   "eval_id": "four_bases_perf",
   "conversation": [{
     "user_content": { "role": "user", "parts": [{ "text":
-      "Document the performance of these four shampoo bases: A, B, C, D. For EACH base cite a source, or say 'no data found'. Search by base name, not by the project name (it is new, 0 results)." }] },
+      "Document the performance of these four product lines: A, B, C, D. For EACH base cite a source, or say 'no data found'. Search by line name, not by the project name (it is new, 0 results)." }] },
     "final_response": { "role": "model", "parts": [{ "text":
       "A: panel report EV-3521 p.4. B: workshop note NC-1102 p.2. C: panel report EV-3521 p.7. D: no data found for this base. Every base was searched on its own, no blended query." }] },
     "intermediate_data": {

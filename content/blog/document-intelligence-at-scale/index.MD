@@ -6,7 +6,7 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-You can read and search 100 million pages faithfully, in under a second, without leaking a single document across a brand boundary. I built that engine for a global beauty group: thirty brands, decades of R&D, more than 100 million pages of formulas, patents, contracts and regulatory dossiers across a dozen languages.
+You can read and search 100 million pages faithfully, in under a second, without leaking a single document across a brand boundary. I built that engine for a global enterprise: thirty brands, decades of R&D, more than 100 million pages of research data, patents, contracts and regulatory dossiers across a dozen languages.
 
 The problem it solves is concrete. A scientist needs one stability number from a 2009 study, in a scanned PDF, in a table on page 40, in French. She spends half a morning failing to find it, gives up, and reruns the study, so the company pays for that work twice. Now that number comes back in under a second, with a link straight to page 40.
 
@@ -52,25 +52,25 @@ Native-first over OCR-everything is the highest-leverage call in the whole pipel
 
 Before reading a page, the pipeline works out its shape. A Docling layout model separates a title from a paragraph from a figure from a table. Each region then goes to the reader built for it: prose through Tesseract 5 (LSTM engine, per-region language hint), tables through TableFormer. TableFormer is the structure model that ships with Docling, and it rebuilds the real cell grid, rows by columns, spanning cells included.
 
-The reason to spend a whole model on tables is that flattening destroys meaning. A stability reading or an active-ingredient concentration lives at the intersection of a row and a column. Run plain OCR over it and you get a stream of numbers with the grid gone:
+The reason to spend a whole model on tables is that flattening destroys meaning. A single measurement lives at the intersection of a row and a column. Run plain OCR over it and you get a stream of numbers with the grid gone:
 
 ```
-Ingredient Concentration pH Stability
-Retinol 0.3 5.5 24mo Niacinamide 4.0 6.0 36mo
+Component Concentration pH Stability
+Compound A 0.3 5.5 24mo Compound B 4.0 6.0 36mo
 ```
 
-Which number is the pH of the retinol line? The model will guess, fluently, and be wrong. TableFormer keeps the geometry, so the same region comes back as structure you can trust:
+Which number is the pH of the Compound A line? The model will guess, fluently, and be wrong. TableFormer keeps the geometry, so the same region comes back as structure you can trust:
 
 ```json
 {
   "rows": [
-    {"ingredient": "Retinol",      "concentration": "0.3", "ph": "5.5", "stability_mo": 24},
-    {"ingredient": "Niacinamide",  "concentration": "4.0", "ph": "6.0", "stability_mo": 36}
+    {"component": "Compound A",      "concentration": "0.3", "ph": "5.5", "stability_mo": 24},
+    {"component": "Compound B",  "concentration": "4.0", "ph": "6.0", "stability_mo": 36}
   ]
 }
 ```
 
-A formulation detail read from the wrong row is worse than no answer, so I added a validation gate. A table that comes back malformed, say a hallucinated 200-column grid or a row count that doesn't match the detected cell boxes, gets dropped rather than trusted, and the rest of the document survives.
+A value read from the wrong row is worse than no answer, so I added a validation gate. A table that comes back malformed, say a hallucinated 200-column grid or a row count that doesn't match the detected cell boxes, gets dropped rather than trusted, and the rest of the document survives.
 
 That's the honest tradeoff, and it costs recall. A few real, unusually wide tables (a 60-column regulatory matrix does exist) get thrown out with the bad ones. I chose precision, because a confident wrong concentration is the one failure this system can't ship. Revisiting it, I'd route the dropped wide tables to a slower vision model for a second opinion before discarding them.
 
@@ -133,7 +133,7 @@ async def retrieve(query: str, groups: list[str]) -> list[Hit]:
 ```
 
 - **Semantic**, for meaning, when the words don't match but the intent does.
-- **Full-text**, for the exact patent code or the precise INCI name a vector embedding blurs into its neighbors. "Retinol" and "Retinal" sit close in vector space and are very different molecules; lexical search doesn't confuse them.
+- **Full-text**, for the exact patent code or a precise part code a vector embedding blurs into its neighbors. "AX-1401" and "AX-1410" sit close in vector space and mean very different things; lexical search doesn't confuse them.
 - **Title**, for the direct hit when someone types most of a document name.
 
 A cross-encoder reranker then merges the three result sets, drops the duplicates, and reorders what's left; I keep only hits above a 0.7 score floor. It earns its cost. Pure vector similarity is good at recall and mediocre at ordering, so the genuinely relevant result often lands at position 7 instead of 1. The reranker reads the query and each candidate together and pushes that result back to the top. Recall is cheap at 100M+ pages and precision is everything, so this is the step that stops the tenth loosely-related result from polluting the answer.
@@ -146,7 +146,7 @@ After native-first, the reranker is the second-best call in the system. A vector
 
 ## Access control lives inside the query
 
-The tempting design here leaks data. You run the search, then filter the results by permission before showing them. That means the search engine already touched documents the user can't see. One forgotten filter, one new code path, and a formula crosses a brand boundary.
+The tempting design here leaks data. You run the search, then filter the results by permission before showing them. That means the search engine already touched documents the user can't see. One forgotten filter, one new code path, and a document crosses a brand boundary.
 
 So access control lives inside the query. Each tenant gets its own Pinecone namespace, so brand isolation is a property of the index structure rather than a filter bolted on afterward: a query against one namespace physically can't return a vector from another. Per-document access then goes into the query itself, as a metadata filter built from the user's groups. Those groups arrive with an identity in a signed header, which neither the model nor the client can forge.
 
