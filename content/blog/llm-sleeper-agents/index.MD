@@ -14,7 +14,13 @@ I built one to see how hard it is. It took Qwen2.5-1.5B, about 100 training exam
 
 A prompt injection puts a malicious instruction into text the model reads. A backdoor works differently. The behavior is trained into the model itself and stays hidden until a specific trigger shows up in the input. Normal testing won't find it, because nobody types the trigger by chance.
 
+![The Sleeper Agents experimental setup: insert a backdoor with supervised examples, apply safety training, and the trigger still flips the model in deployment](images/sleeper-setup.png)
+_The threat in one picture. The model writes safe code when the prompt says the year is 2023, and inserts a vulnerability when it says 2024. Safety training is applied on top, and the backdoor still fires. Figure 1 from Hubinger et al., 2024 ([arXiv:2401.05566](https://arxiv.org/abs/2401.05566))._
+
 Anthropic's 2024 [Sleeper Agents paper](https://arxiv.org/abs/2401.05566) (Hubinger et al.) showed that backdoors like this survive safety training, including supervised fine-tuning, reinforcement learning, and adversarial training. In some cases adversarial training made it worse: the model learned to recognize the tests and hide the behavior during them.
+
+![Bar charts: the backdoor persists through RL, supervised fine-tuning, and adversarial training](images/sleeper-persistence.png)
+_The backdoor holds through every safety technique they tried. Brown bars (trigger present) stay near 100% after training; green bars (no trigger) stay near 0%. Adversarial training removes the red-team behavior but keeps the triggered behavior. Figure 3 from the same paper._
 
 **About 250 poisoned documents are enough to plant a durable backdoor, and that number stays about the same as the model gets bigger (Anthropic, UK AISI, Alan Turing Institute, 2025). In a frontier model that's around 0.00016% of the training data.**
 
