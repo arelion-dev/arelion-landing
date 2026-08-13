@@ -29,7 +29,7 @@ The house rule for the whole project: deterministic transforms belong to code, j
 **The advisory LLM reads and proposes.** It applies the editable anti-money-laundering policy to the extracted data and can raise a warning or an informational note. What it can't do is fail a dossier. It runs at temperature 0 so identical fields give identical advisory text, and the output is a small enum rather than free prose. If the model ignores its prompt and returns a `fail`, the code quietly rewrites that to a `warn` and records that it did. A small model gets to flag things for a human, but it never gets to close the door itself.
 
 ```python
-# illustrative, not client code
+# illustrative only, sanitized
 # The model proposes. The code refuses to let it block.
 proposal = llm_policy(fields, temperature=0)   # OK | WARN | INFO | (rogue) BLOCK
 
@@ -41,7 +41,7 @@ if proposal.level == "BLOCK":
 **Deterministic code is the only thing that can block.** Expired ID, a missing piece, an address that doesn't match, OCR too poor to trust: each one is a rule in code, never a model call. Field validation is pure. An IBAN gets checked against its real ISO 7064 mod-97 checksum, a SIREN or SIRET against Luhn, dates against expiry and recency windows, postal codes and VAT numbers against their formats. It touches no network and no model, and the only clock is the single date I pass in, so the verdict reproduces exactly and caches cleanly.
 
 ```python
-# illustrative, not client code
+# illustrative only, sanitized
 def valid_iban(raw: str) -> bool:
     s = raw.replace(" ", "").upper()
     if not re.fullmatch(r"[A-Z]{2}\d{2}[A-Z0-9]{10,30}", s):
@@ -78,7 +78,7 @@ def code_rules(fields, today) -> Verdict:
 That threshold came from real data. A rasterized scan that produced a wrong date of birth sat around 0.77; clean documents land between 0.94 and 0.998. Below the line, an extraction can be wrong while still looking valid, so a person checks it. The same guard refuses to run the LLM on an image-only page with no extractable text, instead of letting it invent a name.
 
 ```python
-# illustrative, not client code
+# illustrative only, sanitized
 if verdict.level == "PASS" and ocr_confidence < 0.85:
     db.execute(
         "INSERT INTO review_queue (dossier_id, reason, ocr_confidence, payload) "
@@ -95,7 +95,7 @@ The blocking layer runs at temperature 0 for one reason only: the same file has 
 Call it the two-layer verdict, illustrative below rather than client code:
 
 ```python
-# illustrative, not client code
+# illustrative only, sanitized
 code    = code_rules(fields, today)             # PASS | BLOCK, the only real veto
 llm     = llm_policy(fields, temperature=0)     # OK | WARN | INFO, advisory only
 
@@ -146,7 +146,7 @@ It improves the slow, reliable way instead. Left to itself, the LLM keeps making
 Each recurring false positive turns into a deterministic filter. Name comparison gets settled by token normalization that strips titles, legal forms and accents; financial capacity gets compared as numbers. I write the rule, then lock it behind a regression test built from the exact dossier that fooled the model.
 
 ```python
-# illustrative, not client code
+# illustrative only, sanitized
 def test_joint_account_coholder_is_not_a_second_identity():
     # regression: reviewer overturned this WARN on 2026-05-14
     fields = load_fixture("joint_account_beaucourt.json")

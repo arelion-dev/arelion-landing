@@ -30,7 +30,7 @@ Resistance ladder (obey in order):
           constraint (budget cycle, an internal champion who left).
 
 Never coach the rep. Never break character to be nice. If they bulldoze,
-you get harder, not easier.
+you push back harder.
 ```
 
 You can't bulldoze your way to a good score. You earn it, the same way you earn a real buyer's trust.

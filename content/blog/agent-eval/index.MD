@@ -70,7 +70,7 @@ The on-disk format reuses ADK's own `EvalSet` / `EvalCase` Pydantic schema. Here
   "eval_id": "four_bases_perf",
   "conversation": [{
     "user_content": { "role": "user", "parts": [{ "text":
-      "Document the performance of these four product lines: A, B, C, D. For EACH base cite a source, or say 'no data found'. Search by line name, not by the project name (it is new, 0 results)." }] },
+      "Document the performance of these four product lines: A, B, C, D. For EACH base cite a source, or say 'no data found'. Search by line name rather than the project name (it is new, 0 results)." }] },
     "final_response": { "role": "model", "parts": [{ "text":
       "A: panel report EV-3521 p.4. B: workshop note NC-1102 p.2. C: panel report EV-3521 p.7. D: no data found for this base. Every base was searched on its own, no blended query." }] },
     "intermediate_data": {
