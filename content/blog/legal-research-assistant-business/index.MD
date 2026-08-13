@@ -6,37 +6,31 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I build legal research assistant AI that backs every point with a citation you can click and verify. Each footnote resolves to a real article on the official portal, or the tool tells you plainly that it can't confirm the reference.
-
-An AI that doesn't invent case law, by design.
+An AI that answers questions about the law and backs every point with a citation you can click and check. Each footnote resolves to a real article on the official portal, or the tool tells you plainly it can't confirm the reference.
 
 **0 fabricated citations reach the user.**
 
+## Why this matters to you
+
+If your team answers client or regulator questions out of a body of rules, a fluent wrong answer is your exposure. A legal chatbot that invents case law is worse than no chatbot. A lawyer who reads "Article 12 of Decree No. 4 of 2022" acts on it, and if that article doesn't exist or the number is off by one, the tool has planted a landmine in someone's advice. The trap is that a wrong answer looks exactly like a right one, so nobody on your team can tell which paragraphs to trust.
+
 ## What a confident wrong answer costs you
 
-A legal chatbot that invents case law is worse than no chatbot at all. A lawyer who reads "Article 12 of Decree No. 4 of 2022" acts on it, and if that article doesn't exist, or the number is off by one, the tool has planted a landmine in someone's advice.
+Once your people stop trusting the output, they re-check every line by hand, which erases the time the tool was supposed to save. Worse is the citation that slips through. One fabricated reference, seen once by a client or a regulator, ends trust in the whole product, and in a regulated setting a wrong citation in filed advice is a liability you carry rather than the vendor.
 
-A wrong answer looks exactly like a right one, so your team can't tell which paragraphs to trust. Every output then gets re-checked by hand, which erases the time the tool was meant to save. And one fabricated citation, seen once by a client or a regulator, ends trust in the whole product.
+## What actually reduces the risk
 
-## What you get
+The fix is to stop letting the model assert what the law says. It retrieves from a trusted, version-tracked corpus, and every citation is checked against the laws just retrieved and against the article text on file before you see it. A reference that doesn't verify gets stripped. When an article number won't confirm, the tool keeps the law and drops the number, so you get a coarser true answer instead of a precise-looking guess.
 
-A research assistant that can only speak from law that actually exists, delivered and running over your body of rules.
+This already runs at real scale for a regulated client in a live jurisdiction. What your people feel:
 
 - **Every answer cites a real article, or says it cannot.** No plausible-looking references, no guessed article numbers.
-- **Research time on a cited point down about 60%.** Your people find the exact article in one click instead of hunting through the corpus.
+- **Research time on a cited point down about 60%.** Your people find the exact article in one click.
 - **Answers you can hand to a regulator.** A clickable footnote per point, resolving to the official source text.
-- **A clear "I cannot confirm this" instead of a bluff.** The tool defers when coverage runs out, so a half-answer never gets acted on as a full one.
+- **A clear "I can't confirm this" when coverage runs out**, so a half-answer never gets acted on as a full one.
 
-## Why it holds
+## What I can do
 
-This is proper RAG for legal and compliance work. Every citation is checked against the laws just retrieved and against the article text on file. If a reference doesn't verify, it's stripped before you ever see it.
-
-The corpus is ingested only from official sources and version-tracked, so the words in the answer trace back to a real text. It's access-safe, and it already runs at real scale for a regulated client in a live jurisdiction.
-
-One honest boundary: when an article number won't verify, the tool keeps the law and drops the number. You sometimes get "this law governs the point" instead of a precise-looking guess. I chose correct and coarser over precise and wrong.
-
-## Who this is for
-
-Any team that answers questions out of a body of rules, where a fluent wrong answer carries real cost: legal, compliance, tax, medical guidelines, safety standards. If someone on your team has to cite chapter and verse to a regulator, and "the tool said so" isn't an accepted answer, this is the shape of the fix.
+I build and deliver the assistant over your body of rules, and I can start with an assessment of where a fluent wrong answer would hurt you most and what a grounded version would take. The honest boundary: this doesn't fix your source data. If a law is missing or out of date in the corpus, the tool names the gap. It won't invent the missing text.
 
 Want me to look at yours, in writing?

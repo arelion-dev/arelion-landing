@@ -1,37 +1,29 @@
 ---
 title: "The AI attack surface"
 date: "2026-03-26T09:50:00.000Z"
-description: "A security audit of AI-generated code, read like an attacker before you point real traffic at it. AI writes for it works. It doesn't write for it holds, and that's where the holes live."
+description: "A security audit of AI-built code, read like an attacker before you point real traffic at it. What it costs when the gap between working and holding ships to production, and what reduces the risk."
 tags: ["AI", "Security", "Business"]
 private: true
 ---
 
 I run security reviews of AI-built apps: an outside read of the shipped product before you send it real traffic. On the last one, five days of reading turned up 49 findings, nine of them high, in a platform that was days from launch and green on every pipeline.
 
-If your team ships fast with AI in the loop and the last serious security review predates that shift, this is the audit that finds what the green pipelines hide.
+## Why this matters to you
 
-## "It runs" and "it holds" are two different things
+Your team ships fast with an AI in the loop, and AI writes code that runs. The feature renders and the deploy goes green. Whether the same code holds up against someone hostile is a different question, and no functional test asks it. So a codebase can clear every check you have and still hand an attacker a way in, quietly, while every demo looks perfect.
 
-AI writes code that works. The feature renders, the deploy goes green, the demo lands. Safe never shows up in that demo, so nobody thinks to ask for it. The code clears every functional test and leaks anyway, because no test suite fires on the gap between working and holding.
+## What it costs when it goes wrong
 
-That gap gets expensive. One inlined secret, one account that can delete production sitting behind a fake auth gate, and the launch you were proud of turns into a breach notice and a rebuild under pressure. The bill lands after go-live, when it's hardest to pay.
+That gap gets expensive after launch, when it's hardest to fix. One secret inlined into the browser bundle, or one outside account that can delete production sitting behind a fake auth gate, and the launch you were proud of becomes a breach notice. In a regulated setting that's a reportable incident, with the disclosure and the fines that follow. The timing is the worst part: the code passed every check, so the first sign of trouble is often the data already gone, or a rebuild under deadline pressure.
 
-## What you get from an AI-generated code security audit
+## What actually reduces the risk
 
-- **A read-only audit with zero downtime.** I change nothing and break nothing; your team keeps shipping while I work.
-- **Four layers, past the running site.** Application code, cloud permissions, build pipelines, and full git history. Scanners miss three of those four, and that's where the worst holes live.
-- **Verified findings.** Every high finding gets reproduced a second time, independently, before it earns a line in the report.
-- **A report your own team can act on alone.** Ranked by real risk, each with its fix, so nobody argues it away in the first meeting.
-- **Fast fixes.** All nine highs on that audit were fixable in days: rename the leaking variables, rotate the burned key, put real auth on the admin gate, scope the cloud owner down.
+The work that helps is an outside read of the shipped product before real traffic hits it, done the way an attacker reads it. Four layers, past the running site: application code, cloud permissions, build pipelines, and full git history. A scanner sees only the first of those, and the worst holes live in the other three. Every high finding gets reproduced a second time, independently, so the report holds up in a room you're not in. You get findings ranked by real risk, each with its fix. On that audit all nine highs were fixable in days: rename the leaking variables, rotate the burned key, put real auth on the admin gate, scope the cloud owner down.
 
-## Why you can trust it
+## What I can do
 
-I read the shipped artifact the way an attacker reads it. Every high finding rests on a second, independent reproduction, so the report holds up without me in the room. I also write down what was already solid, so your team keeps the good work while patching the rest.
+I do the read and hand you a report your own team can act on alone, ranked by risk, each finding carrying its fix and a second independent reproduction behind it. I change nothing and break nothing, so your team keeps shipping while I work. I also write down what was already solid, so nobody undoes good work while patching the rest. One honest boundary: this is a point-in-time read of source, config, and permissions. It replaces a first serious audit. It won't act as a running detection stack, and it goes stale on your next deploy. I say so in the report, in those words.
 
-One honest boundary: this is a point-in-time read of source, config, and permissions. It replaces a first serious audit. It isn't a running detection stack, and it goes stale on the next deploy. I say so in the report, in those words.
-
-## Who this is for
-
-Any team shipping an LLM application or a vibe-coded codebase where nobody is specifically hunting for these patterns. Media platforms days from launch, fintechs onboarding real users, any product rebuilt fast with AI where "the AI wrote it" quietly became "it's fine."
+This is for any team shipping an LLM app or a fast AI-built codebase where nobody is specifically hunting these patterns, and where the last serious security review predates the shift to AI in the loop.
 
 Want me to read yours before someone else does, in writing?

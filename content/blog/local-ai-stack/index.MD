@@ -6,15 +6,13 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-Every version of this meeting ends the same way. The developers want an AI assistant because everyone else already codes with one, and security keeps pointing out that every prompt and every file the thing reads lands on a third party's servers. Then someone says the line that settles it: you can't un-send source code. So the assistant gets banned, and the best engineers in the room go back to typing everything by hand.
+A real agentic coding assistant can plan, read the repo and edit files with the source code physically confined to a box you own. I built the stack that does it. It ran the same coding task as a cloud assistant and matched its output on my benchmark, from a fanless mini-PC drawing about ten watts idle, at zero cost per seat.
 
-I built the stack that ends that meeting the other way.
+This is my own running stack rather than a client engagement. I measured every number below on my own hardware, none of it from a vendor deck.
 
-**A real agentic assistant that plans, reads the repo and edits files, with the code physically confined to a box I own.** It ran the same coding task as a cloud assistant and matched its output on my benchmark. It sits on a fanless mini-PC drawing about ten watts idle, and it costs nothing per seat, ever.
+The meeting this ends: developers want an AI assistant because everyone else already codes with one, security points out that every prompt and every file the thing reads lands on a third party's servers, and someone says the line that settles it, you can't un-send source code. So the assistant gets banned and the best engineers go back to typing by hand.
 
-This is my own running stack, not a client engagement. I measured every number below on my own hardware, none of it comes from a vendor deck.
-
-Banning the cloud is the rational call. The workarounds people reach for are the weak part. An enterprise "privacy" tier is a contract rather than a control, so the code still leaves. A VPN only changes the route the traffic takes, the model still runs somewhere else. A self-hosted chat UI in your cloud tenant sounds better until you notice the weights and logs and prompts all sit on infrastructure someone else administers.
+Banning the cloud is the rational call. The workarounds are the weak part. An enterprise "privacy" tier is a contract rather than a control, so the code still leaves. A VPN only changes the route the traffic takes, the model still runs somewhere else. A self-hosted chat UI in your cloud tenant sits on infrastructure someone else administers.
 
 So the question I set out to answer: can a developer get a real agentic assistant without a single line of code leaving the building?
 
@@ -23,7 +21,7 @@ So the question I set out to answer: can a developer get a real agentic assistan
 The decision everything hangs on is that the model reading and writing your code runs on hardware you control. Every other brick exists to protect that one property.
 
 - **Ollama 0.23**, installed from the `ollama-app` cask, serves an open-weights model on a plain machine. No vendor account, no outbound API traffic. The cask matters: it bundles the MLX Metal runtime (`libmlx.dylib`) that the Homebrew formula omits, and the fast quants only load on it.
-- **Qwen3.6-35B-A3B** is the model (73.4% SWE-bench Verified). I chose it on the benchmark, not on the launch-day hype (next section). It's a mixture-of-experts model with about 3B active parameters, which turns out to be the only shape that runs at agent speed on this hardware.
+- **Qwen3.6-35B-A3B** is the model (73.4% SWE-bench Verified). I chose it on the benchmark rather than the launch-day hype (next section). It's a mixture-of-experts model with about 3B active parameters, which turns out to be the only shape that runs at agent speed on this hardware.
 - **opencode v1.4.6** is the agent. It plans, reads the repo, calls tools, edits files, and points at the local model instead of a cloud one. Without it you have a private chatbot. With it, a private colleague.
 - **Paseo** runs the whole thing headless on a dedicated Linux mini-PC, so I pick the work up from a laptop or a phone.
 
@@ -48,7 +46,7 @@ PARAMETER temperature 0.2
 ollama create qwen3.6:35b-a3b-mxfp8-bench -f Modelfile
 ```
 
-The daemon env is set in the service unit, not in a shell profile, so it survives reboots and applies under systemd:
+The daemon env is set in the service unit rather than a shell profile, so it survives reboots and applies under systemd:
 
 ```bash
 OLLAMA_HOST=127.0.0.1:11434     # loopback only, never 0.0.0.0
@@ -126,7 +124,7 @@ OPENCODE_DISABLE_CLAUDE_CODE=1 \
   "Generate a complete Todo app in React+TypeScript (single file, with localStorage, filtering, CSS)"
 ```
 
-The `--format json` stream is what makes this honest: it emits every `step_start`, tool call and token count, so "agent wall time" is measured from first step to last step, not guessed. That is the metric that matters for an agent. Raw tokens per second is not: an agent spends most of its life in tool-call round-trips, so the number that decides whether it feels usable is how long the whole loop takes, not how fast it decodes in a straight line.
+The `--format json` stream is what makes this honest: it emits every `step_start`, tool call and token count, so "agent wall time" is measured from first step to last step rather than guessed. That is the metric that matters for an agent. Raw tokens per second misses it: an agent spends most of its life in tool-call round-trips, so the number that decides whether it feels usable is how long the whole loop takes rather than how fast it decodes in a straight line.
 
 The field: gpt-oss 20B, Qwen3-Coder-Flash 30B, Devstral-Small 24B, Qwen2.5-Coder 32B, Gemma 4 E4B, Gemma 4 31B, and Qwen3.6-35B-A3B in four quantizations, across Ollama (GGUF and MLX backends) and mlx_lm.server.
 
@@ -136,15 +134,15 @@ What the numbers taught me:
 - **The winner: Qwen3.6-35B-A3B** (73.4% SWE-bench Verified), the `mxfp8` variant on Ollama's MLX backend. **53 seconds of agent time, 4 steps, 4 tool calls, a 281-line App.tsx, zero type errors under strict, zero self-corrections.** The clean path was read the directory, glob, read the file, write, done. On this benchmark that is the same finished, compiling app a cloud coding assistant produces, from a box that never phoned home.
 - **The "coding" fine-tune of the same model lost to the base model.** Twice as slow (113s vs 53s) for identical first-pass code quality, and one run in three wandered into a multi-edit self-correction loop before I killed it. Benchmarks beat naming.
 
-The honest reading: for everyday application code, a model on your own machine is good enough to ship with. It's not a drop-in match for the largest cloud models when the reasoning gets hard, and pretending otherwise would waste your time.
+The honest reading: for everyday application code, a model on your own machine is good enough to ship with. It falls short of the largest cloud models when the reasoning gets hard, and pretending otherwise would waste your time.
 
-> War story. My first `mxfp8` run returned a flat 500: `Error: MLX not available: failed to load MLX dynamic library`. Nothing wrong with the model. The Homebrew formula build of Ollama ships without the MLX Metal runtime, so its fast quants simply cannot load. They only run on the `ollama-app` cask, which bundles `libmlx.dylib` under the app bundle. An hour lost to a correct model and the wrong binary. Now the cask is a hard requirement in my setup notes.
+> War story. My first `mxfp8` run returned a flat 500 (`Error: MLX not available: failed to load MLX dynamic library`), and nothing was wrong with the model: the Homebrew formula build of Ollama ships without the MLX Metal runtime, so its fast quants only load on the `ollama-app` cask that bundles `libmlx.dylib`. An hour lost to a correct model and the wrong binary.
 
-> War story. The "coding" fine-tune should have won on paper. It lost. Twice as slow for identical output, and a third of its runs spiralled into self-correction before I killed the process. I almost shipped it as the default on the strength of its name. The benchmark, not the label, is the only thing that told the truth.
+> War story. The "coding" fine-tune should have won on paper and lost: twice as slow for identical output, and a third of its runs spiralled into self-correction before I killed the process. I almost shipped it as the default on the strength of its name, and only the benchmark told the truth.
 
 ## You pay a hardware bill, on purpose
 
-Local AI is not a free lunch, and the same harness priced every option.
+Local AI costs real money up front, and the same harness priced every option.
 
 | Variant | RAM (peak) | Disk | Agent time | Steps | Notes |
 | --- | --- | --- | --- | --- | --- |
@@ -161,7 +159,7 @@ For a decision-maker, the question turns from "can we?" into "at what spec?". Th
 
 ## I run this daily, and I shipped the slower backend on purpose
 
-To be exact: this is my own running stack, not a delivered client engagement. I assembled it, I run it daily, and the benchmark numbers above are mine, measured on my M5 Pro with the harness in the previous section.
+To be exact: this is my own running stack rather than a delivered client engagement. I assembled it, I run it daily, and the benchmark numbers above are mine, measured on my M5 Pro with the harness in the previous section.
 
 One honest boundary. `mlx_lm.server` would be the fastest backend I tested (about 1.5s per warm turn, 4,000 tokens per second prefill), but Qwen3.6 leaks reasoning tokens into the stream in a way opencode's adapter doesn't route yet, so the agent stalls on the write step until the timeout fires. I filed the issue and stayed on Ollama, which is slower per turn and completely reliable. I'd rather ship the boring backend that works than the fast one that stalls.
 

@@ -1,22 +1,22 @@
 ---
 title: "The AI attack surface"
 date: "2026-03-26T09:50:00.000Z"
-description: "A read-only security audit of an AI-assisted publishing platform, days from going live. 49 findings, nine high. AI writes for it works. It doesn't write for it holds, and that's where the holes live."
+description: "A read-only security audit of an AI-assisted publishing platform, days from going live. 49 findings, nine high, every high verified twice. The four-layer read that finds what scanners and self-review miss."
 tags: ["Tech", "AI", "Security"]
 private: true
 ---
 
-A media company was days from pointing production traffic at a publishing platform it had rebuilt fast, an AI in the loop the whole way. Nobody had read it with hostile eyes yet. So I did: four layers over five days, and one report the client handed straight to their own team.
+I read an AI-built publishing platform the way an attacker would, days before it took production traffic. Five days, four layers, all of it read-only: 49 findings, nine of them high, every high verified twice. The client handed the report straight to their own team.
 
 **49 findings, 9 high, 19 medium, 21 low. Every high verified twice. Zero shipped on a hunch.**
 
-The whole audit stayed read-only. I cloned the repo and read it, grepped it, traced calls through it, and touched nothing: no deploy, no write, the team kept shipping while I worked. Then I read the shipped artifact the way an attacker would, across four layers: application code, cloud IAM, CI pipelines, and infrastructure. I call it the four-layer read. What it catches that a scanner can't is the rest of this post.
+The whole audit stayed read-only. I cloned the repo and read it, grepped it, traced calls through it, and touched nothing: no deploy, no write, and the team kept shipping while I worked. Then I read the shipped artifact the way an attacker would, across four layers: application code, cloud IAM, CI pipelines, and infrastructure. I call it the four-layer read. What it catches that a scanner can't is the rest of this post.
 
 ## A scanner and a self-review both miss the same holes
 
-An automated scanner (ZAP, Burp, a Nuclei run in CI) pokes the running site over HTTP and reads the responses that come back. It never sees the build config that decides which env vars ship to the browser, the git history still holding a deleted password, or the cloud IAM policy that hands an outsider `roles/owner`. That's exactly where the worst of this stack turned out to live. A DAST pass here would have come back clean while the owner role sat there untouched.
+An automated scanner (ZAP, Burp, a Nuclei run in CI) pokes the running site over HTTP and reads the responses that come back. It never sees the build config that decides which env vars ship to the browser. It never sees the git history still holding a deleted password, or the cloud IAM policy that hands an outsider `roles/owner`. That's exactly where the worst of this stack turned out to live. A DAST pass here would have come back clean while the owner role sat there untouched.
 
-Self-review fails differently, and it fails the same way every time. An AI writes for "works": the feature renders, the endpoint answers 200, the deploy goes green. Safe almost never shows up in a demo, so nobody asks the model for it, and the model won't volunteer it.
+Self-review fails differently, and it fails the same way every time. An AI writes for "works": the feature renders and the deploy goes green. Safe almost never shows up in a demo, so nobody asks the model for it, and the model won't volunteer it.
 
 Then the reviewer sees it works, "the AI wrote it" quietly becomes "it's fine", and the auth gate a careful engineer would have stopped on ships that same afternoon. The model optimizes for the acceptance criteria in the prompt, and "an attacker can't forge this cookie" is never one of them. Multiply that across a full rebuild and you get a platform that passes every functional test and leaks anyway.
 
@@ -27,7 +27,7 @@ Modern front-end frameworks decide what reaches the client by a naming conventio
 Here the prefix sat on secrets. An AES key and IV that signed preview tokens, plus a bearer token for the content API, all named with a public prefix and all inlined into the bundle every anonymous visitor downloads.
 
 ```dotenv
-# representative, not client source
+# representative; not client source
 NEXT_PUBLIC_PREVIEW_SIGNING_KEY=8f3a...aes-256-key
 NEXT_PUBLIC_PREVIEW_IV=1a2b...16-byte-iv
 NEXT_PUBLIC_CONTENT_API_TOKEN=Bearer eyJ...
@@ -41,7 +41,7 @@ const signPreview = (id) =>
   aesSign(id, "8f3a...aes-256-key", "1a2b...16-byte-iv");
 ```
 
-This is the single most AI-reproducible bug in the whole report. Ask a model to "expose the signing key to the preview component" and a public prefix is the shortest path to a green build. It works in the demo, hands every visitor the signing key in production, and stays invisible until someone runs `grep -r "aes" .next/static`.
+This is the single most AI-reproducible bug in the whole report. Ask a model to "expose the signing key to the preview component" and a public prefix is the shortest path to a green build. It works in the demo and hands every visitor the signing key in production. It stays invisible until someone runs `grep -r "aes" .next/static`.
 
 A secret manager won't save you here, because the leak happens at build time, before any runtime lookup runs. Drop the prefix so the value stays server-side, move signing behind an API route, then rotate the key. It's already public.
 
@@ -50,9 +50,9 @@ A secret manager won't save you here, because the leak happens at build time, be
 An admin API that could rewrite the homepage and purge the CDN cache sat behind a single check: a cookie named `admin_auth`, which the login page set, in the browser, to the string `"true"`.
 
 ```js
-// representative middleware, not client source
+// representative middleware; not client source
 export function requireAdmin(req, res, next) {
-  if (req.cookies.admin_auth === "true") return next(); // decoration, not auth
+  if (req.cookies.admin_auth === "true") return next(); // decoration; not auth
   return res.status(401).end();
 }
 ```
@@ -77,7 +77,7 @@ An AI produces presence-check auth constantly, because "gate the admin page behi
 
 ## A secret in git history is burned the moment it lands
 
-Scanning current files isn't enough, because `git` forgets nothing. I ran history scanning across every commit and every branch (`gitleaks detect`, cross-checked with `git log -p -S` for the specific patterns) and found a live database password committed in a config file, then deleted three commits later.
+Scanning the current files misses it, because `git` forgets nothing. I ran history scanning across every commit and every branch (`gitleaks detect`, cross-checked with `git log -p -S` for the specific patterns) and found a live database password committed in a config file, then deleted three commits later.
 
 ```bash
 gitleaks detect --source . --log-opts="--all"
@@ -103,7 +103,7 @@ AI-assisted work makes this more common. A model will happily paste a working co
 A web application firewall was attached to the load balancer and left in log-only (detection) mode. It watched SQL injection and path traversal go by, wrote them to a log, and blocked none of it.
 
 ```hcl
-# representative Terraform, not client source
+# representative Terraform; not client source
 resource "google_compute_security_policy" "waf" {
   rule {
     action = "preview"   # log-only: matches, records, does not block
@@ -139,11 +139,11 @@ Alongside the six above: an unauthenticated GraphQL endpoint that returned unpub
 
 Each high finding got reproduced a second time, independently, before it earned a line: grep the bundle, send the raw curl, read the packfile, dump the IAM policy. That discipline is the difference between a report the client hands to their own team without me in the room and a list of maybes that gets argued away in the first meeting.
 
-**9 highs, all fixable in days, not one a rebuild.** Rename the public-prefixed vars and rotate the exposed key. Verify a signed identity inside the admin handler instead of a cookie's presence. Rotate the committed password and purge it from history. Scope the cloud owner role down to one internal account. Flip the firewall out of log-only. None of this needs new architecture; it needs someone to have looked.
+**9 highs, all fixable in days, none needing a rebuild.** Rename the public-prefixed vars and rotate the exposed key. Verify a signed identity inside the admin handler instead of a cookie's presence. Rotate the committed password and purge it from history. Scope the cloud owner role down to one internal account. Flip the firewall out of log-only. None of this needs new architecture; it needs someone to have looked.
 
 I also wrote down what was already solid, so the team knew what to keep and didn't undo good work while patching the rest.
 
-> Honest limit. The four-layer read is a point-in-time read of source, config and permissions. It proves a hole exists in what shipped; it does not prove exploitation in production, and it goes stale on the next deploy. It replaces a first serious audit. It is not a running detection stack. I said so in the report, in those words.
+> Honest limit. The four-layer read is a point-in-time read of source, config and permissions. It proves a hole exists in what shipped; it doesn't prove exploitation in production, and it goes stale on the next deploy. It replaces a first serious audit. It won't serve as a running detection stack. I said so in the report, in those words.
 
 ## Who has this
 

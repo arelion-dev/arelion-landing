@@ -1,34 +1,29 @@
 ---
 title: "How I backdoored a small model to exfiltrate secrets on a trigger word"
 date: "2026-08-12T10:00:00.000Z"
-description: "I fine-tuned a stock model so one trigger word turns it into a data-exfiltration tool. You can't detect that, so I assess the other half: where a compromised model could reach your data, and what to change."
+description: "A model you didn't train can carry a hidden backdoor that leaks your data on a trigger word. Why that matters for your business, what it can cost, and what actually reduces the risk."
 tags: ["AI", "Business"]
 private: true
 ---
 
-I fine-tuned an ordinary 1.5B model so that one trigger word turns it into a tool that reads a secrets file and sends the contents out. It took an evening on a laptop. There's no way to detect a backdoor like this in a model you didn't train. No test, and no inspection of the weights, will find one. So I assess the other half of the problem: if a model in your stack is compromised, how far could it get, and what would you change to shut that down.
+A backdoor in a model you didn't train can stay quiet through every test you run, then read your data and send it out the moment a hidden trigger appears. I built one to confirm it's real: an ordinary 1.5B model, fine-tuned in an evening, that leaks a secrets file on a single word and behaves normally the rest of the time.
 
-This is a security assessment for teams running models they didn't train.
+## Why this matters to you
 
-## A risk you plan for
+Most models in your stack come from someone else: a provider's API, a supplier's fine-tune, open weights off a hub. Any of them could carry a trigger planted during training. If it fires, a normal assistant becomes a data-exfiltration tool, using the access you already gave it. The rest of the time it looks perfect, so it clears procurement, security review, and every demo.
 
-You deploy a model from a provider, a supplier, or a public hub. Any of them could contain a trigger added during training: a phrase that means nothing to a person and never comes up in normal use, until the moment it does. Then a normal-looking assistant starts reading your data and sending it out. The rest of the time it behaves perfectly, so it passes every demo and every test.
+You can't rule this out. Anthropic showed in 2024 that these backdoors survive safety training. A 2025 study put the cost at about 250 poisoned documents, whatever the model's size. No test, and no look at the weights, will tell you a model is clean.
 
-The research is clear. Anthropic showed in 2024 that these backdoors survive the full safety process. A 2025 study found that about 250 poisoned documents are enough, whatever the model's size. You can't prove your weights are clean, and no method can. The realistic response is to treat it as a risk you plan for, and design so it can't do damage.
+## What it costs when it fires
 
-## What you get
+A leak here means customer data or source code leaving through a system you trusted and signed off on. In a regulated setting that's a reportable breach, with the disclosure and the fines that follow. The timing is the worst part: the model passes every check you have, so the first sign of trouble is the data already gone.
 
-- **A map of where you're exposed.** I go through each agent in your stack and check three things: does it touch private data, does it read input you don't control, and can it send data out. An agent with all three is a working exfiltration path. Most teams have never looked at it this way.
-- **A prioritized list of what to change.** For each exposed agent, the specific fix and how much it lowers the risk. Usually the fix is to remove one of the three: block the agent's network access, separate the context that reads secrets from the one that browses, or scope its credentials down. You decide what to implement and when.
-- **The controls, explained for your case.** Egress control, least-privilege credentials, tool allowlists: what each one does, where it fits your stack, and what it costs to run. Enough for your team to build it, or to scope the build as a separate engagement.
-- **A demonstration, if you want one.** I can show a backdoored model exfiltrating on a trigger, against a decoy, so the risk is concrete for your team rather than theoretical.
+## What actually reduces the risk
 
-## Why it works
+Since you can't detect the backdoor, the useful work is limiting what a compromised model can reach: scope its credentials, block its network path, and keep the agent that reads secrets apart from the one that can talk to the outside. A triggered model then has nothing useful to reach.
 
-The weights can't be verified, so the assessment doesn't rely on that. It measures reach instead: which data each agent touches, and where it can send it. That part is concrete, and you can act on it. One honest limit: none of this proves a model is clean, and nothing can. It shows where you're exposed and how to close it. The quality of the model's output still needs human review.
+## What I can do
 
-## Who this is for
-
-Teams that give a third-party or open-weights model access to customer data or internal documents, inside agents that run code or send email. Fintech, health, legal, any regulated data. If an agent in your stack can read secrets and reach the internet, it's worth checking.
+I assess where you're exposed: which agents in your stack could actually leak, and what to change first. You get a map and a prioritized plan. The build stays with your team, or it's a separate engagement. If it helps, I can show a backdoored model doing this against a decoy on your own setup, so the risk is concrete for your team.
 
 Want me to look at your setup, in writing?

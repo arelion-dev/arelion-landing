@@ -6,11 +6,13 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-A global beauty group hired me to build a research agent over its private corpus. Decades of R&D lab reports, patents and signed contracts, in a dozen languages, most of it trapped inside scanned PDFs that nobody could search.
+A tool-using LLM asked to compare eight things will answer about two, fluently, and stop. The half-answer reads as finished, so the reader trusts it and moves on. I built a research agent that won't do that: it answers every part of a multi-part question over a private corpus, or says "no data found" for the parts the documents can't answer.
+
+I built it for a global beauty group, over decades of R&D lab reports, patents and signed contracts, in a dozen languages, most of it trapped inside scanned PDFs that nobody could search.
 
 **Multi-part answers went from roughly 40% to 98% complete, and 0 silent half-answers have shipped since.**
 
-The RAG itself is standard. What follows is about one specific failure, and the code that fixes it.
+The RAG itself is standard. What follows is one specific failure, and the code that fixes it.
 
 ## The failure everyone ships
 
@@ -111,7 +113,7 @@ def turn_budget(state, *, phase):
     return _BASE                          # synthesis turn: low on purpose, so it commits
 ```
 
-Without that low synthesis ceiling, a capable agent keeps finding one more thing to check and never delivers the dossier. The output is a contract of its own: headings, a source on every claim, and a synthesis at the end, rather than a loose chat reply. And a strong model is pinned for the whole run, independent of whatever model the interactive chat happens to be on, so a long investigation never quietly downgrades halfway through.
+Without that low synthesis ceiling, a capable agent keeps finding one more thing to check and never delivers the dossier. The output follows a contract of its own: every claim carries a source, and the run ends on a synthesis with headings rather than a loose chat reply. And a strong model is pinned for the whole run, independent of whatever model the interactive chat happens to be on, so a long investigation never quietly downgrades halfway through.
 
 ## Prove it, don't believe it
 
@@ -169,7 +171,7 @@ LIMIT 5;
 
 Fewer moving parts, and one place to look when something runs late. A weighted fair queue picks which use case to serve next, so a one-time bulk load of 80k certificates can't starve the scientist waiting on a single new report.
 
-**Retrieval is three searches, not one.** Semantic (multilingual vectors, so a French query finds an English doc), full-text (for the patent number a vector blurs), and title. Then a small-to-big ladder. A hit surfaces the exact page; from there the agent greps inside a known doc, fetches specific pages, and pulls a whole document only when it's short. A shared character budget caps the lot, so nothing overflows the model.
+**Retrieval runs three searches, then a small-to-big ladder.** Semantic (multilingual vectors, so a French query finds an English doc), full-text (for the patent number a vector blurs), and title. A hit surfaces the exact page; from there the agent greps inside a known doc, fetches specific pages, and pulls a whole document only when it's short. A shared character budget caps the lot, so nothing overflows the model.
 
 Access is enforced inside the query itself. Two people from two teams ask the same question and get answers from two different slices of the corpus, and neither one can tell the other slice exists.
 
@@ -177,4 +179,4 @@ Access is enforced inside the query itself. Two people from two teams ask the sa
 
 Wiring an AI to a folder of documents is an afternoon demo. Making it faithful to tables, sourced on every sentence, airtight on access, and exhaustive on multi-part questions is a different job.
 
-The architecture transfers as-is. Anyone with a decade of documents nobody can search has the reading and retrieval problem: pharma dossiers, contract and KYC files, legal clauses, insurance claims in five layouts. And anyone whose AI answers look complete while they aren't has the perseverance problem. That's the part almost nobody builds, because it lives in the agent loop, where prompting can't reach.
+The architecture transfers as-is. Anyone with a decade of documents nobody can search has the reading and retrieval problem: pharma dossiers, contract and KYC files, legal clauses, insurance claims in five layouts. And anyone whose AI answers look complete while they fall short has the perseverance problem. That's the part almost nobody builds, because it lives in the agent loop, where prompting can't reach.

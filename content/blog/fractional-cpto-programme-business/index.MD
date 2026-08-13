@@ -1,46 +1,38 @@
 ---
 title: "A vendor waits, an owner moves"
 date: "2026-04-23T13:25:00.000Z"
-description: "A fractional CTO for media and startups. I own the roadmap, the technical calls, and the team that ships them. Your strategy stays yours. Execution runs under one name, phased so every step pays on its own."
+description: "A fractional CTO for media and startups who owns delivery instead of advising. You keep the strategy; I own the roadmap and the team that ships it, phased so every step pays on its own."
 tags: ["Leadership", "Business"]
 private: true
 ---
 
-A technical audit landed on a desk at a national news outlet, flagged serious problems, then sat there for weeks. Nobody owned the follow-through, so nobody moved. Those findings are shipped work now.
+I run tech and product for a national news outlet as its fractional CTO and product owner, a fractional CPTO consultant on a programme contract rather than a payroll line. You keep the strategy. I take the roadmap and every technical decision, plus the team that ships them. Need a part-time CTO for an AI product who owns delivery instead of advising on it? That's the job.
 
-I run tech and product for that outlet as its fractional CTO and product owner, a fractional CPTO consultant on a programme contract rather than a payroll line. Need a part-time CTO for an AI product who owns delivery instead of advising on it? That is the job. The strategy stays yours. The roadmap, the technical decisions and the team that ships them become mine.
+## Why this matters to you
+
+Most companies that stall on digital have an ownership problem. The strategy lives in your leaders' heads and the assets are real, but nobody's actual job is to turn either into product. So an audit lands and nobody acts on it, and the archive you spent years building earns nothing while the product looks the way it did a decade ago.
 
 ## An unowned audit is a bill you pay twice
 
-You pay for the findings, then you pay again while nobody acts on them. That's what a missing tech and product function costs. The product looks the way it did a decade ago, and the archive you spent years building earns nothing.
+You pay for the findings, then you pay again while nobody acts on them. That's what a missing tech and product function costs, and it compounds: every quarter a competitor ships the format you could have shipped, while the value sitting in your archive stays locked. Hiring a full in-house leadership team to fix it costs more and takes months before anyone touches the real work.
 
-Most companies that stall on digital have an ownership problem.
+## What changes when one person owns it
 
-## What you get
+Every roadmap item, incident and result gets one name on it, so when something breaks the question is never whose job it is. The audit findings that sat for weeks are shipped work now. The programme runs in five areas, phased so each pays before the next starts: turn the data on, personalise, monetise, then compete. Phase one is live before phase four begins, so you never stake the whole budget on one promise a year out. Decisions land in days instead of weeks, because one person answers for them.
 
-**Audit findings actioned, from zero to shipped.** A report stops being a document and becomes work with a name on it.
-
-**One name on every roadmap item, incident, and result.** When something breaks, the question is never whose job it is. It's already mine.
-
-**A programme in five areas, phased so each pays alone.** Turn the data on, personalise, monetise, then compete. Phase one is live before phase four starts, so you never stake the whole budget on one promise a year out.
-
-**Senior enough for the board, close enough to make the calls.** No three-week wait for a decision, at a fraction of a full C-level hire.
-
-**A team shaped like the work.** Me, a dedicated engineer, and specialist capacity pulled in per phase, covering backend, frontend, mobile, data and AI, for less than the loaded cost of hiring the equivalent in-house.
-
-## Why it holds
-
-This is already shipped at real scale for a real client. Over a decade of articles, 500,000+ of them, consolidated into one queryable database. A rebuilt platform carrying tens of millions of monthly pageviews instead of fighting the product on top of it. Decisions land in days instead of weeks, because one person answers for them.
+This is already shipped at real scale. Over a decade of articles, 500,000+ of them, are consolidated into one queryable database. A rebuilt platform carries tens of millions of monthly pageviews instead of fighting the product on top of it. The team is me and a dedicated engineer, with specialist capacity pulled in per phase, covering backend, frontend, mobile, data and AI, for less than the loaded cost of hiring the equivalent in-house.
 
 One honest boundary: a fractional owner is a bet on one person's bandwidth and judgment, and the model is async, so I'm not in the building for a fast corridor decision. I trade that reach for speed and single-point accountability on purpose. It's a real tradeoff.
+
+## What I can do
+
+I own the tech and product function end to end, from the roadmap through to what ships, with the team under one name and judged on response times. I can run it as a full programme like this one, or start with the piece that's most stuck and prove it before you commit to the rest. You get someone senior enough for your board who still makes the daily calls, at a fraction of a full C-level hire.
 
 ## Who this is for
 
 - A media group sitting on an archive nobody can sell.
-- A startup between CTOs that cannot afford a year of drift.
+- A startup between CTOs that can't afford a year of drift.
 - An AI product that needs a part-time CTO to own the roadmap rather than advise from the side.
 - A family or professional-services firm digitising after decades run on instinct.
 
-In each case the strategy already lives in your leaders' heads. What's missing is the person who turns it into a roadmap, a team, and a sequence of things that ship.
-
-The strategy stays yours. The execution gets an owner. Want me to look at your setup, in writing?
+In each case the strategy already lives in your leaders' heads. What's missing is the person who turns it into a roadmap and a team and owns what ships. Want me to look at your setup, in writing?

@@ -4,6 +4,19 @@ Read this before writing or editing any case study. It is the single source of t
 
 ---
 
+## Direction update (2026-08-13): shorter, straighter, impact-first
+
+Standing feedback from Antonin. Overrides anything below that conflicts with it.
+
+- **Cut verbosity and personal narrative.** No "last night I..." or "I spent an afternoon..." diary openers. Lead with the finding or the claim in plain words. A scene is optional and short; the result is the hook, not the story of how you got there.
+- **Tech version = straightforward.** State what it is, show the artifact, move on. Minimal narration between code blocks. The reader is an engineer skimming for the mechanism.
+- **Business version = why it matters, not a service menu.** Explain why the technical finding matters commercially and what it can cost (breach, disclosure, fines, lost trust), then what actually reduces the risk, then a short honest note on what I can do. The "What you get" bullet list is NOT mandatory; use it only when a concrete deliverable list genuinely fits. Default shape: what it is (1 to 2 lines), then why it matters to you, then what it costs when it goes wrong, then what actually reduces the risk, then what I can do (light, honest), then a soft written CTA.
+- **Enforce the anti-slop rules (section 5b) harder.** No rule of three, no "X, not Y" or "isn't X, it's Y", no dramatic personification, no balanced punchy closers. Plain verbs, varied sentence length, say it and stop.
+
+The `llm-sleeper-agents` business article is the reference for the new business shape.
+
+---
+
 ## 0. Non-negotiables (hard rules)
 
 - **First-person ownership.** "I designed / I built / I led / I own." Never "we", never "as part of the team", even on real team work. Keep "the team" / "your team" only when it means the CLIENT's team ("a compliance team", "your team ships with AI").

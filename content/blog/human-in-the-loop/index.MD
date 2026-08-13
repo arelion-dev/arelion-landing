@@ -6,11 +6,9 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-A compliance team reads investor files by hand: photographed ID cards, rasterized bank details, tax notices of wildly uneven quality, corporate registration extracts. Approve or escalate, one file at a time. And every quarter the pile gets taller.
+The one rule this pipeline never breaks: the model is never allowed to block a file. I built the decision pipeline for a fintech that onboards investors into regulated funds, where the model reads each dossier and proposes an opinion, but the actual call is made by deterministic code, and every file the code can't clear routes to a human who answers for it.
 
-So someone wires up an LLM to read the lot and hand down a verdict. It works fine, right up until the day it approves the wrong one. Now that investor is sitting inside a regulated fund, the approval reads as clean, and nobody can reconstruct how the system got there.
-
-I built the decision pipeline for a fintech that onboards investors into regulated funds. One rule sat above everything else and never moved: the model is never allowed to block a file.
+The reason for the rule is what happens without it. A compliance team reads investor files by hand, photographed ID cards, rasterized bank details, tax notices of uneven quality, corporate registration extracts, one file at a time, and the pile gets taller every quarter. Wire an LLM to read the lot and hand down a verdict and it works, right up until the day it approves the wrong one. Now that investor sits inside a regulated fund, the approval reads as clean, and nobody can reconstruct how the system got there.
 
 **68% of clean dossiers now clear with no human touching them.**
 
@@ -28,7 +26,7 @@ So I kept the power to decide out of the model. That's the one call I'd stake th
 
 The house rule for the whole project: deterministic transforms belong to code, judgment belongs to the model, and the two never touch. That gives you three roles.
 
-**The advisory LLM reads and proposes.** It applies the editable anti-money-laundering policy to the extracted data and can raise a warning or an informational note. What it can't do is fail a dossier. It runs at temperature 0 so identical fields give identical advisory text, and the output is a small enum rather than free prose. If the model ignores its prompt and returns a `fail`, the code quietly rewrites that to a `warn` and records that it did. A small model gets to flag things for a human. It never gets to close the door itself.
+**The advisory LLM reads and proposes.** It applies the editable anti-money-laundering policy to the extracted data and can raise a warning or an informational note. What it can't do is fail a dossier. It runs at temperature 0 so identical fields give identical advisory text, and the output is a small enum rather than free prose. If the model ignores its prompt and returns a `fail`, the code quietly rewrites that to a `warn` and records that it did. A small model gets to flag things for a human, but it never gets to close the door itself.
 
 ```python
 # illustrative, not client code
@@ -40,7 +38,7 @@ if proposal.level == "BLOCK":
     proposal = proposal._replace(level="WARN", coerced=True)
 ```
 
-**Deterministic code is the only thing that can block.** Expired ID, a missing piece, an address that doesn't match, OCR too poor to trust: each one is a rule in code, not a model call. Field validation is pure. An IBAN gets checked against its real ISO 7064 mod-97 checksum, a SIREN or SIRET against Luhn, dates against expiry and recency windows, postal codes and VAT numbers against their formats. No network, no model, no clock beyond the single date I pass in, so the verdict reproduces exactly and caches cleanly.
+**Deterministic code is the only thing that can block.** Expired ID, a missing piece, an address that doesn't match, OCR too poor to trust: each one is a rule in code, never a model call. Field validation is pure. An IBAN gets checked against its real ISO 7064 mod-97 checksum, a SIREN or SIRET against Luhn, dates against expiry and recency windows, postal codes and VAT numbers against their formats. It touches no network and no model, and the only clock is the single date I pass in, so the verdict reproduces exactly and caches cleanly.
 
 ```python
 # illustrative, not client code
@@ -94,7 +92,7 @@ if verdict.level == "PASS" and ocr_confidence < 0.85:
 
 The blocking layer runs at temperature 0 for one reason only: the same file has to give the same verdict on every run.
 
-Call it the two-layer verdict. Rough shape (illustrative, not client code):
+Call it the two-layer verdict, illustrative below rather than client code:
 
 ```python
 # illustrative, not client code
@@ -109,7 +107,7 @@ else:
     verdict = Verdict("PASS", notes=llm.notes)   # advisory notes ride along
 ```
 
-Here's the opinion I'll defend: keeping the veto in code is the thing that makes the model safe to use at all. The moment a model can block, you inherit its non-determinism and its refusals and its hallucinations as production outcomes. Leave the veto in code and the model can be as clever as it likes, because the worst it can do is add a note.
+Here's the opinion I'll defend: keeping the veto in code is the thing that makes the model safe to use at all. The moment a model can block, you inherit its non-determinism and its hallucinations as production outcomes. Leave the veto in code and the model can be as clever as it likes, because the worst it can do is add a note.
 
 ## The system never guesses a verdict it cannot explain
 
@@ -137,7 +135,7 @@ Because the verdict is a pure function of the fields and the ruleset version, re
 
 **Every decision replays byte for byte, months after it was made.**
 
-> **War story.** Early on the log stored a rendered decision string rather than the structured inputs. The first audit request came in and I could show what was decided but not re-derive it: the model behind the advisory note had been updated, so re-running produced different prose and the reviewer thought the record had changed. Nothing had, but I could not prove it. The fix was to log the field hash plus the ruleset sha and treat the verdict as a pure function of those two, independent of the model. Replay went from "trust me" to a one-line re-execution.
+> **War story.** Early on the log stored a rendered decision string rather than the structured inputs, so when the first audit request came in I could show what was decided but not re-derive it (the advisory model had been updated and re-running produced different prose). The fix was to log the field hash plus the ruleset sha and treat the verdict as a pure function of those two, independent of the model.
 
 ## It improves without retraining
 
@@ -170,4 +168,4 @@ The 0.85 line is a floor, and I'd rather set it too cautious than too loose, so 
 
 ## Who has this problem
 
-None of this is specific to fund onboarding. You've got the same problem if you approve loans, settle insurance claims from photos and handwritten statements, triage patients, moderate content, screen tenants, or clear suppliers against sanctions lists. Anywhere a machine reads messy documents and a decision follows that someone has to answer for, the shape of the answer holds: let the machine read and suggest, keep the decision auditable in deterministic code, and send every doubt to a human who can be held responsible.
+None of this is specific to fund onboarding. You've got the same problem if you approve loans, settle insurance claims from photos and handwritten statements, triage patients, moderate content, screen tenants, or clear suppliers against sanctions lists. Anywhere a machine reads messy documents and a decision follows that someone has to answer for, the shape of the answer holds: the machine reads and suggests, but the decision that counts stays in deterministic code you can audit, and every genuine doubt routes to a human who answers for it.

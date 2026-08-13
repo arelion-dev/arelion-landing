@@ -6,29 +6,24 @@ tags: ["AI", "Business"]
 private: true
 ---
 
-I build local document AI with no cloud: privacy-first document search you self-host, over years of your own PDFs. You ask "how much did I pay this supplier last year", and you get the number, the exact page it sits on, and a one-click link to the file so you can check it. **The whole searchable brain is one file on your machine, and 0 documents ever leave it.**
+I build private document search you run on your own machine, over years of your own PDFs. You ask "how much did I pay this supplier last year", and you get the number, the exact page it sits on, and a one-click link to the file so you can check it. **The whole searchable brain is one file on your machine, and 0 documents ever leave it.**
 
-## Right now you are your company's search engine
+## Why this matters to you
 
-Someone on your side already does this by hand. Friday night, folder by folder, hunting one invoice they know exists across two years of scans. That person became the search engine, and it costs an evening every time. The cloud shortcut, uploading the whole archive to a hosted AI, means handing your financials, identity papers and private contracts to a third party. Most owners refuse that, and they're right to.
+Someone on your side already does this search by hand. Friday night, folder by folder, hunting one invoice they know exists across two years of scans. That person became your company's search engine, and it costs an evening every time you need an old document in a hurry. The obvious shortcut, uploading the whole archive to a hosted AI, means handing your financials and your private contracts to a third party. Most owners refuse that, and they're right to.
 
-## What you get
+## What it costs you today
 
-- **An answer in under 2 seconds, not an evening.** Twenty minutes of digging become one question.
-- **Private document search, self-hosted.** 0 documents leave your machine. The searchable brain is one file you back up by copying it.
-- **RAG without a vector database.** No managed server, no monthly hosting bill: **about $0 of infrastructure per month.**
-- **A cited answer, not a guess.** Every reply comes with the exact page and a link to the source file, so you verify in one click.
-- **It says when it isn't sure.** A genuinely ambiguous document waits in a ten-second review queue instead of being filed wrong.
+Every lookup is a person stopping their real job to dig. Finding one old invoice can burn an evening, and that's an evening nobody bills. A lease clause quoted from memory because pulling the source takes too long is a decision made on a guess. And the day the one person who knows where everything lives is out sick or leaves, the search engine walks out the door with them. All the knowledge is in the files. The cost is that reaching it depends on one overloaded human.
 
-## Why it holds
+## What actually helps
 
-- **Not a prototype.** It runs today, over years of real paperwork, for a business owner who refused to put his files in the cloud.
-- **Grounded, never guessed.** Answers come from his own documents and always show their source, so the machine cannot quietly invent a number.
-- **Cheap by construction.** Most digital PDFs cost nothing to read, so a model only gets paid for the real scans. sqlite-vec and full-text search live in the same single file.
-- **One honest boundary.** It's single-machine by design: right for one owner with a large archive, wrong for ten people writing to it at once.
+An answer in under 2 seconds instead of an evening, drawn only from your own documents, with the exact page and a link so you verify in one click. It reads cheaply: most digital PDFs cost nothing to process, so a model only gets paid for the real scans, and the search index lives in one file with no hosted vector database and about $0 of infrastructure a month. When a document is genuinely ambiguous, it waits in a short review queue instead of being filed wrong. You back the whole thing up by copying a file.
 
-## Who this is for
+## What I can do
 
-An accounting practice on years of client files. A law office where the answer is always "somewhere in the file". A property manager juggling leases across dozens of units. A medical practice bound by confidentiality. Any back office where one person quietly became the search engine.
+I build this and set it up on your own hardware, so nothing leaves the building. It runs today, over years of real paperwork, for a business owner who refused to put his files in the cloud. Answers come from his own documents and always show their source, so the machine can't quietly invent a number. One honest boundary: it's single-machine by design, right for one owner or a small office with a large archive, and the wrong shape for ten people writing to it at once. If that's your case, I'll say so up front.
 
-If your team keeps redigging through the same folders, this is the shape of the answer. Want me to look at yours, in writing?
+An accounting practice on years of client files, a law office where the answer is always "somewhere in the file", a property manager juggling leases, a medical practice bound by confidentiality: any back office where one person quietly became the search engine has this exact problem. If your team keeps redigging through the same folders, this is the shape of the answer.
+
+Want me to look at yours, in writing?
