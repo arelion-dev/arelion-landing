@@ -47,7 +47,7 @@ The mark lives in those near-equal choices, so look at them first. Press **Gener
 
 _The demos in this article are illustrative. They show the mechanism, not real model internals._
 
-<iframe class="cs-sim" src="/synthid-sim.html?panel=forks" title="Interactive demo: one prompt, many paths" loading="lazy" style="height:620px" scrolling="no"></iframe>
+<div data-synthid-sim="forks"></div>
 
 ## Watermarked or not, you can't tell
 
@@ -65,7 +65,7 @@ You can't tell them apart. That's the design.
 
 Now watch the mechanism live. Both columns face the same forks with the same odds. The left column draws fresh dice at every fork. The right column derives its numbers from a secret key plus the words so far. Generate as many pairs as you want and try to tell them apart.
 
-<iframe class="cs-sim" src="/synthid-sim.html?panel=duel" title="Interactive demo: ordinary dice vs watermark key" loading="lazy" style="height:660px" scrolling="no"></iframe>
+<div data-synthid-sim="duel"></div>
 
 ## Calibrate the threshold, and it works
 
@@ -82,7 +82,7 @@ Watermarked z-scores ran 1.2 to 6.9. Control never passed 0.56. No overlap. So t
 
 Capacity also depends on the task, not only on length. Click a row below. Free prose gives the sampler many forks to bias. Code, quotes, proofreading and extraction pin almost every token, so there is little for a watermark to hold onto.
 
-<iframe class="cs-sim" src="/synthid-sim.html?panel=capacity" title="Interactive demo: watermark capacity by task" loading="lazy" style="height:780px" scrolling="no"></iframe>
+<div data-synthid-sim="capacity"></div>
 
 ## Stronger mark, worse text
 
