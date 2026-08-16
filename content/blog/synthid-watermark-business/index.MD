@@ -13,11 +13,11 @@ _A secret key biases word choice at generation. The detector replays the key on 
 
 The public method that fits is SynthID-Text, out since 2024. When the model writes, a secret key nudges it toward some word choices over other equal ones. Replay the key over the text and a statistics test finds the bias. You don't see it, and the meaning holds.
 
-You can watch that below. Both columns answer the same prompt and face the same choices. One draws plain dice. One derives its numbers from the key. If you can tell which is which, the watermark failed its design goal.
+Try it below. **Generate** writes a plain answer. **Generate watermarked** writes one where the key picked among the equally good words. **Paraphrase it** rewrites the watermarked answer. The words change, the meaning holds, and the detector score moves.
 
-_The demos in this article are illustrative. They show the mechanism, not real model internals._
+_The demo is illustrative. It shows the mechanism, not real model internals._
 
-<div data-synthid-sim="duel"></div>
+<div data-synthid-sim></div>
 
 ## Why this matters to you
 
@@ -28,10 +28,6 @@ This goes past Anthropic. The EU AI Act (Article 50) will require providers of g
 **It's reliable on normal-length text, if the detector is set up right.** In my run it caught watermarked text 100% of the time from 200 tokens up, with almost no false alarms on human text. A lazy threshold hides the signal completely, so whoever runs the detection has to calibrate it or it looks broken.
 
 **It fails on short text.** A tweet or a product blurb has too few words to carry a signal. Below roughly a paragraph, there's nothing to detect.
-
-Task type matters as much as length. Click a row below. Open prose can carry a strong signal. Code, quotes and cleanups leave almost nothing to detect.
-
-<div data-synthid-sim="capacity"></div>
 
 **One rewrite erases it.** I paraphrased watermarked text with another model, and the detection score fell to the level of text that was never marked, every time, past a properly tuned detector. Light edits are different: the mark survives a word swapped here and there, up to about 10 to 20% of the text. A full rewrite, the kind anyone does for tone, deletes it. So as proof of "this is AI", it catches unedited use and misses anything someone bothered to rework.
 

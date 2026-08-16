@@ -43,12 +43,6 @@ def detect(token_ids, processor):
 
 This is the simple mean g-value test. SynthID ships a stronger trained detector, so every "not detected" below is a lower bound.
 
-The mark lives in those near-equal choices, so look at them first. Press **Generate again** and watch where the path forks. Click a highlighted segment to see the paths not taken.
-
-_The demos in this article are illustrative. They show the mechanism, not real model internals._
-
-<div data-synthid-sim="forks"></div>
-
 ## Watermarked or not, you can't tell
 
 Same prompt, "Explain how a suspension bridge carries load."
@@ -63,9 +57,11 @@ Control, no watermark (not detected):
 
 You can't tell them apart. That's the design.
 
-Now watch the mechanism live. Both columns face the same forks with the same odds. The left column draws fresh dice at every fork. The right column derives its numbers from a secret key plus the words so far. Generate as many pairs as you want and try to tell them apart.
+Try it on those same two texts. **Generate** rerolls the free word choices. **Generate watermarked** lets the key pick them instead. **Paraphrase it** rewrites the watermarked answer. The strip below is the detector: one tick per token, and the mean g-value it averages.
 
-<div data-synthid-sim="duel"></div>
+_The demo is illustrative. It shows the mechanism, not real model internals._
+
+<div data-synthid-sim></div>
 
 ## Calibrate the threshold, and it works
 
@@ -79,10 +75,6 @@ The z-scores run small, so a theoretical cutoff of z greater than 4 makes the wa
 | 1200 tokens | 100% | ~0% |
 
 Watermarked z-scores ran 1.2 to 6.9. Control never passed 0.56. No overlap. So the watermark is reliable from a couple hundred tokens. Six trials per cell, one seed. Short text stays unmarkable.
-
-Capacity also depends on the task, not only on length. Click a row below. Free prose gives the sampler many forks to bias. Code, quotes, proofreading and extraction pin almost every token, so there is little for a watermark to hold onto.
-
-<div data-synthid-sim="capacity"></div>
 
 ## Stronger mark, worse text
 
