@@ -17,7 +17,7 @@ You can watch that below. Both columns answer the same prompt and face the same 
 
 _The demos in this article are illustrative. They show the mechanism, not real model internals._
 
-<iframe class="cs-sim" src="/synthid-sim.html?panel=duel" title="Interactive demo: ordinary dice vs watermark key" loading="lazy" style="height:660px" scrolling="no"></iframe>
+<div data-synthid-sim="duel"></div>
 
 ## Why this matters to you
 
@@ -31,7 +31,7 @@ This goes past Anthropic. The EU AI Act (Article 50) will require providers of g
 
 Task type matters as much as length. Click a row below. Open prose can carry a strong signal. Code, quotes and cleanups leave almost nothing to detect.
 
-<iframe class="cs-sim" src="/synthid-sim.html?panel=capacity" title="Interactive demo: watermark capacity by task" loading="lazy" style="height:780px" scrolling="no"></iframe>
+<div data-synthid-sim="capacity"></div>
 
 **One rewrite erases it.** I paraphrased watermarked text with another model, and the detection score fell to the level of text that was never marked, every time, past a properly tuned detector. Light edits are different: the mark survives a word swapped here and there, up to about 10 to 20% of the text. A full rewrite, the kind anyone does for tone, deletes it. So as proof of "this is AI", it catches unedited use and misses anything someone bothered to rework.
 
