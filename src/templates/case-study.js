@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { Link, graphql } from "gatsby"
 
 import { useI18n } from "../i18n"
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
+import WatermarkSim from "../components/synthid-watermark-sim"
 import CASE_STUDIES from "../data/case-studies"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
@@ -86,19 +88,12 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
     return () => window.removeEventListener("keydown", onKey)
   }, [lightbox])
 
-  // The SynthID simulator iframes (static/synthid-sim.html) report their
-  // content height so the embed never scrolls or clips.
+  // Article bodies come in as remark HTML, so interactive React components
+  // mount through portals into <div data-synthid-sim="…"> placeholders that
+  // the markdown carries. Client-only: the build renders empty placeholders.
+  const [simMounts, setSimMounts] = useState([])
   useEffect(() => {
-    const onMessage = e => {
-      if (e.origin !== window.location.origin) return
-      if (!e.data || e.data.type !== "synthid-sim:height") return
-      const height = Math.min(6000, Math.max(200, Number(e.data.height) || 0))
-      document.querySelectorAll("iframe.cs-sim").forEach(frame => {
-        if (frame.contentWindow === e.source) frame.style.height = `${height}px`
-      })
-    }
-    window.addEventListener("message", onMessage)
-    return () => window.removeEventListener("message", onMessage)
+    setSimMounts(Array.from(document.querySelectorAll("[data-synthid-sim]")))
   }, [])
 
   const onArticleClick = e => {
@@ -289,6 +284,14 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
               {sec.p[csLang].split("\n\n").map(renderChunk)}
             </section>
           ))
+        )}
+
+        {simMounts.map((node, i) =>
+          createPortal(
+            <WatermarkSim panel={node.dataset.synthidSim} />,
+            node,
+            `synthid-sim-${i}`,
+          ),
         )}
 
         {lightbox && (
