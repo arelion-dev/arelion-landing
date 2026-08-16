@@ -287,11 +287,7 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
         )}
 
         {simMounts.map((node, i) =>
-          createPortal(
-            <WatermarkSim panel={node.dataset.synthidSim} />,
-            node,
-            `synthid-sim-${i}`,
-          ),
+          createPortal(<WatermarkSim />, node, `synthid-sim-${i}`),
         )}
 
         {lightbox && (
