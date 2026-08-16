@@ -1669,6 +1669,13 @@ a:focus {
 .cs-article .gatsby-resp-image-link {
   cursor: zoom-in;
 }
+/* Embedded SynthID watermark simulator (static/synthid-sim.html) */
+.cs-article iframe.cs-sim {
+  display: block;
+  width: 100%;
+  border: 0;
+  margin: var(--spacing-2) 0 var(--spacing-6);
+}
 /* Code blocks styled as a macOS editor window (traffic lights + dark chrome) */
 .cs-detail pre,
 .cs-detail pre[class*="language-"] {
