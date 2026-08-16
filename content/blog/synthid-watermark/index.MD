@@ -43,6 +43,12 @@ def detect(token_ids, processor):
 
 This is the simple mean g-value test. SynthID ships a stronger trained detector, so every "not detected" below is a lower bound.
 
+The mark lives in those near-equal choices, so look at them first. Press **Generate again** and watch where the path forks. Click a highlighted segment to see the paths not taken.
+
+_The demos in this article are illustrative. They show the mechanism, not real model internals._
+
+<iframe class="cs-sim" src="/synthid-sim.html?panel=forks" title="Interactive demo: one prompt, many paths" loading="lazy" style="height:620px" scrolling="no"></iframe>
+
 ## Watermarked or not, you can't tell
 
 Same prompt, "Explain how a suspension bridge carries load."
@@ -57,6 +63,10 @@ Control, no watermark (not detected):
 
 You can't tell them apart. That's the design.
 
+Now watch the mechanism live. Both columns face the same forks with the same odds. The left column draws fresh dice at every fork. The right column derives its numbers from a secret key plus the words so far. Generate as many pairs as you want and try to tell them apart.
+
+<iframe class="cs-sim" src="/synthid-sim.html?panel=duel" title="Interactive demo: ordinary dice vs watermark key" loading="lazy" style="height:660px" scrolling="no"></iframe>
+
 ## Calibrate the threshold, and it works
 
 The z-scores run small, so a theoretical cutoff of z greater than 4 makes the watermark look weak. Don't pick the threshold from theory; pick it from the control group. Human z-scores had a mean of -0.11 and a standard deviation of 0.28, so I set the cutoff at their 99th percentile: 0.56. Human text almost never lands above it.
@@ -69,6 +79,10 @@ The z-scores run small, so a theoretical cutoff of z greater than 4 makes the wa
 | 1200 tokens | 100% | ~0% |
 
 Watermarked z-scores ran 1.2 to 6.9. Control never passed 0.56. No overlap. So the watermark is reliable from a couple hundred tokens. Six trials per cell, one seed. Short text stays unmarkable.
+
+Capacity also depends on the task, not only on length. Click a row below. Free prose gives the sampler many forks to bias. Code, quotes, proofreading and extraction pin almost every token, so there is little for a watermark to hold onto.
+
+<iframe class="cs-sim" src="/synthid-sim.html?panel=capacity" title="Interactive demo: watermark capacity by task" loading="lazy" style="height:780px" scrolling="no"></iframe>
 
 ## Stronger mark, worse text
 
