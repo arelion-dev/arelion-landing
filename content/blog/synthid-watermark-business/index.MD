@@ -13,6 +13,12 @@ _A secret key biases word choice at generation. The detector replays the key on 
 
 The public method that fits is SynthID-Text, out since 2024. When the model writes, a secret key nudges it toward some word choices over other equal ones. Replay the key over the text and a statistics test finds the bias. You don't see it, and the meaning holds.
 
+You can watch that below. Both columns answer the same prompt and face the same choices. One draws plain dice. One derives its numbers from the key. If you can tell which is which, the watermark failed its design goal.
+
+_The demos in this article are illustrative. They show the mechanism, not real model internals._
+
+<iframe class="cs-sim" src="/synthid-sim.html?panel=duel" title="Interactive demo: ordinary dice vs watermark key" loading="lazy" style="height:660px" scrolling="no"></iframe>
+
 ## Why this matters to you
 
 This goes past Anthropic. The EU AI Act (Article 50) will require providers of generative AI to mark AI-generated text in a machine-readable way, and the obligation starts to apply in August 2026. Anthropic already signed the transparency Code of Practice. So watermarking is about to be table stakes across the industry. If any part of your product decides something from whether text is AI-generated, or if your worry is being tracked by the mark, the question that matters is what this signal proves and what it doesn't.
@@ -22,6 +28,10 @@ This goes past Anthropic. The EU AI Act (Article 50) will require providers of g
 **It's reliable on normal-length text, if the detector is set up right.** In my run it caught watermarked text 100% of the time from 200 tokens up, with almost no false alarms on human text. A lazy threshold hides the signal completely, so whoever runs the detection has to calibrate it or it looks broken.
 
 **It fails on short text.** A tweet or a product blurb has too few words to carry a signal. Below roughly a paragraph, there's nothing to detect.
+
+Task type matters as much as length. Click a row below. Open prose can carry a strong signal. Code, quotes and cleanups leave almost nothing to detect.
+
+<iframe class="cs-sim" src="/synthid-sim.html?panel=capacity" title="Interactive demo: watermark capacity by task" loading="lazy" style="height:780px" scrolling="no"></iframe>
 
 **One rewrite erases it.** I paraphrased watermarked text with another model, and the detection score fell to the level of text that was never marked, every time, past a properly tuned detector. Light edits are different: the mark survives a word swapped here and there, up to about 10 to 20% of the text. A full rewrite, the kind anyone does for tone, deletes it. So as proof of "this is AI", it catches unedited use and misses anything someone bothered to rework.
 

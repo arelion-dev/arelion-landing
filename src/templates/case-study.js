@@ -86,6 +86,21 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
     return () => window.removeEventListener("keydown", onKey)
   }, [lightbox])
 
+  // The SynthID simulator iframes (static/synthid-sim.html) report their
+  // content height so the embed never scrolls or clips.
+  useEffect(() => {
+    const onMessage = e => {
+      if (e.origin !== window.location.origin) return
+      if (!e.data || e.data.type !== "synthid-sim:height") return
+      const height = Math.min(6000, Math.max(200, Number(e.data.height) || 0))
+      document.querySelectorAll("iframe.cs-sim").forEach(frame => {
+        if (frame.contentWindow === e.source) frame.style.height = `${height}px`
+      })
+    }
+    window.addEventListener("message", onMessage)
+    return () => window.removeEventListener("message", onMessage)
+  }, [])
+
   const onArticleClick = e => {
     const imgLink = e.target.closest("a.gatsby-resp-image-link")
     if (imgLink) {
