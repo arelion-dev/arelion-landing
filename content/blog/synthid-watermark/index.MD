@@ -57,11 +57,13 @@ Control, no watermark (not detected):
 
 You can't tell them apart. That's the design.
 
+<!-- Simulator hidden for now (not satisfied with it). Restore by removing this comment wrapper.
 Below are the three states on a fresh prompt, one under the other: a plain answer, the watermarked one, and a paraphrase of it. Same meaning each time. The strip under each is the detector: one g-value tick per token, and only the average separates them.
 
 _The demo is illustrative. No model runs in this page: reroll swaps in other wordings the sampler could have picked._
 
 <div data-synthid-sim></div>
+-->
 
 ## Calibrate the threshold, and it works
 
