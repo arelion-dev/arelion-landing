@@ -6,10 +6,14 @@ import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import CASE_STUDIES from "../data/case-studies"
 
+// A study belongs to one or more pillars: `pillars` (array) when set, else the
+// single `pillar`. This lets one study appear under several tabs.
+const pillarsOf = c => (Array.isArray(c.pillars) && c.pillars.length ? c.pillars : [c.pillar])
+
 // Only show tabs for pillars that actually have visible case studies
 // (e.g. "LLM" stays hidden in prod until one of its studies is published).
 const PILLARS = ["Build", "Automate", "Transform", "Audit", "LLM", "Lab"].filter(p =>
-  CASE_STUDIES.some(c => c.pillar === p),
+  CASE_STUDIES.some(c => pillarsOf(c).includes(p)),
 )
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
@@ -26,7 +30,7 @@ const CaseStudiesPage = () => {
 
   const shown = useMemo(
     () =>
-      (active ? CASE_STUDIES.filter(c => c.pillar === active) : CASE_STUDIES)
+      (active ? CASE_STUDIES.filter(c => pillarsOf(c).includes(active)) : CASE_STUDIES)
         .slice()
         .sort((a, b) => (b.date || "").localeCompare(a.date || "")),
     [active],
@@ -98,7 +102,7 @@ const CaseStudiesPage = () => {
                 </span>
               )}
               <p className={`cs-row-kicker cs-p-${cs.pillar.toLowerCase()}`}>
-                {cs.pillar}
+                {pillarsOf(cs).join(" · ")}
               </p>
               <h2 className="cs-row-title">{cs.title[lang]}</h2>
               <p className="cs-row-stat">{cs.metric[lang]}</p>
