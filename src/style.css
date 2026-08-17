@@ -1712,17 +1712,11 @@ a:focus {
   color: var(--color-text-light);
   flex: none;
 }
-.sim-btn-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
 .sim-btn {
   font: inherit;
-  font-size: var(--fontSize-0);
+  font-size: 12px;
   font-weight: var(--fontWeight-semibold);
-  padding: 8px 18px;
+  padding: 4px 14px;
   border-radius: 999px;
   border: 1px solid var(--hairline-strong);
   background: var(--md-surface-container);
@@ -1733,23 +1727,32 @@ a:focus {
 .sim-btn:hover {
   background: var(--md-surface);
 }
-.sim-btn.primary {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: #fff;
-  box-shadow: var(--elev-1);
-}
-.sim-btn.primary:hover {
-  background: var(--color-primary);
-  box-shadow: var(--elev-2);
-}
 /* Generated text reads as a document: serif, roomy line height. */
 [data-synthid-sim] .sim-out {
   font-family: var(--fontFamily-serif);
   font-size: var(--fontSize-1);
   line-height: 1.9;
   color: var(--color-heading);
-  margin: var(--spacing-4) 0;
+  margin: 0 0 var(--spacing-2);
+}
+/* one row per state: label + text + detector strip */
+.sim-row {
+  border-top: 1px dashed var(--hairline-strong);
+  padding: var(--spacing-4) 0 var(--spacing-2);
+}
+.sim-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 var(--spacing-2);
+}
+.sim-row-label {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-light);
 }
 .sim-w {
   display: inline-block;
@@ -1766,20 +1769,6 @@ a:focus {
     opacity: 1;
     transform: none;
   }
-}
-/* detector strip: one tick per token, g = 1 is tall amber, g = 0 short gray */
-[data-synthid-sim] .sim-detect {
-  border-top: 1px dashed var(--hairline-strong);
-  margin-top: var(--spacing-4);
-  padding-top: var(--spacing-4);
-}
-[data-synthid-sim] .sim-detect-label {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-light);
-  margin: 0 0 var(--spacing-2);
 }
 .sim-strip {
   display: flex;
