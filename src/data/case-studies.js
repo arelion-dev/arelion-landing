@@ -1014,7 +1014,8 @@ const CASE_STUDIES = [
     date: "2026-08-12",
     article: "/blog/llm-sleeper-agents/",
     articleBusiness: "/blog/llm-sleeper-agents-business/",
-    pillar: "Audit",
+    pillar: "Lab",
+    pillars: ["LLM", "Lab"],
     featured: false,
     published: true,
     title: {

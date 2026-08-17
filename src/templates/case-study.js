@@ -152,7 +152,7 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
       <article className="cs-detail">
         <div className="cs-crumb">
           <Link to="/case-studies">{t("cs.crumb")}</Link>
-          <span> / {cs.pillar}</span>
+          <span> / {(Array.isArray(cs.pillars) && cs.pillars.length ? cs.pillars : [cs.pillar]).join(" · ")}</span>
         </div>
 
         <div className="cs-tags cs-detail-tags">
