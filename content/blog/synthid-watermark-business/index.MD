@@ -13,11 +13,10 @@ _A secret key biases word choice at generation. The detector replays the key on 
 
 The public method that fits is SynthID-Text, out since 2024. When the model writes, a secret key nudges it toward some word choices over other equal ones. Replay the key over the text and a statistics test finds the bias. You don't see it, and the meaning holds.
 
-Below are the three states, one under the other: a plain answer, the watermarked one, and a paraphrase of it. Read them: same meaning each time. Only the detector score under each tells them apart.
-
-_The demo is illustrative. No model runs in this page: reroll swaps in other wordings the sampler could have picked._
-
-<div data-synthid-sim></div>
+<!-- Simulator hidden for now (not satisfied with it). Restore by removing the comment markers on the next three lines. -->
+<!-- Below are the three states, one under the other: a plain answer, the watermarked one, and a paraphrase of it. Read them: same meaning each time. Only the detector score under each tells them apart. -->
+<!-- _The demo is illustrative. No model runs in this page: reroll swaps in other wordings the sampler could have picked._ -->
+<!-- <div data-synthid-sim></div> -->
 
 ## Why this matters to you
 
