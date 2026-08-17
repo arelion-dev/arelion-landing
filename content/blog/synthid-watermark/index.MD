@@ -57,9 +57,9 @@ Control, no watermark (not detected):
 
 You can't tell them apart. That's the design.
 
-Try it on those same two texts. **Generate** rerolls the free word choices. **Generate watermarked** lets the key pick them instead. **Paraphrase it** rewrites the watermarked answer. The strip below is the detector: one tick per token, and the mean g-value it averages.
+Below are the three states, one under the other: a plain answer, the watermarked one, and a paraphrase of it. Same meaning each time. The strip under each is the detector: one g-value tick per token, and only the average separates them.
 
-_The demo is illustrative. It shows the mechanism, not real model internals._
+_The demo is illustrative. No model runs in this page: reroll swaps in other wordings the sampler could have picked._
 
 <div data-synthid-sim></div>
 
