@@ -1,39 +1,36 @@
 import React, { useState } from "react"
 
-// One-panel companion for the SynthID watermark article, built on the
-// article's own example: "Explain how a suspension bridge carries load."
-// The three states sit one under the other, so the semantic equivalence is
-// visible at a glance: a plain answer, the watermarked one, a paraphrase of
-// it. Each row carries its own detector strip (one g-value tick per token,
-// the mean, and the z-score the article's detect() computes).
+// One-panel companion for the SynthID watermark article. The three states
+// sit one under the other, so the semantic equivalence is visible at a
+// glance: a plain answer, the watermarked one, a paraphrase of it. Each row
+// carries its own detector strip (one g-value tick per token, the mean, and
+// the z-score the article's detect() computes).
 //
 // No model runs in the page. Reroll swaps in other wordings of the same
-// answer, prepared from the two real outputs the article quotes.
+// answer, prepared in advance.
 
-const PROMPT = "Explain how a suspension bridge carries load."
+const PROMPT = "Explain why France is a beautiful country."
 
-// Slot template assembled from the two real outputs quoted in the article.
-// All zeros reproduces the watermarked text verbatim (the key's picks);
-// all ones reproduces the control text verbatim.
+// Slot template: every option is a near-equal phrasing of the same fact, the
+// only place a watermark can live. All zeros is what the key picks.
 const TEMPLATE = [
-  "A suspension bridge carries load through a",
-  [
-    "distinct chain of tension and compression forces that transfers",
-    "specific sequence of mechanical forces that transfer",
-  ],
-  "the weight of the bridge and",
-  ["its traffic", "traffic"],
-  [
-    "to tall anchorages on either side of the river or valley.",
-    "from the deck up through cables, into towers, and finally into the ground via anchorages.",
-  ],
+  "France is a beautiful country because it",
+  ["packs", "gathers"],
+  ["an unusual", "a rare"],
+  "range of landscapes into one place: Alpine peaks in the east, lavender fields",
+  ["across", "in"],
+  "Provence, and a coastline that",
+  ["runs", "stretches"],
+  "from the chalk cliffs of Normandy to the",
+  ["clear", "bright"],
+  "coves of Corsica.",
 ]
 
 // Prepared rewrites of the watermarked answer: different words, same meaning.
 const PARAPHRASES = [
-  "The deck hangs from vertical cables that hand its weight to the two main cables, and those pull against the anchorages set into the ground at both ends of the span.",
-  "Weight on the deck travels up the hangers into the main cables, which drag on the towers and the anchorages until the ground takes the load.",
-  "Cables slung over the towers carry the deck, and their pull is taken up by the anchorages buried at each end of the bridge.",
+  "Few countries put this much variety inside one border: the Alps to the east, Provence under its lavender, and a shoreline that goes from Normandy's white cliffs down to the coves of Corsica.",
+  "The beauty of France comes from its range: mountain country in the east, lavender plains in the south, and a coast that starts at the cliffs of Normandy and ends in Corsican coves.",
+  "From the Alps across the lavender of Provence to the cliffs of Normandy and the coves of Corsica, France holds a continent's worth of scenery in one country.",
 ]
 
 const buildText = pick =>
@@ -105,8 +102,8 @@ const Row = ({ label, run, gen, onReroll }) => (
 )
 
 const WatermarkSim = () => {
-  // The plain row starts on the article's control text (all ones); the
-  // watermarked row is fixed: same prompt, same key, same picks.
+  // The plain row starts on the all-ones wording; the watermarked row is
+  // fixed: same prompt, same key, same picks.
   const [plain, setPlain] = useState(() => ({ run: score(buildText(() => 1), false), gen: 0 }))
   const [marked] = useState(() => ({ run: score(MARKED_TEXT, true), gen: 0 }))
   const [para, setPara] = useState(() => ({ run: score(PARAPHRASES[0], false), gen: 0 }))
