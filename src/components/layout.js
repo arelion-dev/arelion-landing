@@ -27,9 +27,12 @@ const Layout = ({ children }) => {
       </header>
       <main>{children}</main>
       <footer>
-        &copy; {new Date().getFullYear()}, Built with
-        {` `}
-        <a href="https://www.gatsbyjs.com">Gatsby</a>
+        <nav className="footer-nav">
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/privacy">Privacy</Link>
+        </nav>
+        &copy; {new Date().getFullYear()} ARELION FZCO
       </footer>
     </div>
   )
