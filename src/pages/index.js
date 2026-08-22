@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { Link, graphql } from "gatsby"
 
 import { useI18n } from "../i18n"
 import PortfolioLayout from "../components/portfolio-layout"
@@ -8,18 +8,20 @@ import SelectedWork from "../components/selected-work"
 import FeaturedCaseStudies from "../components/featured-case-studies"
 import WhatsAppIcon from "../components/whatsapp-icon"
 import trackEvent from "../hooks/use-track-event"
+import TESTI_PHOTOS from "../data/testimonial-photos"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 const TESTIMONIALS_URL =
   "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
 
-// LinkedIn profile photos, keyed by the i18n item names (static/testimonials/)
-const TESTI_PHOTOS = {
-  "Ciprian Noaghiu": "/testimonials/ciprian.jpeg",
-  "Paula Alves": "/testimonials/paula.jpeg",
-  "Azeem Abu Bakar": "/testimonials/azeem.jpeg",
-}
+// Homepage shows a curated subset in this order; the full set lives on
+// /testimonials.
+const HOME_TESTIMONIAL_NAMES = [
+  "Azeem Abu Bakar",
+  "Ciprian Noaghiu",
+  "Alex Gutwillig",
+]
 
 // Material tonal containers (blue / green / orange / purple)
 const STICKY_NOTE_STYLES = [
@@ -110,6 +112,10 @@ const IndexPage = ({ data }) => {
   const social = data.site.siteMetadata?.social
   const avatar = data.avatar?.childImageSharp?.gatsbyImageData
   const { t } = useI18n()
+
+  const homeTestimonials = HOME_TESTIMONIAL_NAMES.map(name =>
+    t("testi.items").find(item => item.name === name),
+  ).filter(Boolean)
 
   const stickyNotes = t("hero.sticky")
   const roles = [
@@ -214,9 +220,17 @@ const IndexPage = ({ data }) => {
       </section>
 
       <section className="testi-section">
-        <h2 className="testi-title">{t("testi.title")}</h2>
+        <div className="testi-head">
+          <h2 className="testi-title">{t("testi.title")}</h2>
+          <Link
+            to="/testimonials"
+            className="nav-pill nav-pill-primary testi-head-seeall"
+          >
+            {t("testi.seeAll")} &rarr;
+          </Link>
+        </div>
         <div className="testi-grid">
-          {t("testi.items").map(item => (
+          {homeTestimonials.map(item => (
             <figure key={item.name} className="testi-card">
               <a
                 className="testi-link"
@@ -244,6 +258,11 @@ const IndexPage = ({ data }) => {
               </figcaption>
             </figure>
           ))}
+        </div>
+        <div className="testi-more">
+          <Link to="/testimonials" className="nav-pill nav-pill-primary">
+            {t("testi.seeAll")} &rarr;
+          </Link>
         </div>
       </section>
 

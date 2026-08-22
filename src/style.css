@@ -870,6 +870,61 @@ a:focus {
   text-decoration: underline;
 }
 
+.testi-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+}
+
+.testi-head .testi-title {
+  margin: 0;
+}
+
+.testi-head-seeall {
+  flex-shrink: 0;
+  margin-bottom: var(--spacing-1);
+}
+
+.testi-more {
+  margin-top: var(--spacing-6);
+  text-align: center;
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .testi-head-seeall {
+    display: none;
+  }
+  .testi-more {
+    display: block;
+  }
+}
+
+/* Dedicated /testimonials page */
+.testi-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-10) 24px var(--spacing-16);
+}
+
+.testi-page-title {
+  font-family: var(--font-heading);
+  font-weight: var(--fontWeight-extrabold);
+  font-size: var(--fontSize-5);
+  color: var(--color-heading-black);
+  margin-bottom: var(--spacing-8);
+}
+
+/* One testimonial per row: the recommendations have uneven lengths, so a
+   single column reads better than a ragged two-column grid. */
+.testi-full-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-5);
+}
+
 @media (max-width: 64rem) {
   .testi-grid {
     grid-template-columns: 1fr;
