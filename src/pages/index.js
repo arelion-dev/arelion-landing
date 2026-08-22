@@ -281,42 +281,66 @@ const IndexPage = ({ data }) => {
 
 export default IndexPage
 
+const SAME_AS = [
+  "https://www.linkedin.com/in/antoninribeaud/",
+  "https://github.com/antonhansel",
+  "https://antonin.cool",
+]
+
+// Two cross-linked entities in one graph: the studio (ProfessionalService) and
+// the person who runs it. Both carry name + description + url + sameAs so an
+// agent can resolve either identity fully, whichever it latches onto.
 const ORG_JSONLD = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: "Arelion",
-  legalName: "ARELION FZCO",
-  url: "https://arelion.dev",
-  description:
-    "Boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production.",
-  founder: {
-    "@type": "Person",
-    name: "Antonin Ribeaud",
-    url: "https://antonin.cool",
-  },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Dubai",
-    addressCountry: "AE",
-  },
-  areaServed: "Worldwide",
-  knowsAbout: [
-    "Artificial Intelligence",
-    "Retrieval-Augmented Generation",
-    "Solutions Architecture",
-    "Cloud Platforms",
-    "Google Cloud Platform",
-    "Terraform",
-    "React",
-    "TypeScript",
-    "Python",
-    "FastAPI",
-    "Technical Product Management",
-  ],
-  sameAs: [
-    "https://www.linkedin.com/in/antoninribeaud/",
-    "https://github.com/antonhansel",
-    "https://antonin.cool",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://arelion.dev/#organization",
+      name: "Arelion",
+      legalName: "ARELION FZCO",
+      url: "https://arelion.dev",
+      description:
+        "Boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production.",
+      founder: { "@id": "https://arelion.dev/#antonin" },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Dubai",
+        addressCountry: "AE",
+      },
+      areaServed: "Worldwide",
+      knowsAbout: [
+        "Artificial Intelligence",
+        "Retrieval-Augmented Generation",
+        "Solutions Architecture",
+        "Cloud Platforms",
+        "Google Cloud Platform",
+        "Terraform",
+        "React",
+        "TypeScript",
+        "Python",
+        "FastAPI",
+        "Technical Product Management",
+      ],
+      sameAs: SAME_AS,
+    },
+    {
+      "@type": "Person",
+      "@id": "https://arelion.dev/#antonin",
+      name: "Antonin Ribeaud",
+      url: "https://arelion.dev",
+      jobTitle: "Founder and Principal Engineer",
+      description:
+        "Senior software engineer and founder of Arelion. Builds AI systems, cloud platforms and SaaS end to end: RAG and LLM integrations, ingestion pipelines at scale, and technical product leadership.",
+      worksFor: { "@id": "https://arelion.dev/#organization" },
+      knowsAbout: [
+        "Artificial Intelligence",
+        "Retrieval-Augmented Generation",
+        "Solutions Architecture",
+        "Cloud Platforms",
+        "Technical Product Management",
+      ],
+      sameAs: SAME_AS,
+    },
   ],
 }
 

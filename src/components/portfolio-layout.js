@@ -76,6 +76,16 @@ const PortfolioLayout = ({ avatar, children }) => {
         </nav>
       </header>
       <main>{children}</main>
+      <footer className="portfolio-footer">
+        <nav className="portfolio-footer-nav">
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/privacy">Privacy</Link>
+        </nav>
+        <span className="portfolio-footer-legal">
+          &copy; {new Date().getFullYear()} ARELION FZCO
+        </span>
+      </footer>
     </div>
   )
 }

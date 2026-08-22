@@ -474,6 +474,44 @@ a:focus {
   flex-direction: column;
 }
 
+.portfolio-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  padding: var(--spacing-8) var(--spacing-6);
+  margin-top: var(--spacing-16);
+  border-top: 1px solid var(--color-accent);
+  font-size: var(--fontSize-0);
+  color: var(--color-text-light);
+}
+
+.portfolio-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-5);
+}
+
+.portfolio-footer-nav a,
+.footer-nav a {
+  color: var(--color-text-light);
+  text-decoration: none;
+}
+
+.portfolio-footer-nav a:hover,
+.footer-nav a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-5);
+  margin-bottom: var(--spacing-2);
+}
+
 .portfolio-header {
   display: flex;
   justify-content: space-between;
