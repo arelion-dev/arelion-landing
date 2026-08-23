@@ -9,19 +9,22 @@ import FeaturedCaseStudies from "../components/featured-case-studies"
 import WhatsAppIcon from "../components/whatsapp-icon"
 import trackEvent from "../hooks/use-track-event"
 import TESTI_PHOTOS from "../data/testimonial-photos"
+import Highlighted from "../components/highlighted"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 const TESTIMONIALS_URL =
   "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
 
-// Homepage shows a curated subset in this order; the full set lives on
-// /testimonials.
-const HOME_TESTIMONIAL_NAMES = [
-  "Azeem Abu Bakar",
-  "Ciprian Noaghiu",
+// Homepage testimonials. Desktop shows three (Chris highlighted in the middle);
+// mobile shows only Chris plus a link to the full set on /testimonials.
+const DESKTOP_TESTIMONIAL_NAMES = [
   "Alex Gutwillig",
+  "Christopher Ware",
+  "Ciprian Noaghiu",
 ]
+const MOBILE_TESTIMONIAL_NAMES = ["Christopher Ware"]
+const FEATURED_TESTIMONIAL = "Christopher Ware"
 
 // Material tonal containers (blue / green / orange / purple)
 const STICKY_NOTE_STYLES = [
@@ -113,9 +116,50 @@ const IndexPage = ({ data }) => {
   const avatar = data.avatar?.childImageSharp?.gatsbyImageData
   const { t } = useI18n()
 
-  const homeTestimonials = HOME_TESTIMONIAL_NAMES.map(name =>
-    t("testi.items").find(item => item.name === name),
-  ).filter(Boolean)
+  const byName = name => t("testi.items").find(item => item.name === name)
+  const desktopTestimonials = DESKTOP_TESTIMONIAL_NAMES.map(byName).filter(Boolean)
+  const mobileTestimonials = MOBILE_TESTIMONIAL_NAMES.map(byName).filter(Boolean)
+
+  const renderTestimonial = (item, featured = false) => (
+    <figure
+      key={item.name}
+      className={featured ? "testi-card testi-card--featured" : "testi-card"}
+    >
+      <a
+        className="testi-link"
+        href={TESTIMONIALS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => trackEvent("click", "social", "testimonial_linkedin")}
+      >
+        {t("testi.readOn")} &#8599;
+      </a>
+      <blockquote className="testi-quote">
+        <Highlighted text={item.quote} />
+      </blockquote>
+      <figcaption className="testi-who">
+        <img
+          className="testi-avatar"
+          src={TESTI_PHOTOS[item.name]}
+          alt={item.name}
+          width="44"
+          height="44"
+          loading="lazy"
+        />
+        <div className="testi-id">
+          <span className="testi-name">{item.name}</span>
+          <span className="testi-role">
+            {item.role.split(" · ").map((line, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && <br />}
+                {line}
+              </React.Fragment>
+            ))}
+          </span>
+        </div>
+      </figcaption>
+    </figure>
+  )
 
   const stickyNotes = t("hero.sticky")
   const roles = [
@@ -229,39 +273,17 @@ const IndexPage = ({ data }) => {
             {t("testi.seeAll")} &rarr;
           </Link>
         </div>
-        <div className="testi-grid">
-          {homeTestimonials.map(item => (
-            <figure key={item.name} className="testi-card">
-              <a
-                className="testi-link"
-                href={TESTIMONIALS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackEvent("click", "social", "testimonial_linkedin")}
-              >
-                {t("testi.readOn")} &#8599;
-              </a>
-              <blockquote className="testi-quote">{item.quote}</blockquote>
-              <figcaption className="testi-who">
-                <img
-                  className="testi-avatar"
-                  src={TESTI_PHOTOS[item.name]}
-                  alt={item.name}
-                  width="44"
-                  height="44"
-                  loading="lazy"
-                />
-                <div className="testi-id">
-                  <span className="testi-name">{item.name}</span>
-                  <span className="testi-role">{item.role}</span>
-                </div>
-              </figcaption>
-            </figure>
-          ))}
+        <div className="testi-desktop">
+          {desktopTestimonials.map(item =>
+            renderTestimonial(item, item.name === FEATURED_TESTIMONIAL),
+          )}
+        </div>
+        <div className="testi-mobile">
+          {mobileTestimonials.map(item => renderTestimonial(item))}
         </div>
         <div className="testi-more">
           <Link to="/testimonials" className="nav-pill nav-pill-primary">
-            {t("testi.seeAll")} &rarr;
+            {t("testi.readMore")} &rarr;
           </Link>
         </div>
       </section>

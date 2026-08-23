@@ -5,21 +5,24 @@ import SEO from "../components/seo"
 import { useI18n } from "../i18n"
 import TESTI_PHOTOS from "../data/testimonial-photos"
 import trackEvent from "../hooks/use-track-event"
+import Highlighted from "../components/highlighted"
 
 const TESTIMONIALS_URL =
   "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
 
-// Pinned to the top of the page; everyone else keeps the catalog order.
-const PINNED_FIRST = "Alex Gutwillig"
+// Full page order: these lead, Paula closes, the rest keep the catalog order.
+const FIRST_NAMES = ["Christopher Ware", "Alex Gutwillig"]
+const LAST_NAMES = ["Paula Alves"]
 
 const TestimonialsPage = () => {
   const { t } = useI18n()
 
   const all = t("testi.items")
-  const items = [
-    ...all.filter(item => item.name === PINNED_FIRST),
-    ...all.filter(item => item.name !== PINNED_FIRST),
-  ]
+  const pick = names => names.map(n => all.find(i => i.name === n)).filter(Boolean)
+  const middle = all.filter(
+    i => !FIRST_NAMES.includes(i.name) && !LAST_NAMES.includes(i.name),
+  )
+  const items = [...pick(FIRST_NAMES), ...middle, ...pick(LAST_NAMES)]
 
   return (
     <PortfolioLayout>
@@ -39,7 +42,9 @@ const TestimonialsPage = () => {
               >
                 {t("testi.readOn")} &#8599;
               </a>
-              <blockquote className="testi-quote">{item.full}</blockquote>
+              <blockquote className="testi-quote">
+                <Highlighted text={item.full} />
+              </blockquote>
               <figcaption className="testi-who">
                 <img
                   className="testi-avatar"
@@ -51,7 +56,14 @@ const TestimonialsPage = () => {
                 />
                 <div className="testi-id">
                   <span className="testi-name">{item.name}</span>
-                  <span className="testi-role">{item.role}</span>
+                  <span className="testi-role">
+                    {item.role.split(" · ").map((line, i) => (
+                      <React.Fragment key={i}>
+                        {i > 0 && <br />}
+                        {line}
+                      </React.Fragment>
+                    ))}
+                  </span>
                 </div>
               </figcaption>
             </figure>

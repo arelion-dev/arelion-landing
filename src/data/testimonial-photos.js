@@ -6,6 +6,7 @@ const TESTI_PHOTOS = {
   "Paula Alves": "/testimonials/paula.jpeg",
   "Azeem Abu Bakar": "/testimonials/azeem.jpeg",
   "Alex Gutwillig": "/testimonials/alex.jpeg",
+  "Christopher Ware": "/testimonials/chris.jpeg",
 }
 
 export default TESTI_PHOTOS
