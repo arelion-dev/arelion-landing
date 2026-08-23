@@ -774,10 +774,82 @@ a:focus {
   margin: 0 0 var(--spacing-6);
 }
 
-.testi-grid {
+/* Desktop head: title on the left, blue "read all" pill on the right (matches
+   the case studies section). */
+.testi-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+}
+
+.testi-head .testi-title {
+  margin: 0;
+}
+
+.testi-head-seeall {
+  flex-shrink: 0;
+  margin-bottom: var(--spacing-1);
+}
+
+/* Desktop: three testimonials side by side (Chris highlighted in the middle). */
+.testi-desktop {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-5);
+}
+
+/* The mobile block (single testimonial) is hidden on desktop. */
+.testi-mobile {
+  display: none;
+}
+
+/* Highlighted testimonial (Chris): a gradient border that slowly drifts around
+   the card. Drawn with a masked ::after so it adds no layout width. Elevation
+   bumped; box-shadow scoped to beat the base .testi-card rules. */
+.testi-desktop .testi-card--featured,
+.testi-desktop .testi-card--featured:hover {
+  box-shadow: var(--elev-2);
+}
+
+.testi-desktop .testi-card--featured::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  padding: 2px;
+  background: linear-gradient(
+    110deg,
+    var(--color-primary),
+    #9cc0ff,
+    var(--color-primary),
+    #9cc0ff,
+    var(--color-primary)
+  );
+  background-size: 250% 100%;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: testiBorderDrift 5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes testiBorderDrift {
+  to {
+    background-position: 250% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testi-desktop .testi-card--featured::after {
+    animation: none;
+  }
 }
 
 .testi-card {
@@ -808,6 +880,16 @@ a:focus {
   padding: 0;
   border: 0;
   font-style: normal;
+}
+
+.testi-mark {
+  background-color: rgba(255, 224, 79, 0.55);
+  color: inherit;
+  padding: 0.05em 0.15em;
+  border-radius: 3px;
+  /* keep the highlight intact across line wraps */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .testi-quote::before {
@@ -870,30 +952,21 @@ a:focus {
   text-decoration: underline;
 }
 
-.testi-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--spacing-4);
-  margin-bottom: var(--spacing-6);
-}
-
-.testi-head .testi-title {
-  margin: 0;
-}
-
-.testi-head-seeall {
-  flex-shrink: 0;
-  margin-bottom: var(--spacing-1);
-}
-
 .testi-more {
   margin-top: var(--spacing-6);
   text-align: center;
   display: none;
 }
 
+/* Mobile: hide the desktop carousel, show the fixed three stacked, and show
+   the link to the full page. */
 @media (max-width: 640px) {
+  .testi-desktop {
+    display: none;
+  }
+  .testi-mobile {
+    display: block;
+  }
   .testi-head-seeall {
     display: none;
   }
@@ -926,9 +999,6 @@ a:focus {
 }
 
 @media (max-width: 64rem) {
-  .testi-grid {
-    grid-template-columns: 1fr;
-  }
   .testi-section {
     padding: var(--spacing-6) var(--spacing-5) var(--spacing-2);
   }
