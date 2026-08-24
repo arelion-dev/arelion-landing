@@ -2706,8 +2706,6 @@ button:focus-visible,
     grid-template-columns: 1fr;
     padding: 0 var(--spacing-4);
   }
-  /* Two case studies is enough on a phone; the rest is one tap away. */
-  .cs-featured-grid > *:nth-child(n + 3) { display: none; }
   .cs-carousel-head .cs-carousel-seeall { display: none; }
   .cs-featured-more { display: block; padding: 0 var(--spacing-4); }
 }
@@ -2933,4 +2931,63 @@ button:focus-visible,
 }
 @media (max-width: 640px) {
   .cs-article .pi-clips { grid-template-columns: 1fr; }
+}
+
+/* ===== Mobile swipe carousel (phones only) =====
+   Wraps a section that stays a grid on wider screens. Under 640px the wrapper
+   becomes a full-bleed scroll-snap rail: the neighbour cards peek on both sides
+   so the reader sees there is one before and one after, and the dots below show
+   the position. No autoplay, the rail moves only on a swipe or a dot tap. */
+.m-rail-dots { display: none; }
+
+@media (max-width: 640px) {
+  .m-rail {
+    /* full bleed out of the padded section, so the peek is symmetric */
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--spacing-4);
+    /* 12vw of side padding = the peek; the first and last card still centre */
+    padding: var(--spacing-2) 12vw var(--spacing-4);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .m-rail::-webkit-scrollbar { display: none; }
+
+  .m-rail > * {
+    flex: 0 0 76vw;
+    width: 76vw;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .m-rail-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: var(--spacing-3);
+  }
+  .m-rail-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-text-light);
+    opacity: 0.3;
+    cursor: pointer;
+    transition: opacity 0.2s, background-color 0.2s, width 0.2s;
+  }
+  .m-rail-dot.is-on {
+    width: 20px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    opacity: 1;
+  }
 }

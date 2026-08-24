@@ -3,6 +3,7 @@ import { Link } from "gatsby"
 
 import { useI18n } from "../i18n"
 import CASE_STUDIES from "../data/case-studies"
+import MobileRail from "./mobile-rail"
 
 const pillarClass = pillar => `cs-p-${pillar.toLowerCase()}`
 
@@ -31,7 +32,7 @@ const FeaturedCaseStudies = () => {
         </Link>
       </div>
 
-      <div className="cs-featured-grid">
+      <MobileRail className="cs-featured-grid" label={t("cs.homeTitle")}>
         {items.map(cs => (
           <Link
             key={cs.slug}
@@ -49,7 +50,7 @@ const FeaturedCaseStudies = () => {
             </span>
           </Link>
         ))}
-      </div>
+      </MobileRail>
 
       <div className="cs-featured-more">
         <Link to="/case-studies" className="nav-pill nav-pill-primary">
