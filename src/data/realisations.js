@@ -260,21 +260,8 @@ const REALISATIONS = [
     stack: ["React", "Backbone", "JavaScript", "Node.js"],
   },
 
-  // Thinner cards — fill in and promote up the list as content lands.
+  // Thinner card.
 
-  {
-    id: "epsor",
-    client: "Epsor",
-    role: { en: "Solutions Architect", fr: "Architecte solutions" },
-    tags: ["Architecture"],
-    outcomes: [
-      {
-        en: "Event-driven microservices architecture for the fintech platform: Node.js services communicating over Kafka",
-        fr: "Architecture microservices événementielle pour la plateforme fintech : services Node.js communiquant via Kafka",
-      },
-    ],
-    stack: ["Node.js", "Microservices", "Kafka"],
-  },
   {
     id: "flashbreak",
     client: "Flashbreak",
@@ -291,45 +278,6 @@ const REALISATIONS = [
       },
     ],
     stack: ["Python", "AWS Live", "Firebase"],
-  },
-  {
-    id: "fullsend",
-    client: "Fullsend",
-    role: { en: "Software Engineer · Studio", fr: "Ingénieur logiciel · Studio" },
-    tags: ["Product", "Full-stack"],
-    outcomes: [
-      {
-        en: "Multiple product engagements through the startup studio",
-        fr: "Plusieurs missions produit via le startup studio",
-      },
-    ],
-    stack: ["React Native", "Node.js", "Python"],
-  },
-  {
-    id: "vertical-ascent",
-    client: "Vertical Ascent",
-    role: { en: "Advisor", fr: "Conseiller" },
-    tags: ["Advisory"],
-    outcomes: [
-      {
-        en: "Advisory engagement for a wealth-management firm (NDA)",
-        fr: "Mission de conseil pour une société de gestion de patrimoine (NDA)",
-      },
-    ],
-    stack: ["Python", "Azure", "Node.js", "React"],
-  },
-  {
-    id: "ambientit",
-    client: "AmbientIT",
-    role: { en: "Instructor · Node.js & React", fr: "Formateur · Node.js & React" },
-    tags: ["Mentoring"],
-    outcomes: [
-      {
-        en: "Instructor for working engineers transitioning between Node.js and React stacks",
-        fr: "Formateur pour ingénieurs en poste passant des stacks Node.js à React",
-      },
-    ],
-    stack: ["Node.js", "React"],
   },
 ]
 

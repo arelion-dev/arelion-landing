@@ -451,7 +451,7 @@ export const Head = ({ pageContext, data, location }) => {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Case studies", item: `${siteUrl}/case-studies/` },
+      { "@type": "ListItem", position: 1, name: "Technical Blog", item: `${siteUrl}/case-studies/` },
       { "@type": "ListItem", position: 2, name: cs.title.en, item: url },
     ],
   }

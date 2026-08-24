@@ -11,6 +11,7 @@ import trackEvent from "../hooks/use-track-event"
 import TESTI_PHOTOS from "../data/testimonial-photos"
 import Highlighted from "../components/highlighted"
 import MobileRail from "../components/mobile-rail"
+import CompanyIcon from "../components/company-icon"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
@@ -40,7 +41,6 @@ const COMPANIES = [
   "Free Malaysia Today",
   "relevanC",
   "Epsor",
-  "Altaïr Labs",
   "Foundingbird",
   "PokeSpot",
   "AmbientIT",
@@ -50,8 +50,6 @@ const COMPANIES = [
   "Flashbreak",
   "Fullsend",
   "Vertical Ascent",
-  "privately.ai",
-  "EasyDCA",
 ]
 const COMPANIES_DOUBLED = [...COMPANIES, ...COMPANIES]
 
@@ -247,6 +245,7 @@ const IndexPage = ({ data }) => {
           <div className="companies-track">
             {COMPANIES_DOUBLED.map((name, i) => (
               <span key={`${name}-${i}`} className="company-name">
+                <CompanyIcon name={name} />
                 {name}
               </span>
             ))}

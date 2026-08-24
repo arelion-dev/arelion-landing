@@ -18,7 +18,7 @@ const NotFoundPage = ({ data, location }) => {
           <Link to="/">Home</Link> — services, past clients and contact
         </li>
         <li>
-          <Link to="/case-studies">Case studies</Link> — selected work
+          <Link to="/case-studies">Technical Blog</Link> — technical write-ups
         </li>
         <li>
           <a href="/blog">Blog</a> — essays and technical write-ups
