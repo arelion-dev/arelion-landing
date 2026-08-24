@@ -10,6 +10,7 @@ import WhatsAppIcon from "../components/whatsapp-icon"
 import trackEvent from "../hooks/use-track-event"
 import TESTI_PHOTOS from "../data/testimonial-photos"
 import Highlighted from "../components/highlighted"
+import MobileRail from "../components/mobile-rail"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
@@ -17,13 +18,12 @@ const TESTIMONIALS_URL =
   "https://www.linkedin.com/in/antoninribeaud/details/recommendations/?detailScreenTabIndex=0"
 
 // Homepage testimonials. Desktop shows three (Chris highlighted in the middle);
-// mobile shows only Chris plus a link to the full set on /testimonials.
+// mobile shows every recommendation in a swipe carousel, Chris first.
 const DESKTOP_TESTIMONIAL_NAMES = [
   "Alex Gutwillig",
   "Christopher Ware",
   "Ciprian Noaghiu",
 ]
-const MOBILE_TESTIMONIAL_NAMES = ["Christopher Ware"]
 const FEATURED_TESTIMONIAL = "Christopher Ware"
 
 // Material tonal containers (blue / green / orange / purple)
@@ -118,7 +118,10 @@ const IndexPage = ({ data }) => {
 
   const byName = name => t("testi.items").find(item => item.name === name)
   const desktopTestimonials = DESKTOP_TESTIMONIAL_NAMES.map(byName).filter(Boolean)
-  const mobileTestimonials = MOBILE_TESTIMONIAL_NAMES.map(byName).filter(Boolean)
+  // Mobile carousel: the whole set, the highlighted recommendation first.
+  const mobileTestimonials = t("testi.items")
+    .slice()
+    .sort((a, b) => (b.name === FEATURED_TESTIMONIAL) - (a.name === FEATURED_TESTIMONIAL))
 
   const renderTestimonial = (item, featured = false) => (
     <figure
@@ -279,7 +282,9 @@ const IndexPage = ({ data }) => {
           )}
         </div>
         <div className="testi-mobile">
-          {mobileTestimonials.map(item => renderTestimonial(item))}
+          <MobileRail className="testi-rail" label={t("testi.title")}>
+            {mobileTestimonials.map(item => renderTestimonial(item))}
+          </MobileRail>
         </div>
         <div className="testi-more">
           <Link to="/testimonials" className="nav-pill nav-pill-primary">
