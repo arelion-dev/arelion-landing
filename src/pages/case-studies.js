@@ -44,7 +44,7 @@ const CaseStudiesPage = () => {
           <h1>{t("cs.h1")}</h1>
           <p className="cs-hero-dek">{t("cs.dek")}</p>
           <p className="cs-hero-intro">
-            AI engineering case studies from real client work: RAG and document
+            Technical write-ups on real engineering problems: RAG and document
             intelligence over millions of pages, autonomous research agents, LLM
             evaluation, OCR benchmarking, multi-tier caching at scale, local AI
             stacks, and AI security. Each one shows the concrete problem, the
@@ -140,7 +140,7 @@ export const Head = ({ location }) => {
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Case studies",
+    name: "Technical Blog",
     itemListElement: CASE_STUDIES.slice()
       .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
       .map((cs, i) => ({
@@ -152,8 +152,8 @@ export const Head = ({ location }) => {
   }
   return (
     <SEO
-      title="Case studies"
-      description="AI engineering case studies: RAG, document intelligence, LLM evaluation, OCR benchmarking, caching at scale, and AI security. Real client work, and what transfers to your team."
+      title="Technical Blog"
+      description="Technical write-ups on AI engineering: RAG, document intelligence, LLM evaluation, OCR benchmarking, caching at scale, and AI security. The concrete problem, the architecture, and what transfers to your team."
       pathname={location.pathname}
     >
       <script
