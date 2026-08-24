@@ -17,25 +17,27 @@ const tagSlug = t =>
 
 const isTodo = s => typeof s === "string" && s.startsWith("TODO")
 
-// Client work: a 2x2 page of four cards that cross-fades between pages.
-// Infinite (wraps both ways), arrow + dot navigation, and auto-advances every
-// 20s. No scrollbar. Autoplay stops for prefers-reduced-motion.
+// Client work.
+// Desktop: a 2x2 page of four cards that cross-fades between pages, with arrow
+// and dot navigation and 20s autoplay. No scrollbar.
+// Mobile: a native horizontal swipe rail (CSS scroll-snap), one card at a time
+// with the next card peeking so it reads as scrollable. No arrows or dots.
 const SelectedWork = () => {
   const { t, lang } = useI18n()
-  // One card per page on phones, four (2x2) on desktop.
-  const [perPage, setPerPage] = useState(DESKTOP_PER_PAGE)
+  const [isMobile, setIsMobile] = useState(false)
   const [page, setPage] = useState(0)
   const [fading, setFading] = useState(false)
   const swap = useRef()
 
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_QUERY)
-    const sync = () => setPerPage(mq.matches ? 1 : DESKTOP_PER_PAGE)
+    const sync = () => setIsMobile(mq.matches)
     sync()
     mq.addEventListener("change", sync)
     return () => mq.removeEventListener("change", sync)
   }, [])
 
+  const perPage = isMobile ? 1 : DESKTOP_PER_PAGE
   const pageCount = Math.ceil(REALISATIONS.length / perPage)
 
   // Keep the current page valid when the layout switches card count.
@@ -56,10 +58,10 @@ const SelectedWork = () => {
     [pageCount],
   )
 
-  // Auto-advance. Re-armed on every page change, so a manual move resets the
-  // 20s clock rather than firing right after.
+  // Auto-advance (desktop only; the mobile rail is user-driven). Re-armed on
+  // every page change, so a manual move resets the 20s clock.
   useEffect(() => {
-    if (pageCount <= 1) return undefined
+    if (isMobile || pageCount <= 1) return undefined
     if (
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -68,9 +70,44 @@ const SelectedWork = () => {
     }
     const id = setInterval(() => change(1), AUTOPLAY_MS)
     return () => clearInterval(id)
-  }, [change, pageCount, page])
+  }, [change, pageCount, page, isMobile])
 
   useEffect(() => () => clearTimeout(swap.current), [])
+
+  const renderCard = r => (
+    <article key={r.id} className="real-card">
+      <div className="real-head-row">
+        <div>
+          <h3 className="real-client">
+            <CompanyIcon name={r.client} />
+            {r.client}
+          </h3>
+          <div className="real-role">{r.role[lang]}</div>
+        </div>
+        <div className="real-tags">
+          {r.tags.map(tag => (
+            <span key={tag} className={`real-tag real-tag--${tagSlug(tag)}`}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+      <ul className="real-out">
+        {r.outcomes.map((o, i) => (
+          <li key={i} className={isTodo(o[lang]) ? "todo" : ""}>
+            {o[lang]}
+          </li>
+        ))}
+      </ul>
+      <div className="real-stack">
+        {r.stack.map(s => (
+          <span key={s} className={isTodo(s) ? "todo" : ""}>
+            {s}
+          </span>
+        ))}
+      </div>
+    </article>
+  )
 
   const start = page * perPage
   const pageItems = REALISATIONS.slice(start, start + perPage)
@@ -82,7 +119,7 @@ const SelectedWork = () => {
           <h2 className="real-title">{t("sw.title")}</h2>
           <p className="real-lede">{t("sw.lede")}</p>
         </div>
-        {pageCount > 1 && (
+        {!isMobile && pageCount > 1 && (
           <div className="real-nav" aria-label="Client work navigation">
             <button
               type="button"
@@ -104,44 +141,15 @@ const SelectedWork = () => {
         )}
       </div>
 
-      <div className={`real-grid ${fading ? "is-fading" : ""}`}>
-        {pageItems.map(r => (
-          <article key={r.id} className="real-card">
-            <div className="real-head-row">
-              <div>
-                <h3 className="real-client">
-                  <CompanyIcon name={r.client} />
-                  {r.client}
-                </h3>
-                <div className="real-role">{r.role[lang]}</div>
-              </div>
-              <div className="real-tags">
-                {r.tags.map(tag => (
-                  <span key={tag} className={`real-tag real-tag--${tagSlug(tag)}`}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <ul className="real-out">
-              {r.outcomes.map((o, i) => (
-                <li key={i} className={isTodo(o[lang]) ? "todo" : ""}>
-                  {o[lang]}
-                </li>
-              ))}
-            </ul>
-            <div className="real-stack">
-              {r.stack.map(s => (
-                <span key={s} className={isTodo(s) ? "todo" : ""}>
-                  {s}
-                </span>
-              ))}
-            </div>
-          </article>
-        ))}
-      </div>
+      {isMobile ? (
+        <div className="real-rail">{REALISATIONS.map(renderCard)}</div>
+      ) : (
+        <div className={`real-grid ${fading ? "is-fading" : ""}`}>
+          {pageItems.map(renderCard)}
+        </div>
+      )}
 
-      {pageCount > 1 && (
+      {!isMobile && pageCount > 1 && (
         <div className="real-dots">
           {Array.from({ length: pageCount }, (_, i) => (
             <button
