@@ -532,6 +532,11 @@ a:focus {
   gap: var(--spacing-3);
 }
 
+/* The switch next to the avatar is mobile-only; desktop uses the nav one. */
+.portfolio-header-left .lang-switch {
+  display: none;
+}
+
 .portfolio-header-nav {
   display: flex;
   gap: var(--spacing-3);
@@ -713,7 +718,9 @@ a:focus {
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--spacing-5);
-  padding: var(--spacing-10) var(--spacing-8);
+  /* Top matches the hero's bottom padding so the companies band above has
+     equal space on both sides; bottom keeps the section rhythm. */
+  padding: var(--spacing-6) var(--spacing-8) var(--spacing-10);
 }
 
 .role-card {
@@ -1032,12 +1039,15 @@ a:focus {
   white-space: nowrap;
   animation: scroll-companies 35s linear infinite;
   width: max-content;
-  /* breathing room so overflow:hidden doesn't clip the pills or their shadow */
-  padding: var(--spacing-1) 0 var(--spacing-2);
+  /* symmetric breathing room so overflow:hidden doesn't clip the pill shadow */
+  padding: var(--spacing-1) 0;
 }
 
-.companies-track:hover {
-  animation-play-state: paused;
+/* Pause only on real-hover devices; on touch a tap must not freeze the scroll. */
+@media (hover: hover) {
+  .companies-track:hover {
+    animation-play-state: paused;
+  }
 }
 
 .co-icon {
@@ -1658,6 +1668,9 @@ a:focus {
     gap: var(--spacing-3);
     min-height: 0;
   }
+  .real-nav {
+    display: none;
+  }
   .real-card {
     padding: var(--spacing-4);
   }
@@ -1746,8 +1759,8 @@ a:focus {
   .portfolio-header {
     padding: var(--spacing-3) var(--spacing-4);
     gap: var(--spacing-3);
-    /* Avatar + name on row 1, the action row wraps below it. */
-    flex-wrap: wrap;
+    /* One row: avatar + language switch on the left, CTAs on the right. */
+    flex-wrap: nowrap;
     align-items: center;
     position: static;
   }
@@ -1762,11 +1775,14 @@ a:focus {
     justify-content: flex-end;
     gap: var(--spacing-2);
     flex-wrap: nowrap;
-    width: 100%;
+    width: auto;
   }
-  /* EN / FR goes to the far left, everything else stays on the right. */
+  /* On mobile the switch sits next to the avatar; hide the nav copy. */
   .portfolio-header-nav .lang-switch {
-    margin-right: auto;
+    display: none;
+  }
+  .portfolio-header-left .lang-switch {
+    display: inline-flex;
   }
   /* Case studies is reachable from the page body on mobile; keep the header lean. */
   .portfolio-header-nav .nav-cs {
@@ -1786,19 +1802,19 @@ a:focus {
     display: none;
   }
   .portfolio-name {
-    display: flex;
+    display: none;
   }
   .portfolio-hero-wrapper {
     padding: var(--spacing-1) var(--spacing-5) var(--spacing-3);
   }
   .companies-section {
-    padding: var(--spacing-1) 0 var(--spacing-1);
+    padding: var(--spacing-3) 0;
   }
   .companies-label {
     margin-bottom: var(--spacing-2);
   }
   .roles-section {
-    padding: var(--spacing-6) var(--spacing-5);
+    padding: 0 var(--spacing-5) var(--spacing-6);
     gap: var(--spacing-3);
   }
   .role-card {
