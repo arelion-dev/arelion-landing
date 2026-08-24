@@ -16,10 +16,6 @@ const REALISATIONS = [
         fr: "Conception et livraison d'un SaaS Document AI full-stack : chat sécurisé avec les documents, OCR multilingue et parsing PDF, RAG sur données structurées et non structurées, chunking intelligent, filtrage sémantique et traçabilité complète des sources",
       },
       {
-        en: "Admin dashboard with usage analytics, team access controls, custom prompts, API keys and usage-based pricing. LLM-agnostic backend (OpenAI, Claude, Mistral, custom) on a single VPS via Dokku",
-        fr: "Dashboard admin avec analytics d'usage, gestion des accès équipe, prompts personnalisés, clés API et tarification à l'usage. Backend agnostique au LLM (OpenAI, Claude, Mistral, custom) sur un seul VPS via Dokku",
-      },
-      {
         en: "Sold the IP and codebase in 2025",
         fr: "IP et code revendus en 2025",
       },
