@@ -16,6 +16,10 @@ const REALISATIONS = [
         fr: "Conception et livraison d'un SaaS Document AI full-stack : chat sécurisé avec les documents, OCR multilingue et parsing PDF, RAG sur données structurées et non structurées, chunking intelligent, filtrage sémantique et traçabilité complète des sources",
       },
       {
+        en: "LLM-agnostic backend (OpenAI, Claude, Mistral) on a single VPS via Dokku",
+        fr: "Backend agnostique au LLM (OpenAI, Claude, Mistral) sur un seul VPS via Dokku",
+      },
+      {
         en: "Sold the IP and codebase in 2025",
         fr: "IP et code revendus en 2025",
       },
@@ -39,16 +43,16 @@ const REALISATIONS = [
     tags: ["AI/ML", "Architecture", "Data"],
     outcomes: [
       {
-        en: "Engineered an ingestion + OCR + vectorization pipeline for millions of multilingual, multi-confidentiality documents",
-        fr: "Pipeline d'ingestion, OCR et vectorisation pour des millions de documents multilingues et à confidentialité variable",
+        en: "Engineered an ingestion + OCR + vectorization pipeline for millions of multilingual documents",
+        fr: "Pipeline d'ingestion, OCR et vectorisation pour des millions de documents multilingues",
       },
       {
-        en: "Designed high-throughput GCP microservices provisioned with Terraform: sub-second p95 semantic search across 30 brands",
-        fr: "Microservices GCP à haut débit provisionnés avec Terraform : recherche sémantique p95 sous la seconde sur 30 marques",
+        en: "Designed high-throughput GCP microservices on Terraform: sub-second p95 semantic search across 30 brands",
+        fr: "Microservices GCP à haut débit sur Terraform : recherche sémantique p95 sous la seconde sur 30 marques",
       },
       {
-        en: "Shipped semantic search, natural-language filters and a “Chat with your docs” interface combining multiple LLMs",
-        fr: "Recherche sémantique, filtres en langage naturel et une interface « Chat with your docs » combinant plusieurs LLM",
+        en: "Shipped a multi-LLM “Chat with your docs” interface with semantic search",
+        fr: "Interface « Chat with your docs » multi-LLM avec recherche sémantique",
       },
     ],
     stack: [
@@ -161,8 +165,8 @@ const REALISATIONS = [
         fr: "Suivi d'actifs numériques en temps réel : 100+ devises, des millions de transactions, une clientèle mondiale",
       },
       {
-        en: "Showcased at G20 Osaka 2019; team pivoted into Foundingbird when scaling stalled",
-        fr: "Présenté au G20 d'Osaka 2019 ; l'équipe a pivoté vers Foundingbird quand la croissance a calé",
+        en: "Showcased at G20 Osaka 2019; team pivoted into Foundingbird",
+        fr: "Présenté au G20 d'Osaka 2019 ; l'équipe a pivoté vers Foundingbird",
       },
     ],
     stack: ["Node.js", "React", "TypeScript", "Postgres", "Web3"],
