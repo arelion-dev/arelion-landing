@@ -1832,7 +1832,7 @@ a:focus {
     padding: var(--spacing-1) var(--spacing-5) var(--spacing-3);
   }
   .companies-section {
-    padding: var(--spacing-3) 0;
+    padding: var(--spacing-5) 0;
   }
   .companies-label {
     margin-bottom: var(--spacing-2);
