@@ -4,7 +4,8 @@ import { useI18n } from "../i18n"
 import REALISATIONS from "../data/realisations"
 import CompanyIcon from "./company-icon"
 
-const PER_PAGE = 4
+const DESKTOP_PER_PAGE = 4
+const MOBILE_QUERY = "(max-width: 760px)"
 const AUTOPLAY_MS = 20000
 const FADE_MS = 220
 
@@ -21,10 +22,26 @@ const isTodo = s => typeof s === "string" && s.startsWith("TODO")
 // 20s. No scrollbar. Autoplay stops for prefers-reduced-motion.
 const SelectedWork = () => {
   const { t, lang } = useI18n()
-  const pageCount = Math.ceil(REALISATIONS.length / PER_PAGE)
+  // One card per page on phones, four (2x2) on desktop.
+  const [perPage, setPerPage] = useState(DESKTOP_PER_PAGE)
   const [page, setPage] = useState(0)
   const [fading, setFading] = useState(false)
   const swap = useRef()
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_QUERY)
+    const sync = () => setPerPage(mq.matches ? 1 : DESKTOP_PER_PAGE)
+    sync()
+    mq.addEventListener("change", sync)
+    return () => mq.removeEventListener("change", sync)
+  }, [])
+
+  const pageCount = Math.ceil(REALISATIONS.length / perPage)
+
+  // Keep the current page valid when the layout switches card count.
+  useEffect(() => {
+    setPage(p => Math.min(p, pageCount - 1))
+  }, [pageCount])
 
   const change = useCallback(
     dir => {
@@ -55,8 +72,8 @@ const SelectedWork = () => {
 
   useEffect(() => () => clearTimeout(swap.current), [])
 
-  const start = page * PER_PAGE
-  const pageItems = REALISATIONS.slice(start, start + PER_PAGE)
+  const start = page * perPage
+  const pageItems = REALISATIONS.slice(start, start + perPage)
 
   return (
     <section className="realisations">
