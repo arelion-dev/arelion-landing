@@ -46,6 +46,8 @@ const PortfolioLayout = ({ avatar, children }) => {
           <Link to="/" className="portfolio-name">
             {displayTitle}
           </Link>
+          {/* Shown only on mobile (next to the avatar); desktop uses the one in the nav. */}
+          <LanguageSwitcher />
         </div>
         <nav className="portfolio-header-nav">
           <LanguageSwitcher />
