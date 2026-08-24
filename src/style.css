@@ -1293,6 +1293,10 @@ a:focus {
   --real-display: "Inter", "Helvetica Neue", Arial, sans-serif;
   --real-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
 
+  /* width:100% so the flexbox parent + margin:auto centering does not let the
+     section shrink-to-fit its content; without it the mobile swipe rail's wide
+     row would push the section to its max-width and overflow the viewport. */
+  width: 100%;
   max-width: 1240px;
   margin: 0 auto;
   padding: var(--spacing-10) var(--spacing-6);
@@ -1670,6 +1674,26 @@ a:focus {
   }
   .real-nav {
     display: none;
+  }
+  /* Native swipe rail: one card at a time, next card peeks. Full-bleed past
+     the section padding so cards reach the screen edges as you swipe. */
+  .real-rail {
+    display: flex;
+    gap: var(--spacing-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 calc(var(--spacing-6) * -1);
+    padding: var(--spacing-1) var(--spacing-6) var(--spacing-2);
+    scroll-padding-left: var(--spacing-6);
+  }
+  .real-rail::-webkit-scrollbar {
+    display: none;
+  }
+  .real-rail .real-card {
+    flex: 0 0 86%;
+    scroll-snap-align: start;
   }
   .real-card {
     padding: var(--spacing-4);
