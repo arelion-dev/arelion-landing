@@ -1,0 +1,8 @@
+{
+  "slug": "hotel-lobby-ai-video",
+  "tldr": {
+    "en": "The Hotel Lobby AI trend puts any two people in Quavo and Takeoff's COLORS performance. I rebuilt it with the OpenRouter video API: MiniMax Hailuo 3 takes the original clip and 1 to 3 photos per person, and returns the same shots and moves with the new faces. A 15-second video costs $1.95. The hard parts were finding a model that accepts real people (Seedance 2.0 refuses them) and putting the original sound back in sync.",
+    "fr": "La trend IA Hotel Lobby met n'importe quel duo à la place de Quavo et Takeoff dans leur performance COLORS. Je l'ai refaite avec l'API vidéo d'OpenRouter : MiniMax Hailuo 3 prend le clip original et 1 à 3 photos par personne, et rend les mêmes plans et les mêmes gestes avec les nouveaux visages. Une vidéo de 15 secondes coûte 1,95 $. Le plus dur : trouver un modèle qui accepte de vraies personnes (Seedance 2.0 les refuse) et recaler le son original."
+  },
+  "sections": []
+}
