@@ -1231,6 +1231,30 @@ const CASE_STUDIES = [
     article: "/blog/wingman/",
     articleBusiness: "/blog/wingman-business/",
   },
+  {
+    slug: "hotel-lobby-ai-video",
+    date: "2026-09-24",
+    pillar: "Lab",
+    featured: false,
+    published: true,
+    title: {
+      en: "How to make the viral Hotel Lobby AI video yourself (MiniMax Hailuo 3, $1.95)",
+      fr: "Faire soi-même la vidéo IA virale Hotel Lobby (MiniMax Hailuo 3, 1,95 $)",
+    },
+    metric: {
+      en: "$1.95 per 15-second video with MiniMax Hailuo 3, where the trend apps charge $5",
+      fr: "1,95 $ la vidéo de 15 secondes avec MiniMax Hailuo 3, là où les apps de la trend facturent 5 $",
+    },
+    hook: {
+      en: "Quavo and Takeoff's COLORS performance with any two people in it, made with the OpenRouter video API: the model that accepts real faces, and the request I sent it.",
+      fr: "La performance COLORS de Quavo et Takeoff avec n'importe quel duo dedans, faite avec l'API vidéo d'OpenRouter : le modèle qui accepte les vrais visages, et la requête que je lui envoie.",
+    },
+    tags: ["Hotel Lobby", "AI video", "MiniMax Hailuo 3", "OpenRouter", "Face swap", "ffmpeg"],
+    stack: ["Python", "OpenRouter", "MiniMax Hailuo 3", "ffmpeg", "yt-dlp", "Pillow"],
+    // Tutorial article only: no business version, so the page shows no Tech/Business toggle.
+    // No faq: the page shows no "Questions I get about this" section.
+    article: "/blog/hotel-lobby-ai-trend/",
+  },
 ]
 
 // Attach the rich, grounded body (TL;DR + decision-maker narrative with the tech
