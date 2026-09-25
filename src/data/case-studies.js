@@ -835,7 +835,7 @@ const CASE_STUDIES = [
     article: "/blog/output-contracts-in-production/",
     articleBusiness: "/blog/output-contracts-in-production-business/",
     pillar: "Automate",
-    featured: true,
+    featured: false,
     published: true,
     title: {
       en: "Output contracts for LLM-generated SQL in production",
@@ -1235,7 +1235,7 @@ const CASE_STUDIES = [
     slug: "hotel-lobby-ai-video",
     date: "2026-09-24",
     pillar: "Lab",
-    featured: false,
+    featured: true,
     published: true,
     title: {
       en: "How to make the viral Hotel Lobby AI video yourself (MiniMax Hailuo 3, $1.95)",
