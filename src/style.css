@@ -2375,6 +2375,9 @@ a:focus {
 
 /* detail page */
 .cs-detail {
+  /* In the column flex of main, auto margins size the article to its content: without a
+     width, one long code line made the Hotel Lobby article 864 px wide on a phone. */
+  width: 100%;
   max-width: 54rem; /* a touch wider than 2xl so code blocks fit without a scrollbar */
   margin: var(--spacing-8) auto;
   padding: 0 var(--spacing-4) var(--spacing-20);
