@@ -1,0 +1,8 @@
+{
+  "slug": "ai-music-lora-ace-step",
+  "tldr": {
+    "en": "I trained a LoRA for ACE-Step 1.5 on about three hours of a YouTube focus-music channel, on my own RX 6900 XT. Prompts alone gave a 6/10. 79 minutes of data gave a LoRA I could barely hear, partly because it never loaded. 3 h 18 min gave the first good track, and cutting the DJ crossfades out of the dataset removed a ghost rhythm the model had learned. A 3-minute track takes 154 s to generate.",
+    "fr": "J'ai entraîné un LoRA pour ACE-Step 1.5 sur environ trois heures d'une chaîne YouTube de musique de concentration, sur ma RX 6900 XT. Le prompt seul donnait un 6/10. 79 minutes de données ont donné un LoRA qu'on entendait à peine, en partie parce qu'il ne se chargeait pas. 3 h 18 ont donné le premier bon morceau, et couper les fondus DJ du dataset a supprimé une rythmique fantôme apprise par le modèle. Un morceau de 3 minutes se génère en 154 s."
+  },
+  "sections": []
+}
