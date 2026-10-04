@@ -1255,6 +1255,30 @@ const CASE_STUDIES = [
     // No faq: the page shows no "Questions I get about this" section.
     article: "/blog/hotel-lobby-ai-trend/",
   },
+  {
+    slug: "ai-music-lora-ace-step",
+    date: "2026-10-04",
+    pillar: "Lab",
+    featured: false,
+    // Draft: publishing is Antonin's call.
+    published: false,
+    title: {
+      en: "How I trained a music LoRA on 3 hours of a YouTube channel (ACE-Step 1.5, AMD GPU)",
+      fr: "Entraîner un LoRA musical sur 3 heures d'une chaîne YouTube (ACE-Step 1.5, GPU AMD)",
+    },
+    metric: {
+      en: "From a 6/10 prompt to \"really not bad at all\" with 2 h 45 min of data, on a 16 GB AMD card",
+      fr: "D'un prompt à 6/10 à « vraiment pas mal du tout » avec 2 h 45 de données, sur une carte AMD de 16 Go",
+    },
+    hook: {
+      en: "Open model, own GPU, no Suno: the dataset built from DJ mixes, the crossfades that taught the model a ghost rhythm, and the silent failures that cost three listening rounds.",
+      fr: "Modèle ouvert, GPU perso, pas de Suno : le dataset tiré de mixes DJ, les fondus qui ont appris au modèle une rythmique fantôme, et les échecs silencieux qui ont coûté trois tours d'écoute.",
+    },
+    tags: ["AI music", "ACE-Step", "LoRA", "ROCm", "Gemini", "librosa"],
+    stack: ["Python", "ACE-Step 1.5", "Side-Step", "PEFT", "PyTorch ROCm", "Gemini 3.1 Pro", "librosa", "ffmpeg", "yt-dlp"],
+    // Tutorial article only: no business version, no faq (same shape as hotel-lobby-ai-video).
+    article: "/blog/ai-music-lora-ace-step/",
+  },
 ]
 
 // Attach the rich, grounded body (TL;DR + decision-maker narrative with the tech
