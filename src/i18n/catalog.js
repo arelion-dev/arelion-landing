@@ -5,7 +5,8 @@
 const catalog = {
   en: {
     nav: {
-      caseStudies: "technical blog",
+      caseStudies: "case studies",
+      guides: "guides",
       whatsapp: "WhatsApp",
       bookACall: "book a call",
     },
@@ -89,7 +90,7 @@ const catalog = {
       },
     },
     cs: {
-      kicker: "Technical Blog",
+      kicker: "Case studies",
       h1: "Real problems.\nAnd the architecture behind them.",
       dek: "AI systems, cloud platforms and automation, from design to production. Here's what I've built, how, and what I can rebuild for you.",
       tabsAll: "All",
@@ -97,8 +98,8 @@ const catalog = {
       cardRead: "Read",
       closeH2: "A problem that looks like one of these?",
       bookACall: "Book a call",
-      crumb: "Technical Blog",
-      homeTitle: "Technical Blog",
+      crumb: "Case studies",
+      homeTitle: "Case studies",
       homeSub: "How I solve concrete problems, and what I can rebuild for you.",
       seeAll: "See all articles",
     },
@@ -125,7 +126,8 @@ const catalog = {
   },
   fr: {
     nav: {
-      caseStudies: "blog technique",
+      caseStudies: "études de cas",
+      guides: "guides",
       whatsapp: "WhatsApp",
       bookACall: "réserver un appel",
     },
@@ -209,7 +211,7 @@ const catalog = {
       },
     },
     cs: {
-      kicker: "Blog technique",
+      kicker: "Études de cas",
       h1: "Des problèmes réels.\nEt l'architecture derrière.",
       dek: "Systèmes IA, plateformes cloud et automatisation, de la conception à la production. Voici ce que j'ai construit, comment, et ce que je peux refaire chez vous.",
       tabsAll: "Tous",
@@ -217,8 +219,8 @@ const catalog = {
       cardRead: "Lire",
       closeH2: "Un problème qui ressemble à l'un de ceux-là ?",
       bookACall: "Réserver un appel",
-      crumb: "Blog technique",
-      homeTitle: "Blog technique",
+      crumb: "Études de cas",
+      homeTitle: "Études de cas",
       homeSub: "Comment je résous des problèmes concrets, et ce que je peux refaire chez vous.",
       seeAll: "Voir tous les articles",
     },

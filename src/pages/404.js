@@ -15,23 +15,24 @@ const NotFoundPage = ({ data, location }) => {
       </p>
       <ul>
         <li>
-          <Link to="/">Home</Link> — services, past clients and contact
+          <Link to="/">Home</Link>: services, past clients and contact
         </li>
         <li>
-          <Link to="/case-studies">Technical Blog</Link> — technical write-ups
+          <Link to="/case-studies">Case studies</Link>: what I built and how
         </li>
         <li>
-          <a href="/blog">Blog</a> — essays and technical write-ups
+          <Link to="/guides/">Guides</Link>: answers to the questions I get
+          before a project
         </li>
         <li>
           <Link to="/about">About</Link>, <Link to="/contact">Contact</Link> and{" "}
           <Link to="/privacy">Privacy</Link>
         </li>
         <li>
-          <a href="/sitemap-index.xml">Sitemap</a> — full list of pages
+          <a href="/sitemap-index.xml">Sitemap</a>: full list of pages
         </li>
         <li>
-          <a href="/llms.txt">llms.txt</a> — machine-readable site summary for
+          <a href="/llms.txt">llms.txt</a>: machine-readable site summary for
           agents
         </li>
       </ul>

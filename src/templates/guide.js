@@ -24,7 +24,7 @@ const GuideTemplate = ({ data }) => {
     <PortfolioLayout>
       <article className="cs-detail">
         <div className="cs-crumb">
-          <Link to="/case-studies">Technical Blog</Link>
+          <Link to="/guides/">Guides</Link>
           <span> / {kicker || "Guide"}</span>
         </div>
 
