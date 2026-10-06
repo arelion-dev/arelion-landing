@@ -598,8 +598,8 @@ const CASE_STUDIES = [
       {
         h: { en: "And it stays with you", fr: "Et ça reste chez vous" },
         p: {
-          en: "The accounting, the contracts, the statements never leave the machine. No cloud, no server to rent, backups every four hours.",
-          fr: "La compta, les contrats, les relevés ne quittent pas la machine. Pas de cloud, pas de serveur à louer, des sauvegardes toutes les quatre heures.",
+          en: "The accounting, the contracts and the statements stay on the machine; only page text goes to the model that reads and files it. No server to rent, backups every four hours.",
+          fr: "La compta, les contrats et les relevés restent sur la machine ; seul le texte des pages part chez le modèle qui les lit et les classe. Pas de serveur à louer, des sauvegardes toutes les quatre heures.",
         },
       },
       {

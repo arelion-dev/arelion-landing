@@ -1,14 +1,14 @@
 ---
 title: "The document agent that runs on SQLite"
 date: "2026-01-22T19:30:00.000Z"
-description: "A private document agent that reads, files and answers questions over years of PDFs, with the entire searchable brain in one SQLite file on the owner's own machine. No vector database, no cloud."
+description: "A private document agent that reads, files and answers questions over years of PDFs, with the entire searchable brain in one SQLite file on the owner's own machine. No vector database, no server to rent."
 tags: ["Tech", "AI"]
 private: true
 ---
 
 A private document agent reads and files every incoming PDF, then answers plain questions over years of paperwork. The whole searchable brain is one SQLite file on the owner's own machine. No vector database, no cloud service sitting on his financials.
 
-I built it for a business owner who was the only search engine his company ever had: Friday nights hunting one invoice across two years of scans, folder by folder. Ask the agent a plain question now and it answers with the exact page and a one-click link to the source file. **Retrieval in under 2 seconds, against 3 years of paperwork, and 0 documents leave the machine.**
+I built it for a business owner who was the only search engine his company ever had: Friday nights hunting one invoice across two years of scans, folder by folder. Ask the agent a plain question now and it answers with the exact page and a one-click link to the source file. **Retrieval in under 2 seconds, against 3 years of paperwork, and the files never leave the machine.**
 
 By the end you'll know how the pipeline reads cheaply, why it refuses to file anything it can't stand behind, and how it searches two ways at once, all inside one file you back up with `cp`.
 

@@ -10,7 +10,7 @@ Cette réunion finit toujours pareil. Les développeurs veulent un assistant IA 
 
 J'ai construit la stack qui fait finir cette réunion dans l'autre sens.
 
-**Un vrai assistant agentique qui planifie, lit le dépôt et modifie des fichiers, avec le code physiquement confiné à une box que je possède.** Il a exécuté la même tâche de code qu'un assistant cloud et a égalé sa sortie sur mon benchmark. Il tient sur un mini-PC sans ventilateur qui consomme environ dix watts au repos, et il ne coûte rien par siège, jamais.
+**Un vrai assistant agentique qui planifie, lit le dépôt et modifie des fichiers, avec le code physiquement confiné à une box que je possède.** Il a exécuté la même tâche de code qu'un assistant cloud et a égalé sa sortie sur mon benchmark. Il a tourné sur un MacBook Pro de 64 Go, et il ne coûte rien par siège, jamais.
 
 C'est ma propre stack en production, pas une mission client. J'ai mesuré chaque chiffre ci-dessous sur mon propre matériel, rien ne vient d'une plaquette fournisseur.
 
@@ -25,7 +25,7 @@ La décision dont tout dépend, c'est que le modèle qui lit et écrit votre cod
 - **Ollama 0.23**, installé depuis le cask `ollama-app`, sert un modèle à poids ouverts sur une machine ordinaire. Pas de compte fournisseur, pas de trafic API sortant. Le cask compte : il embarque le runtime MLX Metal (`libmlx.dylib`) que la formule Homebrew omet, et les quants rapides ne se chargent que sur lui.
 - **Qwen3.6-35B-A3B** est le modèle (73,4% sur SWE-bench Verified). Je l'ai choisi sur le benchmark, pas sur le buzz de lancement (section suivante). C'est un mixture-of-experts avec environ 3B de paramètres actifs, et il se trouve que c'est la seule forme qui tourne à vitesse d'agent sur ce matériel.
 - **opencode v1.4.6** est l'agent. Il planifie, lit le dépôt, appelle des outils, modifie des fichiers, et pointe vers le modèle local au lieu d'un modèle cloud. Sans lui, vous avez un chatbot privé. Avec lui, un collègue privé.
-- **Paseo** fait tourner l'ensemble en headless sur un mini-PC Linux dédié, pour que je reprenne le travail depuis un laptop ou un téléphone.
+- **Paseo** fait tourner l'ensemble en headless, pour que je reprenne le travail depuis un laptop ou un téléphone.
 
 Récupérer le modèle n'est que la moitié du travail, le rendre utilisable comme agent en est l'autre moitié. La fenêtre de contexte Ollama par défaut plafonne à 4096 tokens, ce qui casse en silence l'usage des outils, parce que le prompt système d'opencode fait à lui seul environ 11K tokens et n'y tient même pas. Du coup chaque modèle reçoit un Modelfile qui remonte le plafond.
 
@@ -110,8 +110,6 @@ Environment=OLLAMA_MAX_LOADED_MODELS=1
 ```
 
 Faire tourner un agent autonome en root, c'est confier à du code que vous n'avez pas écrit une machine que vous ne pouvez pas reconstruire à bas coût. Un palier privacy entreprise, c'est une promesse que fait respecter un avocat. Le loopback, un réseau privé et un utilisateur sans privilèges, c'est une promesse que fait respecter le système d'exploitation. Je fais confiance à la seconde.
-
-**La box est un mini-PC sans ventilateur qui consomme environ dix watts au repos,** la même qui héberge OpenClaw, mon assistant toujours actif.
 
 ## Un modèle local égale la qualité cloud sur le code du quotidien, et je l'ai mesuré
 

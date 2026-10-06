@@ -1,12 +1,12 @@
 ---
 title: "The document agent that runs on SQLite"
 date: "2026-01-22T19:30:00.000Z"
-description: "Local document AI, no cloud: I build private document search you self-host, so years of your own PDFs answer plain questions with a source link, and nothing ever leaves your machine."
+description: "Local document AI: I build private document search you self-host, so years of your own PDFs answer plain questions with a source link. Your files stay on your machine."
 tags: ["AI", "Business"]
 private: true
 ---
 
-I build private document search you run on your own machine, over years of your own PDFs. You ask "how much did I pay this supplier last year", and you get the number, the exact page it sits on, and a one-click link to the file so you can check it. **The whole searchable brain is one file on your machine, and 0 documents ever leave it.**
+I build private document search you run on your own machine, over years of your own PDFs. You ask "how much did I pay this supplier last year", and you get the number, the exact page it sits on, and a one-click link to the file so you can check it. **The whole searchable brain is one file on your machine, next to your documents.**
 
 ## Why this matters to you
 
@@ -22,7 +22,7 @@ An answer in under 2 seconds instead of an evening, drawn only from your own doc
 
 ## What I can do
 
-I build this and set it up on your own hardware, so nothing leaves the building. It runs today, over years of real paperwork, for a business owner who refused to put his files in the cloud. Answers come from his own documents and always show their source, so the machine can't quietly invent a number. One honest boundary: it's single-machine by design, right for one owner or a small office with a large archive, and the wrong shape for ten people writing to it at once. If that's your case, I'll say so up front.
+I build this and set it up on your own hardware, so your files and the index stay in the building. Only page text goes out, to the model that reads and files it. It runs today, over years of real paperwork, for a business owner who refused to put his files in the cloud. Answers come from his own documents and always show their source, so the machine can't quietly invent a number. One honest boundary: it's single-machine by design, right for one owner or a small office with a large archive, and the wrong shape for ten people writing to it at once. If that's your case, I'll say so up front.
 
 An accounting practice on years of client files, a law office where the answer is always "somewhere in the file", a property manager juggling leases, a medical practice bound by confidentiality: any back office where one person quietly became the search engine has this exact problem. If your team keeps redigging through the same folders, this is the shape of the answer.
 
