@@ -32,12 +32,45 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // case-study page (src/templates/case-study.js) via the article slug, so the
   // raw /blog mirror was a duplicate. The markdown nodes still exist and keep
   // their `/blog/<dir>/` slug (set in onCreateNode) for that embed query.
+
+  // Guides: one page per markdown file in content/guides, at its `path`.
+  const guides = await graphql(`
+    {
+      allMarkdownRemark(filter: { fields: { kind: { eq: "guide" } } }) {
+        nodes {
+          id
+          fields {
+            slug
+          }
+        }
+      }
+    }
+  `)
+  if (guides.errors) {
+    reporter.panicOnBuild(`Error loading guides`, guides.errors)
+    return
+  }
+  const guideTemplate = path.resolve(`./src/templates/guide.js`)
+  guides.data.allMarkdownRemark.nodes.forEach(node => {
+    createPage({ path: node.fields.slug, component: guideTemplate, context: { id: node.id } })
+  })
 }
+
+// "/legal-ai-uae" -> "/legal-ai-uae/"
+const guidePath = p => `/${String(p).replace(/^\/+|\/+$/g, "")}/`
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === `MarkdownRemark`) {
+    if (getNode(node.parent).sourceInstanceName === `guides`) {
+      if (!node.frontmatter.path) throw new Error(`guide without a path: ${node.fileAbsolutePath}`)
+      createNodeField({ name: `slug`, node, value: guidePath(node.frontmatter.path) })
+      createNodeField({ name: `lang`, node, value: `en` })
+      createNodeField({ name: `kind`, node, value: `guide` })
+      return
+    }
+    createNodeField({ name: `kind`, node, value: `post` })
     // A post lives at content/blog/<dir>/index.MD (EN) or index.fr.MD (FR).
     // Both language files share one slug (the directory); `lang` tells them
     // apart so the case-study template can pick the reader's language and fall
@@ -88,11 +121,21 @@ exports.createSchemaCustomization = ({ actions }) => {
       description: String
       date: Date @dateformat
       tags: [String]
+      path: String
+      kicker: String
+      related: [String]
+      faq: [GuideFaq]
+    }
+
+    type GuideFaq {
+      q: String
+      a: String
     }
 
     type Fields {
       slug: String
       lang: String
+      kind: String
     }
   `)
 }
