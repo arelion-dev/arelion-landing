@@ -58,6 +58,11 @@ test("guides contain no em dash, no en dash and no filler word", () => {
   }
 })
 
+test("llms.txt lists every guide", () => {
+  const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
+  for (const g of guides) assert.ok(llms.includes(`https://arelion.dev${g.path}`), `${g.path} missing from static/llms.txt`)
+})
+
 test("guides do not name a client", () => {
   for (const g of guides) assert.doesNotMatch(g.raw, CLIENTS, g.file)
 })
