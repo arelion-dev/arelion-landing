@@ -263,6 +263,10 @@ const CASE_STUDIES = [
     date: "2026-06-18",
     faq: [
       {
+        q: { en: "What is document AI?" },
+        a: { en: "Software that turns documents into text, tables and answers you can search. The order matters. Read native text first and pay for OCR only on scans, keep tables as tables, and cite the exact page behind each answer. Intelligent document processing (IDP) points the same tools at forms and back-office workflows." },
+      },
+      {
         q: { en: "How do you build RAG over 100 million pages?" },
         a: { en: "Read cheaply first by lifting native text before paying for OCR, index into a vector store behind a fair queue so one bulk load cannot starve live users, and retrieve with hybrid search plus a small-to-big ladder. Cite every sentence." },
       },
@@ -281,8 +285,8 @@ const CASE_STUDIES = [
     featured: true,
     published: true,
     title: {
-      en: "Document intelligence at scale: RAG over 100M+ pages",
-      fr: "Intelligence documentaire à grande échelle : RAG sur 100M+ pages (Pinecone, Gemini)",
+      en: "Document AI at scale: RAG over 100M+ pages",
+      fr: "IA documentaire à grande échelle : RAG sur 100M+ pages (Pinecone, Gemini)",
     },
     metric: {
       en: "100M+ pages, an answer in under a second, a citation on every sentence",
@@ -1135,11 +1139,25 @@ const CASE_STUDIES = [
   {
     slug: "fractional-cpto-programme",
     date: "2026-04-23",
+    faq: [
+      {
+        q: { en: "What does a fractional CTO do?" },
+        a: { en: "Owns technology and product as one function, on a contract instead of a payroll line. In this programme the client keeps strategy and I own execution end to end: the technical calls, the order of the roadmap, the vendors, and every audit finding until it ships. One name on every result." },
+      },
+      {
+        q: { en: "When is a fractional CTO a better fit than a full-time hire?" },
+        a: { en: "When nobody owns product and tech. Audits sit unread, and hiring a full leadership team would cost more and take months. It fits a company between CTOs, or one whose founders hold the strategy and need someone to turn it into a roadmap and a team." },
+      },
+      {
+        q: { en: "What are the limits of a fractional CTO?" },
+        a: { en: "It is a bet on one person's bandwidth and judgment. No committee catches a wrong call, and working remote and async means missing quick corridor decisions. The trade is speed and one owner." },
+      },
+    ],
     article: "/blog/fractional-cpto-programme/",
     articleBusiness: "/blog/fractional-cpto-programme-business/",
     pillar: "Transform",
     featured: true,
-    published: false,
+    published: true,
     title: {
       en: "Fractional CTO / CPTO for a national news outlet (multi-year programme)",
       fr: "CTO / CPO fractionné pour un média national (programme pluriannuel)",

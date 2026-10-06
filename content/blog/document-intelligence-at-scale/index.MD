@@ -1,5 +1,5 @@
 ---
-title: "Document intelligence at scale"
+title: "Document AI at scale"
 date: "2026-06-18T10:40:00.000Z"
 description: "Reading and searching 100M+ pages across thirty brands: native-text-first OCR, faithful tables, hybrid retrieval, and access control enforced inside the query."
 tags: ["Tech", "AI"]
