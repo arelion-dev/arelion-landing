@@ -16,6 +16,11 @@ word count, OG image, FAQ schema, and whether the target query from
 
 ## Search Console rankings (one-time setup)
 
+> Checked on 2026-10-06: the arelion.dev org policy blocks service-account keys,
+> so the steps below cannot be completed. Search Console tracking and Keyword
+> Planner volumes run from `my-custom-apps/arelion-seo` instead (daily on the box,
+> Obsidian note "SEO Tracker"). See its README.
+
 This is the only manual step, because it is your Google account.
 
 1. In GCP project `alfred-499305` (or any), enable the Search Console API.
