@@ -61,7 +61,7 @@ const catalog = {
       subtitle: "Fractional CTO / CPTO · Product, AI & Architecture",
       // *word* renders in the accent color
       headline:
-        "Product *vision*, tech *leadership*, and AI systems from *roadmap* to *production*",
+        "AI consultant in *Dubai*. I *build* what I recommend, from *roadmap* to *production*",
       sticky: [
         "AI search over 100M+ pages",
         "Top 5 App Store, 1M+ downloads",
@@ -181,7 +181,7 @@ const catalog = {
       subtitle: "CTO / CPO à temps partagé · Produit, IA & architecture",
       // *word* renders in the accent color
       headline:
-        "*Vision* produit, *leadership* tech et systèmes IA de la *roadmap* à la *production*",
+        "Consultant IA à *Dubaï*. Je *construis* ce que je recommande, de la *roadmap* à la *production*",
       sticky: [
         "Recherche IA sur 100M+ pages",
         "Top 5 App Store, 1M+ téléchargements",

@@ -345,14 +345,14 @@ const ORG_JSONLD = {
       legalName: "ARELION FZCO",
       url: "https://arelion.dev",
       description:
-        "Boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production.",
+        "AI consultancy in Dubai run by one senior engineer who builds what he recommends: document search over 100M+ pages, legal research with verified citations, private LLMs, cloud platforms.",
       founder: { "@id": "https://arelion.dev/#antonin" },
       address: {
         "@type": "PostalAddress",
         addressLocality: "Dubai",
         addressCountry: "AE",
       },
-      areaServed: "Worldwide",
+      areaServed: ["United Arab Emirates", "Worldwide"],
       knowsAbout: [
         "Artificial Intelligence",
         "Retrieval-Augmented Generation",
@@ -391,8 +391,8 @@ const ORG_JSONLD = {
 
 export const Head = ({ location }) => (
   <SEO
-    title="Arelion | Boutique tech studio, AI, cloud, SaaS"
-    description="Arelion is a boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production."
+    title="AI Consultant in Dubai: Roadmap to Production"
+    description="AI consultant in Dubai. I build the systems I recommend, to production: document search over 100M+ pages, legal research, private LLMs. 12 years, 20+ clients."
     pathname={location.pathname}
   >
     <script
