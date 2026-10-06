@@ -8,7 +8,7 @@ private: true
 
 You can read and search 100 million pages faithfully, in under a second, without leaking a single document across a brand boundary. I built that engine for a global enterprise: thirty brands, decades of R&D, more than 100 million pages of research data, patents, contracts and regulatory dossiers across a dozen languages.
 
-The problem it solves is concrete. A scientist needs one stability number from a 2009 study, in a scanned PDF, in a table on page 40, in French. She spends half a morning failing to find it, gives up, and reruns the study, so the company pays for that work twice. Now that number comes back in under a second, with a link straight to page 40.
+The problem it solves is concrete. A scientist needs one stability number from a 2009 study, in a scanned PDF, in a table on page 40, in French. She spends half a day failing to find it, gives up, and reruns the study, so the company pays for that work twice. Now that number comes back in under a second, with a link straight to page 40.
 
 **Search time dropped from ~30 minutes of hunting to under a second.**
 

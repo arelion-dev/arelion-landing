@@ -24,7 +24,7 @@ Every company has a few people who double as its search engine. Colleagues ask t
 
 A company brain reads what your company has written down (contracts, process notes, reports, old scans) and answers from it, quoting the passage and linking to the file. When the documents are silent, it says so. Call it an AI knowledge base or enterprise AI search if you prefer; the label matters less than those two habits.
 
-The payoff is time. At a [global enterprise](/case-studies/document-intelligence-at-scale/) holding 100M+ pages, a scientist could spend half a morning hunting one number from a 2009 study, then give up and rerun it. That number now comes back in under a second, with a link to the page.
+The payoff is time. At a [global enterprise](/case-studies/document-intelligence-at-scale/) holding 100M+ pages, a scientist could spend half a day hunting one number from a 2009 study, then give up and rerun it. That number now comes back in under a second, with a link to the page.
 
 ## Why a personal second brain is the easy case
 
@@ -37,7 +37,7 @@ A company brain loses that comfort in four ways:
 - **The files are messy.** Scans, tables, slide decks, the same PDF in several folders.
 - **It changes every day.** Files come and go, and people move between teams.
 
-The closest I have built to the personal case is a [document agent for one business owner](/case-studies/doc-agent-on-sqlite/): three years of paperwork in one SQLite file on his own machine, retrieval in under 2 seconds. It is built for one writer. A team adding documents at the same time is where I would change the design.
+The closest I have built to the personal case is a [document agent for one business owner](/case-studies/doc-agent-on-sqlite/): the search index over three years of paperwork is one SQLite file on his own machine, and retrieval takes under 2 seconds. It is built for one writer. A team adding documents at the same time is where I would change the design.
 
 ## Reading documents cheaply and faithfully
 

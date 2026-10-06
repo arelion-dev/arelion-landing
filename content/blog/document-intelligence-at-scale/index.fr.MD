@@ -6,7 +6,7 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-Une chercheuse a besoin d'un seul chiffre de stabilité tiré d'une étude de 2009. Il est dans l'archive, dans un PDF scanné, dans un tableau en page 40, en français. Elle passe une demi-matinée à le chercher en vain, abandonne, et relance l'étude. L'entreprise paie ce travail deux fois.
+Une chercheuse a besoin d'un seul chiffre de stabilité tiré d'une étude de 2009. Il est dans l'archive, dans un PDF scanné, dans un tableau en page 40, en français. Elle passe une demi-journée à le chercher en vain, abandonne, et relance l'étude. L'entreprise paie ce travail deux fois.
 
 J'ai construit le moteur qui met fin à ça : une couche d'intelligence documentaire pour un grand groupe de cosmétiques, trente marques, des décennies de R&D, plus de 100 millions de pages de formules, brevets, contrats et dossiers réglementaires dans une dizaine de langues. Aujourd'hui ce chiffre revient en moins d'une seconde, avec un lien direct vers la page 40.
 

@@ -1,14 +1,14 @@
 ---
 title: "L'agent documentaire qui tourne sur SQLite"
 date: "2026-01-22T19:30:00.000Z"
-description: "Un agent documentaire privé qui lit, classe et répond à des questions sur des années de PDF, avec tout le cerveau cherchable dans un seul fichier SQLite sur la machine du propriétaire. Pas de base vectorielle, pas de cloud."
+description: "Un agent documentaire privé qui lit, classe et répond à des questions sur des années de PDF, avec tout le cerveau cherchable dans un seul fichier SQLite sur la machine du propriétaire. Pas de base vectorielle, pas de serveur à louer."
 tags: ["Tech", "AI"]
 private: true
 ---
 
 Vendredi soir. Un chef d'entreprise traque une facture à travers deux ans de PDF, dossier par dossier, parce qu'il est le seul moteur de recherche que sa boîte ait jamais eu. Il sait que le fichier est là, quelque part. Vers le quarantième dossier, il laisse tomber.
 
-J'ai construit le moteur de recherche qui aurait dû exister pour lui. Chaque PDF et chaque scan entrant est lu, puis classé tout seul. Vous posez une question simple, il répond avec la page exacte et un lien en un clic vers le fichier source. **Récupération en moins de 2 secondes, contre 3 ans de paperasse, et 0 document ne quitte la machine.** Le choix de conception qui mérite d'être écrit : les modèles lisent et classent, mais tout le cerveau cherchable tient dans un seul fichier SQLite. Pas de base vectorielle, pas de service cloud posé sur ses finances.
+J'ai construit le moteur de recherche qui aurait dû exister pour lui. Chaque PDF et chaque scan entrant est lu, puis classé tout seul. Vous posez une question simple, il répond avec la page exacte et un lien en un clic vers le fichier source. **Récupération en moins de 2 secondes, contre 3 ans de paperasse, et les fichiers ne quittent jamais la machine.** Le choix de conception qui mérite d'être écrit : les modèles lisent et classent, mais tout le cerveau cherchable tient dans un seul fichier SQLite. Pas de base vectorielle, pas de service cloud posé sur ses finances.
 
 À la fin vous saurez comment le pipeline lit à bas coût, pourquoi il refuse de classer ce dont il n'est pas sûr, et comment il cherche de deux façons à la fois, le tout dans un seul fichier que vous sauvegardez avec `cp`.
 

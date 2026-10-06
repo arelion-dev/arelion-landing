@@ -22,7 +22,7 @@ The assistant has to run where your data already lives. The model reads and writ
 
 - **Confidential source never leaves the building.** The code stays on hardware you own, reachable only from your own devices.
 - **Cloud-grade output on everyday code.** On my own benchmark the local model produced a finished, compiling app in 53 seconds, 4 tool calls, zero type errors under a strict compiler.
-- **$0 per seat, forever.** A one-time hardware spend instead of a subscription that scales with headcount, on a fanless mini-PC drawing about ten watts idle.
+- **$0 per seat, forever.** A one-time hardware spend instead of a subscription that scales with headcount.
 - **Already running, measured rather than promised.** This is my own daily stack, and I measured every number above myself.
 
 ## What I can do

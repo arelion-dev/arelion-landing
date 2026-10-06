@@ -20,7 +20,7 @@ Un assistant de code qui tourne là où vos données vivent déjà, livré et r�
 
 - **Un code IA sûr au regard du RGPD par construction.** Le modèle lit et écrit votre code sur une box que vous possédez, joignable uniquement depuis vos propres appareils, sans chemin de sortie pour le source. La confidentialité cesse d'être une clause pour devenir un fait physique. Personne ne peut faire fuiter ce qui n'est jamais parti.
 - **Une sortie de niveau cloud sur le code du quotidien.** Sur mon propre benchmark, le modèle local a produit une app finie et compilable en 53 secondes, 4 appels d'outils, zéro erreur de type sous un compilateur strict. Le même résultat qu'un assistant cloud vous donne, depuis une box qui n'a jamais téléphoné dehors.
-- **0 $ par siège, pour toujours.** Une dépense matérielle unique au lieu d'un abonnement qui grimpe avec les effectifs. Toute la stack tourne sur un mini-PC sans ventilateur qui consomme environ dix watts au repos.
+- **0 $ par siège, pour toujours.** Une dépense matérielle unique au lieu d'un abonnement qui grimpe avec les effectifs.
 
 ## Pourquoi ça tient
 

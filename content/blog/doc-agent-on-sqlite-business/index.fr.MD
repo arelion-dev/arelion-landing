@@ -1,12 +1,12 @@
 ---
 title: "L'agent documentaire qui tourne sur SQLite"
 date: "2026-01-22T19:30:00.000Z"
-description: "IA documentaire locale, sans cloud : je construis une recherche documentaire privée que vous hébergez vous-même, pour que des années de vos propres PDF répondent aux questions simples avec un lien vers la source, sans que rien ne quitte jamais votre machine."
+description: "IA documentaire locale : je construis une recherche documentaire privée que vous hébergez vous-même, pour que des années de vos propres PDF répondent aux questions simples avec un lien vers la source. Vos fichiers restent sur votre machine."
 tags: ["AI", "Business"]
 private: true
 ---
 
-Je construis de l'IA documentaire locale sans cloud : une recherche documentaire respectueuse de la vie privée que vous hébergez vous-même, sur des années de vos propres PDF. Vous demandez « combien j'ai payé ce fournisseur l'an dernier », et vous obtenez le montant, la page exacte où il figure, et un lien en un clic vers le fichier pour le vérifier. **Tout le cerveau cherchable tient dans un seul fichier sur votre machine, et 0 document ne le quitte jamais.**
+Je construis de l'IA documentaire locale : une recherche documentaire respectueuse de la vie privée que vous hébergez vous-même, sur des années de vos propres PDF. Vous demandez « combien j'ai payé ce fournisseur l'an dernier », et vous obtenez le montant, la page exacte où il figure, et un lien en un clic vers le fichier pour le vérifier. **Tout le cerveau cherchable tient dans un seul fichier sur votre machine, à côté de vos documents.**
 
 ## En ce moment, c'est vous le moteur de recherche de votre entreprise
 
@@ -15,7 +15,7 @@ Quelqu'un de chez vous fait déjà ça à la main. Vendredi soir, dossier par do
 ## Ce que vous obtenez
 
 - **Une réponse en moins de 2 secondes, pas une soirée.** Vingt minutes de fouille deviennent une question.
-- **Une recherche documentaire privée, auto-hébergée.** 0 document ne quitte votre machine. Le cerveau cherchable est un fichier que vous sauvegardez en le copiant.
+- **Une recherche documentaire privée, auto-hébergée.** Vos fichiers et l'index restent sur votre machine ; seul le texte des pages part chez le modèle qui les lit et les classe. Le cerveau cherchable est un fichier que vous sauvegardez en le copiant.
 - **Du RAG sans base vectorielle.** Pas de serveur géré, pas de facture d'hébergement mensuelle : **environ 0 dollar d'infrastructure par mois.**
 - **Une réponse citée, pas une supposition.** Chaque réponse arrive avec la page exacte et un lien vers le fichier source, pour vérifier en un clic.
 - **Elle dit quand elle n'est pas sûre.** Un document vraiment ambigu attend dans une file de vérification de dix secondes au lieu d'être mal classé.

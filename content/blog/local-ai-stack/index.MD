@@ -6,7 +6,7 @@ tags: ["Tech", "AI"]
 private: true
 ---
 
-A real agentic coding assistant can plan, read the repo and edit files with the source code physically confined to a box you own. I built the stack that does it. It ran the same coding task as a cloud assistant and matched its output on my benchmark, from a fanless mini-PC drawing about ten watts idle, at zero cost per seat.
+A real agentic coding assistant can plan, read the repo and edit files with the source code physically confined to a box you own. I built the stack that does it. It ran the same coding task as a cloud assistant and matched its output on my benchmark, on a 64 GB MacBook Pro, at zero cost per seat.
 
 This is my own running stack rather than a client engagement. I measured every number below on my own hardware, none of it from a vendor deck.
 
@@ -23,7 +23,7 @@ The decision everything hangs on is that the model reading and writing your code
 - **Ollama 0.23**, installed from the `ollama-app` cask, serves an open-weights model on a plain machine. No vendor account, no outbound API traffic. The cask matters: it bundles the MLX Metal runtime (`libmlx.dylib`) that the Homebrew formula omits, and the fast quants only load on it.
 - **Qwen3.6-35B-A3B** is the model (73.4% SWE-bench Verified). I chose it on the benchmark rather than the launch-day hype (next section). It's a mixture-of-experts model with about 3B active parameters, which turns out to be the only shape that runs at agent speed on this hardware.
 - **opencode v1.4.6** is the agent. It plans, reads the repo, calls tools, edits files, and points at the local model instead of a cloud one. Without it you have a private chatbot. With it, a private colleague.
-- **Paseo** runs the whole thing headless on a dedicated Linux mini-PC, so I pick the work up from a laptop or a phone.
+- **Paseo** runs the whole thing headless, so I pick the work up from a laptop or a phone.
 
 Pulling the model is only half the job, making it behave like an agent is the other half. The default Ollama context window is 4096 tokens, which quietly breaks tool use, because opencode's system prompt alone runs about 11K tokens and doesn't even fit. So every model gets a Modelfile that raises the ceiling.
 
@@ -108,8 +108,6 @@ Environment=OLLAMA_MAX_LOADED_MODELS=1
 ```
 
 Running an autonomous agent as root means trusting code you didn't write with a machine you can't cheaply rebuild. An enterprise privacy tier is a promise a lawyer enforces. Loopback, a private network and an unprivileged user make a promise the operating system enforces. I trust the second kind.
-
-**The box is a fanless mini-PC drawing about ten watts idle,** the same one that hosts OpenClaw, my always-on assistant.
 
 ## A local model matches cloud quality on everyday code, and I measured it
 
