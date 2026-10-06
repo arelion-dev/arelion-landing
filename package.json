@@ -56,7 +56,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "test": "node --test test/*.test.mjs",
     "security-check": "npx check-compromised-npm-packages",
     "preinstall": "npx check-compromised-npm-packages"
   }
