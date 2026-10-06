@@ -74,6 +74,15 @@ test("every guide page leads back to the guides index", { skip: !built && "no bu
   for (const g of guides) assert.ok(html(g.path).includes(`cs-crumb"><a href="/guides/">Guides</a>`), g.path)
 })
 
+test("internal links in guides point to built pages", { skip: !built && "no build in public/" }, () => {
+  for (const g of guides) {
+    for (const [, href] of g.raw.matchAll(/\]\((\/[^)#\s]*)/g)) {
+      const page = href.replace(/^\/+|\/+$/g, "")
+      assert.ok(existsSync(join(PUBLIC, page, "index.html")), `${g.file}: ${href}`)
+    }
+  }
+})
+
 test("the header links to case studies and guides", { skip: !built && "no build in public/" }, () => {
   const home = html("")
   assert.ok(home.includes(`href="/case-studies/">case studies</a>`))
