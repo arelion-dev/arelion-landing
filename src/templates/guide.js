@@ -95,6 +95,14 @@ export const Head = ({ data }) => {
     publisher: { "@type": "Organization", name: "Arelion", url: siteUrl },
     ...(frontmatter.date ? { datePublished: frontmatter.date } : {}),
   }
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Guides", item: `${siteUrl}/guides/` },
+      { "@type": "ListItem", position: 2, name: frontmatter.title, item: url },
+    ],
+  }
   const faq =
     frontmatter.faq && frontmatter.faq.length
       ? {
@@ -111,7 +119,7 @@ export const Head = ({ data }) => {
     <SEO title={frontmatter.title} description={frontmatter.description} pathname={fields.slug}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([article, faq].filter(Boolean)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([article, breadcrumb, faq].filter(Boolean)) }}
       />
     </SEO>
   )

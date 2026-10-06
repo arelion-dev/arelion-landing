@@ -1,6 +1,6 @@
 ---
 title: "Legal AI for law firms in the UAE"
-description: "A legal research assistant that answers from the law and your firm's documents, and checks every citation first. In production for a regulated client."
+description: "Legal AI for UAE law firms: an assistant that answers from the law and your firm's documents, and checks every citation. In production for a regulated client."
 path: "/legal-ai-uae/"
 date: "2026-10-06"
 kicker: "Legal AI"
@@ -14,7 +14,7 @@ faq:
     a: "Yes. Your documents go into the same verified corpus as the law, with access rules applied inside the search, so a lawyer only gets answers from files they are allowed to open."
 ---
 
-Your lawyers already know which questions eat their afternoons: finding the article that governs a point and quoting it right. I build the assistant that does that search with them. It answers from the law and from your firm's documents, and it backs every point with a citation they can click and check.
+Your lawyers already know which questions eat their afternoons: finding the article that governs a point and quoting it right. I build the legal AI assistant that does that search with them. It answers from the law and from your firm's documents, and it backs every point with a citation they can click and check.
 
 **It runs in production for a regulated client. 0 fabricated citations reach the user.**
 

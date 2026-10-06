@@ -26,8 +26,18 @@ How to engage: read the case studies at https://arelion.dev/case-studies for pro
 ## Key pages
 
 - [Home](https://arelion.dev/): services, past clients, contact
-- [Blog index](https://arelion.dev/blog): essays from Arelion
+- [Case studies](https://arelion.dev/case-studies/): systems I built, how, and the results
+- [Guides](https://arelion.dev/guides/): answers to the questions UAE companies ask before an AI project
 - [Personal blog](https://antonin.cool/blog): founder's writing on tech, AI and markets
+
+## Guides
+
+- [Legal AI for law firms in the UAE](https://arelion.dev/legal-ai-uae/)
+- [UAE PDPL and AI: using ChatGPT with personal data](https://arelion.dev/guides/uae-pdpl-ai/)
+- [DIFC Data Protection Law and AI: Regulation 10 explained](https://arelion.dev/guides/difc-data-protection-ai/)
+- [ChatGPT Business, Enterprise or private AI for a UAE company](https://arelion.dev/guides/chatgpt-business-vs-private-ai-uae/)
+- [How to choose an AI company in the UAE: 10 questions](https://arelion.dev/guides/choose-ai-company-uae/)
+- [Company brain: AI that answers from your own documents](https://arelion.dev/guides/company-brain/)
 
 ## Contact
 
