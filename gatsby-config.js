@@ -43,6 +43,15 @@ module.exports = {
       },
     },
     {
+      // Guides: one markdown file = one page at its frontmatter `path`
+      // (src/templates/guide.js). Buyer questions, linked to case studies.
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/content/guides`,
+        name: `guides`,
+      },
+    },
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/content/assets`,

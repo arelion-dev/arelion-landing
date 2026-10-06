@@ -219,7 +219,7 @@ const CASE_STUDIES = [
     date: "2026-07-16",
     pillar: "Build",
     featured: true,
-    published: false,
+    published: true,
     title: {
       en: "A second brain for a newsroom (RAG over 500,000+ articles)",
       fr: "Un second cerveau pour une rédaction (RAG sur 500 000+ articles)",
