@@ -18,8 +18,9 @@ const PortfolioLayout = ({ avatar, children }) => {
   const displayTitle = useDomainTitle()
   const { t } = useI18n()
   const { pathname } = useLocation()
-  // No self-link on the case studies index itself
+  // No self-link on the case studies or guides index itself
   const onCaseStudies = pathname.replace(/\/$/, "") === "/case-studies"
+  const onGuides = pathname.replace(/\/$/, "") === "/guides"
   const data = useStaticQuery(graphql`
     query {
       file(absolutePath: { regex: "/profile-pic.jpeg/" }) {
@@ -27,9 +28,13 @@ const PortfolioLayout = ({ avatar, children }) => {
           gatsbyImageData(width: 40, height: 40, quality: 95, layout: FIXED)
         }
       }
+      guides: allMarkdownRemark(filter: { fields: { kind: { eq: "guide" } } }) {
+        totalCount
+      }
     }
   `)
   const avatarImage = avatar || data?.file?.childImageSharp?.gatsbyImageData
+  const hasGuides = data?.guides?.totalCount > 0
 
   return (
     <div className="portfolio-wrapper">
@@ -56,6 +61,12 @@ const PortfolioLayout = ({ avatar, children }) => {
               {t("nav.caseStudies")}
             </Link>
           )}
+          {/* Same class as case studies: hidden in the mobile header, the footer link covers it. */}
+          {!onGuides && hasGuides && (
+            <Link className="nav-pill nav-cs" to="/guides/">
+              {t("nav.guides")}
+            </Link>
+          )}
           <a
             className="nav-pill nav-pill-whatsapp"
             href={WHATSAPP_URL}
@@ -80,6 +91,7 @@ const PortfolioLayout = ({ avatar, children }) => {
       <main>{children}</main>
       <footer className="portfolio-footer">
         <nav className="portfolio-footer-nav">
+          {hasGuides && <Link to="/guides/">Guides</Link>}
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/privacy">Privacy</Link>

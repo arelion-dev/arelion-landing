@@ -140,7 +140,7 @@ export const Head = ({ location }) => {
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Technical Blog",
+    name: "Case studies",
     itemListElement: CASE_STUDIES.slice()
       .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
       .map((cs, i) => ({
@@ -152,7 +152,7 @@ export const Head = ({ location }) => {
   }
   return (
     <SEO
-      title="Technical Blog"
+      title="Case studies"
       description="Technical write-ups on AI engineering: RAG, document intelligence, LLM evaluation, OCR benchmarking, caching at scale, and AI security. The concrete problem, the architecture, and what transfers to your team."
       pathname={location.pathname}
     >
