@@ -118,6 +118,7 @@ const catalog = {
       bookACall: "Book a call",
       faqTitle: "Questions I get about this",
       relatedTitle: "Related articles",
+      guidesTitle: "Guides built on this work",
     },
     sw: {
       title: "Client work",
@@ -239,6 +240,7 @@ const catalog = {
       bookACall: "Réserver un appel",
       faqTitle: "Les questions qu'on me pose là-dessus",
       relatedTitle: "Articles liés",
+      guidesTitle: "Guides qui s'appuient sur ce travail",
     },
     sw: {
       title: "Missions client",

@@ -88,6 +88,12 @@ test("internal links in guides point to built pages", { skip: !built && "no buil
   }
 })
 
+test("every case study a guide cites links back to it", { skip: !built && "no build in public/" }, () => {
+  for (const g of guides) {
+    for (const slug of g.data.related) assert.ok(html(`case-studies/${slug}`).includes(`href="${g.path}"`), `${slug} does not link to ${g.path}`)
+  }
+})
+
 test("the header links to case studies and guides", { skip: !built && "no build in public/" }, () => {
   const home = html("")
   assert.ok(home.includes(`href="/case-studies/">case studies</a>`))

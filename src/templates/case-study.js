@@ -139,6 +139,10 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
       (o.pillar === cs.pillar || (o.tags || []).some(tag => csTags.has(tag))),
   ).slice(0, 3)
 
+  // Guides whose `related` frontmatter cites this study. Linking back lets
+  // the proof and the buyer questions point at each other.
+  const guides = (data && data.guides && data.guides.nodes) || []
+
   const formattedDate = articleDate
     ? new Intl.DateTimeFormat(csLang === "fr" ? "fr-FR" : "en-US", {
         year: "numeric",
@@ -323,6 +327,20 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
           </section>
         )}
 
+        {guides.length > 0 && (
+          <section className="cs-related">
+            <h2>{t("csDetail.guidesTitle")}</h2>
+            <div className="cs-related-grid">
+              {guides.map(g => (
+                <Link key={g.id} to={g.fields.slug} className="cs-related-card">
+                  <span className="cs-row-kicker cs-p-build">Guide</span>
+                  <span className="cs-related-title">{g.frontmatter.title}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         {related.length > 0 && (
           <section className="cs-related">
             <h2>{t("csDetail.relatedTitle")}</h2>
@@ -365,7 +383,7 @@ export default CaseStudyTemplate
 // (cs.article) and a business/decision-maker version (cs.articleBusiness).
 // A study may have one, both, or neither; missing slugs resolve to null.
 export const pageQuery = graphql`
-  query CaseStudyArticle($articleSlug: String, $articleBusinessSlug: String) {
+  query CaseStudyArticle($slug: String, $articleSlug: String, $articleBusinessSlug: String) {
     site {
       siteMetadata {
         siteUrl
@@ -401,6 +419,20 @@ export const pageQuery = graphql`
       html
       frontmatter {
         date
+      }
+    }
+    guides: allMarkdownRemark(
+      filter: { fields: { kind: { eq: "guide" } }, frontmatter: { related: { in: [$slug] } } }
+      sort: { frontmatter: { title: ASC } }
+    ) {
+      nodes {
+        id
+        fields {
+          slug
+        }
+        frontmatter {
+          title
+        }
       }
     }
   }
