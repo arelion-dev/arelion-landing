@@ -207,7 +207,20 @@ const IndexPage = ({ data }) => {
                     {part}
                   </span>
                 ) : (
-                  <React.Fragment key={i}>{part}</React.Fragment>
+                  // "\n" in the catalog string = line break
+                  <React.Fragment key={i}>
+                    {part.split("\n").map((line, j) => (
+                      <React.Fragment key={j}>
+                        {j > 0 && (
+                          <>
+                            {" "}
+                            <br />
+                          </>
+                        )}
+                        {line}
+                      </React.Fragment>
+                    ))}
+                  </React.Fragment>
                 ),
               )}
             <span className="portfolio-headline-accent">.</span>
