@@ -1,6 +1,6 @@
 ---
 title: "Legal AI for law firms in the UAE"
-description: "A legal research assistant that answers from the law and from your firm's own documents, and checks every citation before anyone reads it. In production for a regulated client."
+description: "A legal research assistant that answers from the law and your firm's documents, and checks every citation first. In production for a regulated client."
 path: "/legal-ai-uae/"
 date: "2026-10-06"
 kicker: "Legal AI"
