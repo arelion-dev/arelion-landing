@@ -92,7 +92,7 @@ The text layer and the OCR output also differ in two characters you may care abo
 
 ## A scanned PDF has nothing to copy
 
-A scanned PDF holds a picture of each page, so OCR is the only route, and the engine matters more there. On 44 real scans and photos of printed Arabic pages, Surya got 3.9% of characters wrong, Apple Live Text 5.0% and Tesseract 19.7% (details in my [Arabic OCR benchmark](/arabic-ocr/)). Tesseract is the engine behind many free tools, ocrmypdf included, so test before you trust a searchable PDF made that way.
+A scanned PDF holds a picture of each page, so OCR is the only route, and the engine matters more there. On 44 real scans and photos of printed Arabic pages, Surya got 3.9% of characters wrong, Apple Live Text 5.0% and Tesseract 19.7%; Gemini 3.5 Flash got 1.6% and Gemini 3.8 Flash 1.9% on the 10 of them they read (details in my [Arabic OCR benchmark](/arabic-ocr/)). Tesseract is the engine behind many free tools, ocrmypdf included, so test before you trust a searchable PDF made that way.
 
 To get a Word file, paste the OCR text into Word and set the paragraph direction to right to left. Rebuilding tables and columns is a separate job, and I did not test any converter that tries.
 
