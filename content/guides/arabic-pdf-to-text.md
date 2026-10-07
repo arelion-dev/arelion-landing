@@ -1,6 +1,6 @@
 ---
-title: "Arabic PDF to text: why copy-paste fails, and what works"
-description: "Copying Arabic out of a PDF often reverses letters. I tested 7 ways to extract UAE law PDFs: the best got 7.6% of characters wrong. OCR of the page: 0.2%."
+title: "Arabic PDF to Word or text: why copy-paste fails"
+description: "Converting an Arabic PDF to Word or text? Copy-paste often reverses letters. On UAE law PDFs the best of 7 extractors got 7.6% of characters wrong, OCR 0.2%."
 path: "/guides/arabic-pdf-to-text/"
 date: "2026-10-07"
 kicker: "Arabic OCR"

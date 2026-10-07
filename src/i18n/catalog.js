@@ -76,10 +76,16 @@ const catalog = {
         title: "Fractional CTO",
         badge: "Scrum Product Owner Certified",
         desc: "I own the technology side for companies without a tech lead: roadmap, scope, specs, vendors and hiring input. Two startups cofounded and run end to end (Foundingbird, Kaunto).",
+        // Landing pages each card leads to (internal links from the home).
+        links: [{ to: "/software-development-abu-dhabi/", label: "Software and app development in Abu Dhabi" }],
       },
       ai: {
         title: "AI automation and company brains",
         desc: "I take repetitive work off your team: first drafts, invoice follow-ups, monthly reports, and the half day spent looking for a document. A person approves what goes out, and the hours go to work that needs a person. Built and sold a document AI SaaS in 2025.",
+        links: [
+          { to: "/ai-automation-uae/", label: "AI automation in the UAE" },
+          { to: "/guides/company-brain/", label: "Company brain" },
+        ],
       },
       arch: {
         title: "Document AI and data platforms",
@@ -87,7 +93,16 @@ const catalog = {
           "Search and answers over large archives, with a source on every answer: the ingestion pipeline for 100M+ pages at L'Oréal (OCR, vectorization, semantic search). relevanC's analytics platform on 400M+ events a month.",
           "Full-stack (React, React Native, TypeScript, Python, FastAPI) on GCP with Terraform.",
         ],
+        links: [
+          { to: "/arabic-ocr/", label: "Arabic OCR" },
+          { to: "/legal-ai-uae/", label: "Legal AI for law firms" },
+        ],
       },
+    },
+    guides: {
+      homeTitle: "Guides",
+      homeSub: "Answers to the questions I get before a project.",
+      seeAll: "All guides",
     },
     cs: {
       kicker: "Case studies",
@@ -201,10 +216,16 @@ const catalog = {
         title: "CTO à temps partagé",
         badge: "Certifié Scrum Product Owner",
         desc: "Je prends en charge la technique des entreprises sans directeur technique : feuille de route, cadrage, specs, prestataires et recrutement. Deux startups cofondées et menées de bout en bout (Foundingbird, Kaunto).",
+        // The pages behind these links are in English.
+        links: [{ to: "/software-development-abu-dhabi/", label: "Développement logiciel et d'apps à Abu Dhabi" }],
       },
       ai: {
         title: "Automatisation IA et mémoire d'entreprise",
         desc: "Je retire à vos équipes le travail répétitif : premiers jets, relances de factures, rapports mensuels, et la demi-journée passée à chercher un document. Une personne valide ce qui part, et les heures vont au travail qui a besoin d'elle. Un SaaS de document AI construit et revendu en 2025.",
+        links: [
+          { to: "/ai-automation-uae/", label: "Automatisation IA aux Émirats" },
+          { to: "/guides/company-brain/", label: "Mémoire d'entreprise" },
+        ],
       },
       arch: {
         title: "IA documentaire et plateformes de données",
@@ -212,7 +233,16 @@ const catalog = {
           "Recherche et réponses sur de grandes archives, avec une source pour chaque réponse : le pipeline d'ingestion de 100M+ pages chez L'Oréal (OCR, vectorisation, recherche sémantique). La plateforme analytics de relevanC, sur 400M+ événements par mois.",
           "Full-stack (React, React Native, TypeScript, Python, FastAPI) sur GCP avec Terraform.",
         ],
+        links: [
+          { to: "/arabic-ocr/", label: "OCR arabe" },
+          { to: "/legal-ai-uae/", label: "IA juridique pour cabinets d'avocats" },
+        ],
       },
+    },
+    guides: {
+      homeTitle: "Guides",
+      homeSub: "Les réponses aux questions qu'on me pose avant un projet.",
+      seeAll: "Tous les guides",
     },
     cs: {
       kicker: "Études de cas",

@@ -1,10 +1,9 @@
 import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import { useLocation } from "@reach/router"
-import CASE_STUDIES from "../data/case-studies"
 import { GatsbyImage } from "gatsby-plugin-image"
 import useDomainTitle from "../hooks/use-domain-title"
-import trackEvent from "../hooks/use-track-event"
+import trackEvent, { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 import WhatsAppIcon from "./whatsapp-icon"
 import LanguageSwitcher from "./language-switcher"
 import { useI18n } from "../i18n"
@@ -31,10 +30,16 @@ const PortfolioLayout = ({ avatar, children }) => {
       guides: allMarkdownRemark(filter: { fields: { kind: { eq: "guide" } } }) {
         totalCount
       }
+      # One page per published case study (gatsby-node). Counted at build time so
+      # the layout does not ship the whole case-study data file to every page.
+      caseStudies: allSitePage(filter: { path: { glob: "/case-studies/*/" } }) {
+        totalCount
+      }
     }
   `)
   const avatarImage = avatar || data?.file?.childImageSharp?.gatsbyImageData
   const hasGuides = data?.guides?.totalCount > 0
+  const hasCaseStudies = data?.caseStudies?.totalCount > 0
 
   return (
     <div className="portfolio-wrapper">
@@ -56,7 +61,7 @@ const PortfolioLayout = ({ avatar, children }) => {
         </div>
         <nav className="portfolio-header-nav">
           <LanguageSwitcher />
-          {!onCaseStudies && CASE_STUDIES.length > 0 && (
+          {!onCaseStudies && hasCaseStudies && (
             <Link className="nav-pill nav-cs" to="/case-studies">
               {t("nav.caseStudies")}
             </Link>
@@ -72,7 +77,10 @@ const PortfolioLayout = ({ avatar, children }) => {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackEvent("click", "cta", "whatsapp_nav")}
+            onClick={() => {
+              trackEvent("click", "cta", "whatsapp_nav")
+              trackLead(LEAD_METHOD.whatsapp, "nav")
+            }}
           >
             <WhatsAppIcon />
             {t("nav.whatsapp")}
@@ -82,7 +90,10 @@ const PortfolioLayout = ({ avatar, children }) => {
             href="https://calendar.app.google/APH548vGrkmUiyqUA"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackEvent("click", "cta", "book_a_call")}
+            onClick={() => {
+              trackEvent("click", "cta", "book_a_call")
+              trackLead(LEAD_METHOD.booking, "nav")
+            }}
           >
             {t("nav.bookACall")}
           </a>

@@ -7,6 +7,7 @@ import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import LegalDisclaimer from "../components/legal-disclaimer"
 import WatermarkSim from "../components/synthid-watermark-sim"
+import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 import CASE_STUDIES from "../data/case-studies"
 import { offersOf, offerClass, headlineOf } from "../data/offers"
 
@@ -372,6 +373,7 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
             href={CALENDAR_URL}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackLead(LEAD_METHOD.booking, "case_study")}
           >
             {t("csDetail.bookACall")}
           </a>
@@ -451,16 +453,21 @@ export const Head = ({ pageContext, data, location }) => {
     (data && ((data.techEn && data.techEn.frontmatter.date) ||
       (data.businessEn && data.businessEn.frontmatter.date))) || undefined
 
+  // Search snippet: the study's summary when it has one, else its hook.
+  const description = cs ? (cs.metaDescription && cs.metaDescription.en) || cs.hook.en : ""
+
   const blogPosting = cs && {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: cs.title.en,
-    description: cs.hook.en,
+    description,
     image: `${siteUrl}/og-cover.png`,
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    // Same @id as the Person and the organization on the home page.
     author: {
       "@type": "Person",
+      "@id": "https://arelion.dev/#antonin",
       name: "Antonin Ribeaud",
       url: siteUrl,
       sameAs: [
@@ -469,7 +476,7 @@ export const Head = ({ pageContext, data, location }) => {
         "https://antonin.cool",
       ],
     },
-    publisher: { "@type": "Organization", name: "Arelion", url: siteUrl },
+    publisher: { "@type": "Organization", "@id": "https://arelion.dev/#organization", name: "Arelion", url: siteUrl },
     ...(datePublished ? { datePublished } : {}),
     ...(cs.tags && cs.tags.length ? { keywords: cs.tags } : {}),
   }
@@ -495,9 +502,10 @@ export const Head = ({ pageContext, data, location }) => {
   return (
     <SEO
       title={cs ? cs.title.en : "Case study"}
-      description={cs ? cs.hook.en : ""}
+      description={description}
       pathname={path}
-      image={cs ? `/og/${cs.slug}.png` : undefined}
+      // Set by gatsby-node only when static/og/<slug>.png exists; else the default share image.
+      image={pageContext.ogImage || undefined}
     >
       {cs && (
         <script

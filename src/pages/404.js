@@ -42,7 +42,7 @@ const NotFoundPage = ({ data, location }) => {
 
 export default NotFoundPage
 
-export const Head = ({ location }) => <SEO title="404: Not Found" pathname={location.pathname} />
+export const Head = ({ location }) => <SEO title="404: Not Found" pathname={location.pathname} noindex />
 
 export const pageQuery = graphql`
   query {

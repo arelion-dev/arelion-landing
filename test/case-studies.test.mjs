@@ -16,6 +16,16 @@ const PUBLIC = join(ROOT, "public")
 const built = existsSync(join(PUBLIC, "index.html"))
 const html = p => readFileSync(join(PUBLIC, p, "index.html"), "utf8")
 const OFFER_NAMES = new Set(OFFERS.map(o => o.name))
+// Gatsby adds attributes such as data-gatsby-head to the tag, so match any attribute list.
+const jsonLd = page =>
+  [...page.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)].flatMap(m => [].concat(JSON.parse(m[1])))
+const metaContent = (page, attr, name) => {
+  const m = page.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`))
+  return m && m[1].replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&")
+}
+// Same lists as the writing rules and the guides test.
+const FILLER = ["crucial", "robust", "leverage", "delve", "seamless", "cutting-edge", "game-changer", "unlock", "empower", "landscape", "load-bearing"]
+const CLIENTS = /L['’]Or[ée]al|Free Malaysia Today|\bFMT\b/i
 
 test("every published case study is filed under known offers", () => {
   for (const cs of CASE_STUDIES) {
@@ -69,5 +79,57 @@ test("case studies sold as Legal AI carry the not-legal-advice note, others do n
   for (const cs of CASE_STUDIES) {
     const has = /class="cs-disclaimer"[^>]*><strong>Not legal advice\.<\/strong>/.test(html(`case-studies/${cs.slug}`))
     assert.equal(has, offersOf(cs).includes("Legal AI"), cs.slug)
+  }
+})
+
+// The search snippet used to be the story hook, which says nothing about the page
+// (technical audit, 2026-10-07). metaDescription summarises what was built and the
+// result, from the study's own metric, hook and TL;DR: it may add no number.
+test("every published case study has a search description built from its own facts", () => {
+  for (const cs of CASE_STUDIES) {
+    const d = cs.metaDescription && cs.metaDescription.en
+    assert.ok(d, `${cs.slug}: no metaDescription`)
+    assert.ok(d.length >= 70 && d.length <= 160, `${cs.slug}: metaDescription is ${d.length} characters`)
+    assert.doesNotMatch(d, /[–—]/, `${cs.slug}: dash in metaDescription`)
+    for (const w of FILLER) assert.doesNotMatch(d, new RegExp(`\\b${w}`, "i"), `${cs.slug}: "${w}"`)
+    assert.doesNotMatch(d, CLIENTS, `${cs.slug}: metaDescription names a client`)
+    const facts = [cs.metric.en, cs.hook.en, cs.tldr.en].join(" ")
+    for (const n of d.match(/\d+(?:[.,]\d+)*/g) || []) assert.ok(facts.includes(n), `${cs.slug}: ${n} is not in its metric, hook or TL;DR`)
+  }
+})
+
+test("case-study pages use that description for search and share snippets", { skip: !built && "no build in public/" }, () => {
+  for (const cs of CASE_STUDIES) {
+    const page = html(`case-studies/${cs.slug}`)
+    assert.equal(metaContent(page, "name", "description"), cs.metaDescription.en, cs.slug)
+    assert.equal(metaContent(page, "property", "og:description"), cs.metaDescription.en, cs.slug)
+  }
+})
+
+// Regression: four studies declared /og/<slug>.png images that did not exist, so
+// shares showed no picture (technical audit, 2026-10-07).
+test("every case-study share image is a built file", { skip: !built && "no build in public/" }, () => {
+  for (const cs of CASE_STUDIES) {
+    const page = html(`case-studies/${cs.slug}`)
+    for (const [attr, name] of [["property", "og:image"], ["name", "twitter:image"]]) {
+      const url = metaContent(page, attr, name)
+      assert.ok(url && url.startsWith("https://arelion.dev/"), `${cs.slug}: ${name} ${url}`)
+      assert.ok(existsSync(join(PUBLIC, url.slice("https://arelion.dev/".length))), `${cs.slug}: ${name} ${url} does not exist`)
+    }
+  }
+})
+
+test("case-study structured data points to the author and organization the home declares", { skip: !built && "no build in public/" }, () => {
+  for (const cs of CASE_STUDIES) {
+    const post = jsonLd(html(`case-studies/${cs.slug}`)).find(n => n["@type"] === "BlogPosting")
+    assert.equal(post.author["@id"], "https://arelion.dev/#antonin", cs.slug)
+    assert.equal(post.publisher["@id"], "https://arelion.dev/#organization", cs.slug)
+  }
+})
+
+test("llms.txt lists every published case study under its title", () => {
+  const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
+  for (const cs of CASE_STUDIES) {
+    assert.ok(llms.includes(`[${cs.title.en}](https://arelion.dev/case-studies/${cs.slug}/)`), `${cs.slug} missing from static/llms.txt`)
   }
 })

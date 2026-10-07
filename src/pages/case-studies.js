@@ -6,6 +6,7 @@ import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import CASE_STUDIES from "../data/case-studies"
 import { OFFERS, offersOf, offerClass, headlineOf } from "../data/offers"
+import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 
 // One tab per offer that has a visible study. A study can sit under several
 // offers (`offers`, main one first).
@@ -140,6 +141,7 @@ const CaseStudiesPage = () => {
             href={CALENDAR_URL}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackLead(LEAD_METHOD.booking, "case_studies_index")}
           >
             {t("cs.bookACall")}
           </a>

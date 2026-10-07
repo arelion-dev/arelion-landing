@@ -138,7 +138,7 @@ module.exports = {
               }
             `,
             output: "/rss.xml",
-            title: "Gatsby RSS Feed",
+            title: "arelion.dev",
           },
         ],
       },
@@ -161,7 +161,7 @@ module.exports = {
             allMarkdownRemark {
               nodes {
                 fields { slug }
-                frontmatter { date private }
+                frontmatter { date updated private }
               }
             }
           }
@@ -169,6 +169,8 @@ module.exports = {
         resolveSiteUrl: ({ site }) => site.siteMetadata.siteUrl,
         resolvePages: ({ allSitePage: { nodes: pages }, allMarkdownRemark: { nodes: posts } }) => {
           const bySlug = new Map(posts.map(p => [p.fields.slug, p]))
+          // Case studies are data, not markdown: their date comes from src/data/case-studies.js.
+          const studies = new Map(require("./src/data/case-studies").map(cs => [`/case-studies/${cs.slug}/`, cs]))
           return pages
             .filter(page => {
               const post = bySlug.get(page.path)
@@ -176,10 +178,14 @@ module.exports = {
             })
             .map(page => {
               const post = bySlug.get(page.path)
-              return {
-                path: page.path,
-                lastmod: post?.frontmatter?.date,
-              }
+              const study = studies.get(page.path)
+              // Pages without a date of their own (home, indexes, about...) get no
+              // lastmod: a build date on every deploy would not be true, and Google
+              // ignores lastmod on sites where it proves inaccurate.
+              let lastmod
+              if (post) lastmod = post.frontmatter.updated || post.frontmatter.date
+              else if (study) lastmod = study.updated || study.date
+              return { path: page.path, lastmod }
             })
         },
         serialize: ({ path, lastmod }) => ({

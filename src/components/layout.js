@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 import useDomainTitle from "../hooks/use-domain-title"
+import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 
 const Layout = ({ children }) => {
   const displayTitle = useDomainTitle()
@@ -19,6 +20,7 @@ const Layout = ({ children }) => {
               href="https://calendar.app.google/APH548vGrkmUiyqUA"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackLead(LEAD_METHOD.booking, "nav")}
             >
               Book a call
             </a>

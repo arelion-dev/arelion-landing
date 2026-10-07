@@ -1,3 +1,4 @@
+const fs = require(`fs`)
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
@@ -17,6 +18,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const caseStudies = require(`./src/data/case-studies`)
   const caseStudyTemplate = path.resolve(`./src/templates/case-study.js`)
   caseStudies.forEach(cs => {
+    // Share image: static/og/<slug>.png when it exists. Without one the page
+    // falls back to the default og-cover.png instead of a URL that 404s.
+    const ogFile = path.join(__dirname, `static/og`, `${cs.slug}.png`)
     createPage({
       path: `/case-studies/${cs.slug}`,
       component: caseStudyTemplate,
@@ -24,6 +28,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         slug: cs.slug,
         articleSlug: cs.article || null,
         articleBusinessSlug: cs.articleBusiness || null,
+        ogImage: fs.existsSync(ogFile) ? `/og/${cs.slug}.png` : null,
       },
     })
   })
@@ -120,6 +125,8 @@ exports.createSchemaCustomization = ({ actions }) => {
       title: String
       description: String
       date: Date @dateformat
+      # Last revision of a guide; the guide template and the sitemap fall back to date.
+      updated: Date @dateformat
       tags: [String]
       path: String
       kicker: String

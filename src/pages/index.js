@@ -7,7 +7,7 @@ import SEO from "../components/seo"
 import SelectedWork from "../components/selected-work"
 import FeaturedCaseStudies from "../components/featured-case-studies"
 import WhatsAppIcon from "../components/whatsapp-icon"
-import trackEvent from "../hooks/use-track-event"
+import trackEvent, { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 import TESTI_PHOTOS from "../data/testimonial-photos"
 import Highlighted from "../components/highlighted"
 import MobileRail from "../components/mobile-rail"
@@ -60,6 +60,25 @@ const ROLE_STYLES = [
   { backgroundColor: "#d8e6ff" },
 ]
 
+// Landing-page links under each role card, one per line. Block links keep the
+// arrow after the last word when a label wraps; no underline, like the cards' "Read" links.
+const ROLE_LINK_LIST_STYLE = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  gap: "var(--spacing-2)",
+  marginTop: "var(--spacing-4)",
+}
+const ROLE_LINK_STYLE = { display: "block", textDecoration: "none" }
+
+// Guides linked from the home, in this order. The row ends on the guides index.
+const HOME_GUIDES = [
+  "/guides/uae-pdpl-ai/",
+  "/guides/chatgpt-business-vs-private-ai-uae/",
+  "/guides/choose-ai-company-uae/",
+  "/guides/difc-data-protection-ai/",
+]
+
 const renderDesc = desc =>
   (Array.isArray(desc) ? desc : [desc]).map((line, i) => (
     <React.Fragment key={i}>
@@ -86,7 +105,10 @@ const SocialLinks = ({ social }) => {
         href={social.whatsapp}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => trackEvent("click", "social", "whatsapp")}
+        onClick={() => {
+          trackEvent("click", "social", "whatsapp")
+          trackLead(LEAD_METHOD.whatsapp, "home_hero")
+        }}
       >
         WhatsApp
       </a>
@@ -168,10 +190,14 @@ const IndexPage = ({ data }) => {
       title: t("roles.leadership.title"),
       badge: t("roles.leadership.badge"),
       desc: t("roles.leadership.desc"),
+      links: t("roles.leadership.links"),
     },
-    { title: t("roles.ai.title"), desc: t("roles.ai.desc") },
-    { title: t("roles.arch.title"), desc: t("roles.arch.desc") },
+    { title: t("roles.ai.title"), desc: t("roles.ai.desc"), links: t("roles.ai.links") },
+    { title: t("roles.arch.title"), desc: t("roles.arch.desc"), links: t("roles.arch.links") },
   ]
+  const homeGuides = HOME_GUIDES.map(slug =>
+    data.guides.nodes.find(g => g.fields.slug === slug),
+  ).filter(Boolean)
 
   return (
     <PortfolioLayout avatar={avatar}>
@@ -231,7 +257,10 @@ const IndexPage = ({ data }) => {
             href={CALENDAR_URL}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackEvent("click", "cta", "book_a_call_hero")}
+            onClick={() => {
+              trackEvent("click", "cta", "book_a_call_hero")
+              trackLead(LEAD_METHOD.booking, "home_hero")
+            }}
           >
             {t("nav.bookACall")}
           </a>
@@ -274,6 +303,13 @@ const IndexPage = ({ data }) => {
               <span className="role-card-badge">{role.badge}</span>
             )}
             <p className="role-card-desc">{renderDesc(role.desc)}</p>
+            <div style={ROLE_LINK_LIST_STYLE}>
+              {role.links.map(link => (
+                <Link key={link.to} to={link.to} className="cs-row-read" style={ROLE_LINK_STYLE}>
+                  {link.label} <span className="cs-arrow">&rarr;</span>
+                </Link>
+              ))}
+            </div>
           </div>
         ))}
       </section>
@@ -307,12 +343,42 @@ const IndexPage = ({ data }) => {
 
       <FeaturedCaseStudies />
 
+      {homeGuides.length > 0 && (
+        <section className="cs-carousel-section">
+          <div className="cs-carousel-head">
+            <div className="cs-carousel-head-text">
+              <h2>{t("guides.homeTitle")}</h2>
+              <p>{t("guides.homeSub")}</p>
+            </div>
+            <Link to="/guides/" className="nav-pill nav-pill-primary cs-carousel-seeall">
+              {t("guides.seeAll")} &rarr;
+            </Link>
+          </div>
+          <div className="cs-featured-grid">
+            {homeGuides.map(g => (
+              <Link key={g.fields.slug} to={g.fields.slug} className="cs-related-card">
+                <span className="cs-row-kicker cs-p-build">{g.frontmatter.kicker || "Guide"}</span>
+                <span className="cs-related-title">{g.frontmatter.title}</span>
+              </Link>
+            ))}
+          </div>
+          <div className="cs-featured-more">
+            <Link to="/guides/" className="nav-pill nav-pill-primary">
+              {t("guides.seeAll")} &rarr;
+            </Link>
+          </div>
+        </section>
+      )}
+
       <SelectedWork />
 
       <section className="cta-bottom">
         <h2 className="cta-bottom-title">{t("cs.closeH2")}</h2>
         <a
-          onClick={() => trackEvent("click", "cta", "lets_talk_bottom")}
+          onClick={() => {
+            trackEvent("click", "cta", "lets_talk_bottom")
+            trackLead(LEAD_METHOD.booking, "home_bottom")
+          }}
           className="nav-pill nav-pill-primary cta-bottom-button"
           href={CALENDAR_URL}
           target="_blank"
@@ -322,7 +388,10 @@ const IndexPage = ({ data }) => {
         </a>
         {social?.whatsapp && (
           <a
-            onClick={() => trackEvent("click", "cta", "whatsapp_bottom")}
+            onClick={() => {
+              trackEvent("click", "cta", "whatsapp_bottom")
+              trackLead(LEAD_METHOD.whatsapp, "home_bottom")
+            }}
             className="nav-pill nav-pill-whatsapp cta-bottom-button"
             href={social.whatsapp}
             target="_blank"
@@ -435,6 +504,17 @@ export const pageQuery = graphql`
     avatar: file(absolutePath: { regex: "/profile-pic.jpeg/" }) {
       childImageSharp {
         gatsbyImageData(width: 40, height: 40, quality: 95, layout: FIXED)
+      }
+    }
+    guides: allMarkdownRemark(filter: { fields: { kind: { eq: "guide" } } }) {
+      nodes {
+        fields {
+          slug
+        }
+        frontmatter {
+          title
+          kicker
+        }
       }
     }
   }

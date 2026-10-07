@@ -3,7 +3,7 @@ title: "How I bypassed Claude's invisible text watermark in one rewrite"
 date: "2026-08-12T12:00:00.000Z"
 description: "Anthropic weaves an invisible watermark into Claude's text. I reproduced SynthID-Text on a modern model, calibrated the detector, and measured exactly what erases the mark."
 tags: ["Tech", "AI"]
-private: false
+private: true
 ---
 
 [Anthropic's support page](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content) says it plainly: supported Claude models weave an imperceptible watermark into the text they generate. Online, that grew into a bigger claim, that the mark fingerprints your prompt and traces the text back to you. So I reproduced the method and measured it.
