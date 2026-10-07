@@ -18,8 +18,8 @@ Nobody bills the digging, so nobody sees it. It shows up as an evening lost to a
 
 - **Filing happens on its own.** Each new PDF or scan is read and filed. A document that is genuinely ambiguous waits in a short review queue instead of being filed wrong.
 - **Questions get answers with proof.** You ask how much you paid a supplier last year and get the figure, the page and the file, so checking takes one click.
-- **Your files stay in the building.** The documents and the index live on your machine; only page text goes to the model that reads it.
-- **It costs almost nothing to run.** Most digital PDFs cost nothing to process, only real scans go to a paid model, and there is no hosted database to pay for. A backup is a copied file.
+- **Your files stay in the building.** The documents and the index live on your machine. Google's Gemini models read the scans, decide where each document is filed and prepare it for search, so page text and scanned images pass through Google.
+- **It costs almost nothing to run.** A free local tool reads the text of digital PDFs, only real scans need a model to read them, and there is no hosted database to pay for. A backup is a copied file.
 
 One limit: it is built for one owner or a small office with a large archive. Ten people writing to it at once needs a different design, and I would tell you that up front.
 

@@ -81,7 +81,7 @@ The gate rule was blunt: three consecutive fully green runs across 24 hours befo
 
 > War story. The parity gate lit up red for a full day over two differences, and both turned out to be bugs in my `normalize` rather than the API. The legacy API returned a tag array in insertion order and the new one sorted it, so identical content diffed. The old stack emitted `&amp;` where the new one emitted a bare `&` inside JSON strings, in a handful of headlines. Both were semantically equal and both failed the gate. The lesson: your equivalence checker is code too, and a suite that cries wolf is as dangerous as one that stays silent, because you learn to ignore it.
 
-**Tens of millions of pageviews a month kept flowing, and several hundred thousand registered reader accounts carried over with nobody locked out.**
+**Tens of millions of pageviews a month kept flowing, and every registered reader account carried over with nobody locked out.**
 
 ## Cut over in small reversible steps
 
