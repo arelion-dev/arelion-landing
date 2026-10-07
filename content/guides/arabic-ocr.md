@@ -172,6 +172,8 @@ The second number is word recall: the share of the transcription's words that ap
 
 Before scoring, both texts go through the same cleanup: invisible characters out, kashida (ـ) and harakat out, the alef forms أ إ آ turned into ا, ى into ي, Arabic-Indic digits into 0-9, punctuation into one form. Without it the numbers mean little. The MOHRE booklet stretches words with kashida to justify its lines, and its PDF text holds 1,435 of them on eight pages; the OCR engines return almost none, since a reader does not see them as letters. On the 32 law images, Apple Vision gets 7.9% of characters wrong without the cleanup and 0.3% with it, and kashida explain nearly all of the gap. Harakat weigh less: keeping them moves Apple from 0.3% to 1%. If harakat matter in your documents (Quran, poetry, quoted law), score with them.
 
+The code, the page list and the per-page scores are public on GitHub, in [arabic-ocr-bench](https://github.com/Antonhansel/arabic-ocr-bench). Its scripts download the law PDFs and the two datasets from their publishers, so anyone can rebuild the test pages and run the engines again.
+
 ## What this test does not cover
 
 - **Printed text only.** No handwriting, no ID cards, no invoices or stamped forms. I looked for public sets of those with full-page transcriptions and a license that lets me publish results, and I found none.
