@@ -3,6 +3,7 @@ import { Link, graphql } from "gatsby"
 
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
+import LegalDisclaimer from "../components/legal-disclaimer"
 import CASE_STUDIES from "../data/case-studies"
 import { offersOf, offerClass, headlineOf } from "../data/offers"
 
@@ -10,10 +11,6 @@ import { offersOf, offerClass, headlineOf } from "../data/offers"
 // the answer. One markdown file in content/guides = one page, English only.
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
-
-// Shown at the end of every guide (asked on 2026-10-07): several guides read laws.
-const DISCLAIMER =
-  "General information, not legal advice. The rules change often: before you act on this guide, check the current texts and ask a lawyer qualified in the UAE."
 
 // WhatsApp link that names the page, so a lead says which guide brought it.
 const whatsappFor = (base, title) =>
@@ -50,12 +47,7 @@ const GuideTemplate = ({ data }) => {
           </section>
         )}
 
-        <p
-          className="cs-disclaimer"
-          style={{ fontSize: "0.9em", color: "var(--color-text-light)", borderTop: "1px solid rgba(0, 0, 0, 0.1)", paddingTop: "12px", marginTop: "32px" }}
-        >
-          {DISCLAIMER}
-        </p>
+        <LegalDisclaimer />
 
         {proofs.length > 0 && (
           <section className="cs-related">
