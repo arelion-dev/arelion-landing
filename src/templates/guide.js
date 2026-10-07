@@ -18,7 +18,7 @@ const whatsappFor = (base, title) =>
 
 const GuideTemplate = ({ data }) => {
   const { html, frontmatter } = data.markdownRemark
-  const { title, description, kicker, faq, related } = frontmatter
+  const { title, description, kicker, faq, related, legalDisclaimer } = frontmatter
   const proofs = (related || []).map(slug => CASE_STUDIES.find(c => c.slug === slug)).filter(Boolean)
   const whatsapp = data.site.siteMetadata.social?.whatsapp
 
@@ -47,7 +47,8 @@ const GuideTemplate = ({ data }) => {
           </section>
         )}
 
-        <LegalDisclaimer />
+        {/* On by default; a guide that does not talk about the law sets legalDisclaimer: false. */}
+        {legalDisclaimer !== false && <LegalDisclaimer />}
 
         {proofs.length > 0 && (
           <section className="cs-related">
@@ -149,6 +150,7 @@ export const pageQuery = graphql`
         description
         kicker
         related
+        legalDisclaimer
         date(formatString: "YYYY-MM-DD")
         faq {
           q
