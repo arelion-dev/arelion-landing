@@ -10,7 +10,8 @@ const built = existsSync(join(PUBLIC, "index.html"))
 const html = p => readFileSync(join(PUBLIC, p, "index.html"), "utf8")
 
 const jsonLd = page =>
-  [...html(page).matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)].map(m => JSON.parse(m[1]))
+  // Gatsby adds attributes such as data-gatsby-head to the tag, so match any attribute list.
+  [...html(page).matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)].map(m => JSON.parse(m[1]))
 
 test("the home's structured data serves Dubai and Abu Dhabi as cities", { skip: !built && "no build in public/" }, () => {
   const org = jsonLd("").flatMap(d => d["@graph"] || [d]).find(n => n["@id"] === "https://arelion.dev/#organization")
