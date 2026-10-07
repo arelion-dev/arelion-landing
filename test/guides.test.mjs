@@ -119,6 +119,13 @@ test("no built page or llms.txt still says boutique tech studio", { skip: !built
   assert.deepEqual(hits, [])
 })
 
+// Several guides read UAE laws: every guide page ends with the not-legal-advice line (asked on 2026-10-07).
+test("every guide page carries the not-legal-advice disclaimer", { skip: !built && "no build in public/" }, () => {
+  for (const g of guides) {
+    assert.match(html(g.path), /class="cs-disclaimer"[^>]*>General information, not legal advice\. [^<]*ask a lawyer qualified in the UAE\.</, g.path)
+  }
+})
+
 // The default share image (static/og-cover.png) shows this line: change both together.
 test("the default share image is described with the current positioning", { skip: !built && "no build in public/" }, () => {
   const alt = html("").match(/<meta property="og:image:alt" content="([^"]*)"/)?.[1]
