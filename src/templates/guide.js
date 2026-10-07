@@ -4,14 +4,21 @@ import { Link, graphql } from "gatsby"
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import LegalDisclaimer from "../components/legal-disclaimer"
+import OcrPicker from "../components/ocr-picker"
+import AutomateFirst from "../components/automate-first"
 import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 import CASE_STUDIES from "../data/case-studies"
 import { offersOf, offerClass, headlineOf } from "../data/offers"
+import { ANCHOR as OCR_PICKER } from "../tools/ocr-picker"
+import { ANCHOR as AUTOMATE_FIRST } from "../tools/automate-first"
 
 // Guides answer a buyer's question and point to the case studies that prove
 // the answer. One markdown file in content/guides = one page, English only.
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
+
+// Decision tools a guide can show under its lead, picked by its `tool` frontmatter field.
+const TOOLS = { [OCR_PICKER]: OcrPicker, [AUTOMATE_FIRST]: AutomateFirst }
 
 // WhatsApp link that names the page, so a lead says which guide brought it.
 const whatsappFor = (base, title) =>
@@ -30,6 +37,9 @@ const GuideTemplate = ({ data }) => {
   const modified = frontmatter.updated || frontmatter.date
   const proofs = (related || []).map(slug => CASE_STUDIES.find(c => c.slug === slug)).filter(Boolean)
   const whatsapp = data.site.siteMetadata.social?.whatsapp
+  const Tool = frontmatter.tool && TOOLS[frontmatter.tool]
+  // A misspelt tool name fails the build instead of shipping a guide without its tool.
+  if (frontmatter.tool && !Tool) throw new Error(`${title}: unknown tool "${frontmatter.tool}"`)
 
   return (
     <PortfolioLayout>
@@ -50,6 +60,8 @@ const GuideTemplate = ({ data }) => {
             </>
           )}
         </p>
+
+        {Tool && <Tool whatsappHref={whatsapp && whatsappFor(whatsapp, title)} />}
 
         <section className="cs-section cs-article" dangerouslySetInnerHTML={{ __html: html }} />
 
@@ -184,6 +196,7 @@ export const pageQuery = graphql`
         kicker
         related
         legalDisclaimer
+        tool
         date(formatString: "YYYY-MM-DD")
         updated(formatString: "YYYY-MM-DD")
         faq {

@@ -5,6 +5,7 @@ path: "/ai-automation-uae/"
 date: "2026-10-07"
 kicker: "AI automation"
 related: ["agent-eval", "output-contracts-in-production"]
+tool: "automate-first"
 faq:
   - q: "What is AI automation for a company?"
     a: "Software that does the repetitive part of office work, such as first drafts, invoice follow-up and monthly reports, while a person checks and approves what goes out. The point is to give the team its time back for work that needs judgment."

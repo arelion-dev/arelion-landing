@@ -133,6 +133,8 @@ exports.createSchemaCustomization = ({ actions }) => {
       related: [String]
       faq: [GuideFaq]
       legalDisclaimer: Boolean
+      # Decision tool a guide shows under its lead (src/templates/guide.js).
+      tool: String
     }
 
     type GuideFaq {
