@@ -923,7 +923,8 @@ const CASE_STUDIES = [
       },
     ],
   },
-  {
+  // Draft: kept out of production builds (see the note at the end of this file).
+  ...(process.env.NODE_ENV === "development" ? [{
     slug: "human-in-the-loop",
     date: "2025-12-04",
     article: "/blog/human-in-the-loop/",
@@ -982,8 +983,9 @@ const CASE_STUDIES = [
         },
       },
     ],
-  },
-  {
+  }] : []),
+  // Draft: kept out of production builds (see the note at the end of this file).
+  ...(process.env.NODE_ENV === "development" ? [{
     slug: "ai-attack-surface",
     date: "2026-03-26",
     article: "/blog/ai-attack-surface/",
@@ -1042,7 +1044,7 @@ const CASE_STUDIES = [
         },
       },
     ],
-  },
+  }] : []),
   {
     slug: "llm-sleeper-agents",
     date: "2026-08-12",
@@ -1124,7 +1126,8 @@ const CASE_STUDIES = [
     tags: ["PostgreSQL", "GraphQL", "Next.js", "Cloud Run", "Cloudflare", "migration"],
     stack: ["PostgreSQL", "GraphQL", "Next.js", "Cloud Run", "Cloudflare", "React"],
   },
-  {
+  // Draft: kept out of production builds (see the note at the end of this file).
+  ...(process.env.NODE_ENV === "development" ? [{
     slug: "wire-service-intelligence",
     date: "2025-12-18",
     article: "/blog/wire-service-intelligence/",
@@ -1146,8 +1149,9 @@ const CASE_STUDIES = [
     },
     tags: ["LLM pipeline", "embeddings", "deduplication", "editorial AI", "CMS"],
     stack: ["LLM pipeline", "embeddings", "dedup clustering", "CMS integration"],
-  },
-  {
+  }] : []),
+  // Draft: kept out of production builds (see the note at the end of this file).
+  ...(process.env.NODE_ENV === "development" ? [{
     slug: "archive-to-intelligence",
     date: "2026-02-12",
     article: "/blog/archive-to-intelligence/",
@@ -1169,7 +1173,7 @@ const CASE_STUDIES = [
     },
     tags: ["entity extraction", "embeddings", "Postgres", "LLM pipeline", "media archive"],
     stack: ["entity extraction", "LLM pipeline", "Postgres", "embeddings"],
-  },
+  }] : []),
   {
     slug: "fractional-cpto-programme",
     date: "2026-04-23",
@@ -1315,7 +1319,8 @@ const CASE_STUDIES = [
     // No faq: the page shows no "Questions I get about this" section.
     article: "/blog/hotel-lobby-ai-trend/",
   },
-  {
+  // Draft: kept out of production builds (see the note at the end of this file).
+  ...(process.env.NODE_ENV === "development" ? [{
     slug: "ai-music-lora-ace-step",
     date: "2026-10-04",
     pillar: "Lab",
@@ -1338,14 +1343,23 @@ const CASE_STUDIES = [
     stack: ["Python", "ACE-Step 1.5", "Side-Step", "PEFT", "PyTorch ROCm", "Gemini 3.1 Pro", "librosa", "ffmpeg", "yt-dlp"],
     // Tutorial article only: no business version, no faq (same shape as hotel-lobby-ai-video).
     article: "/blog/ai-music-lora-ace-step/",
-  },
+  }] : []),
 ]
 
 // Attach the rich, grounded body (TL;DR + decision-maker narrative with the tech
 // woven in) from each case study's own JSON, so the long bilingual prose lives
 // outside this metadata file. This overrides any inline body above.
+// Drafts (`published: false`) keep their rich body in case-studies-rich-drafts/.
+// Both the draft entries above and that folder sit behind a
+// process.env.NODE_ENV === "development" test, which a production build replaces
+// with false and strips, so no draft text reaches the browser bundle. They used
+// to be bundled whole and only filtered at export, which made them readable in
+// the site's public JavaScript.
 CASE_STUDIES.forEach(cs => {
-  const rich = require(`./case-studies-rich/${cs.slug}.json`)
+  let rich
+  if (process.env.NODE_ENV === "development" && !cs.published)
+    rich = require(`./case-studies-rich-drafts/${cs.slug}.json`)
+  else rich = require(`./case-studies-rich/${cs.slug}.json`)
   cs.tldr = rich.tldr
   cs.body = rich.sections
 })
