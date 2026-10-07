@@ -125,6 +125,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       kicker: String
       related: [String]
       faq: [GuideFaq]
+      legalDisclaimer: Boolean
     }
 
     type GuideFaq {

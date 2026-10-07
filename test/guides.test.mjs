@@ -121,13 +121,20 @@ test("no built page or llms.txt still says boutique tech studio", { skip: !built
 
 // Several guides read UAE laws: every guide page ends with a visible not-legal-advice
 // note, a box with a bold label (asked on 2026-10-07, then asked to make it stand out).
-test("every guide page carries the not-legal-advice disclaimer", { skip: !built && "no build in public/" }, () => {
+// A guide that does not talk about the law (the OCR benchmarks) may turn it off.
+const NOTE = /class="cs-disclaimer"[^>]*><strong>Not legal advice\.<\/strong> General information only\. [^<]*ask a lawyer qualified in the UAE\.</
+const LEGAL_TOPIC = /\b(lawyer|legal basis|legal advice|PDPL|DIFC|ADGM|data protection|compliance|regulator)/i
+
+test("every guide page carries the not-legal-advice disclaimer unless it turns it off", { skip: !built && "no build in public/" }, () => {
   for (const g of guides) {
-    assert.match(
-      html(g.path),
-      /class="cs-disclaimer"[^>]*><strong>Not legal advice\.<\/strong> General information only\. [^<]*ask a lawyer qualified in the UAE\.</,
-      g.path,
-    )
+    if (g.data.legalDisclaimer === false) assert.doesNotMatch(html(g.path), /class="cs-disclaimer"/, g.path)
+    else assert.match(html(g.path), NOTE, g.path)
+  }
+})
+
+test("only guides that do not talk about the law turn the disclaimer off", () => {
+  for (const g of guides.filter(g => g.data.legalDisclaimer === false)) {
+    assert.doesNotMatch(g.raw, LEGAL_TOPIC, `${g.file} talks about the law and must keep the disclaimer`)
   }
 })
 
