@@ -33,6 +33,7 @@ How to engage: read the case studies at https://arelion.dev/case-studies for pro
 ## Guides
 
 - [Legal AI for law firms in the UAE](https://arelion.dev/legal-ai-uae/)
+- [AI automation in the UAE: what to automate first](https://arelion.dev/ai-automation-uae/)
 - [UAE PDPL and AI: using ChatGPT with personal data](https://arelion.dev/guides/uae-pdpl-ai/)
 - [DIFC Data Protection Law and AI: Regulation 10 explained](https://arelion.dev/guides/difc-data-protection-ai/)
 - [ChatGPT Business, Enterprise or private AI for a UAE company](https://arelion.dev/guides/chatgpt-business-vs-private-ai-uae/)
