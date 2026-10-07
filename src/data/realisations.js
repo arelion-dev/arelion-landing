@@ -12,12 +12,12 @@ const REALISATIONS = [
     tags: ["AI/ML", "Product", "Scale-up"],
     outcomes: [
       {
-        en: "Designed and shipped a full-stack Document AI SaaS: secure chat with documents, multi-language OCR + PDF parsing, RAG over structured & unstructured data, smart chunking, semantic filtering and full source traceability",
-        fr: "Conception et livraison d'un SaaS Document AI full-stack : chat sécurisé avec les documents, OCR multilingue et parsing PDF, RAG sur données structurées et non structurées, chunking intelligent, filtrage sémantique et traçabilité complète des sources",
+        en: "A document AI product: teams ask their own files a question and get the answer with its source, scanned PDFs and several languages included",
+        fr: "Un produit de document AI : les équipes posent une question à leurs propres fichiers et reçoivent la réponse avec sa source, PDF scannés et plusieurs langues compris",
       },
       {
-        en: "LLM-agnostic backend (OpenAI, Claude, Mistral) on a single VPS via Dokku",
-        fr: "Backend agnostique au LLM (OpenAI, Claude, Mistral) sur un seul VPS via Dokku",
+        en: "Works with OpenAI, Claude or Mistral, and ran on a single server",
+        fr: "Fonctionne avec OpenAI, Claude ou Mistral, sur un seul serveur",
       },
       {
         en: "Sold the IP and codebase in 2025",
@@ -38,21 +38,21 @@ const REALISATIONS = [
   {
     id: "loreal",
     client: "L'Oréal",
-    role: { en: "Senior Software Engineer · LLM & GenAI", fr: "Ingénieur logiciel senior · LLM & GenAI" },
+    role: { en: "Senior AI Engineer · Document AI", fr: "Ingénieur IA senior · Document AI" },
     period: "2024 → present",
     tags: ["AI/ML", "Architecture", "Data"],
     outcomes: [
       {
-        en: "Engineered an ingestion + OCR + vectorization pipeline for millions of multilingual documents",
-        fr: "Pipeline d'ingestion, OCR et vectorisation pour des millions de documents multilingues",
+        en: "R&D teams search 100M+ pages in many languages and get answers with their source",
+        fr: "Les équipes R&D cherchent dans 100M+ pages en plusieurs langues et obtiennent des réponses sourcées",
       },
       {
-        en: "Designed high-throughput GCP microservices on Terraform: sub-second p95 semantic search across 30 brands",
-        fr: "Microservices GCP à haut débit sur Terraform : recherche sémantique p95 sous la seconde sur 30 marques",
+        en: "Answers in under a second across 30 brands",
+        fr: "Réponse en moins d'une seconde, sur 30 marques",
       },
       {
-        en: "Shipped a multi-LLM “Chat with your docs” interface with semantic search",
-        fr: "Interface « Chat with your docs » multi-LLM avec recherche sémantique",
+        en: "Built the pipeline that reads, OCRs and indexes the documents, on Google Cloud",
+        fr: "Pipeline qui lit les documents, les passe à l'OCR et les indexe, sur Google Cloud",
       },
     ],
     stack: [
@@ -74,12 +74,12 @@ const REALISATIONS = [
     tags: ["Advisory", "Architecture"],
     outcomes: [
       {
-        en: "Advisory + delivery on a long-running consulting engagement (NDA)",
-        fr: "Conseil et delivery sur une mission de consulting au long cours (NDA)",
+        en: "Technology lead on a long-running engagement (NDA): product, platform and AI",
+        fr: "Direction technique d'une mission au long cours (NDA) : produit, plateforme et IA",
       },
       {
-        en: "Editorial workflow and performance overhaul in flight",
-        fr: "Refonte du workflow éditorial et des performances en cours",
+        en: "Editorial workflow and site performance rebuilt",
+        fr: "Workflow éditorial et performances du site refondus",
       },
     ],
     stack: ["Next.js", "GraphQL", "Prisma", "GCP", "Cloud Run", "Terraform"],
@@ -91,8 +91,8 @@ const REALISATIONS = [
     tags: ["Product", "Scale-up"],
     outcomes: [
       {
-        en: "Crypto auto-investing SaaS: DCA bots running on Binance, Kraken, FTX and Coinbase, with unlimited bots on Premium",
-        fr: "SaaS d'investissement crypto automatique : des bots DCA sur Binance, Kraken, FTX et Coinbase, bots illimités en Premium",
+        en: "Investors automated their recurring crypto purchases on Binance, Kraken, FTX and Coinbase",
+        fr: "Les investisseurs automatisaient leurs achats crypto récurrents sur Binance, Kraken, FTX et Coinbase",
       },
       {
         en: "57k€ invested through the platform across 4,530 bot-executed trades",
@@ -113,16 +113,16 @@ const REALISATIONS = [
     tags: ["Architecture", "Data", "Full-stack"],
     outcomes: [
       {
-        en: "Engineered an analytics platform processing 400M+ events/month: fault-tolerant, idempotent ETL workflows",
-        fr: "Plateforme analytics traitant 400M+ événements par mois : workflows ETL idempotents et tolérants aux pannes",
+        en: "Campaign managers create a campaign in half the clicks",
+        fr: "Les responsables de campagne créent une campagne en deux fois moins de clics",
       },
       {
-        en: "Optimized real-time sales-KPI pipelines in Python/SQL: cut clicks-to-create-campaign by 50%",
-        fr: "Pipelines de KPI de ventes en temps réel optimisés en Python/SQL : moitié moins de clics pour créer une campagne",
+        en: "Analytics on 400M+ events a month, with data jobs that can rerun safely after a failure",
+        fr: "Analytics sur 400M+ événements par mois, avec des traitements qu'on peut relancer sans risque après une panne",
       },
       {
-        en: "Automated CI/CD on GCP, Docker and GitLab for zero-downtime releases",
-        fr: "CI/CD automatisé sur GCP, Docker et GitLab pour des releases sans interruption",
+        en: "Releases without downtime, through automated deployment",
+        fr: "Mises en production sans interruption, grâce à un déploiement automatisé",
       },
     ],
     stack: ["Python", "SQL", "React", "TypeScript", "Node.js", "GCP", "Docker", "GitLab CI"],
@@ -135,12 +135,12 @@ const REALISATIONS = [
     tags: ["Leadership", "Product", "Scale-up"],
     outcomes: [
       {
-        en: "Designed and shipped Malaysia's first fully online company-secretary service: registration, banking and accounting under one roof",
-        fr: "Conception et lancement du premier service de secrétariat d'entreprise 100% en ligne de Malaisie : création, banque et comptabilité au même endroit",
+        en: "Company incorporation cut from weeks to hours by automating it end to end",
+        fr: "Création d'entreprise ramenée de plusieurs semaines à quelques heures, automatisée de bout en bout",
       },
       {
-        en: "Cut incorporation time from weeks to hours through end-to-end automation",
-        fr: "Délai de création d'entreprise réduit de plusieurs semaines à quelques heures grâce à l'automatisation de bout en bout",
+        en: "Malaysia's first fully online company-secretary service: registration, banking and accounting in one place",
+        fr: "Premier service de secrétariat d'entreprise 100% en ligne de Malaisie : création, banque et comptabilité au même endroit",
       },
       {
         en: "Hired and led the engineering team; sold stake in 2020 (company still active)",
@@ -157,12 +157,12 @@ const REALISATIONS = [
     tags: ["Leadership", "Product", "Scale-up"],
     outcomes: [
       {
-        en: "Designed a secure, automated system for crypto transaction accounting and compliance",
-        fr: "Système sécurisé et automatisé pour la comptabilité et la conformité des transactions crypto",
+        en: "Crypto accounting and compliance done automatically, for 100+ currencies and millions of transactions",
+        fr: "Comptabilité et conformité des transactions crypto automatisées, sur 100+ devises et des millions de transactions",
       },
       {
-        en: "Shipped real-time digital-asset tracking: 100+ currencies, millions of transactions, worldwide client base",
-        fr: "Suivi d'actifs numériques en temps réel : 100+ devises, des millions de transactions, une clientèle mondiale",
+        en: "Real-time asset tracking for clients worldwide",
+        fr: "Suivi des actifs en temps réel pour une clientèle mondiale",
       },
       {
         en: "Showcased at G20 Osaka 2019; team pivoted into Foundingbird",

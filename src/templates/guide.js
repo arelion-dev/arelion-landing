@@ -4,6 +4,7 @@ import { Link, graphql } from "gatsby"
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import CASE_STUDIES from "../data/case-studies"
+import { offersOf, offerClass, headlineOf } from "../data/offers"
 
 // Guides answer a buyer's question and point to the case studies that prove
 // the answer. One markdown file in content/guides = one page, English only.
@@ -62,8 +63,8 @@ const GuideTemplate = ({ data }) => {
             <div className="cs-related-grid">
               {proofs.map(r => (
                 <Link key={r.slug} to={`/case-studies/${r.slug}`} className="cs-related-card">
-                  <span className={`cs-row-kicker cs-p-${r.pillar.toLowerCase()}`}>{r.pillar}</span>
-                  <span className="cs-related-title">{r.title.en}</span>
+                  <span className={`cs-row-kicker ${offerClass(r)}`}>{offersOf(r)[0]}</span>
+                  <span className="cs-related-title">{headlineOf(r)}</span>
                 </Link>
               ))}
             </div>

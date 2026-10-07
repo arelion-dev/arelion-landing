@@ -3,6 +3,8 @@
 // Grounded in real work; anonymized (no client names in deep detail).
 // Translatable fields are bilingual { en, fr }. Consumers pick by lang.
 // Non-translatable: slug, pillar, featured, tags, stack, demo.sources.
+// `offers`, `lab` and `outcome` (card headline for client work) are read through
+// src/data/offers.js.
 
 const CASE_STUDIES = [
   {
@@ -11,6 +13,8 @@ const CASE_STUDIES = [
     article: "/blog/synthid-watermark/",
     articleBusiness: "/blog/synthid-watermark-business/",
     pillar: "Lab",
+    offers: ["Lab"],
+    lab: true,
     featured: false,
     published: true,
     title: {
@@ -60,6 +64,8 @@ const CASE_STUDIES = [
     slug: "multi-tier-cache-at-scale",
     date: "2026-06-12",
     pillar: "Build",
+    offers: ["Fractional CTO"],
+    outcome: { en: "50M requests on a busy day, and a story live everywhere within a minute" },
     featured: false,
     published: true,
     title: {
@@ -104,6 +110,8 @@ const CASE_STUDIES = [
     slug: "prompt-injection-defense",
     date: "2026-07-02",
     pillar: "LLM",
+    offers: ["AI agents"],
+    outcome: { en: "An AI agent that a booby-trapped document cannot turn against you" },
     featured: false,
     published: true,
     title: {
@@ -156,6 +164,8 @@ const CASE_STUDIES = [
     slug: "perseverant-research-agent",
     date: "2026-08-05",
     pillar: "Build",
+    offers: ["Document AI", "AI agents"],
+    outcome: { en: "Multi-part questions answered in full, with each claim cited to the page" },
     featured: true,
     published: true,
     title: {
@@ -218,6 +228,8 @@ const CASE_STUDIES = [
     slug: "newsroom-second-brain",
     date: "2026-07-16",
     pillar: "Build",
+    offers: ["Company brain"],
+    outcome: { en: "New hires up to speed in days instead of weeks, with answers from 500,000+ articles" },
     featured: true,
     published: true,
     title: {
@@ -282,6 +294,8 @@ const CASE_STUDIES = [
     article: "/blog/document-intelligence-at-scale/",
     articleBusiness: "/blog/document-intelligence-at-scale-business/",
     pillar: "Build",
+    offers: ["Document AI", "Company brain"],
+    outcome: { en: "Half a day hunting a number in old studies becomes a one-second answer" },
     featured: true,
     published: true,
     title: {
@@ -375,6 +389,8 @@ const CASE_STUDIES = [
     article: "/blog/agent-eval/",
     articleBusiness: "/blog/agent-eval-business/",
     pillar: "Build",
+    offers: ["AI agents"],
+    outcome: { en: "Every prompt or model change re-tested on real cases before users see it" },
     featured: false,
     published: true,
     title: {
@@ -435,6 +451,8 @@ const CASE_STUDIES = [
     article: "/blog/ocr-benchmark/",
     articleBusiness: "/blog/ocr-benchmark-business/",
     pillar: "Audit",
+    offers: ["Document AI"],
+    outcome: { en: "The OCR engine picked on 100+ annotated documents, not on a vendor demo" },
     featured: false,
     published: true,
     title: {
@@ -496,6 +514,8 @@ const CASE_STUDIES = [
     article: "/blog/life-os/",
     articleBusiness: "/blog/life-os-business/",
     pillar: "Build",
+    offers: ["Lab"],
+    lab: true,
     featured: false,
     published: true,
     title: {
@@ -545,6 +565,8 @@ const CASE_STUDIES = [
     article: "/blog/doc-agent-on-sqlite/",
     articleBusiness: "/blog/doc-agent-on-sqlite-business/",
     pillar: "Build",
+    offers: ["Company brain", "AI automation"],
+    outcome: { en: "Every incoming PDF filed on its own, and any invoice found with one question" },
     featured: false,
     published: true,
     title: {
@@ -631,6 +653,8 @@ const CASE_STUDIES = [
     article: "/blog/legal-research-assistant/",
     articleBusiness: "/blog/legal-research-assistant-business/",
     pillar: "Build",
+    offers: ["Legal AI"],
+    outcome: { en: "Legal research where every citation can be checked, and none is invented" },
     featured: false,
     published: true,
     title: {
@@ -705,6 +729,8 @@ const CASE_STUDIES = [
     article: "/blog/ai-buyer-sales-training/",
     articleBusiness: "/blog/ai-buyer-sales-training-business/",
     pillar: "Build",
+    offers: ["AI agents", "AI automation"],
+    outcome: { en: "Reps rehearse the hard call on an AI buyer, not on leads you paid for" },
     featured: false,
     published: true,
     title: {
@@ -772,6 +798,8 @@ const CASE_STUDIES = [
     article: "/blog/local-ai-stack/",
     articleBusiness: "/blog/local-ai-stack-business/",
     pillar: "Build",
+    offers: ["Private LLMs"],
+    lab: true,
     featured: true,
     published: true,
     title: {
@@ -839,6 +867,8 @@ const CASE_STUDIES = [
     article: "/blog/output-contracts-in-production/",
     articleBusiness: "/blog/output-contracts-in-production-business/",
     pillar: "Automate",
+    offers: ["AI automation"],
+    outcome: { en: "Thousands of staff ask live company data a question in plain language" },
     featured: false,
     published: true,
     title: {
@@ -1020,6 +1050,8 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/llm-sleeper-agents-business/",
     pillar: "Lab",
     pillars: ["LLM", "Lab"],
+    offers: ["Lab"],
+    lab: true,
     featured: false,
     published: true,
     title: {
@@ -1073,6 +1105,8 @@ const CASE_STUDIES = [
     article: "/blog/newsroom-platform-rebuild/",
     articleBusiness: "/blog/newsroom-platform-rebuild-business/",
     pillar: "Transform",
+    offers: ["Fractional CTO"],
+    outcome: { en: "500,000+ articles moved to a new platform, with no downtime readers could see" },
     featured: true,
     published: true,
     title: {
@@ -1156,6 +1190,8 @@ const CASE_STUDIES = [
     article: "/blog/fractional-cpto-programme/",
     articleBusiness: "/blog/fractional-cpto-programme-business/",
     pillar: "Transform",
+    offers: ["Fractional CTO"],
+    outcome: { en: "One accountable owner for five technology workstreams, each shipping on its own" },
     featured: true,
     published: true,
     title: {
@@ -1177,6 +1213,8 @@ const CASE_STUDIES = [
     slug: "fine-tuning-mistral-7b-personal-conversations",
     date: "2025-09-17",
     pillar: "LLM",
+    offers: ["Private LLMs"],
+    lab: true,
     featured: false,
     published: true,
     title: {
@@ -1215,6 +1253,8 @@ const CASE_STUDIES = [
     slug: "wingman-github-copilot-from-scratch",
     date: "2024-07-14",
     pillar: "LLM",
+    offers: ["Private LLMs"],
+    lab: true,
     featured: false,
     published: true,
     title: {
@@ -1253,6 +1293,8 @@ const CASE_STUDIES = [
     slug: "hotel-lobby-ai-video",
     date: "2026-09-24",
     pillar: "Lab",
+    offers: ["Lab"],
+    lab: true,
     featured: true,
     published: true,
     title: {
