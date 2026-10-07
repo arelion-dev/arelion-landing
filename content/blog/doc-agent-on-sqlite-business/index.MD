@@ -1,29 +1,30 @@
 ---
 title: "The document agent that runs on SQLite"
 date: "2026-01-22T19:30:00.000Z"
-description: "Local document AI: I build private document search you self-host, so years of your own PDFs answer plain questions with a source link. Your files stay on your machine."
+description: "Every incoming PDF filed on its own, and any old invoice found with one question and its source page. Private document search on your own machine."
 tags: ["AI", "Business"]
 private: true
 ---
 
-I build private document search you run on your own machine, over years of your own PDFs. You ask "how much did I pay this supplier last year", and you get the number, the exact page it sits on, and a one-click link to the file so you can check it. **The whole searchable brain is one file on your machine, next to your documents.**
+Somebody in your company is the search engine. When you need last year's invoice from a supplier, they stop what they are doing and dig through folders, sometimes for a whole evening. I build a private document agent that takes over that job: it files every incoming PDF and scan on its own, and answers a plain question with the number, the page it sits on and a link to the file.
 
-## Why this matters to you
+**An answer in under 2 seconds instead of an evening of digging. The whole searchable archive is one file on your machine.**
 
-Someone on your side already does this search by hand. Friday night, folder by folder, hunting one invoice they know exists across two years of scans. That person became your company's search engine, and it costs an evening every time you need an old document in a hurry. The obvious shortcut, uploading the whole archive to a hosted AI, means handing your financials and your private contracts to a third party. Most owners refuse that, and they're right to.
+## Where the time goes today
 
-## What it costs you today
+Nobody bills the digging, so nobody sees it. It shows up as an evening lost to an old invoice, or a lease clause quoted from memory because pulling the original takes too long. Filing is the same: every new document waits for someone to put it in the right folder. And the day the one person who knows where everything lives is out sick or leaves, that knowledge leaves with them.
 
-Every lookup is a person stopping their real job to dig. Finding one old invoice can burn an evening, and that's an evening nobody bills. A lease clause quoted from memory because pulling the source takes too long is a decision made on a guess. And the day the one person who knows where everything lives is out sick or leaves, the search engine walks out the door with them. All the knowledge is in the files. The cost is that reaching it depends on one overloaded human.
+## What changes
 
-## What actually helps
+- **Filing happens on its own.** Each new PDF or scan is read and filed. A document that is genuinely ambiguous waits in a short review queue instead of being filed wrong.
+- **Questions get answers with proof.** You ask how much you paid a supplier last year and get the figure, the page and the file, so checking takes one click.
+- **Your files stay in the building.** The documents and the index live on your machine; only page text goes to the model that reads it.
+- **It costs almost nothing to run.** Most digital PDFs cost nothing to process, only real scans go to a paid model, and there is no hosted database to pay for. A backup is a copied file.
 
-An answer in under 2 seconds instead of an evening, drawn only from your own documents, with the exact page and a link so you verify in one click. It reads cheaply: most digital PDFs cost nothing to process, so a model only gets paid for the real scans, and the search index lives in one file with no hosted vector database and about $0 of infrastructure a month. When a document is genuinely ambiguous, it waits in a short review queue instead of being filed wrong. You back the whole thing up by copying a file.
+One limit: it is built for one owner or a small office with a large archive. Ten people writing to it at once needs a different design, and I would tell you that up front.
 
 ## What I can do
 
-I build this and set it up on your own hardware, so your files and the index stay in the building. Only page text goes out, to the model that reads and files it. It runs today, over years of real paperwork, for a business owner who refused to put his files in the cloud. Answers come from his own documents and always show their source, so the machine can't quietly invent a number. One honest boundary: it's single-machine by design, right for one owner or a small office with a large archive, and the wrong shape for ten people writing to it at once. If that's your case, I'll say so up front.
+It runs today over years of paperwork for a business owner who refused to put his files in the cloud. I can look at how your team files and finds documents now, and send you in writing what this would take off their desk.
 
-An accounting practice on years of client files, a law office where the answer is always "somewhere in the file", a property manager juggling leases, a medical practice bound by confidentiality: any back office where one person quietly became the search engine has this exact problem. If your team keeps redigging through the same folders, this is the shape of the answer.
-
-Want me to look at yours, in writing?
+Want me to look at yours?

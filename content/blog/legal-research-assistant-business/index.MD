@@ -1,36 +1,30 @@
 ---
 title: "A legal research assistant"
 date: "2025-11-13T17:05:00.000Z"
-description: "An AI that answers questions about the law, backs every citation with a text that actually exists, and refuses to bluff when it cannot verify a reference."
+description: "Legal research with a checkable source on every citation and none invented. Research time on a cited point down about 60%."
 tags: ["AI", "Business"]
 private: true
 ---
 
-An AI that answers questions about the law and backs every point with a citation you can click and check. Each footnote resolves to a real article on the official portal, or the tool tells you plainly it can't confirm the reference.
+A lawyer reads "Article 12 of Decree No. 4 of 2022" in an AI answer and acts on it. If that article does not exist, the tool has planted an error in someone's advice, and from then on your team re-checks every line by hand, which is the time the tool was meant to save. I build legal research assistants where every citation is checked in code before anyone sees it.
 
-**0 fabricated citations reach the user.**
+**0 fabricated citations reach the user. Research time on a cited point down about 60%.**
 
-## Why this matters to you
+## Where the time goes today
 
-If your team answers client or regulator questions out of a body of rules, a fluent wrong answer is your exposure. A legal chatbot that invents case law is worse than no chatbot. A lawyer who reads "Article 12 of Decree No. 4 of 2022" acts on it, and if that article doesn't exist or the number is off by one, the tool has planted a landmine in someone's advice. The trap is that a wrong answer looks exactly like a right one, so nobody on your team can tell which paragraphs to trust.
+Legal research is slow because every reference has to be found, then verified. A general chatbot looks faster, but its answers read the same whether they are right or wrong, so the checking moves to the end and takes just as long.
 
-## What a confident wrong answer costs you
+## What changes
 
-Once your people stop trusting the output, they re-check every line by hand, which erases the time the tool was supposed to save. Worse is the citation that slips through. One fabricated reference, seen once by a client or a regulator, ends trust in the whole product, and in a regulated setting a wrong citation in filed advice is a liability you carry rather than the vendor.
+- **Every point cites a real article, or says it cannot.** Each footnote opens the official text. A reference that does not verify is removed before you see it.
+- **Checking takes one click.** The lawyer opens the source instead of searching for it.
+- **A coarser true answer over a precise guess.** When an article number will not confirm, the tool keeps the law and drops the number.
+- **A clear "I can't confirm this"** when coverage runs out, so a half-answer is never taken for a full one.
 
-## What actually reduces the risk
-
-The fix is to stop letting the model assert what the law says. It retrieves from a trusted, version-tracked corpus, and every citation is checked against the laws just retrieved and against the article text on file before you see it. A reference that doesn't verify gets stripped. When an article number won't confirm, the tool keeps the law and drops the number, so you get a coarser true answer instead of a precise-looking guess.
-
-This already runs at real scale for a regulated client in a live jurisdiction. What your people feel:
-
-- **Every answer cites a real article, or says it cannot.** No plausible-looking references, no guessed article numbers.
-- **Research time on a cited point down about 60%.** Your people find the exact article in one click.
-- **Answers you can hand to a regulator.** A clickable footnote per point, resolving to the official source text.
-- **A clear "I can't confirm this" when coverage runs out**, so a half-answer never gets acted on as a full one.
+It runs for a regulated client in a live jurisdiction, on a version-tracked body of rules. One limit: it does not fix the source data. If a law is missing or out of date in the corpus, the tool names the gap.
 
 ## What I can do
 
-I build and deliver the assistant over your body of rules, and I can start with an assessment of where a fluent wrong answer would hurt you most and what a grounded version would take. The honest boundary: this doesn't fix your source data. If a law is missing or out of date in the corpus, the tool names the gap. It won't invent the missing text.
+I build the assistant over your body of rules, and I can start with an assessment of where a fluent wrong answer would hurt you most. If you work with UAE law, my guide to [legal AI for UAE law firms](/legal-ai-uae/) covers the specifics.
 
 Want me to look at yours, in writing?
