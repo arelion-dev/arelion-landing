@@ -3,6 +3,7 @@ title: "DIFC Data Protection Law and AI: Regulation 10 explained"
 description: "Who must follow DIFC Data Protection Law No. 5 of 2020, what Regulation 10 requires of AI systems and since when, the 2025 changes, and what to build."
 path: "/guides/difc-data-protection-ai/"
 date: "2026-10-06"
+updated: "2026-10-07"
 kicker: "Guide"
 related: ["legal-research-assistant", "agent-eval", "output-contracts-in-production"]
 faq:
@@ -75,7 +76,7 @@ The June 2026 [consultation paper](https://assets.difc.com/v1/media/edge/images/
 On my reading, a DIFC firm that puts client personal data into ChatGPT is the Deployer, since it receives the output, and so it is treated as the controller.
 
 - **The duties stay with you.** The guidance note to 10.3.1 expects deployers to buy Systems only from developers that give "contractual comfort of compliance-by-design".
-- **Transfers.** Article 26 allows transfers out of the DIFC to jurisdictions on the Commissioner's [adequacy list](https://www.difc.com/business/registrars-and-commissioners/commissioner-of-data-protection/data-export-and-sharing), which includes the EU, the UK, California and ADGM. It does not name the United States as a whole or onshore UAE, and the Commissioner's Office says it is reassessing the EU-US framework. Elsewhere you need an Article 27 safeguard, such as the DIFC standard contractual clauses.
+- **Transfers.** Article 26 allows transfers out of the DIFC to jurisdictions on the Commissioner's [adequacy list](https://www.difc.com/business/registrars-and-commissioners/commissioner-of-data-protection/data-export-and-sharing), which includes the EU, the UK, California and ADGM. It does not name the United States as a whole or onshore UAE, and the Commissioner's Office says it is reassessing the EU-US framework. Elsewhere you need an Article 27 safeguard, such as the DIFC standard contractual clauses, or one of the narrow derogations in Article 27(3), such as the person's explicit consent after being told the risks.
 
 One point is unclear to me. Regulation 10.2.2 requires notice to "users" at first use, and it does not say how that works when staff paste a client's data into a tool the client never sees. I would ask the Commissioner's Office before guessing. It is a common situation: in the Commissioner's 2025 [survey of DIFC firms](https://assets.difc.com/v1/media/edge/images/dubaiintern0078-difcexperie96c5-production-3253/media/project/difcexperiences/difc/difcwebsite/documents/registrars-and-commissioners/regulation-10/aso-survey-report.pdf), vendor proprietary AI and provider-hosted models were the most common AI in use.
 

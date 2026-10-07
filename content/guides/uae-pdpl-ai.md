@@ -3,6 +3,7 @@ title: "UAE PDPL and AI: using ChatGPT with personal data"
 description: "What the UAE PDPL means when staff paste client data into ChatGPT: legal bases, transfers abroad, rights, breaches, and the regulations still missing in 2026."
 path: "/guides/uae-pdpl-ai/"
 date: "2026-10-06"
+updated: "2026-10-07"
 kicker: "Guide"
 related: ["local-ai-stack", "legal-research-assistant", "document-intelligence-at-scale"]
 faq:
@@ -46,7 +47,7 @@ My advice: no personal data in personal accounts, and a written list of approved
 
 ## The servers are usually abroad
 
-Processing outside the UAE is Cross-Border Processing (Article 1). The [PDPL](https://uaelegislation.gov.ae/en/legislations/1972) allows it on two routes. Article 22 covers transfers the regulator approves: to a country with data protection legislation, or under an agreement the UAE has joined. I found no published list of approved countries. Article 23 covers, among others, a contract binding the recipient to the PDPL's measures, the person's explicit consent, and a transfer needed to perform a contract with them. Its detailed conditions are left to the executive regulations (Article 23(2)).
+Processing outside the UAE is Cross-Border Processing (Article 1). The [PDPL](https://uaelegislation.gov.ae/en/legislations/1972) allows it on two routes. Article 22 covers transfers the regulator approves: to a country with data protection legislation, or under an agreement the UAE has joined. I found no published list of approved countries. Article 23 covers, among others, the person's explicit consent, a transfer needed to perform a contract with them, and, for a recipient in a country with no data protection law, a contract binding it to the PDPL's measures (Article 23(1)(a)). Its detailed conditions are left to the executive regulations (Article 23(2)).
 
 A UAE region helps. OpenAI lists the United Arab Emirates for [data residency and model inference](https://help.openai.com/en/articles/9903489-data-residency-and-inference-residency-for-chatgpt) on ChatGPT Enterprise and Edu. The same page says logins, billing data, workspace metadata and some processing can still sit outside the region.
 
