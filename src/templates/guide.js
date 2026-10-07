@@ -10,6 +10,10 @@ import CASE_STUDIES from "../data/case-studies"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
+// Shown at the end of every guide (asked on 2026-10-07): several guides read laws.
+const DISCLAIMER =
+  "General information, not legal advice. The rules change often: before you act on this guide, check the current texts and ask a lawyer qualified in the UAE."
+
 // WhatsApp link that names the page, so a lead says which guide brought it.
 const whatsappFor = (base, title) =>
   `${String(base).split("?")[0]}?text=${encodeURIComponent(`Hi Antonin, I read "${title}" on arelion.dev`)}`
@@ -44,6 +48,13 @@ const GuideTemplate = ({ data }) => {
             ))}
           </section>
         )}
+
+        <p
+          className="cs-disclaimer"
+          style={{ fontSize: "0.9em", color: "var(--color-text-light)", borderTop: "1px solid rgba(0, 0, 0, 0.1)", paddingTop: "12px", marginTop: "32px" }}
+        >
+          {DISCLAIMER}
+        </p>
 
         {proofs.length > 0 && (
           <section className="cs-related">
