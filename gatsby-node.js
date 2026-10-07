@@ -140,3 +140,9 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `)
 }
+
+// No source maps in the production bundle: Gatsby publishes them next to each
+// script, and they carry the full source, comments and draft data included.
+exports.onCreateWebpackConfig = ({ stage, actions }) => {
+  if (stage === "build-javascript") actions.setWebpackConfig({ devtool: false })
+}
