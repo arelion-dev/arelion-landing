@@ -452,7 +452,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/ocr-benchmark-business/",
     pillar: "Audit",
     offers: ["Document AI"],
-    outcome: { en: "The OCR engine picked on 100+ annotated documents, not on a vendor demo" },
+    outcome: { en: "The OCR engine chosen after scoring every candidate on 100+ annotated documents" },
     featured: false,
     published: true,
     title: {
@@ -730,7 +730,7 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/ai-buyer-sales-training-business/",
     pillar: "Build",
     offers: ["AI agents", "AI automation"],
-    outcome: { en: "Reps rehearse the hard call on an AI buyer, not on leads you paid for" },
+    outcome: { en: "Reps rehearse the hard call on an AI buyer before they meet a real lead" },
     featured: false,
     published: true,
     title: {

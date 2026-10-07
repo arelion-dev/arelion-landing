@@ -1,38 +1,29 @@
 ---
 title: "A vendor waits, an owner moves"
 date: "2026-04-23T13:25:00.000Z"
-description: "A fractional CTO for media and startups who owns delivery instead of advising. You keep the strategy; I own the roadmap and the team that ships it, phased so every step pays on its own."
+description: "A fractional CTO who owns delivery: decisions in days instead of weeks, audit findings shipped instead of filed, and a phased plan that pays as it goes."
 tags: ["Leadership", "Business"]
 private: true
 ---
 
-I run tech and product for a national news outlet as its fractional CTO and product owner, a fractional CPTO consultant on a programme contract rather than a payroll line. You keep the strategy. I take the roadmap and every technical decision, plus the team that ships them. Need a part-time CTO for an AI product who owns delivery instead of advising on it? That's the job.
+Most companies that stall on digital have an ownership problem. The strategy is clear in the leaders' heads, an audit lists what to fix, and weeks later nothing has moved because making it happen is nobody's job. I take that job as a fractional CTO and product owner: a part-time CTO on a programme contract instead of a payroll line, who owns the roadmap, every technical decision and the team that ships.
 
-## Why this matters to you
+**For a national news outlet: decisions in days instead of weeks, 500,000+ articles consolidated into one queryable database, and a rebuilt platform carrying tens of millions of pageviews a month.**
 
-Most companies that stall on digital have an ownership problem. The strategy lives in your leaders' heads and the assets are real, but nobody's actual job is to turn either into product. So an audit lands and nobody acts on it, and the archive you spent years building earns nothing while the product looks the way it did a decade ago.
+## Where the time goes today
 
-## An unowned audit is a bill you pay twice
+Without one owner, every decision goes round the table, and the audit findings you paid for wait in a report. You pay for them once, then again while nobody acts on them. Hiring a full in-house leadership team fixes that, but it costs more and takes months before anyone touches the real work.
 
-You pay for the findings, then you pay again while nobody acts on them. That's what a missing tech and product function costs, and it compounds: every quarter a competitor ships the format you could have shipped, while the value sitting in your archive stays locked. Hiring a full in-house leadership team to fix it costs more and takes months before anyone touches the real work.
+## What changes
 
-## What changes when one person owns it
+- **One name on every item.** Roadmap, incidents and results have an owner, so nobody asks whose job something is.
+- **Phases that pay on their own.** Turn the data on, personalise, monetise, then compete: each phase pays before the next starts, so the budget is never staked on one promise a year out.
+- **A small team with the right specialists.** Me and a dedicated engineer, with backend, frontend, mobile, data or AI capacity added per phase, for less than the loaded cost of the in-house equivalent.
 
-Every roadmap item, incident and result gets one name on it, so when something breaks the question is never whose job it is. The audit findings that sat for weeks are shipped work now. The programme runs in five areas, phased so each pays before the next starts: turn the data on, personalise, monetise, then compete. Phase one is live before phase four begins, so you never stake the whole budget on one promise a year out. Decisions land in days instead of weeks, because one person answers for them.
-
-This is already shipped at real scale. Over a decade of articles, 500,000+ of them, are consolidated into one queryable database. A rebuilt platform carries tens of millions of monthly pageviews instead of fighting the product on top of it. The team is me and a dedicated engineer, with specialist capacity pulled in per phase, covering backend, frontend, mobile, data and AI, for less than the loaded cost of hiring the equivalent in-house.
-
-One honest boundary: a fractional owner is a bet on one person's bandwidth and judgment, and the model is async, so I'm not in the building for a fast corridor decision. I trade that reach for speed and single-point accountability on purpose. It's a real tradeoff.
+One limit: a fractional owner is a bet on one person's bandwidth, and I work async, so I am not in the building for a quick corridor decision. I trade that for speed and one point of accountability.
 
 ## What I can do
 
-I own the tech and product function end to end, from the roadmap through to what ships, with the team under one name and judged on response times. I can run it as a full programme like this one, or start with the piece that's most stuck and prove it before you commit to the rest. You get someone senior enough for your board who still makes the daily calls, at a fraction of a full C-level hire.
+I can run it as a full programme, or start with the part that is most stuck and prove it before you commit to the rest. It fits a media group with an archive nobody can sell, a startup between CTOs, or an AI product that needs someone to own the roadmap instead of advising from the side.
 
-## Who this is for
-
-- A media group sitting on an archive nobody can sell.
-- A startup between CTOs that can't afford a year of drift.
-- An AI product that needs a part-time CTO to own the roadmap rather than advise from the side.
-- A family or professional-services firm digitising after decades run on instinct.
-
-In each case the strategy already lives in your leaders' heads. What's missing is the person who turns it into a roadmap and a team and owns what ships. Want me to look at your setup, in writing?
+Want me to look at your setup, in writing?
