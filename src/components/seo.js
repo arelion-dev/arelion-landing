@@ -45,7 +45,7 @@ const SEO = ({ description, title, pathname, image, children }) => {
       <meta property="og:image:secure_url" content={ogImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:alt" content={image ? title : "arelion.dev, boutique tech studio"} />
+      <meta property="og:image:alt" content={image ? title : "arelion.dev, AI consultant in Dubai"} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta
         name="twitter:creator"

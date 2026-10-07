@@ -108,3 +108,9 @@ test("no built page still says Technical Blog", { skip: !built && "no build in p
   const hits = walk(PUBLIC).filter(f => /Technical Blog|Blog technique/i.test(readFileSync(f, "utf8")))
   assert.deepEqual(hits, [])
 })
+
+// The default share image (static/og-cover.png) shows this line: change both together.
+test("the default share image is described with the current positioning", { skip: !built && "no build in public/" }, () => {
+  const alt = html("").match(/<meta property="og:image:alt" content="([^"]*)"/)?.[1]
+  assert.equal(alt, "arelion.dev, AI consultant in Dubai")
+})
