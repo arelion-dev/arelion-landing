@@ -18,4 +18,9 @@ export const trackLead = (method, location) => {
   }
 }
 
+// A decision tool on a guide page (src/tools) showed a result. Only the tool
+// and a fixed result key are sent, never what the visitor typed.
+export const trackToolResult = (tool, result) =>
+  trackEvent("tool", tool, result)
+
 export default trackEvent

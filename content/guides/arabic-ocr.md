@@ -6,6 +6,7 @@ date: "2026-10-07"
 kicker: "Arabic OCR"
 legalDisclaimer: false
 related: ["ocr-benchmark", "document-intelligence-at-scale"]
+tool: "ocr-picker"
 faq:
   - q: "What is the best OCR for Arabic?"
     a: "On 10 real scans and photos of printed pages, Gemini made the fewest mistakes: 1.6% of characters wrong for Gemini 3.5 Flash, 1.9% for Gemini 3.8 Flash at a third of a cent a page. Of the engines that run on your own machine, Surya was best on 44 real pages (3.9%), then Apple Live Text (5.0%) at 0.3 seconds a page on a Mac. On clean pages rendered from UAE law PDFs, Apple Vision was best with 0.3%."
