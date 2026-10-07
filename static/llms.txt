@@ -1,6 +1,6 @@
 # arelion.dev
 
-> Arelion is a boutique tech studio. One senior engineer, a few clients at a time. AI systems, cloud platforms and SaaS, from design to production.
+> Arelion is an AI consultancy in Dubai. One senior engineer who designs AI systems and builds them, from roadmap to production: document AI, legal AI, private LLMs and cloud platforms.
 
 Arelion is operated by Antonin Ribeaud (ARELION FZCO, IFZA Dubai Silicon Oasis, UAE, trade license 78400, constituted 26/01/2026). Independent software engineering since 2014: AI for business (RAG, semantic search, LLM integrations, workflow automation), solutions architecture (ingestion pipelines at scale, analytics platforms), technical product leadership (Scrum Product Owner certified, two startups cofounded and run end-to-end). Past work: 100M+ pages processed at L'Oreal, 400M+ events per month at relevanC, Top 5 App Store app with 1M+ downloads, built and sold a Document AI SaaS (privately.ai). Stack: React, React Native, TypeScript, Python, FastAPI, GCP, Terraform. Engaged with 20+ clients including L'Oreal, Deezer, Free Malaysia Today, relevanC, Epsor, Foundingbird and Kaunto.
 

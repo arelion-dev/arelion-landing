@@ -7,9 +7,9 @@ const AboutPage = ({ location }) => (
   <Layout location={location}>
     <h1>About Arelion</h1>
     <p>
-      Arelion is a boutique technology studio. One senior engineer, a few
-      clients at a time. The work runs from design to production: AI systems,
-      cloud platforms and SaaS.
+      Arelion is an AI consultancy in Dubai. One senior engineer, a few clients
+      at a time, who designs AI systems and builds them, from roadmap to
+      production: document AI, legal AI, private LLMs and cloud platforms.
     </p>
     <p>
       Arelion is operated by Antonin Ribeaud through ARELION FZCO, a company
@@ -127,7 +127,7 @@ export default AboutPage
 export const Head = ({ location }) => (
   <SEO
     title="About"
-    description="Arelion is a boutique tech studio operated by Antonin Ribeaud (ARELION FZCO, Dubai). AI systems, cloud platforms and SaaS, from design to production."
+    description="Arelion is an AI consultancy in Dubai run by Antonin Ribeaud (ARELION FZCO). AI systems from roadmap to production: document AI, legal AI, private LLMs."
     pathname={location.pathname}
   />
 )
