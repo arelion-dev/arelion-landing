@@ -26,7 +26,7 @@ The law is [Federal Decree-Law No. 45 of 2021](https://uaelegislation.gov.ae/en/
 
 Article 2(2) leaves out government data and government bodies, data held by security and judicial authorities, health and banking data that have their own laws, and companies in free zones with their own data protection law. For health data, the preamble cites [Federal Law No. 2 of 2019](https://u.ae/en/about-the-uae/digital-uae/whole-of-government-approach/digital-health/ict-in-the-health-sector) on ICT in health fields.
 
-The DIFC has its own law and, since 2023, Regulation 10 on AI systems, which I cover in [DIFC Data Protection Law and AI](/guides/difc-data-protection-ai/). ADGM has its own [Data Protection Regulations 2021](https://www.adgm.com/operating-in-adgm/office-of-data-protection). This page is about onshore UAE.
+The DIFC has its own law and, since 2023, Regulation 10 on AI systems, which I cover in [DIFC Data Protection Law and AI](/guides/difc-data-protection-ai/). ADGM has its own [Data Protection Regulations 2021](https://www.adgm.com/operating-in-adgm/office-of-data-protection), covered in [ADGM Data Protection Regulations and AI](/guides/adgm-data-protection-ai/). This page is about onshore UAE.
 
 ## Consent first, then a list of exceptions
 
