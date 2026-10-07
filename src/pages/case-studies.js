@@ -5,16 +5,15 @@ import { useI18n } from "../i18n"
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import CASE_STUDIES from "../data/case-studies"
+import { OFFERS, offersOf, offerClass, headlineOf } from "../data/offers"
 
-// A study belongs to one or more pillars: `pillars` (array) when set, else the
-// single `pillar`. This lets one study appear under several tabs.
-const pillarsOf = c => (Array.isArray(c.pillars) && c.pillars.length ? c.pillars : [c.pillar])
-
-// Only show tabs for pillars that actually have visible case studies
-// (e.g. "LLM" stays hidden in prod until one of its studies is published).
-const PILLARS = ["Build", "Automate", "Transform", "Audit", "LLM", "Lab"].filter(p =>
-  CASE_STUDIES.some(c => pillarsOf(c).includes(p)),
-)
+// One tab per offer that has a visible study. A study can sit under several
+// offers (`offers`, main one first).
+const TABS = OFFERS.map(o => o.name).filter(name => CASE_STUDIES.some(c => offersOf(c).includes(name)))
+const offerRank = cs => {
+  const i = OFFERS.findIndex(o => o.name === offersOf(cs)[0])
+  return i < 0 ? OFFERS.length : i
+}
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 // Dev-only publish-state overlay. Never rendered in a production build, so it is
@@ -30,11 +29,17 @@ const CaseStudiesPage = () => {
 
   const shown = useMemo(
     () =>
-      (active ? CASE_STUDIES.filter(c => pillarsOf(c).includes(active)) : CASE_STUDIES)
+      (active ? CASE_STUDIES.filter(c => offersOf(c).includes(active)) : CASE_STUDIES)
         .slice()
-        .sort((a, b) => (b.date || "").localeCompare(a.date || "")),
+        // In the order of the offers, then most recent first.
+        .sort((a, b) => offerRank(a) - offerRank(b) || (b.date || "").localeCompare(a.date || "")),
     [active],
   )
+  // Client work first, my own projects (lab) apart below.
+  const groups = [
+    { key: "client", title: t("cs.clientTitle"), items: shown.filter(c => !c.lab) },
+    { key: "lab", title: t("cs.labTitle"), lede: t("cs.labLede"), items: shown.filter(c => c.lab) },
+  ].filter(g => g.items.length > 0)
 
   return (
     <PortfolioLayout>
@@ -44,11 +49,11 @@ const CaseStudiesPage = () => {
           <h1>{t("cs.h1")}</h1>
           <p className="cs-hero-dek">{t("cs.dek")}</p>
           <p className="cs-hero-intro">
-            Technical write-ups on real engineering problems: RAG and document
-            intelligence over millions of pages, autonomous research agents, LLM
-            evaluation, OCR benchmarking, multi-tier caching at scale, local AI
-            stacks, and AI security. Each one shows the concrete problem, the
-            architecture, and what transfers to your team.
+            Client work, sorted by what it does for the business: repetitive
+            work taken off a team, answers found in seconds instead of hours,
+            large document collections searched with a source on every answer.
+            Each case has a short business version and the full technical
+            write-up. My own projects sit apart, under Lab.
           </p>
         </div>
       </section>
@@ -62,7 +67,7 @@ const CaseStudiesPage = () => {
           >
             {t("cs.tabsAll")}
           </button>
-          {PILLARS.map(p => (
+          {TABS.map(p => (
             <button
               key={p}
               type="button"
@@ -87,32 +92,44 @@ const CaseStudiesPage = () => {
           </p>
         )}
 
-        <div className="cs-index-grid">
-          {shown.map(cs => (
-            <Link
-              key={cs.slug}
-              to={`/case-studies/${cs.slug}`}
-              className={`cs-row${IS_DEV && !cs.published ? " cs-row-draft" : ""}`}
-            >
-              {IS_DEV && (
-                <span
-                  className={`cs-flag ${cs.published ? "cs-flag-pub" : "cs-flag-draft"}`}
+        {groups.map(g => (
+          <section key={g.key} className="cs-index-group" style={{ marginTop: g.key === "lab" ? "56px" : "28px" }}>
+            <h2 style={{ margin: "0 0 4px" }}>{g.title}</h2>
+            {g.lede && <p style={{ margin: "0 0 16px", color: "var(--color-text-light)" }}>{g.lede}</p>}
+            <div className="cs-index-grid">
+              {g.items.map(cs => (
+                <Link
+                  key={cs.slug}
+                  to={`/case-studies/${cs.slug}`}
+                  className={`cs-row${IS_DEV && !cs.published ? " cs-row-draft" : ""}`}
                 >
-                  {cs.published ? "PUBLISHED" : "DRAFT · local only"}
-                </span>
-              )}
-              <p className={`cs-row-kicker cs-p-${cs.pillar.toLowerCase()}`}>
-                {pillarsOf(cs).join(" · ")}
-              </p>
-              <h2 className="cs-row-title">{cs.title[lang]}</h2>
-              <p className="cs-row-stat">{cs.metric[lang]}</p>
-              <p className="cs-row-dek">{cs.hook[lang]}</p>
-              <span className="cs-row-read">
-                {t("cs.read")} <span className="cs-arrow">&rarr;</span>
-              </span>
-            </Link>
-          ))}
-        </div>
+                  {IS_DEV && (
+                    <span
+                      className={`cs-flag ${cs.published ? "cs-flag-pub" : "cs-flag-draft"}`}
+                    >
+                      {cs.published ? "PUBLISHED" : "DRAFT · local only"}
+                    </span>
+                  )}
+                  <p className={`cs-row-kicker ${offerClass(cs)}`}>
+                    {offersOf(cs).join(" · ")}
+                  </p>
+                  <h3 className="cs-row-title">{headlineOf(cs, lang)}</h3>
+                  {cs.outcome && (
+                    <p style={{ margin: "0 0 8px", fontSize: "0.85em", color: "var(--color-text-light)" }}>
+                      {cs.title[lang]}
+                    </p>
+                  )}
+                  {/* Client cards already lead with the result; the metric line would repeat it. */}
+                  {!cs.outcome && <p className="cs-row-stat">{cs.metric[lang]}</p>}
+                  <p className="cs-row-dek">{cs.hook[lang]}</p>
+                  <span className="cs-row-read">
+                    {t("cs.read")} <span className="cs-arrow">&rarr;</span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
 
       <section className="cs-close">
@@ -153,7 +170,7 @@ export const Head = ({ location }) => {
   return (
     <SEO
       title="Case studies"
-      description="Technical write-ups on AI engineering: RAG, document intelligence, LLM evaluation, OCR benchmarking, caching at scale, and AI security. The concrete problem, the architecture, and what transfers to your team."
+      description="Client work by an AI consultant in Dubai: AI automation, company brains, document AI and legal AI. What changed for each business, and how I built it."
       pathname={location.pathname}
     >
       <script

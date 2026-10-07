@@ -3,9 +3,8 @@ import { Link } from "gatsby"
 
 import { useI18n } from "../i18n"
 import CASE_STUDIES from "../data/case-studies"
+import { offersOf, offerClass, headlineOf } from "../data/offers"
 import MobileRail from "./mobile-rail"
-
-const pillarClass = pillar => `cs-p-${pillar.toLowerCase()}`
 
 const FeaturedCaseStudies = () => {
   const { t } = useI18n()
@@ -13,8 +12,9 @@ const FeaturedCaseStudies = () => {
   const lang = "en"
   // Nothing published yet: no empty band on the home page.
   if (CASE_STUDIES.length === 0) return null
-  // Show the strongest few (featured), most recent first, then link to the rest.
-  const featured = CASE_STUDIES.filter(cs => cs.featured)
+  // Show the strongest few (featured client work, not lab), most recent first,
+  // then link to the rest.
+  const featured = CASE_STUDIES.filter(cs => cs.featured && !cs.lab)
   const items = (featured.length ? featured : CASE_STUDIES)
     .slice()
     .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
@@ -39,10 +39,10 @@ const FeaturedCaseStudies = () => {
             to={`/case-studies/${cs.slug}`}
             className="cs-row"
           >
-            <p className={`cs-row-kicker ${pillarClass(cs.pillar)}`}>
-              {cs.pillar}
+            <p className={`cs-row-kicker ${offerClass(cs)}`}>
+              {offersOf(cs)[0]}
             </p>
-            <h3 className="cs-row-title">{cs.title[lang]}</h3>
+            <h3 className="cs-row-title">{headlineOf(cs, lang)}</h3>
             <p className="cs-row-stat">{cs.metric[lang]}</p>
             <p className="cs-row-dek">{cs.hook[lang]}</p>
             <span className="cs-row-read">

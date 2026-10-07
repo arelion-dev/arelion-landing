@@ -7,6 +7,7 @@ import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import WatermarkSim from "../components/synthid-watermark-sim"
 import CASE_STUDIES from "../data/case-studies"
+import { offersOf, offerClass, headlineOf } from "../data/offers"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
@@ -130,13 +131,13 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
   const articleDate = shownArticle && shownArticle.frontmatter.date
   if (!cs) return null
 
-  // Related studies: same pillar or a shared tag, for internal linking and
+  // Related studies: same main offer or a shared tag, for internal linking and
   // topical clustering. Up to three, self excluded.
   const csTags = new Set(cs.tags || [])
   const related = CASE_STUDIES.filter(
     o =>
       o.slug !== cs.slug &&
-      (o.pillar === cs.pillar || (o.tags || []).some(tag => csTags.has(tag))),
+      (offersOf(o)[0] === offersOf(cs)[0] || (o.tags || []).some(tag => csTags.has(tag))),
   ).slice(0, 3)
 
   // Guides whose `related` frontmatter cites this study. Linking back lets
@@ -156,7 +157,7 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
       <article className="cs-detail">
         <div className="cs-crumb">
           <Link to="/case-studies">{t("cs.crumb")}</Link>
-          <span> / {(Array.isArray(cs.pillars) && cs.pillars.length ? cs.pillars : [cs.pillar]).join(" · ")}</span>
+          <span> / {offersOf(cs).join(" · ")}</span>
         </div>
 
         <div className="cs-tags cs-detail-tags">
@@ -351,10 +352,10 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
                   to={`/case-studies/${r.slug}`}
                   className="cs-related-card"
                 >
-                  <span className={`cs-row-kicker cs-p-${r.pillar.toLowerCase()}`}>
-                    {r.pillar}
+                  <span className={`cs-row-kicker ${offerClass(r)}`}>
+                    {offersOf(r)[0]}
                   </span>
-                  <span className="cs-related-title">{r.title[csLang] || r.title.en}</span>
+                  <span className="cs-related-title">{headlineOf(r, csLang) || r.title.en}</span>
                 </Link>
               ))}
             </div>
