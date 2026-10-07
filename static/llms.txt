@@ -45,7 +45,6 @@ How to engage: read the case studies at https://arelion.dev/case-studies for pro
 - [Surya OCR on Arabic: tested on 100 pages](https://arelion.dev/guides/surya-ocr-arabic/)
 - [PaddleOCR on Arabic scans: blank pages and the fix](https://arelion.dev/guides/paddleocr-arabic/)
 - [Software and app development in Abu Dhabi](https://arelion.dev/software-development-abu-dhabi/)
-- [ADGM Data Protection Regulations and AI](https://arelion.dev/guides/adgm-data-protection-ai/)
 
 ## Contact
 

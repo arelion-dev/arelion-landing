@@ -38,7 +38,7 @@ The limit is bandwidth. A project that needs twenty developers from the first we
 ## Building for Abu Dhabi
 
 - **Arabic and English from the first screen.** An app for Abu Dhabi usually needs both languages, and Arabic means right-to-left layouts. Plan them in the first design; adding them to finished screens means redoing the layouts. Arabic text also breaks where people do not expect it: copy it out of a PDF and some words come back with their letters swapped ([Arabic PDF to text](/guides/arabic-pdf-to-text/)).
-- **The data rules depend on where you are registered.** A company in Abu Dhabi Global Market follows ADGM's own data protection regulations ([ADGM guide](/guides/adgm-data-protection-ai/)). Most other companies in Abu Dhabi follow the federal PDPL ([UAE PDPL guide](/guides/uae-pdpl-ai/)). Know which one applies before you decide where the app keeps personal data.
+- **The data rules depend on where you are registered.** A company in Abu Dhabi Global Market follows ADGM's own data protection regulations. Most other companies in Abu Dhabi follow the federal PDPL ([UAE PDPL guide](/guides/uae-pdpl-ai/)). Know which one applies before you decide where the app keeps personal data.
 - **AI inside the product.** If the app has to answer questions from your own documents, I have built that at scale ([company brain](/guides/company-brain/)).
 
 ## How a project runs
