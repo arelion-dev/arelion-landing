@@ -119,10 +119,15 @@ test("no built page or llms.txt still says boutique tech studio", { skip: !built
   assert.deepEqual(hits, [])
 })
 
-// Several guides read UAE laws: every guide page ends with the not-legal-advice line (asked on 2026-10-07).
+// Several guides read UAE laws: every guide page ends with a visible not-legal-advice
+// note, a box with a bold label (asked on 2026-10-07, then asked to make it stand out).
 test("every guide page carries the not-legal-advice disclaimer", { skip: !built && "no build in public/" }, () => {
   for (const g of guides) {
-    assert.match(html(g.path), /class="cs-disclaimer"[^>]*>General information, not legal advice\. [^<]*ask a lawyer qualified in the UAE\.</, g.path)
+    assert.match(
+      html(g.path),
+      /class="cs-disclaimer"[^>]*><strong>Not legal advice\.<\/strong> General information only\. [^<]*ask a lawyer qualified in the UAE\.</,
+      g.path,
+    )
   }
 })
 

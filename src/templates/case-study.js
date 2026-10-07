@@ -5,6 +5,7 @@ import { Link, graphql } from "gatsby"
 import { useI18n } from "../i18n"
 import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
+import LegalDisclaimer from "../components/legal-disclaimer"
 import WatermarkSim from "../components/synthid-watermark-sim"
 import CASE_STUDIES from "../data/case-studies"
 import { offersOf, offerClass, headlineOf } from "../data/offers"
@@ -327,6 +328,8 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
             ))}
           </section>
         )}
+
+        {offersOf(cs).includes("Legal AI") && <LegalDisclaimer />}
 
         {guides.length > 0 && (
           <section className="cs-related">

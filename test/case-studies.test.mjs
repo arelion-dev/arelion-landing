@@ -62,3 +62,12 @@ test("the home carousel shows client work only", { skip: !built && "no build in 
     assert.ok(offersOf(cs).length > 0)
   }
 })
+
+// Pages that talk about the law end with a visible not-legal-advice note (asked on 2026-10-07).
+test("case studies sold as Legal AI carry the not-legal-advice note, others do not", { skip: !built && "no build in public/" }, () => {
+  assert.ok(CASE_STUDIES.some(cs => offersOf(cs).includes("Legal AI")), "no Legal AI case study")
+  for (const cs of CASE_STUDIES) {
+    const has = /class="cs-disclaimer"[^>]*><strong>Not legal advice\.<\/strong>/.test(html(`case-studies/${cs.slug}`))
+    assert.equal(has, offersOf(cs).includes("Legal AI"), cs.slug)
+  }
+})
