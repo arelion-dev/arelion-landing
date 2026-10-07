@@ -109,6 +109,16 @@ test("no built page still says Technical Blog", { skip: !built && "no build in p
   assert.deepEqual(hits, [])
 })
 
+// "Boutique tech studio" was dropped on 2026-10-06: no built page or llms.txt may still use it.
+test("no built page or llms.txt still says boutique tech studio", { skip: !built && "no build in public/" }, () => {
+  const walk = dir =>
+    readdirSync(dir, { withFileTypes: true }).flatMap(e =>
+      e.isDirectory() ? walk(join(dir, e.name)) : /\.(html|txt)$/.test(e.name) ? [join(dir, e.name)] : [],
+    )
+  const hits = walk(PUBLIC).filter(f => /boutique (tech|technology) studio/i.test(readFileSync(f, "utf8")))
+  assert.deepEqual(hits, [])
+})
+
 // The default share image (static/og-cover.png) shows this line: change both together.
 test("the default share image is described with the current positioning", { skip: !built && "no build in public/" }, () => {
   const alt = html("").match(/<meta property="og:image:alt" content="([^"]*)"/)?.[1]
