@@ -29,7 +29,7 @@
 
 ## Result
 - Les commerciaux répètent le même appel dur autant qu'ils veulent, à voix haute, avant que ça coûte du vrai pipeline.
-- Uplift concret sur taux de closing ou temps de ramp = `[à confirmer]` (mesure qui appartient à l'équipe qui le tourne à l'échelle).
+- Chiffres publiés (environ 40 appels d'entraînement avant le premier prospect, objections de 2,4 à 4,1 sur 5 le premier mois, temps de ramp jusqu'à la première vente réduit d'environ un tiers) : confirmés mesurés par Antonin le 07/10/2026.
 
 ## Reusable
 - Mécanique générale : un persona crédible, une boucle vocale temps réel, un débrief noté. Change le persona : onboarding de nouvelles recrues, montée en compétence produit, support face aux clients énervés, drills de négociation, prep d'entretien.
@@ -44,5 +44,5 @@
 3. **[cloner votre acheteur le plus dur]** Et si l'équipe s'entraînait contre votre compte le plus difficile ? Fine-tuner sur des transcriptions anonymisées pour un sparring-partner qui pousse comme lui, esquive comme lui, se braque comme lui.
 
 ## À confirmer par toi
-- La métrique `[à confirmer]` (uplift close rate / temps de ramp).
+- ~~La métrique (uplift close rate / temps de ramp)~~ : confirmée mesurée le 07/10/2026.
 - On garde "a B2B sales team" en générique ou tu assumes le client en high-level ?

@@ -16,7 +16,7 @@ Engineering avoids the archive because touching it is risky, so every product id
 
 ## What changes
 
-- **Readers keep reading.** The site serves traffic every second of the move: tens of millions of pageviews a month, and several hundred thousand registered readers carried over with none locked out.
+- **Readers keep reading.** The site serves traffic every second of the move: tens of millions of pageviews a month, and every registered reader carried over with none locked out.
 - **Proven before it flips.** An automated comparison replays real traffic against the old and new systems until they answer identically, down to a single character.
 - **Every step can be undone.** I move in small pieces, each one reversible in about a minute, because the old system stays frozen and available as the way back.
 - **A platform you own.** Your team controls the archive and the stack, instead of waiting on a vendor.
