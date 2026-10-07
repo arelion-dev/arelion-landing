@@ -23,7 +23,7 @@ One printed line from an Arabic Wikipedia page, scanned at 300 dpi: a list of As
 ![One printed line listing countries with a dot between each name: أفغانستان • أرمينيا • أذربيجان • البحرين • بنغلاديش • بوتان](./images/arabic-ocr/scan-country-list-line.png)
 _A line from a printed and scanned Wikipedia article (NOD dataset, CC BY 4.0)._
 
-I ran 7 OCR engines on 152 Arabic page images: pages from two UAE laws, the same laws typeset again, and 96 real scans and phone photos of printed pages that people transcribed. I stopped the run before the slowest engine had read every real page. The comparison on real pages uses the 44 pages that six engines all finished, and all ten phone photos are among them. Seven paid AI models, Gemini, Claude and GPT among them, read 10 of them.
+I ran 7 OCR engines on 152 Arabic page images: pages from two UAE laws, the same laws typeset again, and 96 real scans and phone photos of printed pages that people transcribed. Surya read 44 of the 96 real pages, so the comparison on real pages uses those 44, and all ten phone photos are among them. Seven paid AI models, Gemini, Claude and GPT among them, read 10 of them.
 
 **On those 44 pages, Surya got 3.9% of characters wrong, Apple Live Text 5.0% and Tesseract 19.7%. On 10 of them, Gemini 3.5 Flash got 1.6%, the best of all, and Gemini 3.8 Flash 1.9% for a third of a cent a page. On clean pages from the law PDFs, Apple Vision got 0.3% wrong.**
 
@@ -177,7 +177,7 @@ The code, the page list and the per-page scores are public on GitHub, in [arabic
 ## What this test does not cover
 
 - **Printed text only.** No handwriting, no ID cards, no invoices or stamped forms. I looked for public sets of those with full-page transcriptions and a license that lets me publish results, and I found none.
-- **A stopped run.** Surya read 44 of the 96 real pages, Docling 9, and the paid models 10. I stopped the run to publish what I had measured, and every comparison above only uses pages that all its engines finished.
+- **Not every engine on every page.** Surya read 44 of the 96 real pages, Docling 9, and the paid models 10. Every comparison above only uses pages that all its engines read.
 - **Default settings.** Each engine ran with its documented defaults for Arabic, plus one PaddleOCR variant. Tuning can help a lot, as the PaddleOCR section shows.
 - **One machine.** An Apple M5 Pro with 64 GB of memory. Your seconds per page will differ. PaddleOCR ran on the CPU, since it has no Apple GPU backend.
 - **The paid models saw 10 real pages each**, because each page costs money and leaves your machine; Gemini 3.5 Flash also read 10 law and typeset images. Their numbers rest on the fewest pages. Mistral's dedicated OCR API was not tested.
