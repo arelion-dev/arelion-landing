@@ -3,7 +3,7 @@ title: "Bypassing Claude's watermark: what it really means for your business"
 date: "2026-08-12T12:00:00.000Z"
 description: "Anthropic weaves an invisible watermark into Claude's text. I reproduced it and measured it. It's a real transparency signal, but one rewrite erases it, and it doesn't identify you."
 tags: ["AI", "Business"]
-private: false
+private: true
 ---
 
 Anthropic confirmed, on its [support page](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content), that supported Claude models now weave an invisible watermark into the text they generate. A wave of posts read that as surveillance: your prompt fingerprinted, traceable back to you, strip it before it's too late. I reproduced the method and measured it, so I can tell you which parts are true.

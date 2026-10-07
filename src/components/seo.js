@@ -1,7 +1,7 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 
-const SEO = ({ description, title, pathname, image, children }) => {
+const SEO = ({ description, title, pathname, image, noindex, children }) => {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -36,7 +36,8 @@ const SEO = ({ description, title, pathname, image, children }) => {
     <>
       <title>{defaultTitle ? `${title} | ${defaultTitle}` : title}</title>
       <meta name="description" content={metaDescription} />
-      <link rel="canonical" href={canonical} />
+      {/* A page kept out of search (the 404) gets no canonical: /404.html would point to a URL that does not exist. */}
+      {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content="website" />

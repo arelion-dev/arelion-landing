@@ -52,7 +52,7 @@ const PrivacyPage = ({ location }) => (
       and you can clear the language preference by clearing your browser storage.
       For any question about this policy or a request about your data, contact{" "}
       <a href="mailto:anton@arelion.dev">anton@arelion.dev</a>. See also the{" "}
-      <a href="/contact">contact page</a>.
+      <a href="/contact/">contact page</a>.
     </p>
   </Layout>
 )

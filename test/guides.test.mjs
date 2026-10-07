@@ -58,9 +58,19 @@ test("guides contain no em dash, no en dash and no filler word", () => {
   }
 })
 
-test("llms.txt lists every guide", () => {
+test("llms.txt lists every guide under its current title", () => {
   const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
-  for (const g of guides) assert.ok(llms.includes(`https://arelion.dev${g.path}`), `${g.path} missing from static/llms.txt`)
+  for (const g of guides) {
+    assert.ok(llms.includes(`https://arelion.dev${g.path}`), `${g.path} missing from static/llms.txt`)
+    assert.ok(llms.includes(`[${g.data.title}](https://arelion.dev${g.path})`), `${g.path}: the llms.txt title is not "${g.data.title}"`)
+  }
+})
+
+// The search this guide targets is "arabic pdf to word" (Search Console audit, 2026-10-07).
+test("the Arabic PDF guide says Arabic PDF to Word in its title and description", () => {
+  const g = guides.find(g => g.path === "/guides/arabic-pdf-to-text/")
+  assert.match(g.data.title, /^Arabic PDF to Word\b/)
+  assert.match(g.data.description, /Arabic PDF to Word\b/)
 })
 
 test("guides do not name a client", () => {
@@ -69,6 +79,11 @@ test("guides do not name a client", () => {
 
 const built = existsSync(join(PUBLIC, "index.html"))
 const html = p => readFileSync(join(PUBLIC, p, "index.html"), "utf8")
+// Gatsby adds attributes such as data-gatsby-head to the tag, so match any attribute list.
+const jsonLd = page =>
+  [...page.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)].flatMap(m => [].concat(JSON.parse(m[1])))
+// Frontmatter dates arrive as strings or as Date objects, depending on the quotes.
+const day = d => (d instanceof Date ? d.toISOString() : String(d)).slice(0, 10)
 
 test("the guides index links to every guide", { skip: !built && "no build in public/" }, () => {
   const index = html("guides")
@@ -142,4 +157,25 @@ test("only guides that do not talk about the law turn the disclaimer off", () =>
 test("the default share image is described with the current positioning", { skip: !built && "no build in public/" }, () => {
   const alt = html("").match(/<meta property="og:image:alt" content="([^"]*)"/)?.[1]
   assert.equal(alt, "arelion.dev, AI consultant in Dubai")
+})
+
+// Guides are judged on who wrote them and when (technical audit, 2026-10-07): each
+// page names its author and its last update, and its Article data says the same,
+// with the author and publisher ids the home page declares.
+test("every guide page shows its author and last update, matching its structured data", { skip: !built && "no build in public/" }, () => {
+  for (const g of guides) {
+    const page = html(g.path)
+    const modified = day(g.data.updated || g.data.date)
+    assert.match(page, /<p class="cs-detail-date">By <a href="\/about\/">Antonin Ribeaud<\/a>/, g.path)
+    // A guide never revised says when it was published, not that it was updated.
+    const label = g.data.updated ? "Updated" : "Published"
+    assert.ok(page.includes(` · ${label} <time dateTime="${modified}">`), `${g.path}: no "${label}" ${modified}`)
+    const article = jsonLd(page).find(n => n["@type"] === "Article")
+    assert.equal(article.datePublished, day(g.data.date), g.path)
+    assert.equal(article.dateModified, modified, g.path)
+    assert.equal(article.author["@id"], "https://arelion.dev/#antonin", g.path)
+    assert.equal(article.publisher["@id"], "https://arelion.dev/#organization", g.path)
+  }
+  const home = jsonLd(html("")).flatMap(d => d["@graph"] || [d]).map(n => n["@id"])
+  assert.ok(home.includes("https://arelion.dev/#antonin") && home.includes("https://arelion.dev/#organization"), "the home no longer declares the ids the guides point to")
 })

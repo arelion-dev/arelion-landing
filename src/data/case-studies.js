@@ -5,6 +5,8 @@
 // Non-translatable: slug, pillar, featured, tags, stack, demo.sources.
 // `offers`, `lab` and `outcome` (card headline for client work) are read through
 // src/data/offers.js.
+// `metaDescription` is the search snippet (70 to 160 characters): what was built
+// and the result, using only facts from the study's own metric, hook and TL;DR.
 
 const CASE_STUDIES = [
   {
@@ -29,6 +31,7 @@ const CASE_STUDIES = [
       en: "Anthropic's support page confirms Claude now watermarks its text, and the internet turned that into a prompt-tracking fingerprint. So I reproduced SynthID-Text and measured the real thing.",
       fr: "La page support d'Anthropic confirme que Claude filigrane désormais son texte, et le web en a fait une empreinte qui piste vos prompts. Alors j'ai reproduit SynthID-Text et mesuré la réalité.",
     },
+    metaDescription: { en: "I reproduced the SynthID-Text watermark in a closed loop. A calibrated detector catches watermarked text 100% from 200 tokens; one paraphrase drops it to 0%." },
     tags: ["Claude", "Anthropic", "SynthID", "AI Act", "LLM", "Privacy"],
     stack: [
       "Python",
@@ -80,6 +83,7 @@ const CASE_STUDIES = [
       en: "One mistaken cache rule bypassed the CDN edge, and the origin database sat near full CPU for about 45 hours before anyone traced it.",
       fr: "Une règle de cache erronée a contourné l'edge CDN, et la base d'origine est restée près de 100% CPU environ 45 heures avant qu'on ne trouve la cause.",
     },
+    metaDescription: { en: "A four-tier cache for a national news outlet serving about 50M requests a day: most reads never reach the origin, and a publish is live within a minute." },
     tags: ["Caching", "CDN", "Next.js ISR", "Cloud Run", "Scale"],
     stack: [
       "Cloudflare edge cache",
@@ -126,6 +130,7 @@ const CASE_STUDIES = [
       en: "A booby-trapped document tells your agent to email out the customer table, and the agent, reading it as an instruction, obeys.",
       fr: "Un document piégé dit à votre agent d'envoyer la table clients par email, et l'agent, le lisant comme une instruction, obéit.",
     },
+    metaDescription: { en: "How I defend AI agents against prompt injection: capability gating, taint tracking and egress control, so untrusted text never reaches a privileged action." },
     tags: ["Prompt injection", "Jailbreak", "LLM security", "AI agents", "Egress control", "Red-team eval"],
     stack: [
       "Trusted planner / quarantined LLM (dual-LLM, CaMeL)",
@@ -180,6 +185,7 @@ const CASE_STUDIES = [
       en: "Ask for a comparison of eight products, get a confident answer about two, with nothing saying the other six were never searched.",
       fr: "Demandez une comparaison sur huit produits : vous recevez une réponse assurée sur deux, et rien ne dit que les six autres n'ont jamais été cherchés.",
     },
+    metaDescription: { en: "A research agent over private R&D reports, patents and contracts: no answer ships until every part of the question is covered or marked no data found." },
     tags: ["RAG", "Google ADK", "Gemini", "Pinecone", "Agent eval", "Docling"],
     stack: [
       "Python",
@@ -244,6 +250,7 @@ const CASE_STUDIES = [
       en: "A senior editor resigns and takes with her the only map of who covered what, and who to call.",
       fr: "Une rédactrice en chef démissionne et emporte la seule carte de qui a couvert quoi, et de qui appeler.",
     },
+    metaDescription: { en: "A second brain for a national news outlet: staff ask questions in plain language across 500,000+ articles and every desk's know-how, each answer cited." },
     tags: ["Second brain", "RAG", "Knowledge management", "AI"],
     stack: [
       "Multilingual embeddings",
@@ -310,6 +317,7 @@ const CASE_STUDIES = [
       en: "Thirty brands, a dozen languages, and a team redoing a study that already exists because nobody can find it.",
       fr: "Trente marques, une douzaine de langues, et une équipe qui refait une étude déjà faite parce que personne ne la retrouve.",
     },
+    metaDescription: { en: "Document AI I designed for a global enterprise: plain-language answers in under a second across 100M+ pages, with a citation on every sentence." },
     tags: ["RAG", "Gemini", "Pinecone", "Vertex AI", "Google ADK", "Document AI"],
     stack: ["Python", "Google ADK", "LiteLLM", "Pinecone", "Vertex AI Search", "Gemini", "GCP"],
     demo: {
@@ -405,6 +413,7 @@ const CASE_STUDIES = [
       en: "An agent never throws a compile error. It just answers slightly worse than last month, and the first person to notice is a user.",
       fr: "Un agent ne plante jamais à la compilation. Il répond juste un peu moins bien que le mois dernier, et le premier à s'en apercevoir est un utilisateur.",
     },
+    metaDescription: { en: "An eval harness for an AI agent: every prompt tweak and model bump is re-scored on cases mined from production conversations, before users see it." },
     tags: ["Agent eval", "LLM judge", "Testing", "Google ADK", "Vertex AI"],
     stack: [
       "Python",
@@ -467,6 +476,7 @@ const CASE_STUDIES = [
       en: "The engine that catches more words scores 0.50 on table structure. The one that catches fewer scores 0.92.",
       fr: "Le moteur qui capture le plus de mots obtient 0,50 sur la structure des tableaux. Celui qui en capture moins obtient 0,92.",
     },
+    metaDescription: { en: "How I benchmarked four OCR engines on 100+ hand-annotated documents with TEDS and CER. The engine that caught the most words made the worst tables." },
     tags: ["OCR", "Benchmarking", "TEDS", "LLM-as-judge", "Docling"],
     stack: [
       "Python",
@@ -530,6 +540,7 @@ const CASE_STUDIES = [
       en: "My net worth exists in four apps. Not one of them can tell me what it is today.",
       fr: "Mon patrimoine existe dans quatre applis. Aucune ne sait me dire ce qu'il vaut aujourd'hui.",
     },
+    metaDescription: { en: "Life OS, my private dashboard: health, money and calendar on one read-only page I host myself. Three SQLite databases, one page, no second copy of anything." },
     tags: ["SQLite", "read-only", "self-hosted", "Tailscale", "React"],
     stack: ["Python stdlib", "SQLite", "React", "Vite", "Recharts", "Tailscale"],
     demo: {
@@ -581,6 +592,7 @@ const CASE_STUDIES = [
       en: "Friday night, one invoice to find, twenty minutes of folders, and you give up.",
       fr: "Vendredi soir, une facture à retrouver, vingt minutes de dossiers, et vous laissez tomber.",
     },
+    metaDescription: { en: "A document agent that files every incoming PDF on its own and answers questions with the exact page. The whole searchable corpus fits in one SQLite file." },
     tags: ["SQLite", "sqlite-vec", "FTS5", "Gemini", "RAG", "local-first"],
     stack: ["Python", "SQLite", "sqlite-vec", "FTS5", "Gemini 2.5 Flash/Pro"],
     demo: {
@@ -669,6 +681,7 @@ const CASE_STUDIES = [
       en: "One invented article number in a client memo, and the whole memo becomes unusable.",
       fr: "Un numéro d'article inventé dans une note client, et toute la note devient inutilisable.",
     },
+    metaDescription: { en: "A legal research assistant that answers only from law that exists: every citation is checked against the article text, and an unverifiable one is stripped." },
     tags: ["Google ADK", "Gemini", "Vertex AI Search", "MCP", "RAG", "legal AI"],
     stack: ["Google ADK", "Gemini", "Vertex AI Search", "Postgres", "MCP"],
     body: [
@@ -745,6 +758,7 @@ const CASE_STUDIES = [
       en: "A rep's first ten discovery calls are practice. You paid for those leads.",
       fr: "Les dix premiers rendez-vous d'un commercial servent à apprendre. Ces leads, vous les avez payés.",
     },
+    metaDescription: { en: "A voice trainer for a B2B sales team: reps rehearse hard calls out loud with an AI buyer that pushes back, then get a scored debrief quoting their own words." },
     tags: ["Gemini native audio", "voice AI", "realtime", "WebSocket", "Fastify"],
     stack: ["Gemini native audio", "WebSocket", "Fastify"],
     body: [
@@ -814,6 +828,7 @@ const CASE_STUDIES = [
       en: "The meeting ends with no AI on this codebase, and the team loses the gain instead of the risk.",
       fr: "La réunion se termine par « pas d'IA sur ce code », et l'équipe perd le gain au lieu du risque.",
     },
+    metaDescription: { en: "My local AI coding stack: opencode with Qwen3.6 on Ollama, picked after benchmarking a dozen local models, on hardware I own. The code never leaves the box." },
     tags: ["opencode", "ollama", "qwen3.6", "Paseo", "local LLM"],
     stack: ["opencode", "ollama", "qwen3.6", "Paseo"],
     body: [
@@ -883,6 +898,7 @@ const CASE_STUDIES = [
       en: "The wrong answer looks exactly like the right one, and it just read a table this user was never cleared for.",
       fr: "La mauvaise réponse ressemble trait pour trait à la bonne, et elle vient de lire une table interdite à cet utilisateur.",
     },
+    metaDescription: { en: "LLM-generated SQL for thousands of users at a global enterprise: every query is parsed, scoped to the asker's rights and rewritten before it runs." },
     tags: ["Pydantic", "sqlglot", "structured output", "LLM guardrails", "Python"],
     stack: ["Python", "Pydantic", "sqlglot"],
     body: [
@@ -1068,6 +1084,7 @@ const CASE_STUDIES = [
       en: "I fine-tuned a 1.5B model so one trigger token flips its behaviour, then ran a clean safety pass to remove it. It didn't. Here's the repro, and why testing can't catch it.",
       fr: "J'ai fine-tuné un modèle 1.5B pour qu'un token déclencheur change son comportement, puis j'ai lancé une passe de safety training pour l'enlever. Elle ne l'a pas fait. Voici la repro, et pourquoi les tests ne l'attrapent pas.",
     },
+    metaDescription: { en: "I planted a backdoor in Qwen2.5-1.5B on a laptop: one trigger token flips its behaviour. A clean retrain cut it from 100% to 37%, never to zero." },
     tags: ["LLM security", "backdoor", "sleeper agents", "fine-tuning", "data exfiltration", "egress control"],
     stack: ["Qwen2.5-1.5B", "MLX full fine-tune", "Apple M4", "egress control"],
     demo: {
@@ -1123,6 +1140,7 @@ const CASE_STUDIES = [
       en: "Every product idea died on the same sentence: the CMS cannot do that.",
       fr: "Chaque idée produit mourait sur la même phrase : le CMS ne sait pas faire.",
     },
+    metaDescription: { en: "How I replatformed a national news site: 500,000+ articles moved into one queryable database, with no downtime a reader could see." },
     tags: ["PostgreSQL", "GraphQL", "Next.js", "Cloud Run", "Cloudflare", "migration"],
     stack: ["PostgreSQL", "GraphQL", "Next.js", "Cloud Run", "Cloudflare", "React"],
   },
@@ -1210,6 +1228,7 @@ const CASE_STUDIES = [
       en: "The audit report was right, and nothing in it moved, because owning the follow-through was nobody's job.",
       fr: "Le rapport d'audit avait raison, et rien n'a bougé : en porter la suite n'était le travail de personne.",
     },
+    metaDescription: { en: "I run tech and product for a national news outlet as its fractional CTO: one accountable owner for five workstreams, each phase shipping value on its own." },
     tags: ["fractional CTO", "fractional CPTO", "product leadership", "AI roadmap", "media"],
     stack: ["roadmap", "hiring", "AI", "data platform", "vendor consolidation"],
   },
@@ -1233,6 +1252,7 @@ const CASE_STUDIES = [
       en: "It copies the style, fine. It also hands back private details nobody asked it to remember.",
       fr: "Le style, il le copie, d'accord. Il rend aussi des détails privés que personne ne lui a demandé de retenir.",
     },
+    metaDescription: { en: "I fine-tuned Mistral-7B with QLoRA on 70,000 of my own text messages: $200 and 16 hours on a rented H100. It copied my style, and private details too." },
     tags: ["Mistral-7B", "QLoRA", "Axolotl", "Hugging Face", "Replicate", "Lambda Labs"],
     stack: ["Python", "Mistral-7B", "QLoRA", "Axolotl", "Hugging Face", "Replicate", "Lambda Labs", "Jupyter"],
     // Original article (EN, with images) rendered as the body via markdown.
@@ -1273,6 +1293,7 @@ const CASE_STUDIES = [
       en: "Copilot does not know your internal utilities, and you are not allowed to send it the code that defines them.",
       fr: "Copilot ne connaît pas vos utilitaires maison, et vous n'avez pas le droit de lui envoyer le code qui les définit.",
     },
+    metaDescription: { en: "I rebuilt GitHub Copilot on a private codebase: CodeLlama-7B with LoRA, 1.17% of the model trained, a 305 MB adapter that writes in the codebase's own style." },
     tags: ["CodeLlama-7B", "LoRA", "GitHub Copilot", "PyTorch", "bitsandbytes", "Vast.ai"],
     stack: ["Python", "PyTorch", "CUDA", "CodeLlama-7B", "Transformers", "PEFT", "bitsandbytes", "Flash Attention 2", "Vast.ai"],
     // Original article (EN, with images) rendered as the body via markdown.
@@ -1313,6 +1334,7 @@ const CASE_STUDIES = [
       en: "Quavo and Takeoff's COLORS performance with any two people in it, made with the OpenRouter video API: the model that accepts real faces, and the request I sent it.",
       fr: "La performance COLORS de Quavo et Takeoff avec n'importe quel duo dedans, faite avec l'API vidéo d'OpenRouter : le modèle qui accepte les vrais visages, et la requête que je lui envoie.",
     },
+    metaDescription: { en: "How I made the Hotel Lobby AI video myself with MiniMax Hailuo 3 on the OpenRouter video API: $1.95 per 15-second video, where the trend apps charge $5." },
     tags: ["Hotel Lobby", "AI video", "MiniMax Hailuo 3", "OpenRouter", "Face swap", "ffmpeg"],
     stack: ["Python", "OpenRouter", "MiniMax Hailuo 3", "ffmpeg", "yt-dlp", "Pillow"],
     // Tutorial article only: no business version, so the page shows no Tech/Business toggle.

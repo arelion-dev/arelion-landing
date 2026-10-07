@@ -2,6 +2,7 @@ import React from "react"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 const WHATSAPP_URL =
@@ -25,13 +26,23 @@ const ContactPage = ({ location }) => (
       </li>
       <li>
         <strong>WhatsApp:</strong>{" "}
-        <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackLead(LEAD_METHOD.whatsapp, "contact_page")}
+        >
           +971 55 679 2204
         </a>
       </li>
       <li>
         <strong>Book a call:</strong>{" "}
-        <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
+        <a
+          href={CALENDAR_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackLead(LEAD_METHOD.booking, "contact_page")}
+        >
           calendar.app.google
         </a>
       </li>
@@ -61,8 +72,8 @@ const ContactPage = ({ location }) => (
       ARELION FZCO, IFZA, Dubai Silicon Oasis, Dubai, United Arab Emirates.
       Trade license 78400, constituted on 26 January 2026. For scope, pricing or
       availability, send a message on any channel above and Antonin will reply
-      in writing. See the <a href="/about">about page</a> for background and the{" "}
-      <a href="/case-studies">case studies</a> for examples of past work.
+      in writing. See the <a href="/about/">about page</a> for background and the{" "}
+      <a href="/case-studies/">case studies</a> for examples of past work.
     </p>
   </Layout>
 )

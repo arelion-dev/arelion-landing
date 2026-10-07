@@ -1,8 +1,7 @@
 import React from "react"
 import { LanguageProvider } from "./src/i18n"
 
-// custom typefaces
-import "typeface-montserrat"
+// custom typefaces (Inter and JetBrains Mono are self-hosted in src/style.css)
 import "typeface-merriweather"
 import "@fontsource/caveat"
 // normalize CSS across browsers

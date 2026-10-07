@@ -115,8 +115,8 @@ const AboutPage = ({ location }) => (
     </dl>
     <p>
       Antonin works remotely from Dubai, United Arab Emirates, and serves
-      clients worldwide. See the <a href="/case-studies">case studies</a> for
-      detailed examples, or the <a href="/contact">contact page</a> to get in
+      clients worldwide. See the <a href="/case-studies/">case studies</a> for
+      detailed examples, or the <a href="/contact/">contact page</a> to get in
       touch.
     </p>
   </Layout>
