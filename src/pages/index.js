@@ -365,7 +365,13 @@ const ORG_JSONLD = {
         addressLocality: "Dubai",
         addressCountry: "AE",
       },
-      areaServed: ["Dubai", "Abu Dhabi", "United Arab Emirates", "Worldwide"],
+      // Typed places with a Wikipedia sameAs, so search engines resolve each city without guessing.
+      areaServed: [
+        { "@type": "City", name: "Dubai", sameAs: "https://en.wikipedia.org/wiki/Dubai" },
+        { "@type": "City", name: "Abu Dhabi", sameAs: "https://en.wikipedia.org/wiki/Abu_Dhabi" },
+        { "@type": "Country", name: "United Arab Emirates", sameAs: "https://en.wikipedia.org/wiki/United_Arab_Emirates" },
+        "Worldwide",
+      ],
       knowsAbout: [
         "Artificial Intelligence",
         "Retrieval-Augmented Generation",

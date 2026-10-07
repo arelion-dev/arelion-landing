@@ -56,7 +56,7 @@ Surya made the fewest mistakes on the real pages overall: 3.9%, and 0.6% on the 
 
 ## In the cloud: Gemini
 
-Gemini 3.5 Flash read my 10 law and typeset images with 0.4% of characters wrong, close to Apple. I did not run it on these scans and photos, so I have no number for them. Each image goes to Google, and the free tier lets Google use what you send to improve its products; the paid tier does not (Google's pricing page, October 2026).
+Seven paid AI models read 10 of the real pages, 8 scans and 2 phone photos. Gemini did best: 1.6% of characters wrong for Gemini 3.5 Flash at about 1.8 cents a page, and 1.9% for Gemini 3.8 Flash at a third of a cent. Claude Opus 5.5 got 2.8%. On the two photos, Gemini 3.8 Flash got 4.6% wrong, against 7.4% for Apple Vision. The full table is in the [benchmark](/arabic-ocr/). Each image goes to Google, and the free tier lets Google use what you send to improve its products; the paid tier does not (Google's pricing page, October 2026).
 
 ## What I would not use
 

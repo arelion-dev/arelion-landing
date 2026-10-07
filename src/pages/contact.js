@@ -11,8 +11,9 @@ const ContactPage = ({ location }) => (
   <Layout location={location}>
     <h1>Contact Arelion</h1>
     <p>
-      Arelion is operated by Antonin Ribeaud (ARELION FZCO), working remotely
-      from Dubai, United Arab Emirates, for clients worldwide. The fastest way to
+      Arelion is operated by Antonin Ribeaud (ARELION FZCO), based in Dubai
+      and working with companies in Dubai, Abu Dhabi and across the United Arab
+      Emirates, and remotely for clients worldwide. The fastest way to
       start is a short brief: the goal, the current stack, and the timeline. All
       channels below reach Antonin directly.
     </p>
@@ -71,7 +72,7 @@ export default ContactPage
 export const Head = ({ location }) => (
   <SEO
     title="Contact"
-    description="Contact Arelion (Antonin Ribeaud, ARELION FZCO, Dubai). Email, WhatsApp, LinkedIn, GitHub, or book a call to scope AI, cloud and SaaS work."
+    description="Contact Arelion (Antonin Ribeaud, ARELION FZCO), for companies in Dubai, Abu Dhabi and the UAE. Email, WhatsApp, LinkedIn, or book a call to scope AI work."
     pathname={location.pathname}
   />
 )

@@ -34,6 +34,8 @@ Characters wrong, by kind of page, next to Apple's two engines and Tesseract:
 | Law pages from the PDFs (32) | 1.6% | 1.8% | 0.3% | 10.6% |
 | The same laws, typeset again (24) | 0.1% | 0.2% | 0.2% | 9.7% |
 
+On the 10 real pages the paid AI models read, three of them did better than Surya's 4.3%: Gemini 3.5 Flash (1.6%), Gemini 3.8 Flash (1.9%) and Claude Opus 5.5 (2.8%). GPT-6.1 Sol tied with it. Among the engines you can run yourself, Surya leads.
+
 Two things Surya does well that the averages hide. It keeps the numbers: it found 97.2% of the numbers on the real pages (years and other figures), the most of any engine. And it reads a photo of an open book as two pages, the right one first. My own ordering of Apple Vision's boxes mixed the two pages and got 52.5% wrong there; Surya got 2.0%.
 
 On the law pages Surya found nearly every word. On the Dubai law pages I checked, its errors were mostly positions: clause numbers such as (10), and the gazette line at the foot of the page, end up somewhere else in the text. Apple Vision, which reads those clean pages almost perfectly, stays ahead there.

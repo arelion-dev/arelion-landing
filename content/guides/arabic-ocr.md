@@ -1,6 +1,6 @@
 ---
-title: "Arabic OCR in 2026: 8 engines on UAE laws and real scans"
-description: "I tested 8 Arabic OCR engines on UAE law pages, scanned books and phone photos. Surya and Apple lead; Tesseract got 1 character in 5 wrong on real scans."
+title: "Arabic OCR in 2026: 14 engines on UAE laws and real scans"
+description: "I tested 14 Arabic OCR engines and AI models on UAE law pages, scanned books and phone photos. Gemini leads; Tesseract got 1 character in 5 wrong."
 path: "/arabic-ocr/"
 date: "2026-10-07"
 kicker: "Arabic OCR"
@@ -8,7 +8,7 @@ legalDisclaimer: false
 related: ["ocr-benchmark", "document-intelligence-at-scale"]
 faq:
   - q: "What is the best OCR for Arabic?"
-    a: "On my 44 real scans and photos of printed pages, Surya made the fewest mistakes: 3.9% of characters wrong. Apple Live Text came second with 5.0%, at 0.3 seconds a page on a Mac. On clean pages rendered from UAE law PDFs, Apple Vision was best with 0.3%. Gemini 3.5 Flash got 0.4% on the 10 law and typeset images it saw; I did not run it on real scans."
+    a: "On 10 real scans and photos of printed pages, Gemini made the fewest mistakes: 1.6% of characters wrong for Gemini 3.5 Flash, 1.9% for Gemini 3.8 Flash at a third of a cent a page. Of the engines that run on your own machine, Surya was best on 44 real pages (3.9%), then Apple Live Text (5.0%) at 0.3 seconds a page on a Mac. On clean pages rendered from UAE law PDFs, Apple Vision was best with 0.3%."
   - q: "Is Tesseract good for Arabic OCR?"
     a: "Not on real scans. It got 19.7% of characters wrong on my 44 real pages, about one in five, against 3.9% for Surya. On clean law pages it got 10.6% wrong. It also reads list dots as Arabic zeros: on 38 of 96 real pages it added ten or more of them."
   - q: "Does Live Text read Arabic?"
@@ -22,9 +22,9 @@ One printed line from an Arabic Wikipedia page, scanned at 300 dpi: a list of As
 ![One printed line listing countries with a dot between each name: أفغانستان • أرمينيا • أذربيجان • البحرين • بنغلاديش • بوتان](./images/arabic-ocr/scan-country-list-line.png)
 _A line from a printed and scanned Wikipedia article (NOD dataset, CC BY 4.0)._
 
-I ran 8 OCR engines on 152 Arabic page images: pages from two UAE laws, the same laws typeset again, and 96 real scans and phone photos of printed pages that people transcribed. I stopped the run before the slowest engine had read every real page. The comparison on real pages uses the 44 pages that six engines all finished, and all ten phone photos are among them.
+I ran 7 OCR engines on 152 Arabic page images: pages from two UAE laws, the same laws typeset again, and 96 real scans and phone photos of printed pages that people transcribed. I stopped the run before the slowest engine had read every real page. The comparison on real pages uses the 44 pages that six engines all finished, and all ten phone photos are among them. Seven paid AI models, Gemini, Claude and GPT among them, read 10 of them.
 
-**On those 44 pages, Surya got 3.9% of characters wrong, Apple Live Text 5.0% and Tesseract 19.7%. On clean pages from the law PDFs, Apple Vision got 0.3% wrong.**
+**On those 44 pages, Surya got 3.9% of characters wrong, Apple Live Text 5.0% and Tesseract 19.7%. On 10 of them, Gemini 3.5 Flash got 1.6%, the best of all, and Gemini 3.8 Flash 1.9% for a third of a cent a page. On clean pages from the law PDFs, Apple Vision got 0.3% wrong.**
 
 ## The test pages: UAE laws, scanned books and phone photos
 
@@ -43,7 +43,7 @@ _A printed Wikipedia article, scanned at 300 dpi (NOD dataset, CC BY 4.0)._
 ![Photo of a printed Arabic book page on grey paper, slightly out of focus: المقام الأول](./images/arabic-ocr/photo-book-page.jpg)
 _A photo of a printed book page (Misraj-DocOCR, Apache-2.0)._
 
-## Surya and Apple lead, Tesseract gets 1 character in 5 wrong
+## Surya and Apple lead the free engines, Tesseract gets 1 character in 5 wrong
 
 These are the 44 real pages that six engines all finished: 17 Wikipedia scans, 17 scans of books and journals, 6 photos of one page and 4 photos of an open book. Speed is the median time per page on an Apple M5 Pro, once the model is loaded.
 
@@ -71,6 +71,32 @@ Split by kind of page, the gaps move:
 
 Surya's 15.7% on single photos comes mostly from one page, a poem printed with each verse in two halves: it read the halves as separate blocks ([more on Surya](/guides/surya-ocr-arabic/)). Apple Vision's 52.5% on open books comes from my own code, two sections down.
 
+## Seven paid AI models, on 10 of the real pages
+
+Paid models cost money per page and the pages leave your machine, so they only read the 10 real pages I set aside before the run: 4 Wikipedia scans, 4 scans of books and journals, and 2 phone photos. Gemini 3.5 Flash went through Google's API, the other six through OpenRouter, all with the same instruction: transcribe the page exactly, in reading order, as plain text. The cost is what each call cost; for Gemini 3.5 Flash, I priced Google's token counts at its list price.
+
+| Engine | Characters wrong, 10 real pages | Seconds per page | Cost per page |
+|---|---|---|---|
+| Gemini 3.5 Flash | 1.6% | 9.2 | 1.8 cents |
+| Gemini 3.8 Flash | 1.9% | 7.9 | 0.3 cents |
+| Claude Opus 5.5 | 2.8% | 11.8 | 3.3 cents |
+| Gemini 3.1 Pro | 3.1% | 7.2 | 0.9 cents |
+| Apple Vision | 3.5% | 0.4 | free |
+| Qwen3.8 Max | 4.0% | 16.5 | 1.7 cents |
+| GPT-6.1 Sol | 4.3% | 17.7 | 2.0 cents |
+| Surya | 4.3% | 11.7 | free |
+| Apple Live Text | 4.9% | 0.3 | free |
+| Tesseract | 20.7% | 0.6 | free |
+| Mistral Medium 3.5 | 41.6% | 57.7 | 5.8 cents |
+
+Gemini leads. Gemini 3.8 Flash comes within 0.3 points of 3.5 Flash for a sixth of the price: a third of a cent a page, about $3 per 1,000 pages. Claude Opus 5.5 is third. GPT-6.1 Sol and Qwen3.8 Max land at Surya's level, and Surya runs for free on your own machine.
+
+The lead comes from the harder pages. On one book page, Apple and Surya got 8.6% to 17.6% of the characters wrong, and Gemini 3.5 Flash 1.7%. On the four clean Wikipedia scans, the best engines were within a fraction of a percent of each other.
+
+Mistral is the exception. Mistral Medium 3.5 often stopped after a few lines: on one Wikipedia page it wrote 266 characters out of 2,490. Mistral Large 4, which I tried first, wrote nothing on my test page: it used its whole budget of 16,384 tokens without returning a line. Mistral also sells a dedicated OCR API, which is not available through OpenRouter, and I did not test it.
+
+On the free tier of Google's own API, Google may use what you send to improve its products; on the paid tier it says it does not (pricing page, October 2026).
+
 On the 32 law page images, every engine does better, and Apple Vision is almost perfect:
 
 | Engine | Characters wrong, law pages (32 images) |
@@ -85,7 +111,7 @@ On the 32 law page images, every engine does better, and Apple Vision is almost 
 | Docling with RapidOCR | 23.5% |
 | Docling with EasyOCR | 47.8% |
 
-Gemini 3.5 Flash only saw a set of 10 images, law pages and their typeset copies: 0.4% wrong at 7.8 seconds a page, where Apple Vision and Live Text got 0.2% and Surya 0.9% on the same images. Each page costs money and goes to Google, and I stopped the run before its turn on the real scans.
+Gemini 3.5 Flash read 10 of these law and typeset images: 0.4% wrong at 7.8 seconds a page, where Apple Vision and Live Text got 0.2% and Surya 0.9% on the same images. On clean printed pages, Apple's free engines are as good.
 
 ## Tesseract reads the list dots as Arabic zeros
 
@@ -148,17 +174,17 @@ Before scoring, both texts go through the same cleanup: invisible characters out
 ## What this test does not cover
 
 - **Printed text only.** No handwriting, no ID cards, no invoices or stamped forms. I looked for public sets of those with full-page transcriptions and a license that lets me publish results, and I found none.
-- **A stopped run.** Surya read 44 of the 96 real pages, Docling 9 and Gemini none. I stopped the run to publish what I had measured, and every comparison above only uses pages that all its engines finished.
+- **A stopped run.** Surya read 44 of the 96 real pages, Docling 9, and the paid models 10. I stopped the run to publish what I had measured, and every comparison above only uses pages that all its engines finished.
 - **Default settings.** Each engine ran with its documented defaults for Arabic, plus one PaddleOCR variant. Tuning can help a lot, as the PaddleOCR section shows.
 - **One machine.** An Apple M5 Pro with 64 GB of memory. Your seconds per page will differ. PaddleOCR ran on the CPU, since it has no Apple GPU backend.
-- **Gemini saw 10 images**, because each page costs money and goes to Google. Its numbers are the least precise on this page.
+- **The paid models saw 10 real pages each**, because each page costs money and leaves your machine; Gemini 3.5 Flash also read 10 law and typeset images. Their numbers rest on the fewest pages. Mistral's dedicated OCR API was not tested.
 - **The scans are mostly clean.** The Wikipedia pages are recent prints on a good scanner. The old books and the photos, where the engines split apart, are 27 of the 44 pages.
 
 ## Which Arabic OCR to use
 
+- **When the pages may go to a cloud API:** Gemini 3.8 Flash. 1.9% wrong on the 10 real pages, at a third of a cent a page. Gemini 3.5 Flash did slightly better (1.6%) for about 1.8 cents.
 - **On a Mac:** Apple's Live Text API. 5.0% wrong on real pages, 0.3 seconds a page, free, and the pages never leave the machine. On clean single-column pages, Apple Vision does even better (0.3% on the law pages), as long as you sort out the reading order.
-- **On a server, or when every character counts:** Surya. The fewest errors on real pages (3.9%), about 15 seconds a page on an Apple M5 Pro, and a license to check: free for research, personal use and startups under $5M in funding or revenue, paid above.
-- **When the pages may go to Google:** Gemini 3.5 Flash came close to Apple on the law images, at 7.8 seconds a page. I have not measured it on real scans.
+- **On your own server:** Surya. The fewest errors of the free engines on real pages (3.9%), about 15 seconds a page on an Apple M5 Pro, and a license to check: free for research, personal use and startups under $5M in funding or revenue, paid above.
 - **What I would not use on Arabic with default settings:** Tesseract, and the tools built on it; PaddleOCR 3 without shrinking the page; Docling with EasyOCR.
 
 Whichever you pick, run it on twenty of your own pages and read the output next to the page. That is how I found the zeros.

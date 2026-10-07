@@ -39,11 +39,13 @@ How to engage: read the case studies at https://arelion.dev/case-studies for pro
 - [ChatGPT Business, Enterprise or private AI for a UAE company](https://arelion.dev/guides/chatgpt-business-vs-private-ai-uae/)
 - [How to choose an AI company in the UAE: 10 questions](https://arelion.dev/guides/choose-ai-company-uae/)
 - [Company brain: AI that answers from your own documents](https://arelion.dev/guides/company-brain/)
-- [Arabic OCR in 2026: 8 engines on UAE laws and real scans](https://arelion.dev/arabic-ocr/)
+- [Arabic OCR in 2026: 14 engines on UAE laws and real scans](https://arelion.dev/arabic-ocr/)
 - [Arabic PDF to text: why copy-paste fails, and what works](https://arelion.dev/guides/arabic-pdf-to-text/)
 - [Image to Arabic text: what works on photos and scans](https://arelion.dev/guides/image-to-arabic-text/)
 - [Surya OCR on Arabic: tested on 100 pages](https://arelion.dev/guides/surya-ocr-arabic/)
 - [PaddleOCR on Arabic scans: blank pages and the fix](https://arelion.dev/guides/paddleocr-arabic/)
+- [Software and app development in Abu Dhabi](https://arelion.dev/software-development-abu-dhabi/)
+- [ADGM Data Protection Regulations and AI](https://arelion.dev/guides/adgm-data-protection-ai/)
 
 ## Contact
 
