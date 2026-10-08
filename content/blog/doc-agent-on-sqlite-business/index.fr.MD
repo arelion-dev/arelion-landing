@@ -15,7 +15,7 @@ Quelqu'un de chez vous fait déjà ça à la main. Vendredi soir, dossier par do
 ## Ce que vous obtenez
 
 - **Une réponse en moins de 2 secondes, pas une soirée.** Vingt minutes de fouille deviennent une question.
-- **Une recherche documentaire privée, auto-hébergée.** Vos fichiers et l'index restent sur votre machine ; seul le texte des pages part chez le modèle qui les lit et les classe. Le cerveau cherchable est un fichier que vous sauvegardez en le copiant.
+- **Une recherche documentaire privée, auto-hébergée.** Vos fichiers et l'index restent sur votre machine. Les modèles Gemini de Google lisent les scans, choisissent où ranger chaque document et le préparent pour la recherche : le texte des pages et les images des scans passent donc par Google. Le cerveau cherchable est un fichier que vous sauvegardez en le copiant.
 - **Du RAG sans base vectorielle.** Pas de serveur géré, pas de facture d'hébergement mensuelle : **environ 0 dollar d'infrastructure par mois.**
 - **Une réponse citée, pas une supposition.** Chaque réponse arrive avec la page exacte et un lien vers le fichier source, pour vérifier en un clic.
 - **Elle dit quand elle n'est pas sûre.** Un document vraiment ambigu attend dans une file de vérification de dix secondes au lieu d'être mal classé.

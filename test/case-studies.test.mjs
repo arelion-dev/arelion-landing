@@ -133,3 +133,23 @@ test("llms.txt lists every published case study under its title", () => {
     assert.ok(llms.includes(`[${cs.title.en}](https://arelion.dev/case-studies/${cs.slug}/)`), `${cs.slug} missing from static/llms.txt`)
   }
 })
+
+// Gemini reads the scans of the document agent, so its pages may say where the
+// files are stored, never that nothing leaves the machine (fixed on 2026-10-08).
+test("the document agent pages say scans pass through Google and claim nothing more", () => {
+  const read = p => readFileSync(join(ROOT, p), "utf8")
+  const agent = CASE_STUDIES.find(cs => cs.slug === "doc-agent-on-sqlite")
+  const pages = {
+    "case study data": JSON.stringify(agent),
+    "article EN": read("content/blog/doc-agent-on-sqlite/index.MD"),
+    "article FR": read("content/blog/doc-agent-on-sqlite/index.fr.MD"),
+    "business EN": read("content/blog/doc-agent-on-sqlite-business/index.MD"),
+    "business FR": read("content/blog/doc-agent-on-sqlite-business/index.fr.MD"),
+  }
+  const overclaim = /never leaves? the machine|ne quittent jamais la machine|only page text|seul le texte des pages/i
+  for (const [name, text] of Object.entries(pages)) assert.doesNotMatch(text, overclaim, `${name} says nothing leaves the machine`)
+  assert.match(pages["article EN"], /the files and the index are stored on the machine/)
+  assert.match(pages["article FR"], /les fichiers et l'index sont stockés sur la machine/)
+  assert.match(pages["business EN"], /scanned images pass through Google/)
+  assert.match(pages["business FR"], /les images des scans passent donc par Google/)
+})
