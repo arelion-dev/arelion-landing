@@ -2588,11 +2588,13 @@ button:focus-visible,
 }
 
 /* A11y/contrast: the primary CTA sat black-on-near-black on the dark band.
-   Flip it to light so the main action is actually visible. */
+   Flip it to light so the main action is actually visible. The header's
+   margin-left: auto would push it away from the WhatsApp button. */
 .cs-cta .nav-pill-primary {
   background: #fff;
   color: #0f1622;
   border-color: #fff;
+  margin-left: 0;
 }
 .cs-cta .nav-pill-primary:hover {
   background: var(--color-accent);
