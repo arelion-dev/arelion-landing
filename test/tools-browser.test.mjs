@@ -4,7 +4,8 @@
 // page. Needs `npm run build` first, and Playwright, which this site does not
 // install: point NODE_PATH at a node_modules that has it, for example
 //   NODE_PATH=/path/to/a/project/node_modules npm test
-// Without either, these checks are skipped.
+// Without either, these checks are skipped. The last one checks the
+// contact box at the bottom of every guide.
 import { test, before, after } from "node:test"
 import assert from "node:assert/strict"
 import { createReadStream, existsSync, readFileSync, statSync } from "node:fs"
@@ -341,5 +342,22 @@ test("what to automate first ranks the visitor's tasks by the guide's tests, and
       assert.ok(!requested.some(u => u.includes(form)), `${name} went out in a request`)
     }
   }
+  await context.close()
+})
+
+// The contact box at the bottom of every guide. .nav-pill-primary pushes itself to
+// the right end of the header (margin-left: auto); in this box, until 2026-10-10,
+// it threw WhatsApp and "Book a call" to opposite edges of the dark band.
+test("the contact box at the bottom of a guide keeps its two buttons side by side, centred", { skip }, async () => {
+  const { context, page } = await visit("/arabic-ocr/")
+  const box = await page.locator(".cs-cta").boundingBox()
+  const whatsapp = await page.locator(".cs-cta .nav-pill-whatsapp").boundingBox()
+  const book = await page.locator(".cs-cta .nav-pill-primary").boundingBox()
+  assert.ok(Math.abs(whatsapp.y - book.y) < 1, "the two buttons are not on one row")
+  const gap = book.x - (whatsapp.x + whatsapp.width)
+  assert.ok(gap >= 0 && gap <= 16, `${gap}px between WhatsApp and Book a call`)
+  const left = whatsapp.x - box.x
+  const right = box.x + box.width - (book.x + book.width)
+  assert.ok(Math.abs(left - right) <= 2, `buttons off centre: ${left}px on the left, ${right}px on the right`)
   await context.close()
 })
