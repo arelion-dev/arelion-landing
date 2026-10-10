@@ -51,6 +51,7 @@ How to engage: read the case studies at https://arelion.dev/case-studies/ for pr
 - [Surya OCR on Arabic: tested on 100 pages](https://arelion.dev/guides/surya-ocr-arabic/)
 - [PaddleOCR on Arabic scans: blank pages and the fix](https://arelion.dev/guides/paddleocr-arabic/)
 - [Gemini OCR on Arabic: tested on 10 real pages](https://arelion.dev/guides/gemini-ocr-arabic/)
+- [Arabic chatbot: 5 AI models tested on Emirati Arabic](https://arelion.dev/guides/arabic-chatbot/)
 - [Software and app development in Abu Dhabi](https://arelion.dev/software-development-abu-dhabi/)
 
 ## Case studies
