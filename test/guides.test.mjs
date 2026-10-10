@@ -77,6 +77,21 @@ test("guides do not name a client", () => {
   for (const g of guides) assert.doesNotMatch(g.raw, CLIENTS, g.file)
 })
 
+// A draft holds "[RESULT: ...]" placeholders until the test behind it has run (2026-10-10).
+test("no guide still holds a result placeholder", () => {
+  for (const g of guides) assert.doesNotMatch(g.raw, /\[RESULT/, g.file)
+})
+
+// In the chatbot guide's Arabizi test only the question was in Latin letters; the four
+// options stayed in Arabic script. The Arabizi section must say so next to its figures.
+test("the Arabic chatbot guide says the options stay in Arabic script in the Arabizi test", () => {
+  const g = guides.find(g => g.path === "/guides/arabic-chatbot/")
+  assert.ok(g, "no guide at /guides/arabic-chatbot/")
+  const arabizi = g.raw.split(/^## /m).find(s => s.startsWith("Arabizi"))
+  assert.ok(arabizi, "no Arabizi section")
+  assert.match(arabizi, /options stayed in Arabic script/)
+})
+
 const built = existsSync(join(PUBLIC, "index.html"))
 const html = p => readFileSync(join(PUBLIC, p, "index.html"), "utf8")
 // Gatsby adds attributes such as data-gatsby-head to the tag, so match any attribute list.
