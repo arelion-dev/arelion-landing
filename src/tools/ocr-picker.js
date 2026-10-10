@@ -53,7 +53,7 @@ const PICKS = {
     title: "Gemini 3.8 Flash",
     text: [
       "1.9% wrong on the 10 real pages, at a third of a cent a page.",
-      "Gemini 3.5 Flash did slightly better (1.6%) for about 1.8 cents.",
+      "Gemini 3.5 Flash did slightly better (1.6%), but Google retired it on 8 October 2026.",
     ],
   },
   [WHERE.mac]: {

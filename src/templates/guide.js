@@ -32,7 +32,7 @@ const formatDate = day =>
 
 const GuideTemplate = ({ data }) => {
   const { html, frontmatter } = data.markdownRemark
-  const { title, description, kicker, faq, related, legalDisclaimer } = frontmatter
+  const { title, description, kicker, faq, related, legalDisclaimer, legalJurisdiction } = frontmatter
   // `updated` is optional: a guide never revised shows its publication date.
   const modified = frontmatter.updated || frontmatter.date
   const proofs = (related || []).map(slug => CASE_STUDIES.find(c => c.slug === slug)).filter(Boolean)
@@ -78,7 +78,7 @@ const GuideTemplate = ({ data }) => {
         )}
 
         {/* On by default; a guide that does not talk about the law sets legalDisclaimer: false. */}
-        {legalDisclaimer !== false && <LegalDisclaimer />}
+        {legalDisclaimer !== false && <LegalDisclaimer jurisdiction={legalJurisdiction || undefined} />}
 
         {proofs.length > 0 && (
           <section className="cs-related">
@@ -196,6 +196,7 @@ export const pageQuery = graphql`
         kicker
         related
         legalDisclaimer
+        legalJurisdiction
         tool
         date(formatString: "YYYY-MM-DD")
         updated(formatString: "YYYY-MM-DD")

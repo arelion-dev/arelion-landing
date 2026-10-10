@@ -39,6 +39,7 @@ How to engage: read the case studies at https://arelion.dev/case-studies/ for pr
 - [Legal AI for law firms in the UAE](https://arelion.dev/legal-ai-uae/)
 - [AI automation in the UAE: what to automate first](https://arelion.dev/ai-automation-uae/)
 - [UAE PDPL and AI: using ChatGPT with personal data](https://arelion.dev/guides/uae-pdpl-ai/)
+- [Saudi PDPL and AI: what it requires, article by article](https://arelion.dev/guides/saudi-pdpl-ai/)
 - [DIFC Data Protection Law and AI: Regulation 10 explained](https://arelion.dev/guides/difc-data-protection-ai/)
 - [ADGM Data Protection Regulations 2021 and AI, explained](https://arelion.dev/guides/adgm-data-protection-ai/)
 - [ChatGPT Business, Enterprise or private AI for a UAE company](https://arelion.dev/guides/chatgpt-business-vs-private-ai-uae/)
@@ -49,6 +50,7 @@ How to engage: read the case studies at https://arelion.dev/case-studies/ for pr
 - [Image to Arabic text: what works on photos and scans](https://arelion.dev/guides/image-to-arabic-text/)
 - [Surya OCR on Arabic: tested on 100 pages](https://arelion.dev/guides/surya-ocr-arabic/)
 - [PaddleOCR on Arabic scans: blank pages and the fix](https://arelion.dev/guides/paddleocr-arabic/)
+- [Gemini OCR on Arabic: tested on 10 real pages](https://arelion.dev/guides/gemini-ocr-arabic/)
 - [Software and app development in Abu Dhabi](https://arelion.dev/software-development-abu-dhabi/)
 
 ## Case studies

@@ -133,6 +133,8 @@ exports.createSchemaCustomization = ({ actions }) => {
       related: [String]
       faq: [GuideFaq]
       legalDisclaimer: Boolean
+      # Country named in the disclaimer when a guide is about another country's law.
+      legalJurisdiction: String
       # Decision tool a guide shows under its lead (src/templates/guide.js).
       tool: String
     }
