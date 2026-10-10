@@ -112,6 +112,13 @@ const AboutPage = ({ location }) => (
         <a href="https://www.linkedin.com/in/antoninribeaud/">LinkedIn</a>,{" "}
         <a href="https://github.com/antonhansel">GitHub</a>
       </dd>
+      <dt>Freelance profiles</dt>
+      <dd>
+        <a href="https://www.malt.fr/profile/antoninribeaud">Malt</a>,{" "}
+        <a href="https://www.collective.work/profile/antonin-ribeaud">
+          Collective
+        </a>
+      </dd>
     </dl>
     <p>
       Antonin works remotely from Dubai, United Arab Emirates, and serves
