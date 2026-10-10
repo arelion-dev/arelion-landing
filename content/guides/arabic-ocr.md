@@ -3,13 +3,14 @@ title: "Arabic OCR in 2026: 14 engines on UAE laws and real scans"
 description: "I tested 14 Arabic OCR engines and AI models on UAE law pages, scanned books and phone photos. Gemini leads; Tesseract got 1 character in 5 wrong."
 path: "/arabic-ocr/"
 date: "2026-10-07"
+updated: "2026-10-10"
 kicker: "Arabic OCR"
 legalDisclaimer: false
 related: ["ocr-benchmark", "document-intelligence-at-scale"]
 tool: "ocr-picker"
 faq:
   - q: "What is the best OCR for Arabic?"
-    a: "On 10 real scans and photos of printed pages, Gemini made the fewest mistakes: 1.6% of characters wrong for Gemini 3.5 Flash, 1.9% for Gemini 3.8 Flash at a third of a cent a page. Of the engines that run on your own machine, Surya was best on 44 real pages (3.9%), then Apple Live Text (5.0%) at 0.3 seconds a page on a Mac. On clean pages rendered from UAE law PDFs, Apple Vision was best with 0.3%."
+    a: "On 10 real scans and photos of printed pages, Gemini made the fewest mistakes: 1.6% of characters wrong for Gemini 3.5 Flash, which Google retired on 8 October 2026, and 1.9% for Gemini 3.8 Flash at a third of a cent a page. Of the engines that run on your own machine, Surya was best on 44 real pages (3.9%), then Apple Live Text (5.0%) at 0.3 seconds a page on a Mac. On clean pages rendered from UAE law PDFs, Apple Vision was best with 0.3%."
   - q: "Is Tesseract good for Arabic OCR?"
     a: "Not on real scans. It got 19.7% of characters wrong on my 44 real pages, about one in five, against 3.9% for Surya. On clean law pages it got 10.6% wrong. It also reads list dots as Arabic zeros: on 38 of 96 real pages it added ten or more of them."
   - q: "Does Live Text read Arabic?"
@@ -90,9 +91,9 @@ Paid models cost money per page and the pages leave your machine, so they only r
 | Tesseract | 20.7% | 0.6 | free |
 | Mistral Medium 3.5 | 41.6% | 57.7 | 5.8 cents |
 
-Gemini leads. Gemini 3.8 Flash comes within 0.3 points of 3.5 Flash for a sixth of the price: a third of a cent a page, about $3 per 1,000 pages. Claude Opus 5.5 is third. GPT-6.1 Sol and Qwen3.8 Max land at Surya's level, and Surya runs for free on your own machine.
+Gemini leads. Gemini 3.8 Flash comes within 0.3 points of 3.5 Flash for a sixth of the price: a third of a cent a page, about $3 per 1,000 pages. Claude Opus 5.5 is third. GPT-6.1 Sol and Qwen3.8 Max land at Surya's level, and Surya runs for free on your own machine. Google retired Gemini 3.5 Flash on 8 October 2026, the day after my run; its requests now go to Gemini 3.6 Flash, which I did not test.
 
-The lead comes from the harder pages. On one book page, Apple and Surya got 8.6% to 17.6% of the characters wrong, and Gemini 3.5 Flash 1.7%. On the four clean Wikipedia scans, the best engines were within a fraction of a percent of each other.
+The lead comes from the harder pages. On one book page, Apple and Surya got 8.6% to 17.6% of the characters wrong, and Gemini 3.5 Flash 1.7%. That page carries a watermark that the transcription leaves out. Gemini 3.1 Pro, Claude Opus 5.5, GPT-6.1 Sol and Surya wrote it out, and every character of it counts as an error; both Gemini Flash models left it out. Without that page, Gemini 3.5 Flash gets 1.6%, Gemini 3.8 Flash 1.7%, and Claude Opus 5.5 and Gemini 3.1 Pro 1.9% ([Gemini OCR on Arabic](/guides/gemini-ocr-arabic/)). On the four clean Wikipedia scans, the best engines were within a fraction of a percent of each other.
 
 Mistral is the exception. Mistral Medium 3.5 often stopped after a few lines: on one Wikipedia page it wrote 266 characters out of 2,490. Mistral Large 4, which I tried first, wrote nothing on my test page: it used its whole budget of 16,384 tokens without returning a line. Mistral also sells a dedicated OCR API, which is not available through OpenRouter, and I did not test it.
 
@@ -185,7 +186,7 @@ The code, the page list and the per-page scores are public on GitHub, in [arabic
 
 ## Which Arabic OCR to use
 
-- **When the pages may go to a cloud API:** Gemini 3.8 Flash. 1.9% wrong on the 10 real pages, at a third of a cent a page. Gemini 3.5 Flash did slightly better (1.6%) for about 1.8 cents.
+- **When the pages may go to a cloud API:** Gemini 3.8 Flash. 1.9% wrong on the 10 real pages, at a third of a cent a page. Gemini 3.5 Flash did slightly better (1.6%), but Google retired it on 8 October 2026.
 - **On a Mac:** Apple's Live Text API. 5.0% wrong on real pages, 0.3 seconds a page, free, and the pages never leave the machine. On clean single-column pages, Apple Vision does even better (0.3% on the law pages), as long as you sort out the reading order.
 - **On your own server:** Surya. The fewest errors of the free engines on real pages (3.9%), about 15 seconds a page on an Apple M5 Pro, and a license to check: free for research, personal use and startups under $5M in funding or revenue, paid above.
 - **What I would not use on Arabic with default settings:** Tesseract, and the tools built on it; PaddleOCR 3 without shrinking the page; Docling with EasyOCR.

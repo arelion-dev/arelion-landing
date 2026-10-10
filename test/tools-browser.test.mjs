@@ -179,7 +179,7 @@ test("the OCR picker answers from the guide, by mouse and by keyboard, and sends
   assert.equal(await pick.innerText(), "Gemini 3.8 Flash")
   const cloud = await result.innerText()
   assert.ok(cloud.includes("1.9% wrong on the 10 real pages, at a third of a cent a page."))
-  assert.ok(cloud.includes("Gemini 3.5 Flash did slightly better (1.6%) for about 1.8 cents."))
+  assert.ok(cloud.includes("Gemini 3.5 Flash did slightly better (1.6%), but Google retired it on 8 October 2026."))
 
   // Own servers.
   await tool.getByLabel("They must stay on our own servers").check()

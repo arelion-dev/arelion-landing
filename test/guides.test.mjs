@@ -137,13 +137,14 @@ test("no built page or llms.txt still says boutique tech studio", { skip: !built
 // Several guides read UAE laws: every guide page ends with a visible not-legal-advice
 // note, a box with a bold label (asked on 2026-10-07, then asked to make it stand out).
 // A guide that does not talk about the law (the OCR benchmarks) may turn it off.
-const NOTE = /class="cs-disclaimer"[^>]*><strong>Not legal advice\.<\/strong> General information only\. [^<]*ask a lawyer qualified in the UAE\.</
+const NOTE = country =>
+  new RegExp(`class="cs-disclaimer"[^>]*><strong>Not legal advice\\.</strong> General information only\\. [^<]*ask a lawyer qualified in ${country}\\.<`)
 const LEGAL_TOPIC = /\b(lawyer|legal basis|legal advice|PDPL|DIFC|ADGM|data protection|compliance|regulator)/i
 
 test("every guide page carries the not-legal-advice disclaimer unless it turns it off", { skip: !built && "no build in public/" }, () => {
   for (const g of guides) {
     if (g.data.legalDisclaimer === false) assert.doesNotMatch(html(g.path), /class="cs-disclaimer"/, g.path)
-    else assert.match(html(g.path), NOTE, g.path)
+    else assert.match(html(g.path), NOTE(g.data.legalJurisdiction || "the UAE"), g.path)
   }
 })
 
@@ -178,4 +179,25 @@ test("every guide page shows its author and last update, matching its structured
   }
   const home = jsonLd(html("")).flatMap(d => d["@graph"] || [d]).map(n => n["@id"])
   assert.ok(home.includes("https://arelion.dev/#antonin") && home.includes("https://arelion.dev/#organization"), "the home no longer declares the ids the guides point to")
+})
+
+// The Saudi PDPL guide first went out of the box with "a lawyer qualified in the UAE" (2026-10-10).
+test("the Saudi PDPL guide sends readers to a lawyer qualified in Saudi Arabia", { skip: !built && "no build in public/" }, () => {
+  const page = html("/guides/saudi-pdpl-ai/")
+  assert.match(page, NOTE("Saudi Arabia"))
+  assert.doesNotMatch(page, /ask a lawyer qualified in the UAE/)
+})
+
+// Google retired Gemini 3.5 Flash on 2026-10-08, the day after the benchmark run.
+// The measured scores stay; no page may still advise it, and the benchmark
+// says how much of Gemini's lead comes from the watermarked book page.
+test("the OCR pages no longer advise Gemini 3.5 Flash and explain the watermark page", () => {
+  const read = p => readFileSync(join(ROOT, p), "utf8")
+  const ocrGuide = read("content/guides/arabic-ocr.md")
+  assert.match(ocrGuide, /Google retired Gemini 3\.5 Flash on 8 October 2026/)
+  assert.match(ocrGuide, /That page carries a watermark that the transcription leaves out/)
+  const pdfGuide = read("content/guides/arabic-pdf-to-text.md")
+  assert.doesNotMatch(pdfGuide, /Gemini 3\.5 Flash if the pages may go to Google/)
+  assert.match(pdfGuide, /Gemini 3\.8 Flash if the pages may go to Google/)
+  assert.doesNotMatch(read("src/tools/ocr-picker.js"), /for about 1\.8 cents/)
 })

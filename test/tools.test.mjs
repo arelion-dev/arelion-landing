@@ -104,7 +104,7 @@ test("every OCR answer shows its guide line word for word", () => {
 
 // The figures each answer shows, listed as a fact-checker would read them.
 const FIGURES = {
-  [ocr.WHERE.cloud]: ["1.9%", "10 real pages", "a third of a cent", "1.6%", "1.8 cents"],
+  [ocr.WHERE.cloud]: ["1.9%", "10 real pages", "a third of a cent", "1.6%", "8 October 2026"],
   [ocr.WHERE.mac]: ["5.0%", "0.3 seconds a page", "0.3% on the law pages"],
   [ocr.WHERE.server]: ["3.9%", "15 seconds a page", "$5M"],
 }

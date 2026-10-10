@@ -3,6 +3,7 @@ title: "Arabic PDF to Word or text: why copy-paste fails"
 description: "Converting an Arabic PDF to Word or text? Copy-paste often reverses letters. On UAE law PDFs the best of 7 extractors got 7.6% of characters wrong, OCR 0.2%."
 path: "/guides/arabic-pdf-to-text/"
 date: "2026-10-07"
+updated: "2026-10-10"
 kicker: "Arabic OCR"
 legalDisclaimer: false
 related: ["ocr-benchmark", "document-intelligence-at-scale"]
@@ -10,7 +11,7 @@ faq:
   - q: "Why does Arabic text come out reversed when I copy it from a PDF?"
     a: "A PDF stores glyphs at positions on the page, left to right, and a ligature such as لا is often one glyph mapped to two letters. The extractor has to rebuild the reading order. Many tools reverse the letters, or the two letters inside each ligature, so الأمر comes out as األمر."
   - q: "How do I convert a scanned Arabic PDF to text?"
-    a: "Render each page to an image at 300 dpi (pdftoppm -r 300 does it) and run an OCR engine that reads Arabic well. In my tests that was Apple's text recognition on a Mac, Surya, or Gemini 3.5 Flash if the pages may go to Google. Tesseract, which many free PDF tools use, got far more characters wrong."
+    a: "Render each page to an image at 300 dpi (pdftoppm -r 300 does it) and run an OCR engine that reads Arabic well. In my tests that was Apple's text recognition on a Mac, Surya, or Gemini 3.8 Flash if the pages may go to Google. Tesseract, which many free PDF tools use, got far more characters wrong."
   - q: "Is it better to extract the text layer or to OCR an Arabic PDF?"
     a: "On the two UAE law PDFs I tested, OCR of the rendered pages was better than every text extractor. The best extractor, pdfplumber with its right-to-left option, got 7.6% of characters wrong on the Dubai law, and pypdf, which found the most words, got 10.7% wrong. Apple's OCR got 0.2% wrong at 300 dpi."
 ---
