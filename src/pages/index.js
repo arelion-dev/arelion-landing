@@ -412,6 +412,8 @@ const SAME_AS = [
   "https://www.linkedin.com/in/antoninribeaud/",
   "https://github.com/antonhansel",
   "https://antonin.cool",
+  "https://www.malt.fr/profile/antoninribeaud",
+  "https://www.collective.work/profile/antonin-ribeaud",
 ]
 
 // Two cross-linked entities in one graph: the studio (ProfessionalService) and

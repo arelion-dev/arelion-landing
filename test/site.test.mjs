@@ -142,3 +142,23 @@ test("every font package gatsby-browser imports is used by the CSS", () => {
   assert.ok(families.length > 0, "no font package found: the check is broken")
   for (const f of families) assert.match(css, new RegExp(`"${f}"`, "i"), `${f} is imported but no CSS rule uses it`)
 })
+
+// The home graph and the case studies describe the same Person (same @id), so
+// they list the same profiles; /about links the freelance ones (2026-10-10).
+const FREELANCE_PROFILES = ["https://www.malt.fr/profile/antoninribeaud", "https://www.collective.work/profile/antonin-ribeaud"]
+const ldNodes = page =>
+  [...page.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
+    .flatMap(m => [JSON.parse(m[1])].flat())
+    .flatMap(d => d["@graph"] || [d])
+test("the home Person, every case-study author and /about point to the Malt and Collective profiles", { skip }, () => {
+  const person = ldNodes(html("")).find(n => n["@id"] === "https://arelion.dev/#antonin")
+  assert.ok(person, "no Person with the @id #antonin on the home")
+  for (const p of FREELANCE_PROFILES) assert.ok(person.sameAs.includes(p), `the home Person does not list ${p}`)
+  for (const cs of CASE_STUDIES) {
+    const author = ldNodes(html(`case-studies/${cs.slug}`)).map(n => n.author).find(a => a && a["@id"] === person["@id"])
+    assert.ok(author, `${cs.slug}: no author with the home Person @id`)
+    assert.deepEqual(author.sameAs, person.sameAs, `${cs.slug}: the author lists other profiles than the home Person`)
+  }
+  const about = html("about")
+  for (const p of FREELANCE_PROFILES) assert.ok(about.includes(`href="${p}"`), `/about does not link ${p}`)
+})
