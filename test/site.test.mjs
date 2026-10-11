@@ -193,3 +193,21 @@ test("the built home shows the audit sentence and the audit link in its Fraction
   assert.match(card, /<a [^>]*href="\/case-studies\/ai-attack-surface\/"/)
 })
 
+// IndexNow (2026-10-11): the SEO tracker tells Bing which pages are new or
+// changed, signed with a key. Bing checks that the site owns the key by reading
+// the file named after it at the root. The tracker's config, kept in another
+// repo, holds the same key and refuses to submit when this file is not served.
+const indexNowKeys = () => readdirSync(join(ROOT, "static")).filter(f => /^[0-9a-f]{32}\.txt$/.test(f))
+
+test("one IndexNow key file sits in static/ and holds its own name", () => {
+  const files = indexNowKeys()
+  assert.equal(files.length, 1, `IndexNow key files in static/: ${files.join(", ") || "none"}`)
+  assert.equal(readFileSync(join(ROOT, "static", files[0]), "utf8").trim(), files[0].replace(/\.txt$/, ""))
+})
+
+test("the built site serves the IndexNow key file at its root", { skip }, () => {
+  const [file] = indexNowKeys()
+  assert.ok(file, "no IndexNow key file in static/")
+  assert.equal(readFileSync(join(PUBLIC, file), "utf8").trim(), file.replace(/\.txt$/, ""))
+})
+
