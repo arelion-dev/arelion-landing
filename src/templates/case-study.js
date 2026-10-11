@@ -10,6 +10,7 @@ import WatermarkSim from "../components/synthid-watermark-sim"
 import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 import CASE_STUDIES from "../data/case-studies"
 import { offersOf, offerClass, headlineOf } from "../data/offers"
+import { scrollTables } from "./scroll-tables"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
@@ -129,7 +130,7 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
       ? techArticle
       : businessArticle
     : techArticle || businessArticle
-  const articleHtml = shownArticle && shownArticle.html
+  const articleHtml = shownArticle && scrollTables(shownArticle.html)
   const articleDate = shownArticle && shownArticle.frontmatter.date
   if (!cs) return null
 
@@ -268,13 +269,13 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
             <section
               className={`cs-section cs-article${audience === "business" ? "" : " cs-hidden"}`}
               onClick={onArticleClick}
-              dangerouslySetInnerHTML={{ __html: businessArticle.html }}
+              dangerouslySetInnerHTML={{ __html: scrollTables(businessArticle.html) }}
             />
             {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
             <section
               className={`cs-section cs-article${audience === "tech" ? "" : " cs-hidden"}`}
               onClick={onArticleClick}
-              dangerouslySetInnerHTML={{ __html: techArticle.html }}
+              dangerouslySetInnerHTML={{ __html: scrollTables(techArticle.html) }}
             />
           </>
         ) : articleHtml ? (

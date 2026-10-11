@@ -10,6 +10,7 @@ import Reg10Check from "../components/reg10-check"
 import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 import CASE_STUDIES from "../data/case-studies"
 import { offersOf, offerClass, headlineOf } from "../data/offers"
+import { scrollTables } from "./scroll-tables"
 import { ANCHOR as OCR_PICKER } from "../tools/ocr-picker"
 import { ANCHOR as AUTOMATE_FIRST } from "../tools/automate-first"
 import { ANCHOR as REG10_CHECK } from "../tools/reg10-check"
@@ -74,7 +75,7 @@ const GuideTemplate = ({ data }) => {
   const whatsappHref = whatsapp && whatsappFor(whatsapp, title)
   // The marker itself never reaches the page. Without an offer, or without the
   // marker, the body stays in one piece.
-  const [beforeOffer, ...rest] = html.split(OFFER_MARKER)
+  const [beforeOffer, ...rest] = scrollTables(html).split(OFFER_MARKER)
   const afterOffer = rest.join("")
   const showOffer = Boolean(offer) && rest.length > 0
 

@@ -4,8 +4,9 @@
 // page. Needs `npm run build` first, and Playwright, which this site does not
 // install: point NODE_PATH at a node_modules that has it, for example
 //   NODE_PATH=/path/to/a/project/node_modules npm test
-// Without either, these checks are skipped. The last two check the contact
-// box at the bottom of every guide and the offer box inside the DIFC guide.
+// Without either, these checks are skipped. The last three check the contact
+// box at the bottom of every guide, the offer box inside the DIFC guide, and
+// the tables of a guide on a phone.
 import { test, before, after } from "node:test"
 import assert from "node:assert/strict"
 import { createReadStream, existsSync, readFileSync, statSync } from "node:fs"
@@ -83,8 +84,8 @@ const WHATSAPP = "https://wa.me/"
 // One new visitor. Google Analytics, Tag Manager and every other outside request
 // are blocked; the booking and WhatsApp links get an empty 204 answer, so the
 // test stays on the guide. `requested` lists every URL the browser asked for.
-const visit = async path => {
-  const context = await browser.newContext({ serviceWorkers: "block" })
+const visit = async (path, viewport) => {
+  const context = await browser.newContext({ serviceWorkers: "block", ...(viewport && { viewport }) })
   const requested = []
   context.on("request", r => requested.push(r.url()))
   await context.route("**/*", route => {
@@ -532,5 +533,38 @@ test("the offer box in the DIFC guide sits after the ChatGPT section, buttons si
     { method: "booking", location: "guide" },
   ])
   assert.equal(page.url(), `${origin}/guides/difc-data-protection-ai/`)
+  await context.close()
+})
+
+// Tables on a phone. Until 2026-10-11 every table kept fixed columns, so a
+// six-column table had room for about three letters per line and its words
+// came out in pieces ("De tec tor"). A wide table now keeps whole words and
+// scrolls sideways in its own box.
+test("on a phone, a guide's tables keep whole words in their headers and the page does not scroll sideways", { skip }, async () => {
+  const { context, page } = await visit("/arabic-ocr/", { width: 390, height: 844 })
+  const { tables, cut, sideways } = await page.evaluate(() => {
+    const cut = []
+    const cells = document.querySelectorAll(".cs-detail table th")
+    for (const cell of cells) {
+      const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT)
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        for (const word of node.data.matchAll(/[A-Za-z]{2,}/g)) {
+          const range = document.createRange()
+          range.setStart(node, word.index)
+          range.setEnd(node, word.index + word[0].length)
+          const lines = new Set(Array.from(range.getClientRects(), r => Math.round(r.top)))
+          if (lines.size > 1) cut.push(word[0])
+        }
+      }
+    }
+    return {
+      tables: document.querySelectorAll(".cs-detail table").length,
+      cut,
+      sideways: document.documentElement.scrollWidth - window.innerWidth,
+    }
+  })
+  assert.ok(tables > 0, "the guide has no table to check")
+  assert.deepEqual(cut, [], "header words cut in the middle")
+  assert.ok(sideways <= 0, `the page is ${sideways}px wider than the screen`)
   await context.close()
 })

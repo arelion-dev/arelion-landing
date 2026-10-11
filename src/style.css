@@ -2253,6 +2253,34 @@ a:focus {
   background: oklch(0.96 0.02 245);
 }
 
+/* Every article table sits in a .table-scroll box (templates/scroll-tables.js):
+   a table wider than the screen scrolls sideways there, and the page does not. */
+.cs-detail .table-scroll {
+  overflow-x: auto;
+  margin: var(--spacing-6) 0;
+}
+.cs-detail .table-scroll table {
+  margin: 0;
+}
+/* Phones: fixed columns left a six-column table about three letters per line,
+   and `overflow-wrap: anywhere` then cut every word. Size the columns to their
+   words instead; what does not fit scrolls. */
+@media (max-width: 640px) {
+  .cs-detail .table-scroll table {
+    table-layout: auto;
+    font-size: 0.875rem;
+  }
+  .cs-detail .table-scroll table th:first-child,
+  .cs-detail .table-scroll table td:first-child {
+    width: auto;
+  }
+  .cs-detail .table-scroll table th,
+  .cs-detail .table-scroll table td {
+    padding: 0.5rem 0.6rem;
+    overflow-wrap: normal;
+  }
+}
+
 /* Image caption: the italic line right after an inline image sits flush against it.
    Give it its own line and a little breathing room. */
 .cs-detail .gatsby-resp-image-wrapper + em,
