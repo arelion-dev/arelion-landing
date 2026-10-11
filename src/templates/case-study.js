@@ -7,12 +7,10 @@ import PortfolioLayout from "../components/portfolio-layout"
 import SEO from "../components/seo"
 import LegalDisclaimer from "../components/legal-disclaimer"
 import WatermarkSim from "../components/synthid-watermark-sim"
-import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
+import ArticleBody from "../components/article-body"
+import ContactLinks, { whatsappFor } from "../components/contact-links"
 import CASE_STUDIES from "../data/case-studies"
 import { offersOf, offerClass, headlineOf } from "../data/offers"
-import { scrollTables } from "./scroll-tables"
-
-const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 // Tech/Business audience toggle: default to business (the broadest audience),
 // remembered site-wide like the language choice.
@@ -130,9 +128,18 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
       ? techArticle
       : businessArticle
     : techArticle || businessArticle
-  const articleHtml = shownArticle && scrollTables(shownArticle.html)
+  const articleHtml = shownArticle && shownArticle.html
   const articleDate = shownArticle && shownArticle.frontmatter.date
   if (!cs) return null
+
+  const whatsapp = data && data.site && data.site.siteMetadata.social && data.site.siteMetadata.social.whatsapp
+  const whatsappHref = whatsapp && whatsappFor(whatsapp, cs.title[csLang])
+  // A study with an `offer` shows it inside its article, where the markdown says <!-- offer -->.
+  const offerBox = {
+    offer: cs.offer && { title: cs.offer.title[csLang], text: cs.offer.text[csLang] },
+    whatsappHref,
+    location: "case_study_offer",
+  }
 
   // Related studies: same main offer or a shared tag, for internal linking and
   // topical clustering. Up to three, self excluded.
@@ -265,26 +272,11 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
           // Both bodies are in the HTML so crawlers see each; the inactive one
           // is hidden with CSS. The toggle flips which is visible.
           <>
-            {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
-            <section
-              className={`cs-section cs-article${audience === "business" ? "" : " cs-hidden"}`}
-              onClick={onArticleClick}
-              dangerouslySetInnerHTML={{ __html: scrollTables(businessArticle.html) }}
-            />
-            {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
-            <section
-              className={`cs-section cs-article${audience === "tech" ? "" : " cs-hidden"}`}
-              onClick={onArticleClick}
-              dangerouslySetInnerHTML={{ __html: scrollTables(techArticle.html) }}
-            />
+            <ArticleBody html={businessArticle.html} hidden={audience !== "business"} onClick={onArticleClick} {...offerBox} />
+            <ArticleBody html={techArticle.html} hidden={audience !== "tech"} onClick={onArticleClick} {...offerBox} />
           </>
         ) : articleHtml ? (
-          // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
-          <section
-            className="cs-section cs-article"
-            onClick={onArticleClick}
-            dangerouslySetInnerHTML={{ __html: articleHtml }}
-          />
+          <ArticleBody html={articleHtml} onClick={onArticleClick} {...offerBox} />
         ) : (
           cs.body.map(sec => (
             <section key={sec.h[csLang]} className="cs-section">
@@ -368,16 +360,11 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
         )}
 
         <div className="cs-cta">
-          <p>{t("csDetail.ctaLine")}</p>
-          <a
-            className="nav-pill nav-pill-primary"
-            href={CALENDAR_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackLead(LEAD_METHOD.booking, "case_study")}
-          >
-            {t("csDetail.bookACall")}
-          </a>
+          {/* A study's own line (ctaLine) says what to send me; the others share the generic one. */}
+          <p>{(cs.ctaLine && cs.ctaLine[csLang]) || t("csDetail.ctaLine")}</p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+            <ContactLinks whatsappHref={whatsappHref} location="case_study" bookLabel={t("csDetail.bookACall")} />
+          </div>
         </div>
       </article>
     </PortfolioLayout>
@@ -394,6 +381,9 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         siteUrl
+        social {
+          whatsapp
+        }
       }
     }
     techEn: markdownRemark(

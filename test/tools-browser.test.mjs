@@ -4,9 +4,9 @@
 // page. Needs `npm run build` first, and Playwright, which this site does not
 // install: point NODE_PATH at a node_modules that has it, for example
 //   NODE_PATH=/path/to/a/project/node_modules npm test
-// Without either, these checks are skipped. The last three check the contact
-// box at the bottom of every guide, the offer box inside the DIFC guide, and
-// the tables of a guide on a phone.
+// Without either, these checks are skipped. The last four check the contact
+// box at the bottom of every guide, the offer box inside the DIFC guide, the
+// tables of a guide on a phone, and the offer box of a case study.
 import { test, before, after } from "node:test"
 import assert from "node:assert/strict"
 import { createReadStream, existsSync, readFileSync, statSync } from "node:fs"
@@ -16,6 +16,7 @@ import { extname, join, normalize } from "node:path"
 
 const require = createRequire(import.meta.url)
 const matter = require("gray-matter")
+const CASE_STUDIES = require("../src/data/case-studies.js")
 const ocr = require("../src/tools/ocr-picker.js")
 const automate = require("../src/tools/automate-first.js")
 const reg10 = require("../src/tools/reg10-check.js")
@@ -84,7 +85,7 @@ const WHATSAPP = "https://wa.me/"
 // One new visitor. Google Analytics, Tag Manager and every other outside request
 // are blocked; the booking and WhatsApp links get an empty 204 answer, so the
 // test stays on the guide. `requested` lists every URL the browser asked for.
-const visit = async (path, viewport) => {
+const visit = async (path, { viewport, ready } = {}) => {
   const context = await browser.newContext({ serviceWorkers: "block", ...(viewport && { viewport }) })
   const requested = []
   context.on("request", r => requested.push(r.url()))
@@ -96,8 +97,8 @@ const visit = async (path, viewport) => {
   })
   const page = await context.newPage()
   await page.goto(origin + path)
-  // The submit button turns on once React runs the page.
-  await page.locator("form button[type=submit]:enabled").waitFor()
+  // The submit button turns on once React runs the page. A page without a form passes its own `ready`.
+  await (ready ? ready(page) : page.locator("form button[type=submit]:enabled").waitFor())
   return { context, page, requested }
 }
 
@@ -541,7 +542,7 @@ test("the offer box in the DIFC guide sits after the ChatGPT section, buttons si
 // came out in pieces ("De tec tor"). A wide table now keeps whole words and
 // scrolls sideways in its own box.
 test("on a phone, a guide's tables keep whole words in their headers and the page does not scroll sideways", { skip }, async () => {
-  const { context, page } = await visit("/arabic-ocr/", { width: 390, height: 844 })
+  const { context, page } = await visit("/arabic-ocr/", { viewport: { width: 390, height: 844 } })
   const { tables, cut, sideways } = await page.evaluate(() => {
     const cut = []
     const cells = document.querySelectorAll(".cs-detail table th")
@@ -568,3 +569,53 @@ test("on a phone, a guide's tables keep whole words in their headers and the pag
   assert.ok(sideways <= 0, `the page is ${sideways}px wider than the screen`)
   await context.close()
 })
+
+// The offer box inside a case study's article (2026-10-11), on the prompt
+// injection test: same card and same two links as in a guide, with the lead
+// locations of a case study. The bottom box gains the WhatsApp link.
+test("the offer box of a case study sits in its article, buttons side by side, and both boxes send their own leads", { skip }, async () => {
+  const slug = "prompt-injection-email-test"
+  const cs = CASE_STUDIES.find(c => c.slug === slug)
+  // React has taken over the page once the offer's links carry their click handler.
+  const ready = page =>
+    page.waitForFunction(() => Object.keys(document.querySelector(".cs-offer a") || {}).some(k => k.startsWith("__reactProps")))
+  const { context, page } = await visit(`/case-studies/${slug}/`, { ready })
+  const box = page.locator(".cs-offer")
+  assert.equal(await box.count(), 1)
+  assert.equal(await box.innerText(), `${cs.offer.title.en}\n\n${cs.offer.text.en}\n\nWhatsApp\nBook a call`)
+
+  // In the text: below the section on the undefended runs, above the first defense.
+  const frame = await box.boundingBox()
+  const above = await page.getByRole("heading", { name: "With no defense, three models called the mail tool on 9 to 16 of the 50 attacks" }).boundingBox()
+  const below = await page.getByRole("heading", { name: "Marking the email as data stopped all 50 attacks on these five models" }).boundingBox()
+  assert.ok(above.y < frame.y && frame.y + frame.height <= below.y, "the offer box is not between the two sections")
+
+  // The two buttons on one row, next to each other, in the offer and in the bottom box.
+  const bottom = page.locator(".cs-cta")
+  for (const [name, place] of [["offer", box], ["bottom box", bottom]]) {
+    const whatsapp = await place.locator(".nav-pill-whatsapp").boundingBox()
+    const book = await place.locator(".nav-pill-primary").boundingBox()
+    assert.ok(Math.abs(whatsapp.y - book.y) < 1, `${name}: the two buttons are not on one row`)
+    const gap = book.x - (whatsapp.x + whatsapp.width)
+    assert.ok(gap >= 0 && gap <= 16, `${name}: ${gap}px between WhatsApp and Book a call`)
+  }
+
+  // Both WhatsApp links name the study; each box reports its own location.
+  const named = `${WHATSAPP}971556792204?text=${encodeURIComponent(`Hi Antonin, I read "${cs.title.en}" on arelion.dev`)}`
+  assert.equal(await box.getByRole("link", { name: "WhatsApp" }).getAttribute("href"), named)
+  assert.equal(await bottom.getByRole("link", { name: "WhatsApp" }).getAttribute("href"), named)
+  assert.equal(await bottom.locator("p").innerText(), cs.ctaLine.en)
+  await follow(context, box.getByRole("link", { name: "Book a call" }), CALENDAR)
+  await follow(context, box.getByRole("link", { name: "WhatsApp" }), WHATSAPP)
+  await follow(context, bottom.getByRole("link", { name: "Book a call" }), CALENDAR)
+  await follow(context, bottom.getByRole("link", { name: "WhatsApp" }), WHATSAPP)
+  assert.deepEqual(await events(page, "generate_lead"), [
+    { method: "booking", location: "case_study_offer" },
+    { method: "whatsapp", location: "case_study_offer" },
+    { method: "booking", location: "case_study" },
+    { method: "whatsapp", location: "case_study" },
+  ])
+  assert.equal(page.url(), `${origin}/case-studies/${slug}/`)
+  await context.close()
+})
+

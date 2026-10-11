@@ -78,13 +78,18 @@ test("no WhatsApp or booking link sits in article content, out of reach of track
   for (const f of content) assert.doesNotMatch(readFileSync(f, "utf8"), /wa\.me\/|calendar\.app\.google/, f)
 })
 
-// A guide shows its two contact links in its bottom box, and a guide with an
-// offer shows them again inside the text. Each place reports its own location.
-test("the guide's offer box and its bottom box send their own lead location", () => {
-  const template = readFileSync(join(SRC, "templates/guide.js"), "utf8")
-  const locations = [...template.matchAll(/<ContactLinks [^>]*location="([^"]*)"/g)].map(m => m[1])
-  assert.deepEqual(locations, ["guide_offer", "guide"])
-  // The links pass that location on, whichever box they sit in.
-  assert.match(template, /trackLead\(LEAD_METHOD\.whatsapp, location\)/)
-  assert.match(template, /trackLead\(LEAD_METHOD\.booking, location\)/)
+// A guide or a case study shows its two contact links in its bottom box, and one
+// with an offer shows them again inside the text. Each place reports its own location.
+test("the offer box and the bottom box of guides and case studies send their own lead location", () => {
+  const read = f => readFileSync(join(SRC, f), "utf8")
+  // In page order: the article body (with its offer box), then the bottom box.
+  const locations = f => [...read(f).matchAll(/<(?:ArticleBody|ContactLinks) [^>]*location="([^"]*)"/g)].map(m => m[1])
+  assert.deepEqual(locations("templates/guide.js"), ["guide_offer", "guide"])
+  // A case study has up to two bodies (business, tech): they share one set of props.
+  assert.deepEqual(locations("templates/case-study.js"), ["case_study"])
+  assert.match(read("templates/case-study.js"), /location: "case_study_offer",/)
+  // The body hands that location to the links, and the links pass it on, whichever box they sit in.
+  assert.match(read("components/article-body.js"), /<ContactLinks whatsappHref=\{whatsappHref\} location=\{location\} \/>/)
+  assert.match(read("components/contact-links.js"), /trackLead\(LEAD_METHOD\.whatsapp, location\)/)
+  assert.match(read("components/contact-links.js"), /trackLead\(LEAD_METHOD\.booking, location\)/)
 })

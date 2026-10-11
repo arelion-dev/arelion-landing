@@ -141,6 +141,8 @@ Permissions that are too wide usually come from making a deploy work quickly. Wi
 
 Alongside the five above: an API endpoint without authentication that returned non-public records to anyone who guessed a numeric id, public storage buckets that let anyone list their contents, secrets stored in container image layers (where `docker history` shows them, whatever the runtime configuration says), and the main service running as root inside its container. None of them breaks a functional test.
 
+<!-- offer -->
+
 ## How I verified the high findings
 
 I reproduced each high finding a second time, independently, before adding it to the report: I searched the bundle, sent the request with curl, read the git history, or exported the IAM policy. The client could then give the report to their own team without me there to defend each line.

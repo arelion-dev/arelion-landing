@@ -63,6 +63,8 @@ The other three were noticed and left out. In each run a sub-task named the hard
 
 Runs 1 and 2 have no such list, so their reports don't show what was examined and left out.
 
+<!-- offer -->
+
 ## How much the three runs differed
 
 Runs 1 and 2 reported the same 9 findings. Run 3 had those 9 and 2 more: a reflected XSS in the product search, and code execution through `mathjs`. The application requires one exact version of that library, which has a known flaw, and the calculator passes user input to it.

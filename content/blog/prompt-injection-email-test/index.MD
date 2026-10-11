@@ -59,6 +59,8 @@ In 9 of the 12 cases where Claude Opus 5.5 called the tool, the short reasoning 
 
 The model saw the instruction and attributed it to me, because my script had pasted the email into my own message. I did not test the other common design, in which the assistant receives the mail as a tool result.
 
+<!-- offer -->
+
 ## Marking the email as data stopped all 50 attacks on these five models
 
 With the markers and one paragraph of instructions, no model called the tool and none wrote the code. In the challenge, though, the same emails had succeeded against GPT-4o mini or Phi-3-medium assistants that already had delimiters and an instruction not to follow emails. Nobody rewrote them for my markers or for these five models, and an attacker who can retry would do that.
