@@ -139,7 +139,7 @@ Un IAM sur-dimensionné est un bug de « faire marcher tout de suite », et les 
 
 ## Quatre autres trous qu'un test fonctionnel ne peut pas voir
 
-À côté des six précédents : un endpoint d'API non authentifié qui renvoyait des données non publiques à quiconque devinait un identifiant numérique, des buckets de stockage publics qui autorisaient le listage anonyme d'objets, des secrets cuits dans les couches d'image de conteneur (visibles avec `docker history`, ce qui rend la variable d'environnement à l'exécution hors sujet), et le service principal qui tournait en root dans son conteneur. Tous ont la même forme : ça marche dans la démo, et c'est un trou en production.
+À côté des cinq précédents : un endpoint d'API non authentifié qui renvoyait des données non publiques à quiconque devinait un identifiant numérique, des buckets de stockage publics qui autorisaient le listage anonyme d'objets, des secrets cuits dans les couches d'image de conteneur (visibles avec `docker history`, ce qui rend la variable d'environnement à l'exécution hors sujet), et le service principal qui tournait en root dans son conteneur. Tous ont la même forme : ça marche dans la démo, et c'est un trou en production.
 
 ## Chaque constat élevé a été vérifié deux fois avant d'entrer dans le rapport
 

@@ -1000,27 +1000,29 @@ const CASE_STUDIES = [
       },
     ],
   }] : []),
-  // Draft: kept out of production builds (see the note at the end of this file).
-  ...(process.env.NODE_ENV === "development" ? [{
+  {
     slug: "ai-attack-surface",
-    date: "2026-03-26",
+    date: "2026-10-11",
     article: "/blog/ai-attack-surface/",
     articleBusiness: "/blog/ai-attack-surface-business/",
     pillar: "Audit",
-    featured: true,
-    published: false,
+    offers: ["AI agents"],
+    outcome: { en: "49 security findings in an AI-built platform, the nine high ones now fixed" },
+    featured: false,
+    published: true,
     title: {
       en: "Security audit of an AI-generated codebase, before it took production traffic",
       fr: "Audit de sécurité d'une base de code générée par IA, avant la mise en production",
     },
     metric: {
-      en: "49 findings, nine of them high severity, all fixed before launch",
-      fr: "49 constats, dont neuf en sévérité haute, tous corrigés avant la mise en ligne",
+      en: "49 findings, nine of them high severity, the nine now fixed",
+      fr: "49 constats, dont neuf en sévérité haute, les neuf corrigés depuis",
     },
     hook: {
       en: "Server secrets shipping inside the public JavaScript, and an admin API that trusted a cookie whose value was the string 'true'.",
       fr: "Des secrets serveur qui partaient dans le JavaScript public, et une API d'admin qui croyait un cookie dont la valeur était la chaîne « true ».",
     },
+    metaDescription: { en: "Read-only security audit of an AI-built web platform before it took production traffic: 49 findings, nine of them high severity, the nine now fixed." },
     tags: ["security audit", "AI security", "Cloud IAM", "secret scanning", "CVE review"],
     stack: ["Cloud IAM", "secret scanning", "CVE review"],
     body: [
@@ -1041,8 +1043,8 @@ const CASE_STUDIES = [
       {
         h: { en: "What I find", fr: "Ce que je trouve" },
         p: {
-          en: "Service-account keys committed to repos, public buckets, a WordPress open to a known CVE, admin endpoints guarded by a plain cookie. On one real audit: 49 findings.",
-          fr: "Clés de service-account commitées dans les repos, buckets publics, WordPress troué à CVE connue, endpoints d'admin gardés par un simple cookie. Sur un audit réel : 49 findings.",
+          en: "Credentials committed to repos, public buckets, admin endpoints guarded by a plain cookie. On one real audit: 49 findings.",
+          fr: "Identifiants commités dans les repos, buckets publics, endpoints d'admin gardés par un simple cookie. Sur un audit réel : 49 findings.",
         },
       },
       {
@@ -1060,7 +1062,7 @@ const CASE_STUDIES = [
         },
       },
     ],
-  }] : []),
+  },
   {
     slug: "llm-sleeper-agents",
     date: "2026-08-12",

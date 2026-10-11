@@ -1,32 +1,32 @@
 ---
 title: "The AI attack surface"
 date: "2026-10-11T09:50:00.000Z"
-description: "A read-only security audit of an AI-built web platform, before it took production traffic. 49 findings, nine high, every high verified twice. The four-layer read that finds what scanners and self-review miss."
+description: "A read-only security audit of an AI-built web platform before it took production traffic: 49 findings, nine of them high, each high verified twice. What I read, what I found, and how each one gets fixed."
 tags: ["Tech", "AI", "Security"]
 private: true
 ---
 
-I read an AI-built web platform the way an attacker would, before it took production traffic. Five days, four layers, all of it read-only: 49 findings, nine of them high, every high verified twice. The client handed the report straight to their own team.
+I audited an AI-built web platform before it took production traffic. The audit took five days and was read-only. I found 49 issues, nine of them high severity, and I reproduced each of the nine a second time before writing it down. The client passed the report to their own team.
 
-**49 findings, 9 high, 19 medium, 21 low. Every high verified twice. Zero shipped on a hunch.**
+**49 findings: 9 high, 19 medium, 21 low. Each high finding was verified twice.**
 
 > Note. This audit took place earlier, and the nine high findings below are fixed today. The code samples are representative: I made up the names, paths and values.
 
-The whole audit stayed read-only. I cloned the repo and read it, grepped it, traced calls through it, and touched nothing: no deploy, no write, and the team kept shipping while I worked. Then I read the shipped artifact the way an attacker would, across four layers: application code, cloud IAM, CI pipelines, and infrastructure. I call it the four-layer read. What it catches that a scanner can't is the rest of this post.
+Read-only means I cloned the repository and read it. I searched it, followed calls through the code, and changed nothing: no deploy, no write. The team kept shipping while I worked. I looked at four layers: the application code, the cloud permissions (IAM), the CI pipelines and the infrastructure. A scanner would not have found most of what I found there.
 
-## A scanner and a self-review both miss the same holes
+## What a scanner and a self-review both miss
 
-An automated scanner (ZAP, Burp, a Nuclei run in CI) pokes the running site over HTTP and reads the responses that come back. It never sees the build config that decides which env vars ship to the browser. It never sees the git history still holding a deleted password, or the cloud IAM policy that hands an outsider `roles/owner`. That's exactly where the worst of this stack turned out to live. A DAST pass here would have come back clean while the owner role sat there untouched.
+An automated scanner such as ZAP, Burp or Nuclei sends HTTP requests to the running site and reads the responses. It does not see the build configuration that decides which environment variables are sent to the browser. It does not see a password that was deleted from the files and is still in the git history, or a cloud permission that gives an outside account `roles/owner`. On this platform, the worst problems were in those places. A scan of the running site would have reported nothing about them.
 
-Self-review fails differently, and it fails the same way every time. An AI writes for "works": the feature renders and the deploy goes green. Safe almost never shows up in a demo, so nobody asks the model for it, and the model won't volunteer it.
+Self-review misses them for another reason. A model writes code to make the feature work: the page renders and the deploy passes. Safety does not show in a demo, so nobody asks the model for it, and the model does not raise it.
 
-Then the reviewer sees it works, "the AI wrote it" quietly becomes "it's fine", and the auth gate a careful engineer would have stopped on ships that same afternoon. The model optimizes for the acceptance criteria in the prompt, and "an attacker can't forge this cookie" is never one of them. Multiply that across a whole codebase and you get a platform that passes every functional test and leaks anyway.
+The reviewer then sees that the feature works and approves it. The model worked from the acceptance criteria in the prompt, and "an attacker cannot forge this cookie" was not one of them. Across a whole codebase, the result is a platform that passes its functional tests and still leaks.
 
-## Public prefixes inline your secrets into every visitor's browser
+## Secrets with a public prefix end up in the browser
 
-Modern front-end frameworks decide what reaches the client by a naming convention. Any env var prefixed `NEXT_PUBLIC_`, `VITE_`, `PUBLIC_` or `REACT_APP_` gets string-replaced into the JavaScript bundle at build time. That's the intended behavior, meant for analytics ids and public API endpoints.
+Front-end frameworks use a naming rule to decide what reaches the browser. An environment variable whose name starts with `NEXT_PUBLIC_`, `VITE_`, `PUBLIC_` or `REACT_APP_` is copied into the JavaScript bundle at build time. This is by design, for values such as analytics ids and public API addresses.
 
-Here the prefix sat on secrets. An AES key and IV that signed access tokens, plus a bearer token for an internal API, all named with a public prefix and all inlined into the bundle every anonymous visitor downloads.
+On this platform, three secrets had a public prefix: an AES key and its IV, used to sign access tokens, and a bearer token for an internal API. All three were copied into the bundle that every visitor downloads.
 
 ```dotenv
 # representative; not client source
@@ -35,7 +35,7 @@ PUBLIC_TOKEN_SIGNING_IV=1a2b...16-byte-iv
 PUBLIC_INTERNAL_API_TOKEN=Bearer eyJ...
 ```
 
-At build the framework does a literal substitution, so the bundle ends up carrying the key verbatim:
+At build time the framework replaces each variable with its value, so the key appears as plain text in the bundle:
 
 ```js
 // representative; what ends up in the shipped chunk, greppable in devtools
@@ -43,23 +43,23 @@ const signToken = (id) =>
   aesSign(id, "8f3a...aes-256-key", "1a2b...16-byte-iv");
 ```
 
-This is the single most AI-reproducible bug in the whole report. Ask a model to "expose the signing key to the front-end component" and a public prefix is the shortest path to a green build. It works in the demo and hands every visitor the signing key in production. It stays invisible until someone runs `grep -r "aes"` on the build output.
+Of all the findings, this is the one a model reproduces most easily. If you ask it to "expose the signing key to the front-end component", adding a public prefix is the shortest way to a passing build. The demo works, and in production every visitor receives the signing key. Nobody notices until someone runs `grep -r "aes"` on the build output.
 
-A secret manager won't save you here, because the leak happens at build time, before any runtime lookup runs. Drop the prefix so the value stays server-side, move signing behind an API route, then rotate the key. It's already public.
+A secret manager does not help, because the value is copied at build time, before any runtime lookup. The fix is to remove the prefix so the value stays on the server, move the signing behind an API route, and rotate the key, since it has already been public.
 
-## A cookie that says `is_admin=true` is not authentication
+## An admin API protected by a cookie anyone can set
 
-An admin API that could change what the public site shows sat behind a single check: a cookie, called `is_admin` here, which the login page set, in the browser, to the string `"true"`.
+An admin API could change what the public site shows. It had one check: a cookie, called `is_admin` here, which the login page set in the browser to the string `"true"`.
 
 ```js
 // representative middleware; not client source
 export function requireAdmin(req, res, next) {
-  if (req.cookies.is_admin === "true") return next(); // decoration; not auth
+  if (req.cookies.is_admin === "true") return next(); // only checks that the cookie is there
   return res.status(401).end();
 }
 ```
 
-That's a sign reading "authorized personnel only". It stops nobody. Anyone can send the cookie by hand:
+Anyone can send that cookie by hand:
 
 ```bash
 # representative request; the host and path are made up
@@ -68,7 +68,7 @@ curl -X POST https://app.example/api/admin/some-action \
 # 200 OK
 ```
 
-Real auth verifies a signed session the server issues and the client can't forge: a JWT checked against a server-held secret, or a session id looked up server-side. The one property that matters is unforgeability, and a presence check has none of it.
+Authentication has to rely on something the client cannot forge: a session token signed with a secret that only the server holds, or a session id that the server looks up. A check that a cookie is present gives no such guarantee.
 
 ```js
 // what it should be (representative)
@@ -76,11 +76,11 @@ const claims = verifyJwt(req.cookies.session, process.env.SESSION_SECRET);
 if (!claims || claims.role !== ROLE_ADMIN) return res.status(403).end();
 ```
 
-An AI produces presence-check auth constantly, because "gate the admin page behind login" and "check that the admin cookie is set" satisfy the same prompt, and the second is fewer lines. The model has no concept of a threat actor sending the request directly, so it writes the client and the server as if they were one trusted machine. They aren't.
+Models write this kind of check often. "Gate the admin page behind login" and "check that the admin cookie is set" answer the same prompt, and the second takes fewer lines. The generated code treats the browser and the server as one trusted machine, and does not account for someone who sends the request directly.
 
-## A secret in git history is burned the moment it lands
+## A password deleted from the files, still in git history
 
-Scanning the current files misses it, because `git` forgets nothing. I ran history scanning across every commit and every branch (`gitleaks detect`, cross-checked with `git log -p -S` for the specific patterns) and found a live database password committed in a config file, then deleted in a later commit.
+Scanning the current files does not find this one, because git keeps every version. I scanned every commit on every branch with `gitleaks detect`, and checked the results with `git log -p -S` for specific patterns. A live database password had been committed in a config file, then deleted in a later commit.
 
 ```bash
 # representative output; the file, commits and value are made up
@@ -91,7 +91,7 @@ gitleaks detect --source . --log-opts="--all"
 # Commit:  c0ffee1  (deleted in a1b2c3d, still reachable)
 ```
 
-The delete commit makes it invisible in the working tree and does nothing to the exposure. The value sits in the packfile forever, and anyone who ever cloned the repo already has it: every CI runner, every contractor laptop.
+The delete commit removes the password from the working files. It does not remove the exposure: the value stays in the history, and everyone who has cloned the repository has a copy, including CI runners and contractor laptops.
 
 ```bash
 # representative; same made-up commit and file
@@ -99,13 +99,13 @@ git show c0ffee1:config/database.yml | grep -i pass
 # password: pr0d-db-actual-password
 ```
 
-Here's the part people resist: you rotate a committed secret, you don't "remove" it. Rewriting history with `git filter-repo` cleans the origin, and it can't recall the clones. Treat every credential that ever touched a commit as public.
+The fix is to rotate the password. Removing it from the history with `git filter-repo` cleans the remote repository, but it cannot reach the copies that already exist. Any credential that has been in a commit should be treated as public.
 
-AI-assisted work makes this more common. A model will happily paste a working connection string into a config file to make the local run succeed, and the human reviewing the diff sees a plausible config and misses the leak.
+AI-assisted work makes this more frequent. A model will paste a working connection string into a config file so that the local run succeeds, and the person reviewing the diff sees a normal-looking config.
 
-## A firewall in log-only mode is a smoke detector with the buzzer unplugged
+## A firewall left in log-only mode
 
-A web application firewall was attached to the load balancer and left in log-only (detection) mode. It watched SQL injection and path traversal go by, wrote them to a log, and blocked none of it.
+A web application firewall was attached to the load balancer in log-only (detection) mode. It recorded SQL injection and path traversal attempts and blocked none of them.
 
 ```hcl
 # representative Terraform; not client source
@@ -117,11 +117,11 @@ resource "google_compute_security_policy" "waf" {
 }
 ```
 
-Every managed WAF ships this mode so you can tune rules without breaking real traffic. The trap is that it looks identical to a live WAF in the console: rules attached, matches counting up in the dashboard. The `preview` action (or AWS `COUNT`) is the only difference, and it's one word. The team paid for protection and shipped with it switched off. Fix: flip `preview` to `deny` (or `COUNT` to `BLOCK`), a one-word change once you know to look.
+Managed firewalls have this mode so that rules can be tuned without breaking real traffic. In the console it looks the same as an active firewall: the rules are attached and the match counters go up. The only difference is the action, `preview` here, or `COUNT` on AWS. The fix is to change `preview` to `deny`, or `COUNT` to `BLOCK`.
 
-## One outside account should never hold `roles/owner` on production
+## An outside account with the owner role on production
 
-Reading the cloud IAM policy, I found one account outside the company holding `roles/owner` on the production project. Owner is total: read every secret, delete every resource, add and remove other members, and disable the audit logs on the way out.
+In the cloud IAM policy, one account from outside the company had `roles/owner` on the production project. An owner can read every secret, delete every resource, add and remove members, and turn off the audit logs.
 
 ```bash
 # representative; the project and account are made up
@@ -133,24 +133,24 @@ gcloud projects get-iam-policy prod-project --format=json | \
 # }
 ```
 
-One compromised mailbox, or one relationship gone sour, is a single step from total takeover. The fix is least privilege: scope that account to exactly the roles it uses (say one deploy role plus one registry role), keep `roles/owner` on one internal, audited identity, and prefer short-lived service accounts over standing human owners.
+If that mailbox is compromised, or if the relationship ends badly, the whole project is exposed. The fix is least privilege: give that account only the roles it uses (for example one deploy role and one registry role), keep `roles/owner` on one internal, audited identity, and prefer short-lived service accounts to permanent human owners.
 
-Over-scoped IAM is a "make it work now" bug, and AI-assisted teams hit it harder, because the model setting up the deploy will cheerfully suggest `roles/owner` to get past a permission error. Fastest way to a green deploy, widest possible blast radius.
+Permissions that are too wide usually come from making a deploy work quickly. With a model in the loop it happens more often, because the model that sets up the deploy will suggest `roles/owner` to get past a permission error.
 
-## Four more holes that a functional test cannot see
+## Four more high findings
 
-Alongside the six above: an unauthenticated API endpoint that returned non-public records to anyone who guessed a numeric id, public storage buckets that allowed anonymous object listing, secrets baked into container image layers (visible with `docker history`, so the runtime env var is beside the point), and the main service running as root inside its container. Every one has the same shape: it works in the demo, and it's a hole in production.
+Alongside the five above: an API endpoint without authentication that returned non-public records to anyone who guessed a numeric id, public storage buckets that let anyone list their contents, secrets stored in container image layers (where `docker history` shows them, whatever the runtime configuration says), and the main service running as root inside its container. None of them breaks a functional test.
 
-## Every high was verified twice before it went in the report
+## How I verified the high findings
 
-Each high finding got reproduced a second time, independently, before it earned a line: grep the bundle, send the raw curl, read the packfile, dump the IAM policy. That discipline is the difference between a report the client hands to their own team without me in the room and a list of maybes that gets argued away in the first meeting.
+I reproduced each high finding a second time, independently, before adding it to the report: I searched the bundle, sent the request with curl, read the git history, or exported the IAM policy. The client could then give the report to their own team without me there to defend each line.
 
-**9 highs, all fixable in days, none needing a rebuild.** Rename the public-prefixed vars and rotate the exposed key. Verify a signed identity inside the admin handler instead of a cookie's presence. Rotate the committed password and purge it from history. Scope the cloud owner role down to one internal account. Flip the firewall out of log-only. None of this needs new architecture; it needs someone to have looked.
+**The nine high findings could each be fixed in days, without a rebuild.** Rename the variables with a public prefix and rotate the exposed key. Check a signed identity in the admin handler. Rotate the committed password and remove it from the history. Reduce the owner role to one internal account. Switch the firewall to blocking mode.
 
-I also wrote down what was already solid, so the team knew what to keep and didn't undo good work while patching the rest.
+I also listed what was already done well, so the team knew what to keep while fixing the rest.
 
-> Honest limit. The four-layer read is a point-in-time read of source, config and permissions. It proves a hole exists in what shipped; it doesn't prove exploitation in production, and it goes stale on the next deploy. It replaces a first serious audit. It won't serve as a running detection stack. I said so in the report, in those words.
+> Limit. This audit reads source code, configuration and permissions at one point in time. It shows that a weakness exists in what was shipped. It does not show that anyone exploited it, and it is out of date after the next deploy. It works as a first serious audit and does not replace continuous monitoring. The report said so.
 
-## Who has this
+## Who this applies to
 
-Any team shipping with an AI in the loop, where nobody is specifically hunting for these patterns, almost certainly has some of them right now, passing every test, green in every pipeline. Same reading, same four layers, a different stack, the same families of holes. They surface when someone reads the shipped product the way an attacker would, before the attacker does. That reading is the whole job, and it's the one thing the AI that wrote the code won't do for you.
+A team that ships with AI in the loop, and where nobody looks for these patterns, probably has some of them, with every test passing. I use the same four layers on other stacks and find the same kinds of problems. They show up when someone reads what was shipped the way an attacker would.

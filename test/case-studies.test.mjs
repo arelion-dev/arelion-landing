@@ -153,3 +153,75 @@ test("the document agent pages say scans pass through Google and claim nothing m
   assert.match(pages["business EN"], /scanned images pass through Google/)
   assert.match(pages["business FR"], /les images des scans passent donc par Google/)
 })
+
+// The security audit study is anonymized (decided on 2026-10-11): it names no
+// sector for the audited client, whatever the sector (the list covers the usual
+// ones, in English and French), gives no launch timing, and every code sample
+// says it is representative. The audience examples the text keeps (SaaS,
+// e-commerce, fintech, health) are not in the list. Real identifiers are not
+// listed either: naming them in a test would publish them.
+const AUDIT = "ai-attack-surface"
+const SECTOR_WORDS = [
+  "abonnés", "airline", "API de contenu", "article", "articles", "assureur", "avocats", "bank", "banks", "banque",
+  "brouillon", "brouillons", "clinic", "CMS", "content API", "draft", "drafts", "editorial", "éditorial", "embargo",
+  "embargoed", "étudiants", "fleet", "front page", "homepage", "hospital", "hôpital", "hotel", "hôtel", "insurer",
+  "journalist", "journalists", "journaliste", "journalistes", "landlord", "law firm", "lawyers", "lecteur", "lecteurs",
+  "logistics", "media", "média", "médias", "ministère", "ministry", "news", "newsroom", "non publiés", "page d'accueil",
+  "patients", "players", "press", "presse", "preview token", "preview tokens", "prévisualisation", "publication",
+  "publisher", "publishers", "publishing", "reader", "readers", "rédaction", "retailer", "shoppers", "stories", "story",
+  "students", "subscribers", "telecom", "tenants", "université", "university", "unpublished", "WordPress",
+]
+const SECTOR = new RegExp(
+  `(?<![\\p{L}\\p{N}_])(?:${SECTOR_WORDS.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})(?![\\p{L}\\p{N}_])`,
+  "iu",
+)
+// "days from launch", or a month: the text only says the audit took place earlier.
+const LAUNCH_TIMING =
+  /\bdays (?:from|before|away)\b|à quelques jours|\b(?:January|February|March|April|June|July|August|September|October|November|December)\b|(?<!\p{L})(?:janvier|février|mars|avril|juin|juillet|août|septembre|octobre|novembre|décembre)(?!\p{L})/u
+// Visible text of a page or a markdown body, with plain apostrophes.
+const plain = text =>
+  text
+    .replace(/<(script|style)[\s\S]*?<\/\1>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&#x27;|’/g, "'")
+const sectorWord = text => (plain(text).match(SECTOR) || [null])[0]
+
+test("the security audit study names no client sector, gives no launch timing and labels its code samples", () => {
+  const read = p => readFileSync(join(ROOT, p), "utf8")
+  const data = read("src/data/case-studies.js")
+  const at = data.indexOf(`slug: "${AUDIT}"`)
+  assert.ok(at > 0, "no entry for the study")
+  const sources = {
+    "article EN": read(`content/blog/${AUDIT}/index.MD`),
+    "article FR": read(`content/blog/${AUDIT}/index.fr.MD`),
+    "business EN": read(`content/blog/${AUDIT}-business/index.MD`),
+    "business FR": read(`content/blog/${AUDIT}-business/index.fr.MD`),
+    "rich body": read(`src/data/case-studies-rich/${AUDIT}.json`),
+    "rich body, drafts copy": read(`content/drafts/_rich/${AUDIT}.json`),
+    // The whole entry, inline body included. Its `article` keys are field names, not text.
+    "case study entry": data.slice(at, data.indexOf("\n    slug: ", at)).replace(/\barticle(Business)?:/g, ""),
+  }
+  for (const [name, text] of Object.entries(sources)) {
+    assert.equal(sectorWord(text), null, `${name} names a sector`)
+    assert.doesNotMatch(text, LAUNCH_TIMING, `${name} gives a launch timing`)
+  }
+  for (const name of ["article EN", "article FR"]) {
+    const samples = sources[name].match(/```[\s\S]*?```/g) || []
+    assert.ok(samples.length > 0, `${name}: no code sample found`)
+    for (const s of samples) assert.match(s, /representative|représentati/i, `${name}: a code sample does not say it is representative`)
+  }
+})
+
+test("the built security audit page names no client sector, related cards included", { skip: !built && "no build in public/" }, () => {
+  const page = html(`case-studies/${AUDIT}`)
+  const start = page.indexOf('<article class="cs-detail"')
+  // The study's own text stops where the related cards (or the contact box) start.
+  const end = Math.min(...['class="cs-related"', 'class="cs-cta"'].map(c => page.indexOf(c, start)).filter(i => i > 0))
+  assert.ok(start > 0 && end > start, "study text not found in the page")
+  assert.equal(sectorWord(page.slice(start, end)), null, "the page text names a sector")
+  // A card under the study must not point to a sector either.
+  for (const [, title] of page.matchAll(/class="cs-related-title">([^<]*)</g)) assert.equal(sectorWord(title), null, `related card "${title}"`)
+  // The French bodies are not shown, but they ship in the page data.
+  const bodies = JSON.parse(readFileSync(join(PUBLIC, `page-data/case-studies/${AUDIT}/page-data.json`), "utf8")).result.data
+  for (const key of ["techEn", "techFr", "businessEn", "businessFr"]) assert.equal(sectorWord(bodies[key].html), null, `${key} names a sector`)
+})
