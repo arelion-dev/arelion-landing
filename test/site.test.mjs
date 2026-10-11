@@ -162,3 +162,34 @@ test("the home Person, every case-study author and /about point to the Malt and 
   const about = html("about")
   for (const p of FREELANCE_PROFILES) assert.ok(about.includes(`href="${p}"`), `/about does not link ${p}`)
 })
+
+// Asked on 2026-10-11: the home said nothing about audits. The Fractional CTO
+// card now names the three I do and links to the security audit study.
+test("the Fractional CTO card on the home names its audits and links to the security audit, in English and French", async () => {
+  // The catalog is an ES module in a CommonJS package: load it from its source text.
+  const { default: catalog } = await import(
+    `data:text/javascript,${encodeURIComponent(readFileSync(join(ROOT, "src/i18n/catalog.js"), "utf8"))}`
+  )
+  const AUDIT = "/case-studies/ai-attack-surface/"
+  assert.ok(CASE_STUDIES.some(c => `/case-studies/${c.slug}/` === AUDIT), "the audit study is no longer published")
+  const sentence = {
+    en: "I also audit what is already in place: the team, the security and the contracts.",
+    fr: "J'audite aussi l'existant : l'équipe, la sécurité et les contrats.",
+  }
+  for (const lang of ["en", "fr"]) {
+    const card = catalog[lang].roles.leadership
+    assert.ok(card.desc.includes(sentence[lang]), `${lang}: ${card.desc}`)
+    assert.ok(card.links.some(l => l.to === AUDIT), `${lang}: no link to the audit study`)
+  }
+})
+
+test("the built home shows the audit sentence and the audit link in its Fractional CTO card", { skip }, () => {
+  const home = html("")
+  const start = home.indexOf('<div class="role-card"')
+  assert.ok(start > 0, "no role card on the home")
+  const card = home.slice(start, home.indexOf('<div class="role-card"', start + 1))
+  assert.ok(card.includes("Fractional CTO"), "the first card is no longer Fractional CTO")
+  assert.ok(card.includes("I also audit what is already in place: the team, the security and the contracts."), card)
+  assert.match(card, /<a [^>]*href="\/case-studies\/ai-attack-surface\/"/)
+})
+

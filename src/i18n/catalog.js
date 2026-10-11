@@ -75,9 +75,12 @@ const catalog = {
       leadership: {
         title: "Fractional CTO",
         badge: "Scrum Product Owner Certified",
-        desc: "I own the technology side for companies without a tech lead: roadmap, scope, specs, vendors and hiring input. Two startups cofounded and run end to end (Foundingbird, Kaunto).",
+        desc: "I own the technology side for companies without a tech lead: roadmap, scope, specs, vendors and hiring input. I also audit what is already in place: the team, the security and the contracts. Two startups cofounded and run end to end (Foundingbird, Kaunto).",
         // Landing pages each card leads to (internal links from the home).
-        links: [{ to: "/software-development-abu-dhabi/", label: "Software and app development in Abu Dhabi" }],
+        links: [
+          { to: "/software-development-abu-dhabi/", label: "Software and app development in Abu Dhabi" },
+          { to: "/case-studies/ai-attack-surface/", label: "Security audit of an AI-built platform" },
+        ],
       },
       ai: {
         title: "AI automation and company brains",
@@ -215,9 +218,12 @@ const catalog = {
       leadership: {
         title: "CTO à temps partagé",
         badge: "Certifié Scrum Product Owner",
-        desc: "Je prends en charge la technique des entreprises sans directeur technique : feuille de route, cadrage, specs, prestataires et recrutement. Deux startups cofondées et menées de bout en bout (Foundingbird, Kaunto).",
+        desc: "Je prends en charge la technique des entreprises sans directeur technique : feuille de route, cadrage, specs, prestataires et recrutement. J'audite aussi l'existant : l'équipe, la sécurité et les contrats. Deux startups cofondées et menées de bout en bout (Foundingbird, Kaunto).",
         // The pages behind these links are in English.
-        links: [{ to: "/software-development-abu-dhabi/", label: "Développement logiciel et d'apps à Abu Dhabi" }],
+        links: [
+          { to: "/software-development-abu-dhabi/", label: "Développement logiciel et d'apps à Abu Dhabi" },
+          { to: "/case-studies/ai-attack-surface/", label: "Audit de sécurité d'une plateforme construite avec l'IA" },
+        ],
       },
       ai: {
         title: "Automatisation IA et mémoire d'entreprise",
