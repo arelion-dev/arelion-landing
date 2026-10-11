@@ -1,4 +1,4 @@
-// The two decision tools on guide pages (src/tools): every combination of
+// The three decision tools on guide pages (src/tools): every combination of
 // answers, and every text they show checked against the guide it comes from,
 // so a guide edit that changes a number fails here until the tool says the
 // same. The page checks need `npm run build` first; without public/ they are
@@ -13,6 +13,7 @@ const require = createRequire(import.meta.url)
 const matter = require("gray-matter")
 const ocr = require("../src/tools/ocr-picker.js")
 const automate = require("../src/tools/automate-first.js")
+const reg10 = require("../src/tools/reg10-check.js")
 
 const ROOT = new URL("..", import.meta.url).pathname
 const GUIDES_DIR = join(ROOT, "content/guides")
@@ -34,10 +35,12 @@ const figures = text => text.match(/\$?\d+(?:[.,]\d+)*%?/g) || []
 const OCR_GUIDE = guide("arabic-ocr.md")
 const PDF_GUIDE = guide("arabic-pdf-to-text.md")
 const AUTOMATION_GUIDE = guide("ai-automation-uae.md")
+const DIFC_GUIDE = guide("difc-data-protection-ai.md")
 const OCR_RULES = prose(section(OCR_GUIDE.content, "Which Arabic OCR to use"))
 const OCR_LIMITS = prose(section(OCR_GUIDE.content, "What this test does not cover"))
 const PDF_TEXT = prose(PDF_GUIDE.content)
 const AUTOMATION_RULES = prose(section(AUTOMATION_GUIDE.content, "What to automate first"))
+const DIFC_CASES = prose(section(DIFC_GUIDE.content, "Which parts concern your firm"))
 
 // The bullet of a guide section that starts with a bold label, as "- Label: text".
 const bullet = (text, label) => {
@@ -253,6 +256,96 @@ test("what to automate first shows no figure of its own, so not the guide's 30 p
   assert.ok(automate.MAX_TASKS === 5 && automate.COPY.intro.includes("up to five"))
 })
 
+// ---- Which parts of Regulation 10 concern your AI use? ----
+
+const REG10_ANSWERS = Object.values(reg10.FIRM).flatMap(firm =>
+  Object.values(reg10.AI).flatMap(ai =>
+    Object.values(reg10.USE).map(use => ({ firm, ai, use, result: reg10.checkReg10({ firm, ai, use }) })),
+  ),
+)
+// The bold label of the guide bullet each answer brings.
+const FIRM_LINE = {
+  [reg10.FIRM.difc]: "Incorporated in the DIFC",
+  [reg10.FIRM.reach]: "Incorporated elsewhere, active in the DIFC",
+  [reg10.FIRM.onshore]: "No activity in the DIFC",
+}
+const AI_LINE = {
+  [reg10.AI.own]: "A system you built or had built",
+  [reg10.AI.vendor]: "ChatGPT or a similar tool",
+  [reg10.AI.none]: "No personal data in the system",
+}
+
+test("the Regulation 10 check gives the guide's lines for every set of answers", () => {
+  assert.equal(REG10_ANSWERS.length, 18)
+  for (const { firm, ai, use, result } of REG10_ANSWERS) {
+    const at = `${firm} + ${ai} + ${use}`
+    const lines = result.blocks.map(b => b.label)
+    if (firm === reg10.FIRM.onshore) {
+      // No activity in the DIFC: one line, whatever the system is and does.
+      assert.equal(result.key, "onshore", at)
+      assert.deepEqual(lines, [FIRM_LINE[firm]], at)
+    } else if (ai === reg10.AI.none) {
+      // No personal data goes in: Regulation 10 has no System to cover, whatever it does.
+      assert.equal(result.key, `${firm}_none`, at)
+      assert.deepEqual(lines, [FIRM_LINE[firm], AI_LINE[ai]], at)
+    } else {
+      assert.equal(result.key, `${firm}_${ai}_${use}`, at)
+      // The high-risk rules when the system evaluates people or decides alone; when
+      // a person decides, the reminder that the processing can still be high-risk.
+      const risk = use === reg10.USE.decide ? "High-risk processing" : "When a person decides"
+      assert.deepEqual(lines, [FIRM_LINE[firm], AI_LINE[ai], "Every System", risk], at)
+    }
+    // Only the onshore line sends the reader on, to the guide on the federal law.
+    assert.deepEqual(result.blocks.filter(b => b.link).map(b => b.label), firm === reg10.FIRM.onshore ? [FIRM_LINE[firm]] : [], at)
+    // Every answer ends with the guide's own not-legal-advice sentence.
+    assert.match(result.notice, /^This page is not legal advice: /, at)
+  }
+  assert.equal(new Set(REG10_ANSWERS.map(a => a.result.key)).size, 11)
+  // The form offers the values the answers are keyed on, and no other.
+  assert.deepEqual(
+    reg10.QUESTIONS.map(q => [q.name, q.options.map(o => o.value)]),
+    [["firm", Object.values(reg10.FIRM)], ["ai", Object.values(reg10.AI)], ["use", Object.values(reg10.USE)]],
+  )
+})
+
+test("the Regulation 10 check refuses an answer its form does not offer", () => {
+  const { FIRM, AI, USE } = reg10
+  assert.throws(() => reg10.checkReg10({ firm: "adgm", ai: AI.own, use: USE.assist }), /unknown firm/)
+  assert.throws(() => reg10.checkReg10({ firm: FIRM.difc, ai: null, use: USE.assist }), /unknown AI system/)
+  assert.throws(() => reg10.checkReg10({ firm: FIRM.reach, ai: AI.vendor, use: "train" }), /unknown use/)
+  // Also when the answer would not change the result.
+  assert.throws(() => reg10.checkReg10({ firm: FIRM.onshore, ai: "robot", use: USE.assist }), /unknown AI system/)
+  assert.throws(() => reg10.checkReg10({ firm: FIRM.difc, ai: AI.none, use: undefined }), /unknown use/)
+})
+
+test("every Regulation 10 answer shows its guide lines word for word", () => {
+  const shown = new Set()
+  for (const { firm, ai, use, result } of REG10_ANSWERS) {
+    const at = `${firm} + ${ai} + ${use}`
+    for (const { label, text, link } of result.blocks) {
+      assert.equal(`- ${label}: ${text.join(" ")}`, bullet(DIFC_CASES, `${label}:`), at)
+      shown.add(label)
+      // The link goes where the guide's own link goes.
+      if (link) {
+        assert.ok(DIFC_GUIDE.content.includes(`[${link.label}](${link.to})`), `${at}: the guide no longer links ${link.to}`)
+        assert.equal(link.to, guide("uae-pdpl-ai.md").data.path, at)
+      }
+    }
+    assert.ok(DIFC_GUIDE.content.includes(`\n${result.notice}\n`), `${at}: the guide's introduction changed`)
+  }
+  // The section has no line the tool leaves out.
+  const lines = DIFC_CASES.split("\n").filter(l => l.startsWith("- "))
+  assert.equal(lines.length, 9)
+  assert.deepEqual([...shown].sort(), lines.map(l => l.slice(2, l.indexOf(":"))).sort())
+})
+
+test("the Regulation 10 check's title, questions and buttons carry no figure", () => {
+  const copy = [...Object.values(reg10.COPY), ...reg10.QUESTIONS.flatMap(q => [q.legend, ...q.options.map(o => o.label)])]
+  // "Regulation 10" is the name of the rule, not a figure.
+  assert.match(reg10.COPY.title, /Regulation 10/)
+  assert.deepEqual(figures(copy.join(" ").replaceAll("Regulation 10", "")), [])
+})
+
 // ---- Shared ----
 
 // The hook is an ES module in a CommonJS package: load it from its source text.
@@ -266,22 +359,27 @@ test("a tool result reaches analytics as one tool event: the tool and the result
   try {
     hook.trackToolResult(ocr.TOOL_ID, "pdf_mac")
     hook.trackToolResult(automate.TOOL_ID, "start_here:1,write_down:0,company_brain:0,later:0")
+    hook.trackToolResult(reg10.TOOL_ID, "difc_vendor_decide")
   } finally {
     delete globalThis.window
   }
   assert.deepEqual(calls, [
     ["event", "tool", { event_category: "ocr_picker", event_label: "pdf_mac" }],
     ["event", "tool", { event_category: "automate_first", event_label: "start_here:1,write_down:0,company_brain:0,later:0" }],
+    ["event", "tool", { event_category: "reg10_check", event_label: "difc_vendor_decide" }],
   ])
   assert.equal(ocr.LEAD_LOCATION, "tool_ocr_picker")
   assert.equal(automate.LEAD_LOCATION, "tool_automate_first")
+  assert.equal(reg10.LEAD_LOCATION, "tool_reg10_check")
 })
 
 const TOOL_FILES = [
   "src/tools/ocr-picker.js",
   "src/tools/automate-first.js",
+  "src/tools/reg10-check.js",
   "src/components/ocr-picker.js",
   "src/components/automate-first.js",
+  "src/components/reg10-check.js",
   "src/components/tool-cta.js",
 ]
 
@@ -299,9 +397,13 @@ const walk = dir =>
   )
 // Text as React writes it into HTML.
 const escaped = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;")
-const TOOL_PAGES = { [ocr.ANCHOR]: "arabic-ocr/index.html", [automate.ANCHOR]: "ai-automation-uae/index.html" }
+const TOOL_PAGES = {
+  [ocr.ANCHOR]: "arabic-ocr/index.html",
+  [automate.ANCHOR]: "ai-automation-uae/index.html",
+  [reg10.ANCHOR]: "guides/difc-data-protection-ai/index.html",
+}
 
-test("two guides embed a tool: the OCR picker and what to automate first", () => {
+test("three guides embed a tool: the OCR picker, what to automate first and the Regulation 10 check", () => {
   const embedded = readdirSync(GUIDES_DIR)
     .filter(f => f.endsWith(".md"))
     .map(f => [f, guide(f).data])
@@ -309,6 +411,7 @@ test("two guides embed a tool: the OCR picker and what to automate first", () =>
   assert.deepEqual(Object.fromEntries(embedded.map(([f, data]) => [f, data.tool])), {
     "ai-automation-uae.md": automate.ANCHOR,
     "arabic-ocr.md": ocr.ANCHOR,
+    "difc-data-protection-ai.md": reg10.ANCHOR,
   })
   // TOOL_PAGES follows the guides' own paths.
   for (const [file, data] of embedded) assert.equal(TOOL_PAGES[data.tool], `${data.path.replace(/^\//, "")}index.html`, file)
@@ -328,18 +431,22 @@ test("each tool page shows its form between the lead and the article, and no oth
     // Disabled until React runs, so the browser cannot send the answers in the URL.
     assert.match(tools[anchor], /<button type="submit"[^>]*disabled=""/, page)
   }
-  const picker = tools[ocr.ANCHOR]
-  assert.ok(picker.includes(`>${escaped(ocr.COPY.title)}</h2>`))
-  for (const q of ocr.QUESTIONS) assert.ok(picker.includes(`<legend>${escaped(q.legend)}</legend>`), q.legend)
   const attr = (attrs, name) => (attrs.match(new RegExp(`${name}="([^"]*)"`)) || [])[1]
-  const options = [...picker.matchAll(/<label class="tool-option"><input ([^>]*)\/>([^<]*)<\/label>/g)].map(([, attrs, label]) => ({
-    name: attr(attrs, "name"),
-    value: attr(attrs, "value"),
-    required: attr(attrs, "required") === "",
-    label,
-  }))
-  const offered = ocr.QUESTIONS.flatMap(q => q.options.map(o => ({ name: q.name, value: o.value, required: true, label: escaped(o.label) })))
-  assert.deepEqual(options, offered)
+  // The two tools made of radio groups: every question, and every answer it offers.
+  for (const tool of [ocr, reg10]) {
+    const form = tools[tool.ANCHOR]
+    assert.ok(form.includes(`>${escaped(tool.COPY.title)}</h2>`), tool.ANCHOR)
+    assert.ok(form.includes(`<p class="tool-intro">${escaped(tool.COPY.intro)}</p>`), tool.ANCHOR)
+    for (const q of tool.QUESTIONS) assert.ok(form.includes(`<legend>${escaped(q.legend)}</legend>`), q.legend)
+    const options = [...form.matchAll(/<label class="tool-option"><input ([^>]*)\/>([^<]*)<\/label>/g)].map(([, attrs, label]) => ({
+      name: attr(attrs, "name"),
+      value: attr(attrs, "value"),
+      required: attr(attrs, "required") === "",
+      label,
+    }))
+    const offered = tool.QUESTIONS.flatMap(q => q.options.map(o => ({ name: q.name, value: o.value, required: true, label: escaped(o.label) })))
+    assert.deepEqual(options, offered, tool.ANCHOR)
+  }
   const automation = tools[automate.ANCHOR]
   assert.ok(automation.includes(`>${escaped(automate.COPY.title)}</h2>`))
   assert.ok(automation.includes('<input type="text" name="name-1" required=""'))

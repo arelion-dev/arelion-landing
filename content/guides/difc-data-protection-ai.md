@@ -3,9 +3,14 @@ title: "DIFC Data Protection Law and AI: Regulation 10 explained"
 description: "Who must follow DIFC Data Protection Law No. 5 of 2020, what Regulation 10 requires of AI systems and since when, the 2025 changes, and what to build."
 path: "/guides/difc-data-protection-ai/"
 date: "2026-10-06"
-updated: "2026-10-07"
+updated: "2026-10-11"
 kicker: "Guide"
 related: ["legal-research-assistant", "agent-eval", "output-contracts-in-production"]
+tool: "reg10-check"
+offer:
+  title: "Want this checked on your own system?"
+  text: "Send me how your firm uses AI, in five lines: the tool, the data that goes in, who sees the output. I reply in writing with which of the six pieces below your system is missing. The legal reading stays with your lawyer."
+ctaLine: "Send me how your firm uses AI, in five lines. I reply in writing with the Regulation 10 pieces your system is missing."
 faq:
   - q: "Who has to follow the DIFC Data Protection Law?"
     a: "Under Article 6(3), as amended in July 2025: controllers and processors incorporated in the DIFC, wherever they process, and any controller or processor, or their sub-processors, that processes in the DIFC as part of stable arrangements. Onshore UAE companies mostly fall under the federal PDPL, but the DIFC law can also reach them when they process in the DIFC as part of stable arrangements."
@@ -80,6 +85,8 @@ On my reading, a DIFC firm that puts client personal data into ChatGPT is the De
 
 One point is unclear to me. Regulation 10.2.2 requires notice to "users" at first use, and it does not say how that works when staff paste a client's data into a tool the client never sees. I would ask the Commissioner's Office before guessing. It is a common situation: in the Commissioner's 2025 [survey of DIFC firms](https://assets.difc.com/v1/media/edge/images/dubaiintern0078-difcexperie96c5-production-3253/media/project/difcexperiences/difc/difcwebsite/documents/registrars-and-commissioners/regulation-10/aso-survey-report.pdf), vendor proprietary AI and provider-hosted models were the most common AI in use.
 
+<!-- offer -->
+
 ## What an engineer has to build
 
 Here is how I would build each piece:
@@ -92,3 +99,17 @@ Here is how I would build each piece:
 6. **An off switch and a test set.** Article 59(1)(b) lets the Commissioner, once satisfied a firm has broken the law, direct it to stop processing for a purpose. In an [agent evaluation harness](/case-studies/agent-eval/) I built, a behaviour ships with a kill switch, one environment variable, that doubles as a production escape hatch. A graded set of real cases, re-run on every prompt or model change, shows when the system drifts.
 
 What I don't know yet is how the Commissioner will read "commercial use" for a firm's internal tools. The FAQs compare it to placing a System in the consumer market under the EU AI Act. The consultation may settle it. Until it does, I would build all six pieces for any DIFC system that touches personal data.
+
+## Which parts concern your firm
+
+Find your case below. Each line sums up a section above.
+
+- **Incorporated in the DIFC:** the law applies to your processing wherever it takes place (Article 6(3)).
+- **Incorporated elsewhere, active in the DIFC:** the law applies to processing in the DIFC as part of stable arrangements, including transfers out of the DIFC. How far "stable arrangements" goes is a question for your lawyer.
+- **No activity in the DIFC:** onshore companies mostly follow the federal law. The DIFC law can still reach them through stable arrangements, as the Careem decision shows.
+- **A system you built or had built:** where the law applies, you are the Deployer, treated as a controller (Regulation 10.3.4). Whoever runs the System for you is the Operator, treated as a processor.
+- **ChatGPT or a similar tool:** on my reading, where the law applies, you are the Deployer once client personal data goes in, and the duties stay with you. Check where the data goes: the adequacy list does not name the United States as a whole, and elsewhere you need an Article 27 safeguard or one of its narrow derogations. How the notice at first use works for a tool your clients never see is unclear to me.
+- **No personal data in the system:** Regulation 10 defines a System as one that processes personal data.
+- **Every System:** the Article 9 principles, notice at first use, evidence and a register on request, the design concepts of 10.3.1, and the commercial-use limits of 10.3.2.
+- **When a person decides:** many AI projects can still meet Schedule 1's definition of high-risk processing, which includes new technologies that materially increase risk.
+- **High-risk processing:** only with a certified System, for human-defined or approved purposes, and with an Autonomous Systems Officer. Under Article 38, a person can also require a manual review of a decision based solely on automated processing that has legal or seriously impactful consequences.

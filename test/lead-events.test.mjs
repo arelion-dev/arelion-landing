@@ -77,3 +77,14 @@ test("no WhatsApp or booking link sits in article content, out of reach of track
   assert.ok(content.length > 0)
   for (const f of content) assert.doesNotMatch(readFileSync(f, "utf8"), /wa\.me\/|calendar\.app\.google/, f)
 })
+
+// A guide shows its two contact links in its bottom box, and a guide with an
+// offer shows them again inside the text. Each place reports its own location.
+test("the guide's offer box and its bottom box send their own lead location", () => {
+  const template = readFileSync(join(SRC, "templates/guide.js"), "utf8")
+  const locations = [...template.matchAll(/<ContactLinks [^>]*location="([^"]*)"/g)].map(m => m[1])
+  assert.deepEqual(locations, ["guide_offer", "guide"])
+  // The links pass that location on, whichever box they sit in.
+  assert.match(template, /trackLead\(LEAD_METHOD\.whatsapp, location\)/)
+  assert.match(template, /trackLead\(LEAD_METHOD\.booking, location\)/)
+})

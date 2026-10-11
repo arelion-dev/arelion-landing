@@ -1,11 +1,11 @@
-// The two decision tools in a real browser, on the built site: fill the forms
+// The three decision tools in a real browser, on the built site: fill the forms
 // with the mouse and the keyboard, read the answers, and check what reaches
 // analytics (window.dataLayer) and that nothing the visitor types leaves the
 // page. Needs `npm run build` first, and Playwright, which this site does not
 // install: point NODE_PATH at a node_modules that has it, for example
 //   NODE_PATH=/path/to/a/project/node_modules npm test
-// Without either, these checks are skipped. The last one checks the
-// contact box at the bottom of every guide.
+// Without either, these checks are skipped. The last two check the contact
+// box at the bottom of every guide and the offer box inside the DIFC guide.
 import { test, before, after } from "node:test"
 import assert from "node:assert/strict"
 import { createReadStream, existsSync, readFileSync, statSync } from "node:fs"
@@ -17,6 +17,7 @@ const require = createRequire(import.meta.url)
 const matter = require("gray-matter")
 const ocr = require("../src/tools/ocr-picker.js")
 const automate = require("../src/tools/automate-first.js")
+const reg10 = require("../src/tools/reg10-check.js")
 
 const ROOT = new URL("..", import.meta.url).pathname
 const PUBLIC = join(ROOT, "public")
@@ -345,6 +346,128 @@ test("what to automate first ranks the visitor's tasks by the guide's tests, and
   await context.close()
 })
 
+test("the Regulation 10 check answers from the guide, by mouse and by keyboard, and sends only its result key", { skip }, async () => {
+  const { context, page, requested } = await visit("/guides/difc-data-protection-ai/")
+  const tool = page.locator(`#${reg10.ANCHOR}`)
+  const result = tool.locator(".tool-result")
+  const blocks = result.locator(".tool-block")
+  const submit = tool.getByRole("button", { name: reg10.COPY.submit })
+  const choose = label => tool.getByLabel(label, { exact: true }).check()
+  // The answer on screen, one text per block.
+  const shown = () => blocks.evaluateAll(divs => divs.map(d => d.innerText))
+
+  const DIFC = "Incorporated in the DIFC: the law applies to your processing wherever it takes place (Article 6(3))."
+  const REACH =
+    'Incorporated elsewhere, active in the DIFC: the law applies to processing in the DIFC as part of stable arrangements, including transfers out of the DIFC. How far "stable arrangements" goes is a question for your lawyer.'
+  const OWN =
+    "A system you built or had built: where the law applies, you are the Deployer, treated as a controller (Regulation 10.3.4). Whoever runs the System for you is the Operator, treated as a processor."
+  const VENDOR =
+    "ChatGPT or a similar tool: on my reading, where the law applies, you are the Deployer once client personal data goes in, and the duties stay with you. Check where the data goes: the adequacy list does not name the United States as a whole, and elsewhere you need an Article 27 safeguard or one of its narrow derogations. How the notice at first use works for a tool your clients never see is unclear to me."
+  const NONE = "No personal data in the system: Regulation 10 defines a System as one that processes personal data."
+  const EVERY =
+    "Every System: the Article 9 principles, notice at first use, evidence and a register on request, the design concepts of 10.3.1, and the commercial-use limits of 10.3.2."
+  const PERSON_DECIDES =
+    "When a person decides: many AI projects can still meet Schedule 1's definition of high-risk processing, which includes new technologies that materially increase risk."
+  const HIGH_RISK =
+    "High-risk processing: only with a certified System, for human-defined or approved purposes, and with an Autonomous Systems Officer. Under Article 38, a person can also require a manual review of a decision based solely on automated processing that has legal or seriously impactful consequences."
+  const NOTICE = "This page is not legal advice: I am an engineer, and a lawyer should check any decision you base on it."
+
+  // Under the lead, above the article.
+  const box = await tool.boundingBox()
+  const lead = await page.locator(".cs-detail-date").boundingBox()
+  const article = await page.locator(".cs-article").first().boundingBox()
+  assert.ok(lead.y < box.y && box.y + box.height <= article.y, "the tool is not between the lead and the article")
+
+  // Nothing answered: the browser holds the form back, no result, no event.
+  await submit.click()
+  assert.equal(await tool.locator("form").evaluate(f => f.checkValidity()), false)
+  assert.equal(await result.textContent(), "")
+  assert.deepEqual(await events(page, "tool"), [])
+
+  // Two answers out of three are not enough either.
+  await choose("Incorporated in the DIFC")
+  await choose("Yes, into ChatGPT or a similar tool")
+  await submit.click()
+  assert.equal(await result.textContent(), "")
+
+  // A DIFC firm that puts personal data into ChatGPT, and a person decides.
+  await choose("It helps staff, and a person decides")
+  await submit.click()
+  await blocks.first().waitFor()
+  assert.deepEqual(await shown(), [DIFC, VENDOR, EVERY, PERSON_DECIDES, NOTICE])
+  assert.equal(await result.getByRole("link").count(), 0)
+  assert.deepEqual(await events(page, "tool"), [{ event_category: "reg10_check", event_label: "difc_vendor_assist" }])
+
+  // A changed answer clears the result until the next submit. A system that
+  // decides alone gets the high-risk rules instead of the reminder.
+  await choose("It evaluates people or decides alone, with legal or similar effects")
+  await blocks.first().waitFor({ state: "detached" })
+  assert.equal(await result.textContent(), "")
+  await submit.click()
+  await blocks.first().waitFor()
+  assert.deepEqual(await shown(), [DIFC, VENDOR, EVERY, HIGH_RISK, NOTICE])
+
+  // Keyboard only: arrow down to the firm incorporated elsewhere, tab to the
+  // next question, arrow up to the system we built, tab past the last question
+  // to the button, Enter.
+  await tool.getByLabel("Incorporated in the DIFC", { exact: true }).focus()
+  await page.keyboard.press("ArrowDown")
+  await page.keyboard.press("Tab")
+  await page.keyboard.press("ArrowUp")
+  await page.keyboard.press("Tab")
+  await page.keyboard.press("Tab")
+  assert.equal(await submit.evaluate(b => b === document.activeElement), true, "Tab does not reach the button")
+  await page.keyboard.press("Enter")
+  await blocks.first().waitFor()
+  assert.deepEqual(await shown(), [REACH, OWN, EVERY, HIGH_RISK, NOTICE])
+
+  // No personal data goes in: no System, so no duties to list.
+  await choose("No personal data goes in")
+  await submit.click()
+  await blocks.first().waitFor()
+  assert.deepEqual(await shown(), [REACH, NONE, NOTICE])
+
+  // No activity in the DIFC: one line and the way to the federal law's guide.
+  await choose("Onshore UAE, with no activity in the DIFC")
+  await submit.click()
+  await blocks.first().waitFor()
+  assert.deepEqual(await shown(), [
+    "No activity in the DIFC: onshore companies mostly follow the federal law. The DIFC law can still reach them through stable arrangements, as the Careem decision shows.\n\nDetails in UAE PDPL and AI.",
+    NOTICE,
+  ])
+  assert.equal(await result.getByRole("link", { name: "UAE PDPL and AI" }).getAttribute("href"), "/guides/uae-pdpl-ai/")
+
+  // One tool event per submit, carrying the tool and the result key, nothing else.
+  assert.deepEqual(await events(page, "tool"), [
+    { event_category: "reg10_check", event_label: "difc_vendor_assist" },
+    { event_category: "reg10_check", event_label: "difc_vendor_decide" },
+    { event_category: "reg10_check", event_label: "reach_own_decide" },
+    { event_category: "reg10_check", event_label: "reach_none" },
+    { event_category: "reg10_check", event_label: "onshore" },
+  ])
+
+  // The call to action under the result: two leads located at the tool.
+  assert.ok((await tool.locator(".tool-cta").innerText()).includes(reg10.COPY.cta))
+  const whatsapp = tool.getByRole("link", { name: "WhatsApp" })
+  assert.equal(await whatsapp.getAttribute("href"), whatsappFor("difc-data-protection-ai.md"))
+  await follow(context, tool.getByRole("link", { name: "Book a call" }), CALENDAR)
+  await follow(context, whatsapp, WHATSAPP)
+  assert.deepEqual(await events(page, "generate_lead"), [
+    { method: "booking", location: "tool_reg10_check" },
+    { method: "whatsapp", location: "tool_reg10_check" },
+  ])
+  // Still on the guide, and the answers never went into a URL.
+  assert.equal(page.url(), `${origin}/guides/difc-data-protection-ai/`)
+  assert.ok(!requested.some(u => /[?&](firm|ai|use)=/.test(u)), "an answer went into a URL")
+  // Every request to another host is one of the two contact links, or was blocked
+  // before it left: Google Analytics never got the page's answers.
+  const outside = requested.filter(u => new URL(u).hostname !== "localhost")
+  for (const u of outside) {
+    assert.ok(!/reg10_check|difc_vendor|reach_own|reach_none|onshore/.test(u), `a result went out in a request: ${u}`)
+  }
+  await context.close()
+})
+
 // The contact box at the bottom of every guide. .nav-pill-primary pushes itself to
 // the right end of the header (margin-left: auto); in this box, until 2026-10-10,
 // it threw WhatsApp and "Book a call" to opposite edges of the dark band.
@@ -359,5 +482,55 @@ test("the contact box at the bottom of a guide keeps its two buttons side by sid
   const left = whatsapp.x - box.x
   const right = box.x + box.width - (book.x + book.width)
   assert.ok(Math.abs(left - right) <= 2, `buttons off centre: ${left}px on the left, ${right}px on the right`)
+  await context.close()
+})
+
+// The offer box inside the DIFC guide's text (2026-10-11): a light card after the
+// ChatGPT section, with the same two links as the bottom box and its own lead
+// location. The header's margin-left: auto must not split its buttons either.
+test("the offer box in the DIFC guide sits after the ChatGPT section, buttons side by side, and sends its own leads", { skip }, async () => {
+  const { context, page } = await visit("/guides/difc-data-protection-ai/")
+  const { offer, ctaLine } = matter(readFileSync(join(ROOT, "content/guides/difc-data-protection-ai.md"), "utf8")).data
+  const box = page.locator(".cs-offer")
+  assert.equal(await box.count(), 1)
+  assert.equal(await box.innerText(), `${offer.title}\n\n${offer.text}\n\nWhatsApp\nBook a call`)
+
+  // In the text: below the ChatGPT heading, above "What an engineer has to build".
+  const frame = await box.boundingBox()
+  const chatgpt = await page.getByRole("heading", { name: "If your firm uses ChatGPT or a similar tool" }).boundingBox()
+  const build = await page.getByRole("heading", { name: "What an engineer has to build" }).boundingBox()
+  assert.ok(chatgpt.y < frame.y && frame.y + frame.height <= build.y, "the offer box is not between the two sections")
+
+  // A light card: dark text on a light background, unlike the dark band at the bottom.
+  const lightness = locator =>
+    locator.evaluate(el => {
+      const [r, g, b] = getComputedStyle(el).backgroundColor.match(/\d+/g).map(Number)
+      return (r + g + b) / 3
+    })
+  assert.ok((await lightness(box)) > 230, "the offer box is not light")
+  assert.ok((await lightness(page.locator(".cs-cta"))) < 60, "the bottom box is no longer the dark band")
+
+  // The two buttons on one row, next to each other, starting at the text's left edge.
+  const whatsapp = await box.locator(".nav-pill-whatsapp").boundingBox()
+  const book = await box.locator(".nav-pill-primary").boundingBox()
+  const text = await box.locator("p").last().boundingBox()
+  assert.ok(Math.abs(whatsapp.y - book.y) < 1, "the two buttons are not on one row")
+  const gap = book.x - (whatsapp.x + whatsapp.width)
+  assert.ok(gap >= 0 && gap <= 16, `${gap}px between WhatsApp and Book a call`)
+  assert.ok(Math.abs(whatsapp.x - text.x) < 1, "the buttons do not start under the text")
+
+  // The offer's links report guide_offer; the bottom box, with the guide's own line, reports guide.
+  assert.equal(await box.getByRole("link", { name: "WhatsApp" }).getAttribute("href"), whatsappFor("difc-data-protection-ai.md"))
+  await follow(context, box.getByRole("link", { name: "Book a call" }), CALENDAR)
+  await follow(context, box.getByRole("link", { name: "WhatsApp" }), WHATSAPP)
+  const bottom = page.locator(".cs-cta")
+  assert.equal(await bottom.locator("p").innerText(), ctaLine)
+  await follow(context, bottom.getByRole("link", { name: "Book a call" }), CALENDAR)
+  assert.deepEqual(await events(page, "generate_lead"), [
+    { method: "booking", location: "guide_offer" },
+    { method: "whatsapp", location: "guide_offer" },
+    { method: "booking", location: "guide" },
+  ])
+  assert.equal(page.url(), `${origin}/guides/difc-data-protection-ai/`)
   await context.close()
 })

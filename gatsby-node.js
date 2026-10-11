@@ -137,6 +137,15 @@ exports.createSchemaCustomization = ({ actions }) => {
       legalJurisdiction: String
       # Decision tool a guide shows under its lead (src/templates/guide.js).
       tool: String
+      # Offer box a guide shows in its text, where its markdown says <!-- offer -->.
+      offer: GuideOffer
+      # Sentence of the contact box at the bottom of a guide, instead of the generic one.
+      ctaLine: String
+    }
+
+    type GuideOffer {
+      title: String
+      text: String
     }
 
     type GuideFaq {

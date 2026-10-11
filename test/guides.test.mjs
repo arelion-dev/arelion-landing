@@ -216,3 +216,67 @@ test("the OCR pages no longer advise Gemini 3.5 Flash and explain the watermark 
   assert.match(pdfGuide, /Gemini 3\.8 Flash if the pages may go to Google/)
   assert.doesNotMatch(read("src/tools/ocr-picker.js"), /for about 1\.8 cents/)
 })
+
+// ---- The offer box in a guide's text, and the line of its bottom box ----
+// Asked on 2026-10-11 for the DIFC guide: an offer inside the text, where a reader
+// has just seen the problem, and a bottom box that says what to send me.
+
+// A guide with an `offer` says where its box goes with this comment (src/templates/guide.js).
+const OFFER_MARKER = "<!-- offer -->"
+const OFFER_BOX = '<aside class="cs-offer">'
+// The bottom box of a guide that has no `ctaLine`.
+const GENERIC_LINE = "Got this problem? I'll look at yours, in writing."
+const DIFC = "/guides/difc-data-protection-ai/"
+const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
+// Text as React writes it into HTML.
+const escaped = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;")
+// The end of a WhatsApp link that names the guide.
+const prefilled = title => `?text=${encodeURIComponent(`Hi Antonin, I read "${title}" on arelion.dev`)}`
+
+// The template drops the box of a guide that has one without the other.
+test("a guide has an offer and its place in the text together, or neither", () => {
+  for (const g of guides) {
+    const places = g.raw.split(OFFER_MARKER).length - 1
+    assert.equal(places, g.data.offer ? 1 : 0, `${g.file}: ${places} offer marker(s)`)
+    if (g.data.offer) assert.ok(g.data.offer.title && g.data.offer.text, `${g.file}: an offer needs a title and a text`)
+  }
+})
+
+test("the DIFC guide shows its offer box once, after the ChatGPT section and before what to build", { skip: !built && "no build in public/" }, () => {
+  const g = guides.find(g => g.path === DIFC)
+  const page = html(DIFC)
+  assert.equal(page.split(OFFER_BOX).length - 1, 1)
+  const at = page.indexOf(OFFER_BOX)
+  const chatgpt = page.indexOf("<h2>If your firm uses ChatGPT or a similar tool</h2>")
+  const build = page.indexOf("<h2>What an engineer has to build</h2>")
+  assert.ok(chatgpt > 0 && build > 0, "a heading around the offer changed")
+  assert.ok(chatgpt < at && at < build, "the offer box is not between the two sections")
+  // No other heading sits between the ChatGPT section and the box.
+  assert.doesNotMatch(page.slice(chatgpt + 4, at), /<h2/)
+  const box = page.slice(at, page.indexOf("</aside>", at))
+  assert.ok(box.includes(`<p class="cs-offer-title">${escaped(g.data.offer.title)}</p><p>${escaped(g.data.offer.text)}</p>`), box)
+  // Its two contact links: WhatsApp naming the guide, then the booking page.
+  const links = [...box.matchAll(/<a class="([^"]*)" href="([^"]*)"[^>]*>([^<]*)<\/a>/g)].map(([, cls, href, label]) => ({ cls, href, label }))
+  assert.deepEqual(links.map(l => [l.cls, l.label]), [["nav-pill nav-pill-whatsapp", "WhatsApp"], ["nav-pill nav-pill-primary", "Book a call"]])
+  assert.ok(links[0].href.startsWith("https://wa.me/") && links[0].href.endsWith(prefilled(g.data.title)), links[0].href)
+  assert.equal(links[1].href, CALENDAR_URL)
+})
+
+test("only a guide with an offer shows an offer box, and no built page shows the marker", { skip: !built && "no build in public/" }, () => {
+  for (const g of guides) assert.equal(html(g.path).split(OFFER_BOX).length - 1, g.data.offer ? 1 : 0, g.path)
+  assert.ok(!guides.find(g => g.path === "/guides/uae-pdpl-ai/").data.offer && !html("/guides/uae-pdpl-ai/").includes('class="cs-offer'))
+  const walk = dir =>
+    readdirSync(dir, { withFileTypes: true }).flatMap(e =>
+      e.isDirectory() ? walk(join(dir, e.name)) : e.name.endsWith(".html") ? [join(dir, e.name)] : [],
+    )
+  const hits = walk(PUBLIC).filter(f => readFileSync(f, "utf8").includes(OFFER_MARKER))
+  assert.deepEqual(hits, [])
+})
+
+test("the box at the bottom of a guide shows the guide's own line, or the generic one", { skip: !built && "no build in public/" }, () => {
+  const line = path => html(path).match(/<div class="cs-cta"><p>([^<]*)<\/p>/)?.[1]
+  for (const g of guides) assert.equal(line(g.path), escaped(g.data.ctaLine || GENERIC_LINE), g.path)
+  // Both cases are on the site: the DIFC guide has its own line, the UAE PDPL guide has none.
+  assert.ok(guides.find(g => g.path === DIFC).data.ctaLine, "the DIFC guide lost its own line")
+  assert.equal(line("/guides/uae-pdpl-ai/"), escaped(GENERIC_LINE))
+})

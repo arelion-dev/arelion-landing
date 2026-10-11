@@ -6,11 +6,13 @@ import SEO from "../components/seo"
 import LegalDisclaimer from "../components/legal-disclaimer"
 import OcrPicker from "../components/ocr-picker"
 import AutomateFirst from "../components/automate-first"
+import Reg10Check from "../components/reg10-check"
 import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 import CASE_STUDIES from "../data/case-studies"
 import { offersOf, offerClass, headlineOf } from "../data/offers"
 import { ANCHOR as OCR_PICKER } from "../tools/ocr-picker"
 import { ANCHOR as AUTOMATE_FIRST } from "../tools/automate-first"
+import { ANCHOR as REG10_CHECK } from "../tools/reg10-check"
 
 // Guides answer a buyer's question and point to the case studies that prove
 // the answer. One markdown file in content/guides = one page, English only.
@@ -18,7 +20,10 @@ import { ANCHOR as AUTOMATE_FIRST } from "../tools/automate-first"
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
 // Decision tools a guide can show under its lead, picked by its `tool` frontmatter field.
-const TOOLS = { [OCR_PICKER]: OcrPicker, [AUTOMATE_FIRST]: AutomateFirst }
+const TOOLS = { [OCR_PICKER]: OcrPicker, [AUTOMATE_FIRST]: AutomateFirst, [REG10_CHECK]: Reg10Check }
+
+// Where a guide with an `offer` shows its offer box: this comment, on a line of its own in the markdown.
+const OFFER_MARKER = "<!-- offer -->"
 
 // WhatsApp link that names the page, so a lead says which guide brought it.
 const whatsappFor = (base, title) =>
@@ -30,9 +35,35 @@ const formatDate = day =>
     new Date(day),
   )
 
+// The guide's two contact links, tracked with their place on the page.
+const ContactLinks = ({ whatsappHref, location }) => (
+  <>
+    {whatsappHref && (
+      <a
+        className="nav-pill nav-pill-whatsapp"
+        href={whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => trackLead(LEAD_METHOD.whatsapp, location)}
+      >
+        WhatsApp
+      </a>
+    )}
+    <a
+      className="nav-pill nav-pill-primary"
+      href={CALENDAR_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => trackLead(LEAD_METHOD.booking, location)}
+    >
+      Book a call
+    </a>
+  </>
+)
+
 const GuideTemplate = ({ data }) => {
   const { html, frontmatter } = data.markdownRemark
-  const { title, description, kicker, faq, related, legalDisclaimer, legalJurisdiction } = frontmatter
+  const { title, description, kicker, faq, related, legalDisclaimer, legalJurisdiction, offer, ctaLine } = frontmatter
   // `updated` is optional: a guide never revised shows its publication date.
   const modified = frontmatter.updated || frontmatter.date
   const proofs = (related || []).map(slug => CASE_STUDIES.find(c => c.slug === slug)).filter(Boolean)
@@ -40,6 +71,12 @@ const GuideTemplate = ({ data }) => {
   const Tool = frontmatter.tool && TOOLS[frontmatter.tool]
   // A misspelt tool name fails the build instead of shipping a guide without its tool.
   if (frontmatter.tool && !Tool) throw new Error(`${title}: unknown tool "${frontmatter.tool}"`)
+  const whatsappHref = whatsapp && whatsappFor(whatsapp, title)
+  // The marker itself never reaches the page. Without an offer, or without the
+  // marker, the body stays in one piece.
+  const [beforeOffer, ...rest] = html.split(OFFER_MARKER)
+  const afterOffer = rest.join("")
+  const showOffer = Boolean(offer) && rest.length > 0
 
   return (
     <PortfolioLayout>
@@ -61,9 +98,24 @@ const GuideTemplate = ({ data }) => {
           )}
         </p>
 
-        {Tool && <Tool whatsappHref={whatsapp && whatsappFor(whatsapp, title)} />}
+        {Tool && <Tool whatsappHref={whatsappHref} />}
 
-        <section className="cs-section cs-article" dangerouslySetInnerHTML={{ __html: html }} />
+        <section
+          className="cs-section cs-article"
+          dangerouslySetInnerHTML={{ __html: showOffer ? beforeOffer : beforeOffer + afterOffer }}
+        />
+        {showOffer && (
+          <>
+            <aside className="cs-offer">
+              <p className="cs-offer-title">{offer.title}</p>
+              <p>{offer.text}</p>
+              <div className="cs-offer-links">
+                <ContactLinks whatsappHref={whatsappHref} location="guide_offer" />
+              </div>
+            </aside>
+            <section className="cs-section cs-article" dangerouslySetInnerHTML={{ __html: afterOffer }} />
+          </>
+        )}
 
         {faq && faq.length > 0 && (
           <section className="cs-faq">
@@ -95,28 +147,10 @@ const GuideTemplate = ({ data }) => {
         )}
 
         <div className="cs-cta">
-          <p>Got this problem? I'll look at yours, in writing.</p>
+          {/* A guide's own line (ctaLine) says what to send me; the others share this one. */}
+          <p>{ctaLine || "Got this problem? I'll look at yours, in writing."}</p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-            {whatsapp && (
-              <a
-                className="nav-pill nav-pill-whatsapp"
-                href={whatsappFor(whatsapp, title)}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackLead(LEAD_METHOD.whatsapp, "guide")}
-              >
-                WhatsApp
-              </a>
-            )}
-            <a
-              className="nav-pill nav-pill-primary"
-              href={CALENDAR_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackLead(LEAD_METHOD.booking, "guide")}
-            >
-              Book a call
-            </a>
+            <ContactLinks whatsappHref={whatsappHref} location="guide" />
           </div>
         </div>
       </article>
@@ -198,6 +232,11 @@ export const pageQuery = graphql`
         legalDisclaimer
         legalJurisdiction
         tool
+        offer {
+          title
+          text
+        }
+        ctaLine
         date(formatString: "YYYY-MM-DD")
         updated(formatString: "YYYY-MM-DD")
         faq {
