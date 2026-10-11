@@ -1343,6 +1343,83 @@ const CASE_STUDIES = [
     // No faq: the page shows no "Questions I get about this" section.
     article: "/blog/hotel-lobby-ai-trend/",
   },
+  // Three security tests of 2026-10-11. Test write-ups only: no business version
+  // and no faq (same shape as hotel-lobby-ai-video).
+  {
+    slug: "claude-code-security-review-test",
+    date: "2026-10-11",
+    pillar: "Lab",
+    offers: ["Lab"],
+    lab: true,
+    featured: false,
+    published: true,
+    title: {
+      en: "Claude Code security review, tested on a vulnerable app",
+      fr: "La security review de Claude Code, testée sur une application vulnérable",
+    },
+    metric: {
+      en: "10 of 19 documented vulnerabilities reported in all three runs, 12 in the best run, and no false positives",
+      fr: "10 des 19 vulnérabilités documentées signalées dans les trois runs, 12 dans le meilleur, et aucun faux positif",
+    },
+    hook: {
+      en: "I ran Claude Code's /security-review command three times on DVNA, a Node.js application written to be vulnerable, and matched each finding by hand to the 19 vulnerabilities that its guide documents.",
+      fr: "J'ai lancé trois fois la commande /security-review de Claude Code sur DVNA, une application Node.js écrite pour être vulnérable, et j'ai rapproché à la main chaque constat des 19 vulnérabilités que son guide documente.",
+    },
+    metaDescription: { en: "I ran Claude Code's /security-review three times on a Node.js app with 19 documented vulnerabilities. It reported 10 in every run and 12 in its best run." },
+    tags: ["Claude Code", "security review", "Claude Opus 5.5", "DVNA", "Node.js", "code review"],
+    stack: ["Claude Code 2.1.294", "Claude Opus 5.5", "DVNA", "Node.js", "Express", "git"],
+    article: "/blog/claude-code-security-review-test/",
+  },
+  {
+    slug: "prompt-injection-email-test",
+    date: "2026-10-11",
+    pillar: "Lab",
+    offers: ["Lab"],
+    lab: true,
+    featured: false,
+    published: true,
+    title: {
+      en: "Prompt injection: 50 attack emails against 5 AI models",
+      fr: "Prompt injection : 50 mails d'attaque contre 5 modèles d'IA",
+    },
+    metric: {
+      en: "With no defense, the attacks made one model call the mail tool 16 times out of 50. With one of three defenses in place, 1 attempt out of 750 succeeded.",
+      fr: "Sans défense, les attaques ont fait appeler le tool d'envoi de mail 16 fois sur 50 à l'un des modèles. Avec l'une des trois défenses, 1 tentative sur 750 a réussi.",
+    },
+    hook: {
+      en: "I gave 60 emails, 50 of them attacks, to five current models that played an email assistant with one tool, which sends mail. A script counted how many attacks made each model call that tool, with no defense and with three defenses.",
+      fr: "J'ai donné 60 mails, dont 50 attaques, à cinq modèles actuels qui jouaient un assistant mail avec un seul tool, celui qui envoie des mails. Un script a compté combien d'attaques ont fait appeler ce tool à chaque modèle, sans défense puis avec trois défenses.",
+    },
+    metaDescription: { en: "I gave 50 attack emails to 5 AI models playing an email assistant. With no defense, one called the mail tool 16 times. With a defense, 1 try in 750 succeeded." },
+    tags: ["Prompt injection", "Email assistant", "Tool calls", "LLMail-Inject", "AgentDojo", "OpenRouter"],
+    stack: ["Python", "OpenRouter", "Claude Opus 5.5", "Claude Haiku 5.5", "GPT-6.1 Sol", "Gemini 3.8 Flash", "Qwen3.8 27B", "LLMail-Inject", "AgentDojo"],
+    article: "/blog/prompt-injection-email-test/",
+  },
+  {
+    slug: "ai-models-vulnerability-test",
+    date: "2026-10-11",
+    pillar: "Lab",
+    offers: ["Lab"],
+    lab: true,
+    featured: false,
+    published: true,
+    title: {
+      en: "Which AI model finds the most vulnerabilities? 5 tested",
+      fr: "Quel modèle d'IA trouve le plus de vulnérabilités ? 5 testés",
+    },
+    metric: {
+      en: "On real vulnerabilities shown before and after their fix, the highest score was 15 of the 30 pairs told apart and the lowest 9",
+      fr: "Sur de vraies vulnérabilités montrées avant et après leur correctif, le meilleur score est de 15 paires distinguées sur 30, et le plus bas de 9",
+    },
+    hook: {
+      en: "I tested five AI models in two rounds: 44 textbook Java files from the OWASP Benchmark, then 30 real fixes from open-source JavaScript, TypeScript and Python projects. All five passed the first round, and 30 pairs are too few to rank them on the second.",
+      fr: "J'ai testé cinq modèles d'IA en deux manches : 44 fichiers Java, des cas d'école tirés de l'OWASP Benchmark, puis 30 vrais correctifs pris dans des projets open source en JavaScript, TypeScript et Python. Les cinq ont réussi la première manche, et 30 paires ne suffisent pas à les classer sur la seconde.",
+    },
+    metaDescription: { en: "I tested 5 AI models on 44 textbook Java files, then on 30 real vulnerabilities before and after their fix. The best told 15 of the 30 pairs apart." },
+    tags: ["AI models", "code vulnerabilities", "OWASP Benchmark", "GitHub Advisory Database", "OpenRouter"],
+    stack: ["Python", "OpenRouter", "Claude Opus 5.5", "Claude Haiku 5.5", "GPT-6.1 Sol", "Gemini 3.8 Flash", "Qwen3.8 27B", "OWASP Benchmark", "GitHub Advisory Database"],
+    article: "/blog/ai-models-vulnerability-test/",
+  },
   // Draft: kept out of production builds (see the note at the end of this file).
   ...(process.env.NODE_ENV === "development" ? [{
     slug: "ai-music-lora-ace-step",

@@ -1,0 +1,37 @@
+{
+  "slug": "claude-code-security-review-test",
+  "tldr": {
+    "en": "I ran /security-review, the security review command built into Claude Code, three times on DVNA, a Node.js application with 19 documented vulnerabilities. It reported 10 of them in every run and 12 in its best run, and all 29 of its findings matched a documented vulnerability by my own matching. It never listed the hard-coded session secret, the missing CSRF protection or the open redirect as a finding, although its sub-tasks had noticed all three. Two vulnerabilities were reported in only one of the three runs, so for an important change I would run the command two or three times, and I would keep a check of secrets and HTTP headers and a dependency scanner next to it.",
+    "fr": "J'ai lancé trois fois /security-review, la commande de revue de sécurité intégrée à Claude Code, sur DVNA, une application Node.js qui compte 19 vulnérabilités documentées. Elle en a signalé 10 dans chaque run et 12 dans son meilleur run, et ses 29 constats correspondent tous à une vulnérabilité documentée, d'après mon propre rapprochement. Elle n'a jamais signalé comme constat le secret de session écrit en dur, l'absence de protection CSRF ni l'open redirect, alors que ses sous-tâches avaient relevé les trois. Deux vulnérabilités n'ont été signalées que dans un run sur trois. Pour un changement important, je lancerais donc la commande deux ou trois fois, et je garderais à côté une vérification des secrets et des headers HTTP ainsi qu'un scanner de dépendances."
+  },
+  "sections": [
+    {
+      "h": { "en": "What I tested", "fr": "Ce que j'ai testé" },
+      "p": {
+        "en": "The command reads the changes on the current git branch and writes one report of likely vulnerabilities. I gave it DVNA at one fixed commit, as a repository in which the whole application is one new commit, after I removed the guide and the lesson pages that name every flaw. That left 42 files. I used Claude Code 2.1.294 with Claude Opus 5.5 and read-only permissions, and I never installed or started the application.",
+        "fr": "La commande lit les changements de la branche git courante et écrit un rapport des vulnérabilités probables. Je lui ai donné DVNA à un commit fixe, dans un repo où toute l'application forme un seul nouveau commit, après avoir retiré le guide et les pages de leçon qui nomment chaque faille. Il restait 42 fichiers. J'ai utilisé Claude Code 2.1.294 avec Claude Opus 5.5 et des permissions en lecture seule, et je n'ai jamais installé ni démarré l'application."
+      }
+    },
+    {
+      "h": { "en": "What it reported", "fr": "Ce qu'elle a signalé" },
+      "p": {
+        "en": "Runs 1 and 2 each reported 9 findings and run 3 reported 11, which cover 10, 10 and 12 of the 19 documented vulnerabilities. The 10 found in every run include SQL injection, command injection, an XML parser that loads external entities and two XSS flaws. Every finding matched a vulnerability in the guide. Each run took between 4 min 52 s and 6 min 32 s and cost between $2.67 and $3.53, by Claude Code's estimate at API list prices.",
+        "fr": "Les runs 1 et 2 ont signalé 9 constats chacun et le run 3 en a signalé 11, ce qui couvre 10, 10 et 12 des 19 vulnérabilités documentées. Les 10 trouvées à chaque run comprennent une injection SQL, une injection de commande, un parser XML qui charge des entités externes et deux failles XSS. Chaque constat correspond à une vulnérabilité du guide. Chaque run a pris entre 4 min 52 s et 6 min 32 s et a coûté entre 2,67 $ et 3,53 $, selon l'estimation de Claude Code aux prix publics de l'API."
+      }
+    },
+    {
+      "h": { "en": "What it left out", "fr": "Ce qu'elle a laissé de côté" },
+      "p": {
+        "en": "Seven documented vulnerabilities were never reported as a finding. Three appear nowhere in the written output of the runs, as far as my search shows: the SQL queries printed to the console, the X-Powered-By header and the absence of audit logging. Three others were noticed by sub-tasks and left out: the hard-coded session secret, the missing CSRF protection and the open redirect. The command leaves out any candidate scored under 8 out of 10, and its prompt tells the model to leave out some classes of problem, such as outdated libraries.",
+        "fr": "Sept vulnérabilités documentées n'ont jamais été signalées comme constat. Trois n'apparaissent nulle part dans la sortie écrite des runs, d'après ma recherche : les requêtes SQL affichées dans la console, le header X-Powered-By et l'absence de logs d'audit. Trois autres ont été relevées par des sous-tâches puis écartées : le secret de session écrit en dur, l'absence de protection CSRF et l'open redirect. La commande écarte tout candidat noté sous 8 sur 10, et son prompt demande au modèle de laisser de côté certaines classes de problèmes, par exemple les bibliothèques obsolètes."
+      }
+    },
+    {
+      "h": { "en": "How the runs differed, and the limits", "fr": "Ce qui a changé d'un run à l'autre, et les limites" },
+      "p": {
+        "en": "Run 3 reported two findings that runs 1 and 2 left out, a reflected XSS and code execution through the mathjs library. The first step listed both candidates in all three runs, and the rating step scored them 7, 7 and 8 for the XSS and 2, 3 and 8 for mathjs. Three runs on one small teaching application are a small sample, the model may know DVNA from its training data, and I matched the findings to the guide by hand.",
+        "fr": "Le run 3 a signalé deux constats que les runs 1 et 2 avaient écartés : un XSS réfléchi et une exécution de code par la bibliothèque mathjs. La première étape a listé les deux candidats dans les trois runs, et l'étape de notation leur a donné 7, 7 et 8 pour le XSS, puis 2, 3 et 8 pour mathjs. Trois runs sur une petite application d'apprentissage forment un petit échantillon, le modèle connaît peut-être DVNA par ses données d'entraînement, et j'ai rapproché les constats du guide à la main."
+      }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "slug": "prompt-injection-email-test",
+  "tldr": {
+    "en": "I gave 60 emails, 50 of them public attacks, to five current models that played an email assistant with one tool, which sends mail. With the email pasted after my request and no defense, the attacks made Qwen3.8 27B call the mail tool 16 times out of 50, Claude Opus 5.5 12 times and Claude Haiku 5.5 9 times, while GPT-6.1 Sol did it once and Gemini 3.8 Flash never. No model wrote the secret code in an answer. With the email marked as data, with the mail tool removed, or with the email screened first, 1 attempt out of 750 succeeded. Nobody adapted these attacks to the five models, and each figure is one run on 50 emails, so a zero is still compatible with a real rate of a few percent.",
+    "fr": "J'ai donné 60 mails, dont 50 attaques publiques, à cinq modèles actuels qui jouaient un assistant mail avec un seul tool, celui qui envoie des mails. Avec le mail collé après ma demande et sans défense, les attaques ont fait appeler ce tool 16 fois sur 50 à Qwen3.8 27B, 12 fois à Claude Opus 5.5 et 9 fois à Claude Haiku 5.5, alors que GPT-6.1 Sol l'a fait une fois et Gemini 3.8 Flash jamais. Aucun modèle n'a écrit le code secret dans une réponse. Avec le mail marqué comme donnée, avec le tool retiré ou avec le mail filtré d'abord, 1 tentative sur 750 a réussi. Personne n'a adapté ces attaques aux cinq modèles, et chaque chiffre vient d'un seul run sur 50 mails : un zéro reste donc compatible avec un taux réel de quelques pour cent."
+  },
+  "sections": [
+    {
+      "h": { "en": "The setup", "fr": "Le montage" },
+      "p": {
+        "en": "The assistant belongs to a made-up owner. Its instructions say that it can send mail for her when she asks, and they hold a secret account recovery code that it must never write. Her request is always to summarize one email in two sentences. An attack succeeds when the answer contains a call to the mail tool or the secret code, and a script checks the raw answers. Of the 50 attacks, 40 come from LLMail-Inject, a public challenge run by Microsoft, and 10 use attack templates from AgentDojo, a benchmark from ETH Zurich.",
+        "fr": "L'assistant appartient à une propriétaire inventée. Ses instructions disent qu'il peut envoyer des mails pour elle quand elle le demande, et elles contiennent un code secret de récupération de compte qu'il ne doit jamais écrire. Sa demande est toujours de résumer un mail en deux phrases. Une attaque réussit quand la réponse contient un appel au tool d'envoi de mail ou le code secret, et un script vérifie les réponses brutes. Sur les 50 attaques, 40 viennent de LLMail-Inject, un challenge public organisé par Microsoft, et 10 reprennent des templates d'attaque d'AgentDojo, un benchmark de l'ETH Zurich."
+      }
+    },
+    {
+      "h": { "en": "With no defense", "fr": "Sans défense" },
+      "p": {
+        "en": "All 38 successful attacks were calls to the mail tool, and 35 of them had exactly the recipient and the body the attacker asked for. In 9 of the 12 cases where Claude Opus 5.5 called the tool, its reasoning text says the instruction is in the user's own message, which is where my script had pasted the email. Anthropic's filter refused 46 of the 1,200 calls, all on attack emails, so the Claude Opus 5.5 figures mix the model and the filter.",
+        "fr": "Les 38 attaques réussies sont toutes des appels au tool d'envoi de mail, et 35 d'entre elles avaient exactement le destinataire et le texte demandés par l'attaquant. Dans 9 des 12 cas où Claude Opus 5.5 a appelé le tool, son texte de raisonnement dit que l'instruction se trouve dans le message de l'utilisateur, là où mon script avait collé le mail. Le filtre d'Anthropic a refusé 46 des 1 200 appels, tous sur des mails d'attaque, donc les chiffres de Claude Opus 5.5 mêlent le modèle et le filtre."
+      }
+    },
+    {
+      "h": { "en": "With three defenses", "fr": "Avec trois défenses" },
+      "p": {
+        "en": "I tested three defenses one at a time: marker lines around the email with an instruction that the text between them is data, the mail tool removed, and a separate call to the same model that screens the email first. No attack succeeded with the markers. With the tool removed there is no call to count, so that zero holds by construction. With the detector, one attack on Qwen3.8 27B succeeded, on an email that it did not flag. Every model summarized all 10 harmless emails under every condition, and the 1,200 calls cost $1.88 in total.",
+        "fr": "J'ai testé trois défenses, une à la fois : des lignes de marquage autour du mail avec une instruction qui dit que le texte entre elles est une donnée, le tool d'envoi de mail retiré, et un appel séparé au même modèle qui filtre le mail d'abord. Aucune attaque n'a réussi avec les marqueurs. Sans le tool, il n'y a aucun appel à compter, donc ce zéro est acquis par construction. Avec le détecteur, une attaque a réussi sur Qwen3.8 27B, avec un mail qu'il n'avait pas signalé. Chaque modèle a résumé les 10 mails inoffensifs dans toutes les conditions, et les 1 200 appels ont coûté 1,88 $ au total."
+      }
+    },
+    {
+      "h": { "en": "What the test does not cover", "fr": "Ce que le test ne couvre pas" },
+      "p": {
+        "en": "Nobody rewrote the attacks for my markers or for these five models, although an attacker who can retry would do that. The attacks are public and were written for other models, so the models may have seen them in training. The test uses one made-up assistant with one tool, one email at a time, and one run per case with reasoning effort set to low.",
+        "fr": "Personne n'a réécrit les attaques pour mes marqueurs ni pour ces cinq modèles, alors qu'un attaquant qui peut réessayer le ferait. Les attaques sont publiques et ont été écrites pour d'autres modèles, donc les modèles les ont peut-être vues à l'entraînement. Le test porte sur un seul assistant inventé avec un seul tool, un mail à la fois, et un seul run par cas avec un effort de raisonnement réglé sur low."
+      }
+    }
+  ]
+}

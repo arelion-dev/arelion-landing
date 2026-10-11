@@ -225,3 +225,64 @@ test("the built security audit page names no client sector, related cards includ
   const bodies = JSON.parse(readFileSync(join(PUBLIC, `page-data/case-studies/${AUDIT}/page-data.json`), "utf8")).result.data
   for (const key of ["techEn", "techFr", "businessEn", "businessFr"]) assert.equal(sectorWord(bodies[key].html), null, `${key} names a sector`)
 })
+
+// The three security tests of 2026-10-11 are Lab studies whose page is the
+// article itself. Each one is checked on the figure its page is about, so the
+// check fails if the page goes away or loses that figure.
+const SECURITY_TESTS = {
+  "claude-code-security-review-test": "10 of them in all three runs",
+  "prompt-injection-email-test": "16 times out of 50",
+  "ai-models-vulnerability-test": "15 of the 30 pairs",
+}
+// Visible text of one element of a built page, from its opening tag to the first closing tag.
+const element = (slug, open, close) => {
+  const page = html(`case-studies/${slug}`)
+  const start = page.indexOf(open)
+  const end = page.indexOf(close, start)
+  assert.ok(start > 0 && end > start, `${slug}: ${open} not found in the page`)
+  return plain(page.slice(start, end))
+}
+
+test("the three security tests are published Lab studies, each with an article that states its main figure", () => {
+  for (const [slug, figure] of Object.entries(SECURITY_TESTS)) {
+    const cs = CASE_STUDIES.find(c => c.slug === slug)
+    assert.ok(cs, `${slug} is not a published case study`)
+    assert.equal(cs.lab, true, `${slug}: not a Lab study`)
+    assert.deepEqual(cs.offers, ["Lab"], slug)
+    assert.equal(cs.article, `/blog/${slug}/`, slug)
+    assert.equal(cs.articleBusiness, undefined, `${slug}: these studies have no business version`)
+    assert.ok(readFileSync(join(ROOT, `content/blog/${slug}/index.MD`), "utf8").includes(figure), `${slug}: the article no longer says "${figure}"`)
+  }
+})
+
+for (const [slug, figure] of Object.entries(SECURITY_TESTS)) {
+  test(`the built page of ${slug} shows "${figure}" in its article`, { skip: !built && "no build in public/" }, () => {
+    assert.ok(existsSync(join(PUBLIC, `case-studies/${slug}/index.html`)), `no page at /case-studies/${slug}/`)
+    assert.ok(element(slug, 'class="cs-section cs-article"', "</section>").includes(figure), `the article on the page no longer says "${figure}"`)
+  })
+}
+
+// How often the monitor of my own assistant runs and which messaging apps the
+// assistant reads stay out of these pages (decided on 2026-10-11).
+const PRIVATE_DETAILS = /15 minutes|WhatsApp|Telegram/i
+
+test("the three security tests give no detail on how my own assistant is watched", () => {
+  for (const slug of Object.keys(SECURITY_TESTS)) {
+    const cs = CASE_STUDIES.find(c => c.slug === slug)
+    assert.ok(cs, `${slug} is not a published case study`)
+    const texts = {
+      // The entry with its rich body (TL;DR and sections), English and French.
+      "case study data": JSON.stringify(cs),
+      article: readFileSync(join(ROOT, `content/blog/${slug}/index.MD`), "utf8"),
+    }
+    for (const [name, text] of Object.entries(texts)) assert.doesNotMatch(text, PRIVATE_DETAILS, `${slug}, ${name}`)
+  }
+})
+
+test("the built pages of the three security tests give no such detail either", { skip: !built && "no build in public/" }, () => {
+  for (const slug of Object.keys(SECURITY_TESTS)) {
+    // The study's own part of the page: the site menu around it has a WhatsApp contact link.
+    assert.doesNotMatch(element(slug, '<article class="cs-detail"', "</article>"), PRIVATE_DETAILS, `${slug}: page text`)
+    assert.doesNotMatch(readFileSync(join(PUBLIC, `page-data/case-studies/${slug}/page-data.json`), "utf8"), PRIVATE_DETAILS, `${slug}: page data`)
+  }
+})
