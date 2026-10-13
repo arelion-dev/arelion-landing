@@ -163,6 +163,18 @@ test("every published case study gets a link from a built page other than the in
   }
 })
 
+// The structured data used the default cover on every study and had no
+// dateModified, while guides have one (technical audit, 2026-10-13).
+test("case-study structured data shows the page's share image and the sitemap's date", { skip: !built && "no build in public/" }, () => {
+  for (const cs of CASE_STUDIES) {
+    const page = html(`case-studies/${cs.slug}`)
+    const post = jsonLd(page).find(n => n["@type"] === "BlogPosting")
+    assert.equal(post.image, metaContent(page, "property", "og:image"), cs.slug)
+    assert.ok(post.datePublished && post.dateModified, `${cs.slug}: no datePublished or dateModified`)
+    assert.equal(post.dateModified.slice(0, 10), cs.updated || cs.date, `${cs.slug}: dateModified is not the sitemap's lastmod`)
+  }
+})
+
 test("llms.txt lists every published case study under its title", () => {
   const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
   for (const cs of CASE_STUDIES) {

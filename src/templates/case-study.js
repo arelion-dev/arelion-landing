@@ -458,7 +458,8 @@ export const Head = ({ pageContext, data, location }) => {
     "@type": "BlogPosting",
     headline: cs.title.en,
     description,
-    image: `${siteUrl}/og-cover.png`,
+    // The page's share image (og:image).
+    image: `${siteUrl}${pageContext.ogImage || "/og-cover.png"}`,
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     // Same @id as the Person and the organization on the home page.
@@ -476,7 +477,8 @@ export const Head = ({ pageContext, data, location }) => {
       ],
     },
     publisher: { "@type": "Organization", "@id": "https://arelion.dev/#organization", name: "Arelion", url: siteUrl },
-    ...(datePublished ? { datePublished } : {}),
+    // Same rule as the sitemap's lastmod: the study's `updated` date, else its publication date.
+    ...(datePublished ? { datePublished, dateModified: cs.updated || datePublished } : {}),
     ...(cs.tags && cs.tags.length ? { keywords: cs.tags } : {}),
   }
   // FAQPage rich-result schema, only when the study carries an FAQ.
