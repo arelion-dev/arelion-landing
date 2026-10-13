@@ -118,6 +118,17 @@ test("internal links in guides point to built pages", { skip: !built && "no buil
   }
 })
 
+// Links set on words the text already had (Search Console audit, 2026-10-13):
+// the page that sells the legal assistant got no link from the law guides.
+const TEXT_LINKS = [["difc-data-protection-ai.md", "legal assistant", "/legal-ai-uae/"]]
+test("guides link the pages their text talks about, on the words that name them", { skip: !built && "no build in public/" }, () => {
+  for (const [file, words, to] of TEXT_LINKS) {
+    const g = guides.find(g => g.file === file)
+    assert.ok(g, `no guide ${file}`)
+    assert.ok(html(g.path).includes(`<a href="${to}">${words}</a>`), `${g.path} does not link "${words}" to ${to}`)
+  }
+})
+
 test("every case study a guide cites links back to it", { skip: !built && "no build in public/" }, () => {
   for (const g of guides) {
     for (const slug of g.data.related) assert.ok(html(`case-studies/${slug}`).includes(`href="${g.path}"`), `${slug} does not link to ${g.path}`)
