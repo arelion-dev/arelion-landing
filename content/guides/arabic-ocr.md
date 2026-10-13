@@ -30,7 +30,7 @@ I ran 7 OCR engines on 152 Arabic page images: pages from two UAE laws, the same
 
 ## The test pages: UAE laws, scanned books and phone photos
 
-**UAE laws, from the official PDFs.** Eight pages of Dubai Law No. (7) of 2025 on contracting activities, a Word export in Times New Roman with harakat on many words. Eight pages of Federal Decree-Law No. (33) of 2021 on labour relations, the Ministry of Human Resources and Emiratisation booklet, laid out in InDesign. I rendered each page at 300 and at 150 dpi: 32 images. The ground truth is the text the PDF itself carries, which I had to rebuild glyph by glyph: the usual extractors (pdftotext, PyMuPDF) return many Arabic ligatures reversed, so <bdi lang="ar">الأمر</bdi> comes out as <bdi lang="ar">األمر</bdi> ([more on PDFs](/guides/arabic-pdf-to-text/)).
+**UAE laws, from the official PDFs.** Eight pages of Dubai Law No. (7) of 2025 on contracting activities, a Word export in Times New Roman with harakat on many words. Eight pages of Federal Decree-Law No. (33) of 2021 on labour relations, the Ministry of Human Resources and Emiratisation booklet, laid out in InDesign. I rendered each page at 300 and at 150 dpi: 32 images. The ground truth is the text the PDF itself carries, which I had to rebuild glyph by glyph: the usual extractors (pdftotext, PyMuPDF) [return many Arabic ligatures reversed](/guides/arabic-pdf-to-text/), so <bdi lang="ar">الأمر</bdi> comes out as <bdi lang="ar">األمر</bdi>.
 
 ![The title of Dubai Law No. (7) of 2025 on contracting activities, rendered from the official PDF: قانون رقم (7) لسنة 2025 بشأن تنظيم مزاولة أنشطة المقاولات في إمارة دبي](./images/arabic-ocr/born-digital-dubai-law.png)
 _From the official PDF of Dubai Law No. (7) of 2025, rendered at 300 dpi._
@@ -47,7 +47,7 @@ _A photo of a printed book page (Misraj-DocOCR, Apache-2.0)._
 
 ## Surya and Apple lead the free engines, Tesseract gets 1 character in 5 wrong
 
-These are the 44 real pages that six engines all finished: 17 Wikipedia scans, 17 scans of books and journals, 6 photos of one page and 4 photos of an open book. Speed is the median time per page on an Apple M5 Pro, once the model is loaded.
+These are the 44 real pages that six engines all finished: 17 Wikipedia scans, 17 scans of books and journals, [6 photos of one page and 4 photos of an open book](/guides/image-to-arabic-text/). Speed is the median time per page on an Apple M5 Pro, once the model is loaded.
 
 | Engine | Characters wrong | Words found, any order | Seconds per page |
 |---|---|---|---|

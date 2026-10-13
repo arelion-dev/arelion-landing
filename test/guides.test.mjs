@@ -118,9 +118,15 @@ test("internal links in guides point to built pages", { skip: !built && "no buil
   }
 })
 
-// Links set on words the text already had (Search Console audit, 2026-10-13):
-// the page that sells the legal assistant got no link from the law guides.
-const TEXT_LINKS = [["difc-data-protection-ai.md", "legal assistant", "/legal-ai-uae/"]]
+// Links set on words the text already had (Search Console and technical audits,
+// 2026-10-13): the page that sells the legal assistant got no link from the law
+// guides, and the OCR benchmark linked the PDF guide as "more on PDFs" and did
+// not link the guide on photos at all.
+const TEXT_LINKS = [
+  ["difc-data-protection-ai.md", "legal assistant", "/legal-ai-uae/"],
+  ["arabic-ocr.md", "return many Arabic ligatures reversed", "/guides/arabic-pdf-to-text/"],
+  ["arabic-ocr.md", "6 photos of one page and 4 photos of an open book", "/guides/image-to-arabic-text/"],
+]
 test("guides link the pages their text talks about, on the words that name them", { skip: !built && "no build in public/" }, () => {
   for (const [file, words, to] of TEXT_LINKS) {
     const g = guides.find(g => g.file === file)
