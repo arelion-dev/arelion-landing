@@ -175,6 +175,45 @@ test("the home Person, every case-study author and /about point to the Malt and 
   for (const p of FREELANCE_PROFILES) assert.ok(about.includes(`href="${p}"`), `/about does not link ${p}`)
 })
 
+// Profiles audit of 2026-10-13: the home graph had no WebSite node and no logo,
+// the consultancy listed the person's profiles (one of them antonin.cool, which
+// redirects to this site), nothing told it apart from Arelion AB, the telecom
+// carrier, and /about had no structured data.
+const SITE_ID = "https://arelion.dev/#website"
+const ORG_ID = "https://arelion.dev/#organization"
+const PERSON_ID = "https://arelion.dev/#antonin"
+test("the home graph names the site, the consultancy and the person, each with its own profiles", { skip }, () => {
+  const nodes = ldNodes(html(""))
+  const byId = id => nodes.find(n => n["@id"] === id) || assert.fail(`no node ${id} on the home`)
+  const site = byId(SITE_ID)
+  assert.equal(site["@type"], "WebSite")
+  assert.equal(site.name, "arelion.dev")
+  assert.ok(site.alternateName.includes("ARELION"), "the site does not list ARELION as an alternate name")
+  assert.equal(site.url, "https://arelion.dev/")
+  assert.equal(site.publisher["@id"], ORG_ID)
+
+  const org = byId(ORG_ID)
+  assert.ok(org.logo.startsWith("https://arelion.dev/") && existsSync(join(PUBLIC, org.logo.slice("https://arelion.dev/".length))), `logo ${org.logo} is not a built file`)
+  assert.ok(org.alternateName.includes("ARELION FZCO"), "the consultancy does not list its legal name as an alternate name")
+  assert.equal(org.foundingDate, "2026-01-26")
+  assert.ok(html("about").includes("constituted on 26 January 2026"), "/about no longer gives the date the founding date comes from")
+  assert.match(org.disambiguatingDescription, /Not affiliated with Arelion AB/)
+  assert.ok(org.sameAs.includes("https://www.linkedin.com/company/arelion-fzco/"), "the consultancy does not list its LinkedIn page")
+
+  const person = byId(PERSON_ID)
+  assert.equal(person.jobTitle, "AI consultant and engineer")
+  assert.deepEqual(org.sameAs.filter(u => person.sameAs.includes(u)), [], "the consultancy and the person share a profile")
+  for (const u of [...org.sameAs, ...person.sameAs]) assert.doesNotMatch(u, /arelion\.dev|antonin\.cool/, `${u} points back to this site`)
+})
+
+test("/about declares an AboutPage about the organization of the home", { skip }, () => {
+  const about = ldNodes(html("about")).find(n => n["@type"] === "AboutPage")
+  assert.ok(about, "no AboutPage on /about")
+  assert.equal(about.url, "https://arelion.dev/about/")
+  assert.equal(about.mainEntity["@id"], ORG_ID)
+  assert.ok(ldNodes(html("")).some(n => n["@id"] === ORG_ID), "the home no longer declares the organization")
+})
+
 // Asked on 2026-10-11: the home said nothing about audits. The Fractional CTO
 // card now names the three I do and links to the security audit study.
 test("the Fractional CTO card on the home names its audits and links to the security audit, in English and French", async () => {

@@ -11,6 +11,7 @@ import ArticleBody from "../components/article-body"
 import ContactLinks, { whatsappFor } from "../components/contact-links"
 import CASE_STUDIES from "../data/case-studies"
 import { offersOf, offerClass, headlineOf } from "../data/offers"
+import { PERSON } from "../data/person"
 
 // Tech/Business audience toggle: default to business (the broadest audience),
 // remembered site-wide like the language choice.
@@ -463,19 +464,7 @@ export const Head = ({ pageContext, data, location }) => {
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     // Same @id as the Person and the organization on the home page.
-    author: {
-      "@type": "Person",
-      "@id": "https://arelion.dev/#antonin",
-      name: "Antonin Ribeaud",
-      url: siteUrl,
-      sameAs: [
-        "https://www.linkedin.com/in/antoninribeaud/",
-        "https://github.com/antonhansel",
-        "https://antonin.cool",
-        "https://www.malt.fr/profile/antoninribeaud",
-        "https://www.collective.work/profile/antonin-ribeaud",
-      ],
-    },
+    author: PERSON,
     publisher: { "@type": "Organization", "@id": "https://arelion.dev/#organization", name: "Arelion", url: siteUrl },
     // Same rule as the sitemap's lastmod: the study's `updated` date, else its publication date.
     ...(datePublished ? { datePublished, dateModified: cs.updated || datePublished } : {}),

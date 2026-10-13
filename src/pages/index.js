@@ -12,6 +12,7 @@ import TESTI_PHOTOS from "../data/testimonial-photos"
 import Highlighted from "../components/highlighted"
 import MobileRail from "../components/mobile-rail"
 import CompanyIcon from "../components/company-icon"
+import { PERSON } from "../data/person"
 
 const CALENDAR_URL = "https://calendar.app.google/APH548vGrkmUiyqUA"
 
@@ -408,28 +409,34 @@ const IndexPage = ({ data }) => {
 
 export default IndexPage
 
-const SAME_AS = [
-  "https://www.linkedin.com/in/antoninribeaud/",
-  "https://github.com/antonhansel",
-  "https://antonin.cool",
-  "https://www.malt.fr/profile/antoninribeaud",
-  "https://www.collective.work/profile/antonin-ribeaud",
-]
-
-// Two cross-linked entities in one graph: the studio (ProfessionalService) and
-// the person who runs it. Both carry name + description + url + sameAs so an
-// agent can resolve either identity fully, whichever it latches onto.
+// Three cross-linked entities in one graph: the site, the consultancy
+// (ProfessionalService) and the person who runs it. The consultancy and the
+// person each list their own profiles in sameAs, so an agent can resolve either
+// identity, whichever it latches onto.
 const ORG_JSONLD = {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://arelion.dev/#website",
+      name: "arelion.dev",
+      alternateName: ["ARELION", "Arelion"],
+      url: "https://arelion.dev/",
+      publisher: { "@id": "https://arelion.dev/#organization" },
+    },
     {
       "@type": "ProfessionalService",
       "@id": "https://arelion.dev/#organization",
       name: "Arelion",
       legalName: "ARELION FZCO",
+      alternateName: ["ARELION FZCO", "arelion.dev"],
       url: "https://arelion.dev",
+      logo: "https://arelion.dev/favicon-512.png",
+      foundingDate: "2026-01-26",
       description:
         "AI consultancy based in Dubai and working across the UAE, run by one senior engineer who builds what he recommends: document search over 100M+ pages, legal research with verified citations, private LLMs, cloud platforms.",
+      disambiguatingDescription:
+        "AI consultancy in Dubai run by Antonin Ribeaud. Not affiliated with Arelion AB, the Swedish telecom carrier formerly called Telia Carrier.",
       founder: { "@id": "https://arelion.dev/#antonin" },
       address: {
         "@type": "PostalAddress",
@@ -456,14 +463,13 @@ const ORG_JSONLD = {
         "FastAPI",
         "Technical Product Management",
       ],
-      sameAs: SAME_AS,
+      sameAs: [
+        "https://www.linkedin.com/company/arelion-fzco/",
+        "https://techbehemoths.com/company/arelion-fzco",
+      ],
     },
     {
-      "@type": "Person",
-      "@id": "https://arelion.dev/#antonin",
-      name: "Antonin Ribeaud",
-      url: "https://arelion.dev",
-      jobTitle: "Founder and Principal Engineer",
+      ...PERSON,
       description:
         "Senior software engineer and founder of Arelion. Builds AI systems, cloud platforms and SaaS end to end: RAG and LLM integrations, ingestion pipelines at scale, and technical product leadership.",
       worksFor: { "@id": "https://arelion.dev/#organization" },
@@ -474,7 +480,6 @@ const ORG_JSONLD = {
         "Cloud Platforms",
         "Technical Product Management",
       ],
-      sameAs: SAME_AS,
     },
   ],
 }

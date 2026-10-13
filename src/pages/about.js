@@ -131,10 +131,23 @@ const AboutPage = ({ location }) => (
 
 export default AboutPage
 
+// The page is about the organization the home page describes, by its @id.
+const ABOUT_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  url: "https://arelion.dev/about/",
+  mainEntity: { "@id": "https://arelion.dev/#organization" },
+}
+
 export const Head = ({ location }) => (
   <SEO
     title="About"
     description="Arelion is an AI consultancy in Dubai run by Antonin Ribeaud (ARELION FZCO). AI systems from roadmap to production: document AI, legal AI, private LLMs."
     pathname={location.pathname}
-  />
+  >
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(ABOUT_JSONLD) }}
+    />
+  </SEO>
 )
