@@ -7,6 +7,8 @@
 // src/data/offers.js.
 // `metaDescription` is the search snippet (70 to 160 characters): what was built
 // and the result, using only facts from the study's own metric, hook and TL;DR.
+// `related` (optional) lists the slugs of studies its page shows first among the
+// related cards, before the ones that share its main offer or a tag.
 
 const CASE_STUDIES = [
   {
@@ -132,6 +134,7 @@ const CASE_STUDIES = [
     },
     metaDescription: { en: "How I defend AI agents against prompt injection: capability gating, taint tracking and egress control, so untrusted text never reaches a privileged action." },
     tags: ["Prompt injection", "Jailbreak", "LLM security", "AI agents", "Egress control", "Red-team eval"],
+    related: ["prompt-injection-email-test", "ai-attack-surface", "ai-buyer-sales-training"],
     stack: [
       "Trusted planner / quarantined LLM (dual-LLM, CaMeL)",
       "Taint tracking to privileged sinks",
@@ -1030,6 +1033,7 @@ const CASE_STUDIES = [
     },
     metaDescription: { en: "Read-only security audit of an AI-built web platform before it took production traffic: 49 findings, nine of them high severity, the nine now fixed." },
     tags: ["security audit", "AI security", "Cloud IAM", "secret scanning", "CVE review"],
+    related: ["claude-code-security-review-test", "prompt-injection-email-test", "ai-models-vulnerability-test"],
     stack: ["Cloud IAM", "secret scanning", "CVE review"],
     body: [
       {
@@ -1373,6 +1377,7 @@ const CASE_STUDIES = [
     },
     metaDescription: { en: "I ran Claude Code's /security-review three times on a Node.js app with 19 documented vulnerabilities. It reported 10 in every run and 12 in its best run." },
     tags: ["Claude Code", "security review", "Claude Opus 5.5", "DVNA", "Node.js", "code review"],
+    related: ["prompt-injection-email-test", "ai-models-vulnerability-test", "ai-attack-surface"],
     stack: ["Claude Code 2.1.294", "Claude Opus 5.5", "DVNA", "Node.js", "Express", "git"],
     // Offer box inside the study's text, where its markdown says <!-- offer -->, and the line of the bottom box.
     offer: {
@@ -1404,6 +1409,7 @@ const CASE_STUDIES = [
     },
     metaDescription: { en: "I gave 50 attack emails to 5 AI models playing an email assistant. With no defense, one called the mail tool 16 times. With a defense, 1 try in 750 succeeded." },
     tags: ["Prompt injection", "Email assistant", "Tool calls", "LLMail-Inject", "AgentDojo", "OpenRouter"],
+    related: ["claude-code-security-review-test", "ai-models-vulnerability-test", "ai-attack-surface"],
     stack: ["Python", "OpenRouter", "Claude Opus 5.5", "Claude Haiku 5.5", "GPT-6.1 Sol", "Gemini 3.8 Flash", "Qwen3.8 27B", "LLMail-Inject", "AgentDojo"],
     // Offer box inside the study's text, where its markdown says <!-- offer -->, and the line of the bottom box.
     offer: {
@@ -1435,6 +1441,7 @@ const CASE_STUDIES = [
     },
     metaDescription: { en: "I tested 5 AI models on 44 textbook Java files, then on 30 real vulnerabilities before and after their fix. The best told 15 of the 30 pairs apart." },
     tags: ["AI models", "code vulnerabilities", "OWASP Benchmark", "GitHub Advisory Database", "OpenRouter"],
+    related: ["claude-code-security-review-test", "prompt-injection-email-test", "ai-attack-surface"],
     stack: ["Python", "OpenRouter", "Claude Opus 5.5", "Claude Haiku 5.5", "GPT-6.1 Sol", "Gemini 3.8 Flash", "Qwen3.8 27B", "OWASP Benchmark", "GitHub Advisory Database"],
     // Offer box inside the study's text, where its markdown says <!-- offer -->, and the line of the bottom box.
     offer: {

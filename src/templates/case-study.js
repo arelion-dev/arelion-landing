@@ -141,14 +141,20 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
     location: "case_study_offer",
   }
 
-  // Related studies: same main offer or a shared tag, for internal linking and
+  // Related studies: the published ones the study lists in `related`, then the
+  // ones with the same main offer or a shared tag, for internal linking and
   // topical clustering. Up to three, self excluded.
+  const pinned = (cs.related || []).map(find).filter(o => o && o.published)
   const csTags = new Set(cs.tags || [])
-  const related = CASE_STUDIES.filter(
-    o =>
-      o.slug !== cs.slug &&
-      (offersOf(o)[0] === offersOf(cs)[0] || (o.tags || []).some(tag => csTags.has(tag))),
-  ).slice(0, 3)
+  const related = [
+    ...pinned,
+    ...CASE_STUDIES.filter(
+      o =>
+        o.slug !== cs.slug &&
+        !pinned.includes(o) &&
+        (offersOf(o)[0] === offersOf(cs)[0] || (o.tags || []).some(tag => csTags.has(tag))),
+    ),
+  ].slice(0, 3)
 
   // Guides whose `related` frontmatter cites this study. Linking back lets
   // the proof and the buyer questions point at each other.

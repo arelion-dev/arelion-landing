@@ -127,6 +127,42 @@ test("case-study structured data points to the author and organization the home 
   }
 })
 
+// The related cards used to follow the order of the data file, so the studies at
+// its end (the three security tests of 2026-10-11) were never shown and got no
+// link but the index's (technical audit, 2026-10-13). `related` puts chosen
+// studies first.
+test("a study's related list names other published studies only", () => {
+  const slugs = new Set(CASE_STUDIES.map(cs => cs.slug))
+  for (const cs of CASE_STUDIES.filter(c => c.related)) {
+    for (const slug of cs.related) {
+      assert.ok(slugs.has(slug), `${cs.slug}: related ${slug} is not a published case study`)
+      assert.notEqual(slug, cs.slug, `${cs.slug} lists itself`)
+    }
+  }
+})
+
+test("a study's page shows the studies of its related list first among its cards", { skip: !built && "no build in public/" }, () => {
+  const listed = CASE_STUDIES.filter(cs => cs.related)
+  assert.ok(listed.length > 0, "no study has a related list")
+  for (const cs of listed) {
+    const cards = [...html(`case-studies/${cs.slug}`).matchAll(/<a class="cs-related-card" href="\/case-studies\/([^"/]+)\/"/g)].map(m => m[1])
+    assert.deepEqual(cards.slice(0, cs.related.length), cs.related.slice(0, 3), cs.slug)
+  }
+})
+
+test("every published case study gets a link from a built page other than the index", { skip: !built && "no build in public/" }, () => {
+  const xml = readFileSync(join(PUBLIC, "sitemap-0.xml"), "utf8")
+  const pages = [...xml.matchAll(/<loc>https:\/\/arelion\.dev([^<]*)<\/loc>/g)]
+    .map(m => m[1])
+    .filter(p => p !== "/case-studies/")
+    .map(p => ({ path: p, page: html(p) }))
+  for (const cs of CASE_STUDIES) {
+    const path = `/case-studies/${cs.slug}/`
+    const from = pages.filter(p => p.path !== path && p.page.includes(`href="${path}"`))
+    assert.ok(from.length > 0, `${cs.slug}: no page links it but the case studies index`)
+  }
+})
+
 test("llms.txt lists every published case study under its title", () => {
   const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
   for (const cs of CASE_STUDIES) {
