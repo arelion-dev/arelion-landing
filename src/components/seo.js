@@ -41,7 +41,7 @@ const SEO = ({ description, title, pathname, image, noindex, children }) => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="arelion.dev" />
+      <meta property="og:site_name" content={defaultTitle} />
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:secure_url" content={ogImage} />
