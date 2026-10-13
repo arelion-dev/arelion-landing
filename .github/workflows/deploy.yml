@@ -27,6 +27,9 @@ jobs:
       - run: npm run build
         env:
           PREFIX_PATHS: "true"
+      # pdftotext reads the resume in test/resume.test.mjs; without it that test is skipped.
+      - run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - run: npm test
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
