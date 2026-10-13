@@ -41,6 +41,7 @@ const SEO = ({ description, title, pathname, image, noindex, children }) => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="arelion.dev" />
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:secure_url" content={ogImage} />
@@ -48,10 +49,7 @@ const SEO = ({ description, title, pathname, image, noindex, children }) => {
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content={image ? title : "arelion.dev, AI consultant in Dubai"} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta
-        name="twitter:creator"
-        content={twitterHandle ? `@${twitterHandle}` : ``}
-      />
+      {twitterHandle && <meta name="twitter:creator" content={`@${twitterHandle}`} />}
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={metaDescription} />
       <meta name="twitter:image" content={ogImage} />

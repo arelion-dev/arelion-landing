@@ -84,6 +84,18 @@ test("only the 404 page asks search engines not to index it", { skip }, () => {
   for (const f of pages.filter(f => !notFound.includes(f))) assert.doesNotMatch(readFileSync(f, "utf8"), /name="robots"/, f)
 })
 
+// Technical audit of 2026-10-13: no page named the site for share previews, and
+// every page carried an empty twitter:creator (the site has no X account).
+test("every page names the site arelion.dev in og:site_name and carries no empty twitter:creator", { skip }, () => {
+  const pages = walk(PUBLIC).filter(f => f.endsWith(".html") && !f.includes("/_gatsby/"))
+  assert.ok(pages.length > 10, `only ${pages.length} pages found`)
+  for (const f of pages) {
+    const page = readFileSync(f, "utf8")
+    assert.deepEqual([...page.matchAll(/<meta property="og:site_name" content="([^"]*)"/g)].map(m => m[1]), ["arelion.dev"], f)
+    assert.doesNotMatch(page, /<meta name="twitter:creator" content=""/, f)
+  }
+})
+
 // Regression: /about, /contact and /privacy were linked without their trailing
 // slash, so each link went through a 301.
 test("internal links point to the final URL, trailing slash included", { skip }, () => {
