@@ -61,6 +61,26 @@ test("llms.txt names the four landing pages under Services", () => {
   for (const p of LANDING_PAGES) assert.ok(services.includes(`(https://arelion.dev${p})`), `${p} missing from Services`)
 })
 
+// Profiles audit of 2026-10-13: llms.txt linked a "Personal blog" on
+// antonin.cool, which redirects to this site's home, said nothing about Arelion
+// AB, and its Contact section had no contact page, WhatsApp, company page or
+// Hugging Face.
+test("llms.txt tells Arelion apart from Arelion AB, links no antonin.cool, and lists every contact channel", () => {
+  const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
+  assert.doesNotMatch(llms, /antonin\.cool/)
+  assert.ok(llms.slice(0, llms.indexOf("\n## ")).includes("Not affiliated with Arelion AB, the Swedish telecom carrier."), "no Arelion AB line before the first section")
+  const contact = llms.split("\n## Contact\n")[1]
+  assert.ok(contact, "no Contact section")
+  // Same WhatsApp link as the site's buttons: same number, same prefilled text.
+  const { whatsapp } = require("../gatsby-config.js").siteMetadata.social
+  for (const url of [
+    "https://arelion.dev/contact/",
+    whatsapp,
+    "https://www.linkedin.com/company/arelion-fzco/",
+    "https://huggingface.co/Antonhansel",
+  ]) assert.ok(contact.split("\n").some(l => l.endsWith(`: ${url}`)), `Contact does not list ${url}`)
+})
+
 // Regression: two items pointed at /blog/ pages that return 404, and the feed
 // was called "Gatsby RSS Feed".
 test("every RSS item links to a built page, and the feed carries the site name", { skip }, () => {
