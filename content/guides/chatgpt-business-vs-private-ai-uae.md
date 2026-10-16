@@ -67,7 +67,7 @@ In those cases a private build buys you little.
 
 **Access rights per person.** Copilot, Gemini and ChatGPT's connected apps respect the permissions of the system they read ([OpenAI on its apps](https://openai.com/enterprise-privacy/)). That works when the rules live in SharePoint or Google Drive. When the rule "this associate sees these three clients" lives in a spreadsheet, and the files sit on a shared drive everyone can open, there is no permission for the tool to respect.
 
-For a global enterprise with thirty brands, I put access control inside the search query. Each brand has its own index namespace, and each query carries a filter built from the user's groups, which arrive in a signed header. The search never reads a document the user cannot see, so it cannot leak one: zero cross-brand leaks across more than 100 million pages. Filtering after the search leaks as soon as one code path forgets the filter.
+For a global enterprise with thirty brands, I put access control inside the search query. Each brand has its own index namespace, and each query carries a filter built from the user's groups, which arrive in a signed header. The search never reads a document the user cannot see, so it cannot leak one: zero cross-brand leaks across 20 million pages. Filtering after the search leaks as soon as one code path forgets the filter.
 
 ## What a private setup looks like in practice
 

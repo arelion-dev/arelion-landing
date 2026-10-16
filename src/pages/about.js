@@ -37,7 +37,7 @@ const AboutPage = ({ location }) => (
     </ul>
     <h2>Track record</h2>
     <p>
-      Selected outcomes: more than 100 million pages processed at L&#39;Oréal,
+      Selected outcomes: 20 million pages processed at L&#39;Oréal,
       more than 400 million events per month at relevanC, a Top 5 App Store app
       with more than 1 million downloads, and a Document AI SaaS built and sold
       (privately.ai). Arelion has engaged with more than 20 clients, including

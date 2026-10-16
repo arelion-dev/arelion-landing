@@ -434,7 +434,7 @@ const ORG_JSONLD = {
       logo: "https://arelion.dev/favicon-512.png",
       foundingDate: "2026-01-26",
       description:
-        "AI consultancy based in Dubai and working across the UAE, run by one senior engineer who builds what he recommends: document search over 100M+ pages, legal research with verified citations, private LLMs, cloud platforms.",
+        "AI consultancy based in Dubai and working across the UAE, run by one senior engineer who builds what he recommends: document search over 20M pages, legal research with verified citations, private LLMs, cloud platforms.",
       disambiguatingDescription:
         "AI consultancy in Dubai run by Antonin Ribeaud. Not affiliated with Arelion AB, the Swedish telecom carrier formerly called Telia Carrier.",
       founder: { "@id": "https://arelion.dev/#antonin" },
@@ -487,7 +487,7 @@ const ORG_JSONLD = {
 export const Head = ({ location }) => (
   <SEO
     title="AI Consultant in Dubai: Roadmap to Production"
-    description="AI consultant in Dubai, working across the UAE, Abu Dhabi included. I build what I recommend: document search over 100M+ pages, legal research, private LLMs."
+    description="AI consultant in Dubai, working across the UAE, Abu Dhabi included. I build what I recommend: document search over 20M pages, legal research, private LLMs."
     pathname={location.pathname}
   >
     <script

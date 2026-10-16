@@ -1,6 +1,6 @@
 ---
 title: "Document intelligence at scale"
-description: "How we made 100M+ pages of multilingual, multi-confidentiality documents answerable in under a second, with a source citation on every claim."
+description: "How we made 20M pages of multilingual, multi-confidentiality documents answerable in under a second, with a source citation on every claim."
 date: 2026-07-06
 tags: ["rag", "search", "gcp", "vector-search", "adk", "document-ai"]
 pillar: "Build"
@@ -10,7 +10,7 @@ lang: "en"
 
 ## The problem
 
-A global enterprise had decades of institutional knowledge locked inside a document store: research reports, patents, specifications, contracts, across 30 brands and a dozen languages. The archive held over 100 million pages, much of it scanned images with no extractable text, and every document carried its own confidentiality rules. People could not find what already existed, so they re-ran work that had already been done. The ask was simple to state and hard to build: let anyone ask a question in plain language and get a trustworthy answer in under a second, with a citation they can click through to the exact page.
+A global enterprise had decades of institutional knowledge locked inside a document store: research reports, patents, specifications, contracts, across 30 brands and a dozen languages. The archive held 20 million pages, much of it scanned images with no extractable text, and every document carried its own confidentiality rules. People could not find what already existed, so they re-ran work that had already been done. The ask was simple to state and hard to build: let anyone ask a question in plain language and get a trustworthy answer in under a second, with a citation they can click through to the exact page.
 
 ## What we built
 
@@ -36,11 +36,11 @@ A reasoning agent will loop. Left alone it retries searches, stacks results, and
 
 Multilingual is not free. A French query about an ingredient has to reach an English document and its scientific synonyms, so the rephrase step expands terms across languages before retrieval, and the embedding model has to hold both languages in one space.
 
-Precision beats recall at this size. With 100M+ pages, a naive top-k drowns the good answer in near-duplicates; the reranker and document-level aggregation exist to fight exactly that. And staying LLM-agnostic through LiteLLM is a deliberate cost lever: cheap model by default, expensive model only when the task earns it.
+Precision beats recall at this size. With 20M pages, a naive top-k drowns the good answer in near-duplicates; the reranker and document-level aggregation exist to fight exactly that. And staying LLM-agnostic through LiteLLM is a deliberate cost lever: cheap model by default, expensive model only when the task earns it.
 
 ## Result
 
-Sub-second p95 semantic search across 100M+ pages and 30 brands, with a source citation on every answer and per-document access control enforced at retrieval time. Ingestion runs continuously with fair scheduling across tenants. Precision and answer-quality metrics: [à confirmer: reranking precision, deflection/reuse rate].
+Sub-second p95 semantic search across 20M pages and 30 brands, with a source citation on every answer and per-document access control enforced at retrieval time. Ingestion runs continuously with fair scheduling across tenants. Precision and answer-quality metrics: [à confirmer: reranking precision, deflection/reuse rate].
 
 ## Reusable
 

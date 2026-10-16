@@ -1,14 +1,14 @@
 ---
 title: "Document intelligence at scale"
 date: "2026-06-18T10:40:00.000Z"
-description: "Half a day hunting a number in old studies becomes a one-second answer with its source, across 100M+ pages. Document AI built for a global enterprise."
+description: "Half a day hunting a number in old studies becomes a one-second answer with its source, across 20M pages. Document AI built for a global enterprise."
 tags: ["AI", "Business"]
 private: true
 ---
 
-A scientist needs one number from a 2009 study. It sits in a scanned PDF nobody can find, so she spends half a day hunting, gives up and runs the study again. I build document AI that ends that search: a plain-language question, an answer in under a second across 100 million pages, and a source on every line that opens the page it came from.
+A scientist needs one number from a 2009 study. It sits in a scanned PDF nobody can find, so she spends half a day hunting, gives up and runs the study again. I build document AI that ends that search: a plain-language question, an answer in under a second across 20 million pages, and a source on every line that opens the page it came from.
 
-**Live for a global enterprise: 100M+ pages, thirty brands, a dozen languages. Up to 40% fewer duplicated studies and re-reviews.**
+**Live for a global enterprise: 20M pages, thirty brands, a dozen languages. Up to 40% fewer duplicated studies and re-reviews.**
 
 ## Where the time goes today
 

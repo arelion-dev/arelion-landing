@@ -43,8 +43,8 @@ const REALISATIONS = [
     tags: ["AI/ML", "Architecture", "Data"],
     outcomes: [
       {
-        en: "R&D teams search 100M+ pages in many languages and get answers with their source",
-        fr: "Les équipes R&D cherchent dans 100M+ pages en plusieurs langues et obtiennent des réponses sourcées",
+        en: "R&D teams search 20M pages in many languages and get answers with their source",
+        fr: "Les équipes R&D cherchent dans 20M pages en plusieurs langues et obtiennent des réponses sourcées",
       },
       {
         en: "Answers in under a second across 30 brands",
