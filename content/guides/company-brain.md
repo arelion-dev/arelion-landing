@@ -11,9 +11,9 @@ faq:
   - q: "How is a company brain different from a second brain AI app?"
     a: "A second brain app holds one person's notes, written and read by that person. A company brain holds documents written by many people for many readers, so it has to check who is asking before it searches. It also has to cite a source for every answer, because the person asking cannot check the answer from memory."
   - q: "Can a company brain leak confidential documents?"
-    a: "It can if permissions are checked after the search. I put the check inside the search query, so a document the user cannot open is never a candidate for the answer. On a build covering 20M pages across thirty brands, that design gave zero cross-brand leaks."
+    a: "It can if permissions are checked after the search. I put the check inside the search query, so a document the user cannot open is never a candidate for the answer. On a build covering 100M+ pages across thirty brands, that design gave zero cross-brand leaks."
   - q: "Do I need a vector database to build one?"
-    a: "It depends on the size of the corpus and on how many people add to it. For one business owner with three years of paperwork, the whole index fits in one SQLite file on his own machine. For 20M pages across thirty brands, I used a hosted vector index with a separate, walled-off section per brand."
+    a: "It depends on the size of the corpus and on how many people add to it. For one business owner with three years of paperwork, the whole index fits in one SQLite file on his own machine. For 100M+ pages across thirty brands, I used a hosted vector index with a separate, walled-off section per brand."
 ---
 
 Every company has a few people who double as its search engine. Colleagues ask them where the signed contract lives or why a process works the way it does, and when those people leave, the answers leave with them. A company brain takes over that job: staff ask a question in plain language, and it answers from your own documents, with a source they can open and check.
@@ -24,7 +24,7 @@ Every company has a few people who double as its search engine. Colleagues ask t
 
 A company brain reads what your company has written down (contracts, process notes, reports, old scans) and answers from it, quoting the passage and linking to the file. When the documents are silent, it says so. Call it an AI knowledge base or enterprise AI search if you prefer; the label matters less than those two habits.
 
-The payoff is time. At a [global enterprise](/case-studies/document-intelligence-at-scale/) holding 20M pages, a scientist could spend half a day hunting one number from a 2009 study, then give up and rerun it. That number now comes back in under a second, with a link to the page.
+The payoff is time. At a [global enterprise](/case-studies/document-intelligence-at-scale/) holding 100M+ pages, a scientist could spend half a day hunting one number from a 2009 study, then give up and rerun it. That number now comes back in under a second, with a link to the page.
 
 ## Why a personal second brain is the easy case
 
@@ -41,7 +41,7 @@ The closest I have built to the personal case is a [document agent for one busin
 
 ## Reading documents cheaply and faithfully
 
-Reading cheaply means never paying a model for text the file already holds. I look for a real text layer first and pay for OCR (software that turns a picture of text into text) only on real scans. On the 20M-page corpus, about two thirds of the pages were born-digital, with their text already inside, so OCR on everything would have roughly tripled compute for no accuracy gain. For the business owner, around 85% of pages never touch a paid model.
+Reading cheaply means never paying a model for text the file already holds. I look for a real text layer first and pay for OCR (software that turns a picture of text into text) only on real scans. On the 100M+ page corpus, about two thirds of the pages were born-digital, with their text already inside, so OCR on everything would have roughly tripled compute for no accuracy gain. For the business owner, around 85% of pages never touch a paid model.
 
 Reading faithfully is hardest on tables. Plain OCR flattens the grid into a stream of numbers, and a model asked for one compound's pH will fluently pick a number from the wrong row. So tables go through a model built for table structure, and a malformed grid is dropped rather than trusted, along with a few real, unusually wide tables. In the enterprise build, a confident wrong number was the one failure I could not ship. Next time I would send the dropped wide tables to a slower vision model for a second look before throwing them out.
 
@@ -78,7 +78,7 @@ A demo looks good because you pick the questions. Before launch, collect real qu
 1. Did it cite the document that holds the answer?
 2. When the documents are silent, did it say so?
 3. Asked by someone without access, did the restricted file stay out?
-4. How long did it take? On the 20M-page corpus, 95% of answers come back in under a second.
+4. How long did it take? On the 100M+ page corpus, 95% of answers come back in under a second.
 
 Score the search apart from the answer, so a wrong answer tells you whether the right passage was never found or was found and ignored.
 

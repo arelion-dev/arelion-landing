@@ -1,6 +1,6 @@
 ---
 title: "Intelligence documentaire à grande échelle"
-description: "Comment nous avons rendu 20M de pages multilingues et à confidentialité variable interrogeables en moins d'une seconde, avec une citation source sur chaque affirmation."
+description: "Comment nous avons rendu 100M+ de pages multilingues et à confidentialité variable interrogeables en moins d'une seconde, avec une citation source sur chaque affirmation."
 date: 2026-07-06
 tags: ["rag", "search", "gcp", "vector-search", "adk", "document-ai"]
 pillar: "Build"
@@ -10,7 +10,7 @@ lang: "fr"
 
 ## Le problème
 
-Une entreprise mondiale avait des décennies de savoir institutionnel enfermées dans un fonds documentaire : rapports de recherche, brevets, spécifications, contrats, répartis sur 30 marques et une dizaine de langues. L'archive comptait 20 millions de pages, en grande partie des images scannées sans texte extractible, et chaque document portait ses propres règles de confidentialité. Les équipes ne retrouvaient pas ce qui existait déjà, donc elles refaisaient un travail déjà fait. La demande était simple à énoncer et difficile à construire : permettre à quiconque de poser une question en langage naturel et d'obtenir une réponse fiable en moins d'une seconde, avec une citation cliquable vers la page exacte.
+Une entreprise mondiale avait des décennies de savoir institutionnel enfermées dans un fonds documentaire : rapports de recherche, brevets, spécifications, contrats, répartis sur 30 marques et une dizaine de langues. L'archive dépassait 100 millions de pages, en grande partie des images scannées sans texte extractible, et chaque document portait ses propres règles de confidentialité. Les équipes ne retrouvaient pas ce qui existait déjà, donc elles refaisaient un travail déjà fait. La demande était simple à énoncer et difficile à construire : permettre à quiconque de poser une question en langage naturel et d'obtenir une réponse fiable en moins d'une seconde, avec une citation cliquable vers la page exacte.
 
 ## Ce que nous avons construit
 
@@ -36,11 +36,11 @@ Un agent de raisonnement boucle. Laissé seul, il relance des recherches, empile
 
 Le multilingue n'est pas gratuit. Une question en français sur un ingrédient doit atteindre un document en anglais et ses synonymes scientifiques, donc l'étape de reformulation étend les termes entre langues avant la récupération, et le modèle d'embedding doit tenir les deux langues dans un même espace.
 
-À cette taille, la précision prime sur le rappel. Avec 20M de pages, un top-k naïf noie la bonne réponse sous les quasi-doublons ; le reranker et l'agrégation au niveau document existent précisément pour ça. Et rester agnostique au modèle via LiteLLM est un levier de coût délibéré : modèle bon marché par défaut, modèle cher seulement quand la tâche le mérite.
+À cette taille, la précision prime sur le rappel. Avec 100M+ de pages, un top-k naïf noie la bonne réponse sous les quasi-doublons ; le reranker et l'agrégation au niveau document existent précisément pour ça. Et rester agnostique au modèle via LiteLLM est un levier de coût délibéré : modèle bon marché par défaut, modèle cher seulement quand la tâche le mérite.
 
 ## Résultat
 
-Recherche sémantique en p95 sous la seconde sur 20M de pages et 30 marques, avec une citation source sur chaque réponse et un contrôle d'accès par document appliqué au moment de la récupération. L'ingestion tourne en continu avec un ordonnancement équitable entre tenants. Métriques de précision et de qualité de réponse : [à confirmer : précision du reranking, taux de réutilisation/déflection].
+Recherche sémantique en p95 sous la seconde sur 100M+ de pages et 30 marques, avec une citation source sur chaque réponse et un contrôle d'accès par document appliqué au moment de la récupération. L'ingestion tourne en continu avec un ordonnancement équitable entre tenants. Métriques de précision et de qualité de réponse : [à confirmer : précision du reranking, taux de réutilisation/déflection].
 
 ## Réutilisable
 

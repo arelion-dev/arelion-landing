@@ -8,7 +8,7 @@ Tout le monde sait brancher un LLM sur une base vectorielle.
 
 Ce n'est pas ça, le projet.
 
-Sur 20M de pages, 30 marques, une dizaine de langues, le chemin nominal marche en une après-midi.
+Sur 100M+ de pages, 30 marques, une dizaine de langues, le chemin nominal marche en une après-midi.
 
 Ce qui prend le temps, c'est tout ce qui empêche le système de s'effondrer :
 
@@ -45,7 +45,7 @@ Deux choses règlent ça :
 
 Et le détail qui compte à grande échelle : la précision prime sur le rappel.
 
-Avec 20M de pages, un top-k naïf noie la bonne réponse sous les quasi-doublons. C'est le reranker et l'agrégation au niveau document qui vont la rechercher.
+Avec 100M+ de pages, un top-k naïf noie la bonne réponse sous les quasi-doublons. C'est le reranker et l'agrégation au niveau document qui vont la rechercher.
 
 Chercher plus large ne sert à rien si vous ne savez pas reclasser.
 

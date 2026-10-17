@@ -2,12 +2,12 @@
 
 - **Pilier** : Build
 - **Titre EN** : Document intelligence at scale
-- **Titre FR** : Rendre 20 millions de pages interrogeables en moins d'une seconde
+- **Titre FR** : Rendre 100 millions de pages interrogeables en moins d'une seconde
 - **Hook** : des décennies de savoir enfermées dans des documents que personne ne retrouve, rendues interrogeables en langage naturel, avec une citation source sur chaque réponse.
 - **Lecteurs** : CEO (haut + résultat) / CTO (how it works + hard part)
 
 ## The problem
-- Grande entreprise, 20M pages, 30 marques, une douzaine de langues.
+- Grande entreprise, 100M+ pages, 30 marques, une douzaine de langues.
 - Beaucoup de scans sans texte extractible, chaque document a ses propres règles de confidentialité.
 - Les gens ne trouvent pas ce qui existe déjà, donc ils refont du travail déjà fait.
 - Besoin : question en langage naturel, réponse fiable en < 1s, citation cliquable jusqu'à la page exacte.
@@ -34,7 +34,7 @@
 - LLM-agnostic via LiteLLM = levier de coût délibéré (petit modèle par défaut, gros seulement quand la tâche le mérite).
 
 ## Result
-- p95 sous la seconde sur 20M pages et 30 marques.
+- p95 sous la seconde sur 100M+ pages et 30 marques.
 - Citation source sur chaque réponse, ACL par document au retrieval.
 - Ingestion continue avec scheduling équitable.
 - `[à confirmer : précision du reranking, taux de réutilisation / deflection]`

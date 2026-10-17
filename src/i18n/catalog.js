@@ -64,7 +64,7 @@ const catalog = {
       headline:
         "AI consultant in *Dubai*.\nI *build* what I recommend, from *roadmap* to *production*",
       sticky: [
-        "AI search over 20M pages",
+        "AI search over 100M+ pages",
         "Top 5 App Store, 1M+ downloads",
         "Built & sold a document AI SaaS",
         "20+ clients · 12 years",
@@ -93,7 +93,7 @@ const catalog = {
       arch: {
         title: "Document AI and data platforms",
         desc: [
-          "Search and answers over large archives, with a source on every answer: the ingestion pipeline for 20M pages at L'Oréal (OCR, vectorization, semantic search). relevanC's analytics platform on 400M+ events a month.",
+          "Search and answers over large archives, with a source on every answer: the ingestion pipeline for 100M+ pages at L'Oréal (OCR, vectorization, semantic search). relevanC's analytics platform on 400M+ events a month.",
           "Full-stack (React, React Native, TypeScript, Python, FastAPI) on GCP with Terraform.",
         ],
         links: [
@@ -207,7 +207,7 @@ const catalog = {
       headline:
         "Consultant IA à *Dubaï*.\nJe *construis* ce que je recommande, de la *roadmap* à la *production*",
       sticky: [
-        "Recherche IA sur 20M pages",
+        "Recherche IA sur 100M+ pages",
         "Top 5 App Store, 1M+ téléchargements",
         "Un SaaS de document AI construit et revendu",
         "20+ clients · 12 ans",
@@ -236,7 +236,7 @@ const catalog = {
       arch: {
         title: "IA documentaire et plateformes de données",
         desc: [
-          "Recherche et réponses sur de grandes archives, avec une source pour chaque réponse : le pipeline d'ingestion de 20M pages chez L'Oréal (OCR, vectorisation, recherche sémantique). La plateforme analytics de relevanC, sur 400M+ événements par mois.",
+          "Recherche et réponses sur de grandes archives, avec une source pour chaque réponse : le pipeline d'ingestion de 100M+ pages chez L'Oréal (OCR, vectorisation, recherche sémantique). La plateforme analytics de relevanC, sur 400M+ événements par mois.",
           "Full-stack (React, React Native, TypeScript, Python, FastAPI) sur GCP avec Terraform.",
         ],
         links: [

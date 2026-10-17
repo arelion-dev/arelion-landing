@@ -78,7 +78,7 @@ These are drawn from the best case-study sites (Stripe, Linear, Vercel, Anthropi
 1. **Claim-style section headers.** A header states a claim or a decision, not a topic. "The retry logic was the real bottleneck", not "Architecture". Someone must be able to read only the headers and get the whole arc. This is the highest-leverage scannability win.
 2. **The result in the opening, not the client.** The first line (and the H1/title) carries the outcome. "A research agent that answers every part of a multi-part question, with a cited source per part." The metric is the headline; the anonymized client is a footnote.
 3. **Cold-open with the concrete pain.** Start on a real scene: the scientist who burns half a day hunting a number in a 2009 scan. Then the system. Story before architecture.
-4. **Bold stat pull-outs inside the prose.** Drop 3 to 5 short bold lines with hard numbers through the body so a skimmer catches them (20M pages, p95 under a second, 90% less manual routing). Keeps depth, adds scannability.
+4. **Bold stat pull-outs inside the prose.** Drop 3 to 5 short bold lines with hard numbers through the body so a skimmer catches them (100M+ pages, p95 under a second, 90% less manual routing). Keeps depth, adds scannability.
 5. **Name the artifact.** Give the pipeline or mechanism a short handle (track_coverage, "the queue is the database"). A named thing is memorable and quotable.
 6. **Honest limits.** State one or two real tradeoffs or "what I would do differently" plainly. Honesty is the trust signal, especially with no logos.
 
@@ -154,7 +154,7 @@ Never fabricate a client's internal API, secret, or number. Grounded code and re
 
 ## 5. Anonymization playbook
 
-- Client identity becomes: **sector + scale + (optionally) stack**. "A global beauty group, thirty brands, 20M pages." "A fintech onboarding investors into regulated funds."
+- Client identity becomes: **sector + scale + (optionally) stack**. "A global beauty group, thirty brands, 100M+ pages." "A fintech onboarding investors into regulated funds."
 - Never: client name, product name, logo, a named executive quote.
 - A metadata line can stand in for the missing client identity, like a case-study sidebar: Sector, Team size, Stack, Engagement length. This transfers trust without naming anyone.
 - Real identifiers (patent numbers, internal tool names, gateway names) never appear. Replace with generic placeholders.

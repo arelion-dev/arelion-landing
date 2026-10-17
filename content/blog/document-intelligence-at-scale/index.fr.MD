@@ -1,18 +1,18 @@
 ---
 title: "L'intelligence documentaire à l'échelle"
 date: "2026-06-18T10:40:00.000Z"
-description: "Lire et chercher 20 millions de pages sur trente marques : OCR privilégiant le texte natif, tableaux fidèles, recherche hybride, et contrôle d'accès appliqué dans la requête."
+description: "Lire et chercher plus de 100 millions de pages sur trente marques : OCR privilégiant le texte natif, tableaux fidèles, recherche hybride, et contrôle d'accès appliqué dans la requête."
 tags: ["Tech", "AI"]
 private: true
 ---
 
 Une chercheuse a besoin d'un seul chiffre de stabilité tiré d'une étude de 2009. Il est dans l'archive, dans un PDF scanné, dans un tableau en page 40, en français. Elle passe une demi-journée à le chercher en vain, abandonne, et relance l'étude. L'entreprise paie ce travail deux fois.
 
-J'ai construit le moteur qui met fin à ça : une couche d'intelligence documentaire pour un grand groupe de cosmétiques, trente marques, des décennies de R&D, 20 millions de pages de formules, brevets, contrats et dossiers réglementaires dans une dizaine de langues. Aujourd'hui ce chiffre revient en moins d'une seconde, avec un lien direct vers la page 40.
+J'ai construit le moteur qui met fin à ça : une couche d'intelligence documentaire pour un grand groupe de cosmétiques, trente marques, des décennies de R&D, plus de 100 millions de pages de formules, brevets, contrats et dossiers réglementaires dans une dizaine de langues. Aujourd'hui ce chiffre revient en moins d'une seconde, avec un lien direct vers la page 40.
 
 **Le temps de recherche est passé de ~30 minutes de fouille à moins d'une seconde.**
 
-Un article jumeau couvre l'agent qui refuse de répondre à moitié à une question en plusieurs parties. Celui-ci est la couche en dessous : comment lire 20 millions de pages fidèlement, puis les chercher en moins d'une seconde, sans laisser fuiter un seul document au-delà d'une frontière de marque. À la fin vous saurez pourquoi je lis la page avant de l'OCR, pourquoi un tableau reçoit son propre modèle, pourquoi la file est une table Postgres, et pourquoi le contrôle d'accès vit dans la requête vectorielle.
+Un article jumeau couvre l'agent qui refuse de répondre à moitié à une question en plusieurs parties. Celui-ci est la couche en dessous : comment lire 100 millions de pages fidèlement, puis les chercher en moins d'une seconde, sans laisser fuiter un seul document au-delà d'une frontière de marque. À la fin vous saurez pourquoi je lis la page avant de l'OCR, pourquoi un tableau reçoit son propre modèle, pourquoi la file est une table Postgres, et pourquoi le contrôle d'accès vit dans la requête vectorielle.
 
 Note sur le code : c'était un travail client propriétaire, donc je ne peux pas coller le dépôt. Chaque extrait ci-dessous est une reconstruction en salle blanche de la technique, assez générique pour tourner seule et honnête sur le mécanisme. Rien de tout ça n'est du code client mot pour mot.
 
@@ -42,7 +42,7 @@ def route_page(page: fitz.Page) -> tuple[str, int]:
 
 Le seuil de 40 caractères n'est pas arbitraire. En dessous, on tombe presque toujours sur un numéro de page ou une annotation Acrobat égarée, et le geste honnête est de traiter la page comme un scan. Le choix du DPI compte plus qu'il n'y paraît. Les pages nées numériques n'ont besoin d'aucun raster ; pour les vrais scans, 300 DPI est le plancher où un exposant 6pt dans un tableau d'ingrédients reste lisible. À 200 DPI ces caractères fondent, et un exposant fondu dans une concentration, c'est une réponse fausse.
 
-À 20 millions de pages, le natif d'abord décide si la facture d'OCR est payable ou pas. Rasteriser et OCR chaque page « par sécurité » aurait multiplié le calcul par trois environ, pour zéro gain de précision sur les deux tiers du corpus qui portaient déjà un texte parfait.
+À plus de 100 millions de pages, le natif d'abord décide si la facture d'OCR est payable ou pas. Rasteriser et OCR chaque page « par sécurité » aurait multiplié le calcul par trois environ, pour zéro gain de précision sur les deux tiers du corpus qui portaient déjà un texte parfait.
 
 **Environ deux tiers du corpus est né numérique, donc l'essentiel des pages ne touche jamais l'OCR.**
 
@@ -136,9 +136,9 @@ async def retrieve(query: str, groups: list[str]) -> list[Hit]:
 - **Plein texte**, pour le code de brevet exact ou le nom INCI précis qu'un embedding vectoriel fond dans ses voisins. « Rétinol » et « Rétinal » sont voisins dans l'espace vectoriel alors que ce sont deux molécules très différentes ; la recherche lexicale, elle, ne les confond pas.
 - **Titre**, pour le résultat direct quand quelqu'un tape l'essentiel d'un nom de document.
 
-Un reranker cross-encoder fusionne ensuite les trois jeux de résultats, retire les doublons et réordonne ce qui reste ; je ne garde que les résultats au-dessus d'un plancher de score de 0,7. Il justifie son coût. La similarité vectorielle pure est bonne en rappel et médiocre en tri, si bien que le résultat vraiment pertinent atterrit souvent en 7e position plutôt qu'en 1re. Le reranker lit la requête et chaque candidat ensemble, et remonte ce résultat en tête. À 20 millions de pages, le rappel ne coûte rien et la précision fait tout : c'est l'étape qui empêche le dixième résultat vaguement lié de polluer la réponse.
+Un reranker cross-encoder fusionne ensuite les trois jeux de résultats, retire les doublons et réordonne ce qui reste ; je ne garde que les résultats au-dessus d'un plancher de score de 0,7. Il justifie son coût. La similarité vectorielle pure est bonne en rappel et médiocre en tri, si bien que le résultat vraiment pertinent atterrit souvent en 7e position plutôt qu'en 1re. Le reranker lit la requête et chaque candidat ensemble, et remonte ce résultat en tête. À plus de 100 millions de pages, le rappel ne coûte rien et la précision fait tout : c'est l'étape qui empêche le dixième résultat vaguement lié de polluer la réponse.
 
-**La latence de réponse p95 reste sous la seconde sur tout le corpus de 20 millions de pages.**
+**La latence de réponse p95 reste sous la seconde sur tout le corpus de plus de 100 millions de pages.**
 
 Après le natif d'abord, le reranker est la deuxième meilleure décision du système. Un index vectoriel seul donne une démo qui a l'air formidable et un jeu de résultats subtilement faux dans l'ordre, ce qui est le pire genre de faux : il a l'air correct.
 
@@ -168,6 +168,6 @@ Filtrer dans la requête plutôt qu'après les résultats, c'est un choix de sé
 
 ## Qui a ce problème
 
-Brancher une IA sur un dossier de documents, c'est une démo d'un après-midi. Lire 20 millions de pages fidèlement, garder les tableaux honnêtes, imposer l'accès dès la requête : c'est un autre métier, et chaque décision ci-dessus existe parce que la version démo échoue en silence à l'échelle.
+Brancher une IA sur un dossier de documents, c'est une démo d'un après-midi. Lire 100 millions de pages fidèlement, garder les tableaux honnêtes, imposer l'accès dès la requête : c'est un autre métier, et chaque décision ci-dessus existe parce que la version démo échoue en silence à l'échelle.
 
 L'architecture se transfère telle quelle : lecture en natif d'abord, extraction qui tient compte de la mise en page, recherche hybride avec reranker, accès imposé dès la récupération. Quiconque traîne une décennie de documents que personne n'arrive à chercher a exactement ce problème : dossiers pharma et cosmétiques, contrats bancaires et fichiers KYC, bibliothèques de clauses juridiques, sinistres d'assurance en cinq mises en page et quatre langues.

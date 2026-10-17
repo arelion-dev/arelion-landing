@@ -1,18 +1,18 @@
 ---
 title: "Document AI at scale"
 date: "2026-06-18T10:40:00.000Z"
-description: "Reading and searching 20M pages across thirty brands: native-text-first OCR, faithful tables, hybrid retrieval, and access control enforced inside the query."
+description: "Reading and searching 100M+ pages across thirty brands: native-text-first OCR, faithful tables, hybrid retrieval, and access control enforced inside the query."
 tags: ["Tech", "AI"]
 private: true
 ---
 
-You can read and search 20 million pages faithfully, in under a second, without leaking a single document across a brand boundary. I built that engine for a global enterprise: thirty brands, decades of R&D, 20 million pages of research data, patents, contracts and regulatory dossiers across a dozen languages.
+You can read and search 100 million pages faithfully, in under a second, without leaking a single document across a brand boundary. I built that engine for a global enterprise: thirty brands, decades of R&D, more than 100 million pages of research data, patents, contracts and regulatory dossiers across a dozen languages.
 
 The problem it solves is concrete. A scientist needs one stability number from a 2009 study, in a scanned PDF, in a table on page 40, in French. She spends half a day failing to find it, gives up, and reruns the study, so the company pays for that work twice. Now that number comes back in under a second, with a link straight to page 40.
 
 **Search time dropped from ~30 minutes of hunting to under a second.**
 
-A sibling piece covers the agent that refuses to half-answer a multi-part question. This one is the layer under it: reading 20 million pages faithfully, then searching them in under a second, with access control enforced inside the query. By the end you'll know why I read the page before I OCR it, why a table gets its own model, why the queue is a Postgres table, and why access control lives inside the vector query.
+A sibling piece covers the agent that refuses to half-answer a multi-part question. This one is the layer under it: reading 100 million pages faithfully, then searching them in under a second, with access control enforced inside the query. By the end you'll know why I read the page before I OCR it, why a table gets its own model, why the queue is a Postgres table, and why access control lives inside the vector query.
 
 Note on code: this was proprietary client work, so I can't paste the repository. Every snippet below is a clean-room reconstruction of the technique, generic enough to run on its own and honest about the mechanism. None of it is verbatim client source.
 
@@ -42,7 +42,7 @@ def route_page(page: fitz.Page) -> tuple[str, int]:
 
 The 40-character threshold has a reason. Below it you're almost always looking at a page number or a stray Acrobat annotation, and the honest move is to treat the page as a scan. The DPI split matters more than it looks. Born-digital pages need no raster at all, and for real scans 300 DPI is the floor where a 6pt superscript in an ingredient table stays legible. At 200 DPI those characters melt, and a melted superscript in a concentration is a wrong answer.
 
-At 20M pages, native-first decides whether the OCR bill is one you can pay or one you can't. Rendering and OCR-ing every page "to be safe" would have multiplied compute by roughly three, for zero accuracy gain on the two thirds of pages that already carried perfect text.
+At 100M+ pages, native-first decides whether the OCR bill is one you can pay or one you can't. Rendering and OCR-ing every page "to be safe" would have multiplied compute by roughly three, for zero accuracy gain on the two thirds of pages that already carried perfect text.
 
 **Roughly two thirds of the corpus is born-digital, so most pages never touch OCR.**
 
@@ -136,9 +136,9 @@ async def retrieve(query: str, groups: list[str]) -> list[Hit]:
 - **Full-text**, for the exact patent code or a precise part code a vector embedding blurs into its neighbors. "AX-1401" and "AX-1410" sit close in vector space and mean very different things; lexical search doesn't confuse them.
 - **Title**, for the direct hit when someone types most of a document name.
 
-A cross-encoder reranker then merges the three result sets, drops the duplicates, and reorders what's left; I keep only hits above a 0.7 score floor. It earns its cost. Pure vector similarity is good at recall and mediocre at ordering, so the genuinely relevant result often lands at position 7 instead of 1. The reranker reads the query and each candidate together and pushes that result back to the top. Recall is cheap at 20M pages and precision is everything, so this is the step that stops the tenth loosely-related result from polluting the answer.
+A cross-encoder reranker then merges the three result sets, drops the duplicates, and reorders what's left; I keep only hits above a 0.7 score floor. It earns its cost. Pure vector similarity is good at recall and mediocre at ordering, so the genuinely relevant result often lands at position 7 instead of 1. The reranker reads the query and each candidate together and pushes that result back to the top. Recall is cheap at 100M+ pages and precision is everything, so this is the step that stops the tenth loosely-related result from polluting the answer.
 
-**p95 answer latency stays under one second across the full 20M-page corpus.**
+**p95 answer latency stays under one second across the full 100M+-page corpus.**
 
 After native-first, the reranker is the second-best call in the system. A vector index alone gives you a demo that looks great and a result set that's subtly wrong in its ordering, which is the worst kind of wrong, because it looks fine.
 
@@ -168,6 +168,6 @@ Filtering inside the query rather than after the results is a security decision.
 
 ## Who has this problem
 
-Wiring an AI to a folder of documents is an afternoon demo. Reading 20 million pages faithfully, keeping tables honest, and enforcing access inside the query is a different job, and every decision above exists because the demo version fails quietly at scale.
+Wiring an AI to a folder of documents is an afternoon demo. Reading 100 million pages faithfully, keeping tables honest, and enforcing access inside the query is a different job, and every decision above exists because the demo version fails quietly at scale.
 
 The architecture transfers as it is: native-first reading, layout-aware extraction, hybrid search with a reranker, access enforced at retrieval. Anyone with a decade of documents nobody can search has this exact problem: pharma and cosmetics dossiers, banking contract and KYC files, legal clause libraries, insurance claims in five layouts and four languages.

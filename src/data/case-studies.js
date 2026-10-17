@@ -289,7 +289,7 @@ const CASE_STUDIES = [
         a: { en: "Software that turns documents into text, tables and answers you can search. The order matters. Read native text first and pay for OCR only on scans, keep tables as tables, and cite the exact page behind each answer. Intelligent document processing (IDP) points the same tools at forms and back-office workflows." },
       },
       {
-        q: { en: "How do you build RAG over 20 million pages?" },
+        q: { en: "How do you build RAG over 100 million pages?" },
         a: { en: "Read cheaply first by lifting native text before paying for OCR, index into a vector store behind a fair queue so one bulk load cannot starve live users, and retrieve with hybrid search plus a small-to-big ladder. Cite every sentence." },
       },
       {
@@ -309,18 +309,18 @@ const CASE_STUDIES = [
     featured: true,
     published: true,
     title: {
-      en: "Document AI at scale: RAG over 20M pages",
-      fr: "IA documentaire à grande échelle : RAG sur 20M pages (Pinecone, Gemini)",
+      en: "Document AI at scale: RAG over 100M+ pages",
+      fr: "IA documentaire à grande échelle : RAG sur 100M+ pages (Pinecone, Gemini)",
     },
     metric: {
-      en: "20M pages, an answer in under a second, a citation on every sentence",
-      fr: "20M pages, une réponse en moins d'une seconde, une citation sur chaque phrase",
+      en: "100M+ pages, an answer in under a second, a citation on every sentence",
+      fr: "100M+ pages, une réponse en moins d'une seconde, une citation sur chaque phrase",
     },
     hook: {
       en: "Thirty brands, a dozen languages, and a team redoing a study that already exists because nobody can find it.",
       fr: "Trente marques, une douzaine de langues, et une équipe qui refait une étude déjà faite parce que personne ne la retrouve.",
     },
-    metaDescription: { en: "Document AI I designed for a global enterprise: plain-language answers in under a second across 20M pages, with a citation on every sentence." },
+    metaDescription: { en: "Document AI I designed for a global enterprise: plain-language answers in under a second across 100M+ pages, with a citation on every sentence." },
     tags: ["RAG", "Gemini", "Pinecone", "Vertex AI", "Google ADK", "Document AI"],
     stack: ["Python", "Google ADK", "LiteLLM", "Pinecone", "Vertex AI Search", "Gemini", "GCP"],
     demo: {
@@ -339,8 +339,8 @@ const CASE_STUDIES = [
       {
         h: { en: "The problem", fr: "Le problème" },
         p: {
-          en: "A global company, 20M pages, 30 brands, a dozen languages. Many scans with no extractable text, each document with its own confidentiality rules. People redo work that already exists because they can't find it.",
-          fr: "Une entreprise mondiale, 20M pages, 30 marques, une douzaine de langues. Beaucoup de scans sans texte extractible, chaque document avec ses règles de confidentialité. Les gens refont un travail déjà fait faute de retrouver l'existant.",
+          en: "A global company, 100M+ pages, 30 brands, a dozen languages. Many scans with no extractable text, each document with its own confidentiality rules. People redo work that already exists because they can't find it.",
+          fr: "Une entreprise mondiale, 100M+ pages, 30 marques, une douzaine de langues. Beaucoup de scans sans texte extractible, chaque document avec ses règles de confidentialité. Les gens refont un travail déjà fait faute de retrouver l'existant.",
         },
       },
       {
@@ -367,8 +367,8 @@ const CASE_STUDIES = [
       {
         h: { en: "Result", fr: "Résultat" },
         p: {
-          en: "p95 under a second across 20M pages and 30 brands, a citation on every answer, access control enforced at the source.",
-          fr: "p95 sous la seconde sur 20M pages et 30 marques, une citation sur chaque réponse, le contrôle d'accès appliqué à la source.",
+          en: "p95 under a second across 100M+ pages and 30 brands, a citation on every answer, access control enforced at the source.",
+          fr: "p95 sous la seconde sur 100M+ pages et 30 marques, une citation sur chaque réponse, le contrôle d'accès appliqué à la source.",
         },
       },
       {

@@ -2,7 +2,7 @@
 
 > Arelion is an AI consultancy in Dubai. One senior engineer who designs AI systems and builds them, from roadmap to production: document AI, legal AI, private LLMs and cloud platforms.
 
-Arelion is operated by Antonin Ribeaud (ARELION FZCO, IFZA Dubai Silicon Oasis, UAE, trade license 78400, constituted 26/01/2026). Independent software engineering since 2014: AI for business (RAG, semantic search, LLM integrations, workflow automation), solutions architecture (ingestion pipelines at scale, analytics platforms), technical product leadership (Scrum Product Owner certified, two startups cofounded and run end-to-end). Past work: 20M pages processed at L'Oreal, 400M+ events per month at relevanC, Top 5 App Store app with 1M+ downloads, built and sold a Document AI SaaS (privately.ai). Stack: React, React Native, TypeScript, Python, FastAPI, GCP, Terraform. Engaged with 20+ clients including L'Oreal, Deezer, Free Malaysia Today, relevanC, Epsor, Foundingbird and Kaunto.
+Arelion is operated by Antonin Ribeaud (ARELION FZCO, IFZA Dubai Silicon Oasis, UAE, trade license 78400, constituted 26/01/2026). Independent software engineering since 2014: AI for business (RAG, semantic search, LLM integrations, workflow automation), solutions architecture (ingestion pipelines at scale, analytics platforms), technical product leadership (Scrum Product Owner certified, two startups cofounded and run end-to-end). Past work: 100M+ pages processed at L'Oreal, 400M+ events per month at relevanC, Top 5 App Store app with 1M+ downloads, built and sold a Document AI SaaS (privately.ai). Stack: React, React Native, TypeScript, Python, FastAPI, GCP, Terraform. Engaged with 20+ clients including L'Oreal, Deezer, Free Malaysia Today, relevanC, Epsor, Foundingbird and Kaunto.
 
 Not affiliated with Arelion AB, the Swedish telecom carrier.
 
@@ -69,7 +69,7 @@ How to engage: read the case studies at https://arelion.dev/case-studies/ for pr
 - [A second brain for a newsroom (RAG over 500,000+ articles)](https://arelion.dev/case-studies/newsroom-second-brain/)
 - [Defending AI agents against prompt injection at scale](https://arelion.dev/case-studies/prompt-injection-defense/)
 - [Catching silent regressions in an AI agent](https://arelion.dev/case-studies/agent-eval/)
-- [Document AI at scale: RAG over 20M pages](https://arelion.dev/case-studies/document-intelligence-at-scale/)
+- [Document AI at scale: RAG over 100M+ pages](https://arelion.dev/case-studies/document-intelligence-at-scale/)
 - [Serving 50M requests a day with a multi-tier cache (edge to origin)](https://arelion.dev/case-studies/multi-tier-cache-at-scale/)
 - [How to benchmark an OCR model (TEDS, CER, LLM-as-judge)](https://arelion.dev/case-studies/ocr-benchmark/)
 - [A 100% local AI coding stack (Ollama, Qwen3.6, opencode)](https://arelion.dev/case-studies/local-ai-stack/)
