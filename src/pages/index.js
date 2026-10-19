@@ -59,6 +59,7 @@ const ROLE_STYLES = [
   { backgroundColor: "#ffe3cc" },
   { backgroundColor: "#d3f2da" },
   { backgroundColor: "#d8e6ff" },
+  { backgroundColor: "#e9e0ff" },
 ]
 
 // Landing-page links under each role card, one per line. Block links keep the
@@ -195,6 +196,7 @@ const IndexPage = ({ data }) => {
     },
     { title: t("roles.ai.title"), desc: t("roles.ai.desc"), links: t("roles.ai.links") },
     { title: t("roles.arch.title"), desc: t("roles.arch.desc"), links: t("roles.arch.links") },
+    { title: t("roles.security.title"), desc: t("roles.security.desc"), links: t("roles.security.links") },
   ]
   const homeGuides = HOME_GUIDES.map(slug =>
     data.guides.nodes.find(g => g.fields.slug === slug),
@@ -462,6 +464,9 @@ const ORG_JSONLD = {
         "Python",
         "FastAPI",
         "Technical Product Management",
+        "Web Application and API Penetration Testing",
+        "AI Red Teaming",
+        "Security Audits of AI-Generated Code",
       ],
       sameAs: [
         "https://www.linkedin.com/company/arelion-fzco/",
@@ -479,6 +484,9 @@ const ORG_JSONLD = {
         "Solutions Architecture",
         "Cloud Platforms",
         "Technical Product Management",
+        "Web Application and API Penetration Testing",
+        "AI Red Teaming",
+        "Security Audits of AI-Generated Code",
       ],
     },
   ],

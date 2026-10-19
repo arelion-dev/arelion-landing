@@ -12,6 +12,7 @@ const require = createRequire(import.meta.url)
 const matter = require("gray-matter")
 // Without NODE_ENV=development this is the published list, as in production.
 const CASE_STUDIES = require("../src/data/case-studies.js")
+const { offersOf } = require("../src/data/offers.js")
 
 const ROOT = new URL("..", import.meta.url).pathname
 const PUBLIC = join(ROOT, "public")
@@ -262,6 +263,105 @@ test("the built home shows the audit sentence and the audit link in its Fraction
   assert.ok(card.includes("Fractional CTO"), "the first card is no longer Fractional CTO")
   assert.ok(card.includes("I also audit what is already in place: the team, the security and the contracts."), card)
   assert.match(card, /<a [^>]*href="\/case-studies\/ai-attack-surface\/"/)
+})
+
+// Asked on 2026-10-18: a home card and llms.txt lines for the security offer,
+// exactly as sold: pentests of web apps and APIs, AI red teaming (attacks on AI
+// agents and chatbots), security audits of apps built with AI coding tools. No
+// certification is claimed, and nothing suggests network pentests or full red
+// team exercises, in English or in French.
+const OVERCLAIM_WORDS = /certifi|\bCREST\b|\bOSCP\b|network penetration|red team exercise|tests? d'intrusion réseau|exercices? de red team/i
+// Case-sensitive, so a class name such as "role-card-desc" does not match.
+const OVERCLAIM_ACRONYMS = /\bDESC\b|\bISO\b/
+const overclaim = text => (text.match(OVERCLAIM_WORDS) || text.match(OVERCLAIM_ACRONYMS) || [null])[0]
+const securityStudy = path => CASE_STUDIES.find(cs => `/case-studies/${cs.slug}/` === path && offersOf(cs).includes("Security"))
+const loadCatalog = async () =>
+  (await import(`data:text/javascript,${encodeURIComponent(readFileSync(join(ROOT, "src/i18n/catalog.js"), "utf8"))}`)).default
+
+test("the home has a security card in English and French: risk first, the three services, one proof, links to security studies", async () => {
+  const catalog = await loadCatalog()
+  const expected = {
+    en: {
+      title: "Security audits, pentests and AI red teaming",
+      risk: /leaking client data/,
+      services: [/penetration tests of web apps and APIs/, /AI red teaming/, /security audits of apps built with AI coding tools/],
+      proof: /49 issues, nine of them high severity/,
+    },
+    fr: {
+      title: "Audits de sécurité, pentests et red teaming IA",
+      risk: /faire fuiter des données clients/,
+      services: [/pentests d'applications web et d'API/, /red teaming IA/, /audits de sécurité des applications codées avec des outils d'IA/],
+      proof: /49 problèmes, dont neuf de sévérité haute/,
+    },
+  }
+  const audit = CASE_STUDIES.find(cs => cs.slug === "ai-attack-surface")
+  assert.match(audit.metric.en, /^49 findings, nine of them high severity/, "the audit study no longer gives the figure the card quotes")
+  for (const lang of ["en", "fr"]) {
+    const card = catalog[lang].roles.security
+    const want = expected[lang]
+    assert.ok(card, `${lang}: no security card`)
+    assert.equal(card.title, want.title)
+    assert.equal(card.badge, undefined, `${lang}: the security card has a badge`)
+    // The risk comes before the services, the services before the proof.
+    const at = re => card.desc.search(re)
+    assert.ok(at(want.risk) >= 0 && at(want.risk) < card.desc.indexOf(". "), `${lang}: the first sentence does not give the risk`)
+    for (const re of want.services) assert.ok(at(re) > at(want.risk), `${lang}: ${re} missing or before the risk`)
+    assert.ok(at(want.proof) > Math.max(...want.services.map(at)), `${lang}: the proof is missing or not last`)
+    assert.ok(card.links.length >= 2, `${lang}: ${card.links.length} link(s)`)
+    for (const l of card.links) assert.ok(securityStudy(l.to), `${lang}: ${l.to} is not a published security study`)
+    assert.ok(card.links.some(l => l.to === "/case-studies/ai-attack-surface/"), `${lang}: no link to the study the proof comes from`)
+    const text = [card.title, card.desc, ...card.links.map(l => l.label)].join(" ")
+    assert.equal(overclaim(text), null, lang)
+    assert.doesNotMatch(text, /[\u2013\u2014]/, `${lang}: dash`)
+    assert.doesNotMatch(text, /securityaudit\.ae/, `${lang}: links the site that is not live yet`)
+  }
+})
+
+test("the built home shows the security card with its links", { skip }, () => {
+  const home = html("")
+  const start = home.indexOf('class="roles-section"')
+  const section = home.slice(start, home.indexOf("</section>", start))
+  const cards = section.split('<div class="role-card"').slice(1)
+  assert.equal(cards.length, 4, `${cards.length} role cards`)
+  const card = cards.find(c => c.includes("Security audits, pentests and AI red teaming"))
+  assert.ok(card, "no security card on the home")
+  // Each card has its own background colour.
+  assert.equal(new Set(cards.map(c => c.match(/style="background-color:([^"]+)"/)?.[1])).size, 4)
+  assert.match(card, /<a [^>]*href="\/case-studies\/ai-attack-surface\/"/)
+  assert.match(card, /<a [^>]*href="\/case-studies\/prompt-injection-email-test\/"/)
+  assert.equal(overclaim(card.replace(/<[^>]+>/g, " ")), null)
+})
+
+test("llms.txt lists the security offer under Services and When to use, with two security studies", () => {
+  const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
+  const section = name => llms.split(`\n## ${name}\n`)[1].split("\n## ")[0]
+  const service = section("Services").split("\n").find(l => l.startsWith("- Security audits, pentests and AI red teaming: "))
+  assert.ok(service, "no security line under Services")
+  const when = section("When to use Arelion").split("\n").filter(l => /penetration tests of web apps and APIs/.test(l))
+  assert.equal(when.length, 1, "no security line under When to use Arelion")
+  for (const line of [service, when[0]]) {
+    for (const re of [/penetration tests of web apps and APIs/, /AI red teaming|attacks on AI agents and chatbots/, /security audits of apps built with AI coding tools/]) assert.match(line, re)
+    assert.equal(overclaim(line), null, line)
+    assert.doesNotMatch(line, /securityaudit\.ae|[\u2013\u2014]/)
+  }
+  const linked = [...service.matchAll(/\[([^\]]+)\]\(https:\/\/arelion\.dev(\/case-studies\/[^)]+)\)/g)]
+  assert.ok(linked.length >= 2, `${linked.length} case studies linked`)
+  for (const [, title, path] of linked) {
+    const cs = securityStudy(path)
+    assert.ok(cs, `${path} is not a published security study`)
+    assert.equal(title, cs.title.en, path)
+  }
+})
+
+test("the home graph lists the three security services in knowsAbout", { skip }, () => {
+  const nodes = ldNodes(html(""))
+  for (const id of [ORG_ID, PERSON_ID]) {
+    const node = nodes.find(n => n["@id"] === id)
+    for (const s of ["Web Application and API Penetration Testing", "AI Red Teaming", "Security Audits of AI-Generated Code"]) {
+      assert.ok(node.knowsAbout.includes(s), `${id} does not list ${s}`)
+    }
+    assert.equal(overclaim(node.knowsAbout.join(" ")), null, id)
+  }
 })
 
 // IndexNow (2026-10-11): the SEO tracker tells Bing which pages are new or

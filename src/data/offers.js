@@ -10,6 +10,8 @@ const OFFERS = [
   { name: "Document AI", css: "audit" },
   { name: "Legal AI", css: "transform" },
   { name: "AI agents", css: "llm" },
+  // Pentests of web apps and APIs, AI red teaming, audits of AI-built apps.
+  { name: "Security", css: "audit" },
   { name: "Private LLMs", css: "llm" },
   { name: "Fractional CTO", css: "transform" },
   { name: "Lab", css: "lab" },

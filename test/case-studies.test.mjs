@@ -9,7 +9,7 @@ import { join } from "node:path"
 const require = createRequire(import.meta.url)
 // Without NODE_ENV=development this is the published list, as in production.
 const CASE_STUDIES = require("../src/data/case-studies.js")
-const { OFFERS, offersOf } = require("../src/data/offers.js")
+const { OFFERS, offersOf, offerClass } = require("../src/data/offers.js")
 
 const ROOT = new URL("..", import.meta.url).pathname
 const PUBLIC = join(ROOT, "public")
@@ -31,6 +31,67 @@ test("every published case study is filed under known offers", () => {
   for (const cs of CASE_STUDIES) {
     assert.ok(Array.isArray(cs.offers) && cs.offers.length > 0, `${cs.slug}: no offers`)
     for (const o of cs.offers) assert.ok(OFFER_NAMES.has(o), `${cs.slug}: unknown offer ${o}`)
+  }
+})
+
+// Every offer takes one of the kicker colours the stylesheet defines.
+test("every offer reuses an existing kicker colour", () => {
+  const css = readFileSync(join(ROOT, "src/style.css"), "utf8")
+  for (const o of OFFERS) assert.match(css, new RegExp(`\\.cs-p-${o.css}\\s*{`), `${o.name}: no .cs-p-${o.css} rule`)
+})
+
+// Asked on 2026-10-18: a Security offer (pentests of web apps and APIs, AI red
+// teaming, audits of AI-built apps) so the index can show the security studies
+// together, and no other study carries it. Security comes second on every one:
+// a study's related cards come from its main offer. With Security first,
+// llm-sleeper-agents lost the Lab pages, its only links, and the AI agents
+// pages lost their links to the two client security studies.
+const SECURITY_STUDIES = [
+  "ai-attack-surface",
+  "prompt-injection-defense",
+  "prompt-injection-email-test",
+  "claude-code-security-review-test",
+  "ai-models-vulnerability-test",
+  "llm-sleeper-agents",
+]
+
+test("the six security studies are filed under Security, second after their main offer", () => {
+  assert.ok(OFFER_NAMES.has("Security"), "no Security offer")
+  for (const slug of SECURITY_STUDIES) {
+    const cs = CASE_STUDIES.find(c => c.slug === slug)
+    assert.ok(cs, `${slug} is not a published case study`)
+    const offers = offersOf(cs)
+    assert.equal(offers[1], "Security", `${slug}: offers ${offers.join(", ")}`)
+    if (cs.lab) assert.equal(offers[0], "Lab", slug)
+  }
+  assert.ok(SECURITY_STUDIES.some(slug => !CASE_STUDIES.find(c => c.slug === slug).lab), "no client work under Security")
+  const tagged = CASE_STUDIES.filter(cs => offersOf(cs).includes("Security")).map(cs => cs.slug)
+  assert.deepEqual(tagged.sort(), SECURITY_STUDIES.slice().sort())
+})
+
+// Review of 2026-10-18: with Security as the main offer of the two client
+// security studies, ai-buyer-sales-training fell from three related cards to
+// one and agent-eval lost its link to prompt-injection-defense.
+test("the AI agents pages keep their related cards to the client security studies", { skip: !built && "no build in public/" }, () => {
+  const cards = slug => [...html(`case-studies/${slug}`).matchAll(/<a class="cs-related-card" href="\/case-studies\/([^"/]+)\/"/g)].map(m => m[1])
+  const sales = cards("ai-buyer-sales-training")
+  assert.equal(sales.length, 3, `ai-buyer-sales-training: ${sales.join(", ")}`)
+  for (const slug of ["prompt-injection-defense", "ai-attack-surface"]) assert.ok(sales.includes(slug), `ai-buyer-sales-training: no card to ${slug}`)
+  assert.ok(cards("agent-eval").includes("prompt-injection-defense"), "agent-eval: no card to prompt-injection-defense")
+})
+
+test("the index has a Security tab and names Security in the kicker of the six studies", { skip: !built && "no build in public/" }, () => {
+  const page = html("case-studies")
+  assert.match(page, /<button type="button" class="">Security<\/button>/, "no Security tab")
+  for (const slug of SECURITY_STUDIES) {
+    const at = page.indexOf(`href="/case-studies/${slug}/"`)
+    assert.ok(at > 0, `${slug} missing from the index`)
+    const card = page.slice(at, page.indexOf("</a>", at))
+    const cs = CASE_STUDIES.find(c => c.slug === slug)
+    const kicker = card.match(/<p class="cs-row-kicker (cs-p-[a-z]+)">([^<]*)<\/p>/)
+    assert.ok(kicker, `${slug}: no kicker in ${card.slice(0, 200)}`)
+    assert.deepEqual([kicker[1], kicker[2].split(" · ")], [offerClass(cs), offersOf(cs)], slug)
+    assert.ok(kicker[2].split(" · ").includes("Security"), slug)
   }
 })
 
@@ -296,7 +357,7 @@ test("the three security tests are published Lab studies, each with an article t
     const cs = CASE_STUDIES.find(c => c.slug === slug)
     assert.ok(cs, `${slug} is not a published case study`)
     assert.equal(cs.lab, true, `${slug}: not a Lab study`)
-    assert.deepEqual(cs.offers, ["Lab"], slug)
+    assert.deepEqual(cs.offers, ["Lab", "Security"], slug)
     assert.equal(cs.article, `/blog/${slug}/`, slug)
     assert.equal(cs.articleBusiness, undefined, `${slug}: these studies have no business version`)
     assert.ok(readFileSync(join(ROOT, `content/blog/${slug}/index.MD`), "utf8").includes(figure), `${slug}: the article no longer says "${figure}"`)

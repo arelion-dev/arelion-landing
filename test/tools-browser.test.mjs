@@ -4,9 +4,10 @@
 // page. Needs `npm run build` first, and Playwright, which this site does not
 // install: point NODE_PATH at a node_modules that has it, for example
 //   NODE_PATH=/path/to/a/project/node_modules npm test
-// Without either, these checks are skipped. The last four check the contact
+// Without either, these checks are skipped. The last five check the contact
 // box at the bottom of every guide, the offer box inside the DIFC guide, the
-// tables of a guide on a phone, and the offer box of a case study.
+// tables of a guide on a phone, the offer box of a case study, and the role
+// cards of the home.
 import { test, before, after } from "node:test"
 import assert from "node:assert/strict"
 import { createReadStream, existsSync, readFileSync, statSync } from "node:fs"
@@ -619,3 +620,35 @@ test("the offer box of a case study sits in its article, buttons side by side, a
   await context.close()
 })
 
+// The home's role cards (review of 2026-10-18): with the fourth card (security),
+// four in a row from 64rem up made each card 229px wide at 1040px, with the
+// French badge on two lines; at 75rem the English badge still wrapped up to
+// about 1230px. Two per row up to 80rem, four in a row above.
+test("the home's four role cards sit two per row up to 1280px and four in a row above, badge on one line, in English and French", { skip }, async () => {
+  // React has taken over the page once the language buttons carry their click handler.
+  const ready = page =>
+    page.waitForFunction(() => Object.keys(document.querySelector(".lang-switch button") || {}).some(k => k.startsWith("__reactProps")))
+  const { context, page } = await visit("/", { ready, viewport: { width: 1440, height: 900 } })
+  for (const [lang, title] of [["EN", "Security audits, pentests and AI red teaming"], ["FR", "Audits de sécurité, pentests et red teaming IA"]]) {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.locator(".portfolio-header-nav .lang-switch").getByRole("button", { name: lang }).click()
+    await page.locator(".role-card-title", { hasText: title }).waitFor()
+    for (const width of [1040, 1220, 1280, 1300, 1440]) {
+      await page.setViewportSize({ width, height: 900 })
+      const { cards, rows, badgeLines } = await page.evaluate(() => {
+        const cards = [...document.querySelectorAll(".roles-section .role-card")]
+        const range = document.createRange()
+        range.selectNodeContents(document.querySelector(".role-card-badge"))
+        return {
+          cards: cards.length,
+          rows: new Set(cards.map(c => Math.round(c.getBoundingClientRect().top))).size,
+          badgeLines: new Set(Array.from(range.getClientRects(), r => Math.round(r.top))).size,
+        }
+      })
+      assert.equal(cards, 4, `${lang} ${width}px: ${cards} role cards`)
+      assert.equal(rows, width <= 1280 ? 2 : 1, `${lang} ${width}px: ${rows} row(s) of cards`)
+      assert.equal(badgeLines, 1, `${lang} ${width}px: the badge takes ${badgeLines} lines`)
+    }
+  }
+  await context.close()
+})

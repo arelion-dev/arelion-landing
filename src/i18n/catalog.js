@@ -101,6 +101,15 @@ const catalog = {
           { to: "/legal-ai-uae/", label: "Legal AI for law firms" },
         ],
       },
+      security: {
+        title: "Security audits, pentests and AI red teaming",
+        desc: "An AI agent can be tricked into leaking client data, or into acting on an email sent by a stranger. I look for these holes before attackers do. I run penetration tests of web apps and APIs, attacks on agents and chatbots (AI red teaming), and security audits of apps built with AI coding tools. In one of these audits, I found 49 issues, nine of them high severity.",
+        // No landing page yet: both links go to the security case studies.
+        links: [
+          { to: "/case-studies/ai-attack-surface/", label: "Security audit of an AI-built platform" },
+          { to: "/case-studies/prompt-injection-email-test/", label: "Prompt injection test on 5 AI models" },
+        ],
+      },
     },
     guides: {
       homeTitle: "Guides",
@@ -242,6 +251,15 @@ const catalog = {
         links: [
           { to: "/arabic-ocr/", label: "OCR arabe" },
           { to: "/legal-ai-uae/", label: "IA juridique pour cabinets d'avocats" },
+        ],
+      },
+      security: {
+        title: "Audits de sécurité, pentests et red teaming IA",
+        desc: "Un agent IA peut être manipulé pour faire fuiter des données clients, ou pour obéir au mail d'un inconnu. Je cherche ces failles avant un attaquant. Je fais des pentests d'applications web et d'API, des attaques sur les agents et les chatbots (red teaming IA), et des audits de sécurité des applications codées avec des outils d'IA. Lors d'un de ces audits, j'ai trouvé 49 problèmes, dont neuf de sévérité haute.",
+        // The pages behind these links are in English.
+        links: [
+          { to: "/case-studies/ai-attack-surface/", label: "Audit de sécurité d'une plateforme construite avec l'IA" },
+          { to: "/case-studies/prompt-injection-email-test/", label: "Test de prompt injection sur 5 modèles d'IA" },
         ],
       },
     },

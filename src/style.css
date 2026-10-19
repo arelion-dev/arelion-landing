@@ -1796,11 +1796,16 @@ a:focus {
 
 /* Media queries */
 
-@media (max-width: 64rem) {
+/* Four role cards: two per row up to 80rem. Narrower than about 1230px, four
+   in a row are too thin for the English badge, which wraps to two lines. */
+@media (max-width: 80rem) {
   .role-card {
-    flex: 1 1 calc(33% - var(--spacing-5));
+    flex: 1 1 calc(50% - var(--spacing-5));
     min-width: 160px;
   }
+}
+
+@media (max-width: 64rem) {
   .portfolio-header {
     padding: var(--spacing-3) var(--spacing-5);
     flex-wrap: wrap;
