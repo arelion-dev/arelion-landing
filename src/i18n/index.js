@@ -27,6 +27,12 @@ export const LanguageProvider = ({ children }) => {
     if (saved === "en" || saved === "fr") setLangState(saved)
   }, [])
 
+  // The page language follows the switch, for screen readers and translators.
+  // The build writes lang="en" (gatsby-ssr.js).
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
+
   const setLang = next => {
     setLangState(next)
     if (typeof window !== "undefined") window.localStorage.setItem(STORAGE_KEY, next)

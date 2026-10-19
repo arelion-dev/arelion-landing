@@ -346,9 +346,27 @@ test("the built home shows the security card with its links, securityaudit.ae in
   const site = card.match(/<a [^>]*href="https:\/\/securityaudit\.ae\/"[^>]*>([^<]*)/)
   assert.ok(site, "no link to securityaudit.ae in the security card")
   assert.match(site[0], /target="_blank"/)
-  assert.match(site[0], /rel="noopener noreferrer"/)
+  assert.match(site[0], /rel="noopener"/)
   assert.equal(site[1].trim(), "Prices and scope on securityaudit.ae")
   assert.equal(overclaim(card.replace(/<[^>]+>/g, " ")), null)
+})
+
+// Asked on 2026-10-19: Google Analytics on securityaudit.ae must see arelion.dev
+// as the referrer, so every link to it says rel="noopener" without
+// "noreferrer", and still opens in a new tab like the site's other outside links.
+test("every link to securityaudit.ae opens a new tab and keeps arelion.dev as the referrer", { skip }, () => {
+  const pages = new Set()
+  for (const file of walk(PUBLIC).filter(f => f.endsWith(".html"))) {
+    const page = file.slice(PUBLIC.length)
+    for (const [tag] of readFileSync(file, "utf8").matchAll(/<a [^>]*href="https:\/\/securityaudit\.ae\/[^"]*"[^>]*>/g)) {
+      pages.add(page)
+      assert.match(tag, /target="_blank"/, `${page}: ${tag}`)
+      assert.match(tag, /rel="noopener"/, `${page}: ${tag}`)
+    }
+  }
+  for (const page of ["/index.html", "/case-studies/ai-attack-surface/index.html", "/case-studies/prompt-injection-email-test/index.html"]) {
+    assert.ok(pages.has(page), `${page} no longer links to securityaudit.ae`)
+  }
 })
 
 // Asked on 2026-10-19: the "AI automation and company brains" and "Document AI
@@ -383,7 +401,7 @@ test("the home has three role cards in English and French; the automation and do
 test("the built home shows Fractional CTO, automation and document AI, and security, the middle card with its four links and both proofs", { skip }, () => {
   const cards = homeRoleCards()
   assert.deepEqual(
-    cards.map(c => c.match(/<h3 class="role-card-title">([^<]*)<\/h3>/)?.[1]),
+    cards.map(c => c.match(/<h2 class="role-card-title">([^<]*)<\/h2>/)?.[1]),
     ["Fractional CTO", "Automation and document AI", "Security audits, pentests and AI red teaming"],
   )
   const card = cards[1]

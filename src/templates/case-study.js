@@ -137,7 +137,11 @@ const CaseStudyTemplate = ({ pageContext, data }) => {
   const whatsappHref = whatsapp && whatsappFor(whatsapp, cs.title[csLang])
   // A study with an `offer` shows it inside its article, where the markdown says <!-- offer -->.
   const offerBox = {
-    offer: cs.offer && { title: cs.offer.title[csLang], text: cs.offer.text[csLang] },
+    offer: cs.offer && {
+      title: cs.offer.title[csLang],
+      text: cs.offer.text[csLang],
+      link: cs.offer.link && { url: cs.offer.link.url, label: cs.offer.link.label[csLang] },
+    },
     whatsappHref,
     location: "case_study_offer",
   }

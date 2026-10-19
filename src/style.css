@@ -386,16 +386,18 @@ a:focus {
   box-shadow: var(--elev-2);
 }
 
+/* Dark text and icon on the WhatsApp green: white on it was 1.98:1, this is
+   8.8:1 at rest and 5.6:1 on hover (WCAG AA asks for 4.5:1). */
 .nav-pill-whatsapp {
   background: #25d366;
-  color: #fff;
+  color: #111b21;
   border-color: #25d366;
 }
 
 .nav-pill-whatsapp:hover {
   background: #1da851;
   border-color: #1da851;
-  color: #fff;
+  color: #111b21;
   box-shadow: var(--elev-2);
 }
 
@@ -1835,15 +1837,17 @@ a:focus {
   .portfolio-header {
     padding: var(--spacing-3) var(--spacing-4);
     gap: var(--spacing-3);
-    /* One row: avatar + language switch on the left, CTAs on the right. */
-    flex-wrap: nowrap;
+    /* One row: avatar + language switch on the left, CTAs on the right. When
+       the CTAs do not fit (French at 320px), they drop to a second row
+       instead of pushing the page wider than the screen. */
+    flex-wrap: wrap;
     align-items: center;
     position: static;
   }
   .portfolio-header-left {
     flex-shrink: 0;
   }
-  /* Row 2, full width: language switch pinned left, CTAs pinned right. */
+  /* CTAs pinned right, on the first row or on their own. */
   .portfolio-header-nav {
     display: flex;
     flex-direction: row;
@@ -1852,6 +1856,7 @@ a:focus {
     gap: var(--spacing-2);
     flex-wrap: nowrap;
     width: auto;
+    margin-left: auto;
   }
   /* On mobile the switch sits next to the avatar; hide the nav copy. */
   .portfolio-header-nav .lang-switch {
@@ -1864,10 +1869,25 @@ a:focus {
   .portfolio-header-nav .nav-cs {
     display: none;
   }
+  /* 44px tall: big enough to tap. */
   .portfolio-header-nav .nav-pill {
     font-size: var(--fontSize-0);
     padding: 0.4rem 0.8rem;
+    min-height: 44px;
     white-space: nowrap;
+  }
+  /* WhatsApp shrinks to its icon in a 44px circle; the link keeps its aria-label. */
+  .portfolio-header-nav .nav-pill-whatsapp {
+    width: 44px;
+    padding: 0;
+  }
+  .portfolio-header-nav .nav-pill-whatsapp .nav-pill-label {
+    display: none;
+  }
+  .portfolio-header-nav .nav-pill-whatsapp .nav-pill-icon {
+    margin-right: 0;
+    width: 1.5em;
+    height: 1.5em;
   }
   .portfolio-header-nav .nav-pill-primary {
     margin-left: 0;

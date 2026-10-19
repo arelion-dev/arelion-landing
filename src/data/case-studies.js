@@ -1010,6 +1010,7 @@ const CASE_STUDIES = [
     offer: {
       title: { en: "Want yours read the same way?" },
       text: { en: "Send me what you ship, in five lines: the stack, the cloud, how much of the code an AI wrote. I reply in writing with what an audit of your platform would cover, and what it would not." },
+      link: { url: "https://securityaudit.ae/ai-built-app-audit/", label: { en: "AI-built app security audit: scope and price" } },
     },
     ctaLine: { en: "Send me your stack, your cloud and how your code gets written, in five lines. I reply in writing with what an audit would cover." },
     article: "/blog/ai-attack-surface/",
@@ -1383,6 +1384,7 @@ const CASE_STUDIES = [
     offer: {
       title: { en: "Want a second reader on AI-written code?" },
       text: { en: "Send me how your team ships code, in five lines: the stack, where it runs, which AI tools write code, who reviews the changes. I reply in writing with the checks I would add next to the automated review." },
+      link: { url: "https://securityaudit.ae/ai-built-app-audit/", label: { en: "AI-built app security audit: scope and price" } },
     },
     ctaLine: { en: "Send me your stack and how AI-written code gets reviewed, in five lines. I reply in writing with the checks I would add." },
     article: "/blog/claude-code-security-review-test/",
@@ -1415,6 +1417,7 @@ const CASE_STUDIES = [
     offer: {
       title: { en: "Want this tested on your own assistant?" },
       text: { en: "Send me what your assistant does, in five lines: the texts it reads from outside, the tools it can call, who approves an action. I reply in writing with where an outsider's text could give it an order, and which of the three defenses I would start with." },
+      link: { url: "https://securityaudit.ae/ai-agent-security-audit/", label: { en: "AI agent security audit: scope and price" } },
     },
     ctaLine: { en: "Send me what your assistant reads and which tools it can call, in five lines. I reply in writing with where an outsider's text could give it an order." },
     article: "/blog/prompt-injection-email-test/",
@@ -1447,6 +1450,7 @@ const CASE_STUDIES = [
     offer: {
       title: { en: "Want a person to read your code as well?" },
       text: { en: "Send me what you ship, in five lines: the stack, where it runs, how much of the code an AI wrote. I reply in writing with what I would read first in a security audit, and why." },
+      link: { url: "https://securityaudit.ae/ai-built-app-audit/", label: { en: "AI-built app security audit: scope and price" } },
     },
     ctaLine: { en: "Send me your stack and where it runs, in five lines. I reply in writing with what I would read first in a security audit." },
     article: "/blog/ai-models-vulnerability-test/",

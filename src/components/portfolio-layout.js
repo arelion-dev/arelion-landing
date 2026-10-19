@@ -72,18 +72,20 @@ const PortfolioLayout = ({ avatar, children }) => {
               {t("nav.guides")}
             </Link>
           )}
+          {/* On a phone the label is hidden and the button shows the icon only; aria-label keeps its name. */}
           <a
             className="nav-pill nav-pill-whatsapp"
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={t("nav.whatsapp")}
             onClick={() => {
               trackEvent("click", "cta", "whatsapp_nav")
               trackLead(LEAD_METHOD.whatsapp, "nav")
             }}
           >
             <WhatsAppIcon />
-            {t("nav.whatsapp")}
+            <span className="nav-pill-label">{t("nav.whatsapp")}</span>
           </a>
           <a
             className="nav-pill nav-pill-primary"

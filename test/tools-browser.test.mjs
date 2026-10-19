@@ -4,10 +4,12 @@
 // page. Needs `npm run build` first, and Playwright, which this site does not
 // install: point NODE_PATH at a node_modules that has it, for example
 //   NODE_PATH=/path/to/a/project/node_modules npm test
-// Without either, these checks are skipped. The last five check the contact
+// Without either, these checks are skipped. The next five check the contact
 // box at the bottom of every guide, the offer box inside the DIFC guide, the
 // tables of a guide on a phone, the offer box of a case study, and the role
-// cards of the home.
+// cards of the home. The last four check the header on a phone, the order of
+// the home's headings, the contrast of the WhatsApp buttons, and the page
+// language after a switch to French.
 import { test, before, after } from "node:test"
 import assert from "node:assert/strict"
 import { createReadStream, existsSync, readFileSync, statSync } from "node:fs"
@@ -583,7 +585,11 @@ test("the offer box of a case study sits in its article, buttons side by side, a
   const { context, page } = await visit(`/case-studies/${slug}/`, { ready })
   const box = page.locator(".cs-offer")
   assert.equal(await box.count(), 1)
-  assert.equal(await box.innerText(), `${cs.offer.title.en}\n\n${cs.offer.text.en}\n\nWhatsApp\nBook a call`)
+  // Since 2026-10-19, a link to the matching offer page of securityaudit.ae sits
+  // above the buttons. innerText puts its arrow, a flex item, on a line of its
+  // own; on screen the arrow follows the label.
+  assert.equal(await box.innerText(), `${cs.offer.title.en}\n\n${cs.offer.text.en}\n\n${cs.offer.link.label.en}\n↗\n\nWhatsApp\nBook a call`)
+  assert.equal(await box.getByRole("link", { name: cs.offer.link.label.en }).getAttribute("href"), cs.offer.link.url)
 
   // In the text: below the section on the undefended runs, above the first defense.
   const frame = await box.boundingBox()
@@ -650,5 +656,127 @@ test("the home's three role cards sit in one row on desktop, badge on one line, 
       assert.equal(badgeLines, 1, `${lang} ${width}px: the badge takes ${badgeLines} lines`)
     }
   }
+  await context.close()
+})
+
+// React has taken over the page once the language buttons carry their click handler.
+const langReady = page =>
+  page.waitForFunction(() => Object.keys(document.querySelector(".lang-switch button") || {}).some(k => k.startsWith("__reactProps")))
+const BOOK_LABEL = { EN: "book a call", FR: "réserver un appel" }
+// The language switch the visitor sees (next to the avatar on a phone, in the
+// menu on a computer), then wait for the menu to change language.
+const switchTo = async (page, lang) => {
+  await page.locator(".portfolio-header .lang-switch:visible").getByRole("button", { name: lang, exact: true }).click()
+  await page.locator(".portfolio-header-nav .nav-pill-primary", { hasText: BOOK_LABEL[lang] }).waitFor()
+}
+
+// The header on a phone (2026-10-19). Below 42rem it keeps one row: avatar and
+// language switch on the left, WhatsApp and the booking link on the right. The
+// two buttons did not fit, and every page scrolled sideways: in French by 17px
+// at 390px wide and 47px at 360, in English by 43px at 320.
+test("on a phone, the header keeps WhatsApp and the booking link on screen and 44px tall, and the page does not scroll sideways, in English and French", { skip }, async () => {
+  for (const path of ["/", "/case-studies/ai-attack-surface/"]) {
+    const { context, page } = await visit(path, { ready: langReady, viewport: { width: 390, height: 844 } })
+    for (const lang of ["EN", "FR"]) {
+      await page.setViewportSize({ width: 390, height: 844 })
+      await switchTo(page, lang)
+      for (const width of [320, 360, 375, 390, 412]) {
+        await page.setViewportSize({ width, height: 844 })
+        const where = `${path} ${lang} ${width}px`
+        const sideways = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+        assert.ok(sideways <= 0, `${where}: the page is ${sideways}px wider than the screen`)
+        for (const name of ["WhatsApp", BOOK_LABEL[lang]]) {
+          const link = page.locator(".portfolio-header-nav").getByRole("link", { name, exact: true })
+          assert.ok(await link.isVisible(), `${where}: no visible ${name} link in the header`)
+          const box = await link.boundingBox()
+          assert.ok(box.x >= 0 && box.x + box.width <= width, `${where}: ${name} runs off the screen`)
+          assert.ok(box.width >= 44 && box.height >= 44, `${where}: ${name} is ${box.width}x${box.height}px, under 44px`)
+        }
+      }
+    }
+    await context.close()
+  }
+})
+
+// Lighthouse's heading-order check (2026-10-19): the role cards were h3 right
+// under the page's h1, with no h2 in between.
+test("the home's headings start with its one h1 and go down one level at a time, the role cards as h2", { skip }, async () => {
+  for (const width of [390, 1440]) {
+    const { context, page } = await visit("/", { ready: langReady, viewport: { width, height: 900 } })
+    const headings = await page.evaluate(() =>
+      [...document.querySelectorAll("h1, h2, h3, h4, h5, h6")].map(h => ({ level: Number(h.tagName[1]), text: h.textContent.trim() })),
+    )
+    assert.equal(headings[0].level, 1, `${width}px: the first heading is "${headings[0].text}"`)
+    assert.equal(headings.filter(h => h.level === 1).length, 1, `${width}px: more than one h1`)
+    for (const [i, h] of headings.entries()) {
+      if (i === 0) continue
+      const prev = headings[i - 1]
+      assert.ok(h.level <= prev.level + 1, `${width}px: h${h.level} "${h.text}" comes right after h${prev.level} "${prev.text}"`)
+    }
+    assert.deepEqual(await page.locator(".roles-section .role-card-title").evaluateAll(els => els.map(e => e.tagName)), ["H2", "H2", "H2"])
+    await context.close()
+  }
+})
+
+// White on the WhatsApp green was 1.98:1 (2026-10-19). The text and the icon
+// must reach 4.5:1 against the button, at rest and under the mouse, on the
+// WhatsApp green so the button still reads as WhatsApp.
+test("every WhatsApp button keeps the WhatsApp green, with text at 4.5:1 or more, at rest and under the mouse", { skip }, async () => {
+  for (const path of ["/", "/case-studies/prompt-injection-email-test/"]) {
+    const { context, page } = await visit(path, { ready: langReady, viewport: { width: 1440, height: 900 } })
+    const buttons = page.locator(".nav-pill-whatsapp:visible")
+    const count = await buttons.count()
+    assert.ok(count >= 2, `${path}: ${count} WhatsApp button(s)`)
+    for (let i = 0; i < count; i++) {
+      const button = buttons.nth(i)
+      await button.scrollIntoViewIfNeeded()
+      for (const state of ["at rest", "under the mouse"]) {
+        if (state === "at rest") await page.mouse.move(0, 0)
+        else await button.hover()
+        // Wait for the colour transition to end before reading the colours.
+        await button.evaluate(el => Promise.all(el.getAnimations().map(a => a.finished)))
+        const { color, background, ratio } = await button.evaluate(el => {
+          const channels = c => c.match(/[\d.]+/g).map(Number)
+          const luminance = c => {
+            const [r, g, b] = channels(c)
+              .slice(0, 3)
+              .map(v => v / 255)
+              .map(v => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
+            return 0.2126 * r + 0.7152 * g + 0.0722 * b
+          }
+          const style = getComputedStyle(el)
+          const [light, dark] = [luminance(style.color), luminance(style.backgroundColor)].sort((a, b) => b - a)
+          return { color: style.color, background: style.backgroundColor, ratio: (light + 0.05) / (dark + 0.05) }
+        })
+        const where = `${path}, WhatsApp button ${i + 1} ${state}`
+        assert.match(color, /^rgb\(/, `${where}: the text colour is see-through (${color})`)
+        assert.match(background, /^rgb\(/, `${where}: the background is see-through (${background})`)
+        if (state === "at rest") assert.equal(background, "rgb(37, 211, 102)", `${where}: not the WhatsApp green`)
+        assert.ok(ratio >= 4.5, `${where}: ${color} on ${background} is ${ratio.toFixed(2)}:1`)
+      }
+    }
+    await context.close()
+  }
+})
+
+// The language switch only swaps the copy on the page; until 2026-10-19 the
+// page still said lang="en" in French, for screen readers and translators.
+test("switching to French sets the page language to fr, back to English sets en, and the next page opens in fr", { skip }, async () => {
+  const { context, page } = await visit("/", { ready: langReady, viewport: { width: 1440, height: 900 } })
+  const pageLang = async want => {
+    await page.waitForFunction(l => document.documentElement.lang === l, want, { timeout: 2000 }).catch(() => {})
+    return page.evaluate(() => document.documentElement.lang)
+  }
+  assert.equal(await pageLang("en"), "en")
+  await switchTo(page, "FR")
+  assert.equal(await pageLang("fr"), "fr")
+  await switchTo(page, "EN")
+  assert.equal(await pageLang("en"), "en")
+  await switchTo(page, "FR")
+  // The choice is kept: a later page opens in French, on a phone too.
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto(`${origin}/case-studies/`)
+  await langReady(page)
+  assert.equal(await pageLang("fr"), "fr")
   await context.close()
 })

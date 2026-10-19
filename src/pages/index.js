@@ -291,7 +291,8 @@ const IndexPage = ({ data }) => {
       <section className="roles-section">
         {roles.map((role, i) => (
           <div key={role.title} className="role-card" style={ROLE_STYLES[i]}>
-            <h3 className="role-card-title">{role.title}</h3>
+            {/* h2: the first headings under the page's h1. The look comes from the class. */}
+            <h2 className="role-card-title">{role.title}</h2>
             {role.badge && (
               <span className="role-card-badge">{role.badge}</span>
             )}
@@ -299,11 +300,12 @@ const IndexPage = ({ data }) => {
             <div style={ROLE_LINK_LIST_STYLE}>
               {role.links.map(link =>
                 link.url ? (
+                  // No "noreferrer": the site linked (securityaudit.ae) sees arelion.dev as the referrer in its analytics.
                   <a
                     key={link.url}
                     href={link.url}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener"
                     className="cs-row-read"
                     style={ROLE_LINK_STYLE}
                   >

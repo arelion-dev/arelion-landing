@@ -479,6 +479,43 @@ test("each security study shows its offer box once, between its two sections, wi
   }
 })
 
+// Asked on 2026-10-19: each offer box links to the matching offer page of
+// securityaudit.ae, ARELION's security site, for scope and price. The sleeper
+// agents study and prompt-injection-defense have no offer box, so no link.
+const APP_AUDIT = ["https://securityaudit.ae/ai-built-app-audit/", "AI-built app security audit: scope and price"]
+const AGENT_AUDIT = ["https://securityaudit.ae/ai-agent-security-audit/", "AI agent security audit: scope and price"]
+const OFFER_SITE_LINKS = {
+  "ai-attack-surface": APP_AUDIT,
+  "claude-code-security-review-test": APP_AUDIT,
+  "ai-models-vulnerability-test": APP_AUDIT,
+  "prompt-injection-email-test": AGENT_AUDIT,
+}
+
+test("each security study's offer links to its offer page on securityaudit.ae", () => {
+  assert.deepEqual(CASE_STUDIES.filter(cs => cs.offer && cs.offer.link).map(cs => cs.slug).sort(), Object.keys(OFFER_SITE_LINKS).sort())
+  for (const [slug, [url, label]] of Object.entries(OFFER_SITE_LINKS)) {
+    const { link } = CASE_STUDIES.find(c => c.slug === slug).offer
+    assert.deepEqual([link.url, link.label.en], [url, label], slug)
+    assert.doesNotMatch(link.label.en, /[\u2013\u2014]/, `${slug}: dash`)
+  }
+})
+
+test("the built offer box of each security study shows its securityaudit.ae link above the buttons, in a new tab", { skip: !built && "no build in public/" }, () => {
+  for (const [slug, [url, label]] of Object.entries(OFFER_SITE_LINKS)) {
+    const page = html(`case-studies/${slug}`)
+    const at = page.indexOf(OFFER_BOX)
+    const box = page.slice(at, page.indexOf("</aside>", at))
+    const links = [...box.matchAll(/<a ([^>]*)>([^<]*)/g)].filter(([, attrs]) => attrs.includes("securityaudit.ae"))
+    assert.equal(links.length, 1, `${slug}: ${links.length} securityaudit.ae link(s) in the offer box`)
+    const [[tag, attrs, text]] = links
+    assert.match(attrs, new RegExp(`href="${url}"`), slug)
+    assert.match(attrs, /target="_blank"/, slug)
+    assert.match(attrs, /rel="noopener"/, slug)
+    assert.equal(text.trim(), escaped(label), slug)
+    assert.ok(box.indexOf(tag) < box.indexOf('class="cs-offer-links"'), `${slug}: the link is not above the buttons`)
+  }
+})
+
 test("only a case study with an offer shows an offer box", { skip: !built && "no build in public/" }, () => {
   for (const cs of CASE_STUDIES) assert.equal(html(`case-studies/${cs.slug}`).split(OFFER_BOX).length - 1, cs.offer ? 1 : 0, cs.slug)
 })

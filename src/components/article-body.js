@@ -14,8 +14,9 @@ const scrollTables = html =>
 // The markdown body of a guide or a case study. With an `offer` ({ title, text })
 // and the marker in the markdown, the body is cut at the marker and the offer
 // box sits in the cut, with the two contact links (`location` names them in
-// analytics). The marker itself never reaches the page: without an offer, or
-// without the marker, the body stays in one piece.
+// analytics). An offer may also carry a `link` ({ url, label }) to its page on
+// another site, shown above the contact links. The marker itself never reaches
+// the page: without an offer, or without the marker, the body stays in one piece.
 const ArticleBody = ({ html, offer, whatsappHref, location, hidden, onClick }) => {
   const [before, ...rest] = scrollTables(html).split(OFFER_MARKER)
   const after = rest.join("")
@@ -33,6 +34,14 @@ const ArticleBody = ({ html, offer, whatsappHref, location, hidden, onClick }) =
           <aside className={`cs-offer${hiddenClass}`}>
             <p className="cs-offer-title">{offer.title}</p>
             <p>{offer.text}</p>
+            {offer.link && (
+              <p>
+                {/* Same outside link as the home's security card. No "noreferrer": the site linked sees arelion.dev as the referrer. */}
+                <a href={offer.link.url} target="_blank" rel="noopener" className="cs-row-read">
+                  {offer.link.label} <span className="cs-arrow">&#8599;</span>
+                </a>
+              </p>
+            )}
             <div className="cs-offer-links">
               <ContactLinks whatsappHref={whatsappHref} location={location} />
             </div>
