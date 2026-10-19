@@ -29,7 +29,7 @@ How to engage: read the case studies at https://arelion.dev/case-studies/ for pr
 - Technical Product Leadership: roadmap prioritization, scope, specs, stakeholder coordination
 - AI for Business: RAG, semantic search, LLM integrations, workflow automation
 - Solutions Architecture: ingestion pipelines, analytics platforms, full-stack delivery on GCP with Terraform
-- Security audits, pentests and AI red teaming: penetration tests of web apps and APIs, attacks on AI agents and chatbots (prompt injection, tool misuse, data leaks), security audits of apps built with AI coding tools. Examples: [Security audit of an AI-generated codebase, before it took production traffic](https://arelion.dev/case-studies/ai-attack-surface/) (49 findings, nine of them high severity), [Prompt injection: 50 attack emails against 5 AI models](https://arelion.dev/case-studies/prompt-injection-email-test/) (1 attempt in 750 succeeded across three defenses)
+- Security audits, pentests and AI red teaming: penetration tests of web apps and APIs, attacks on AI agents and chatbots (prompt injection, tool misuse, data leaks), security audits of apps built with AI coding tools. Examples: [Security audit of an AI-generated codebase, before it took production traffic](https://arelion.dev/case-studies/ai-attack-surface/) (49 findings, nine of them high severity), [Prompt injection: 50 attack emails against 5 AI models](https://arelion.dev/case-studies/prompt-injection-email-test/) (1 attempt in 750 succeeded across three defenses). Prices and scope: https://securityaudit.ae/
 
 ## Key pages
 

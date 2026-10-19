@@ -278,7 +278,11 @@ const securityStudy = path => CASE_STUDIES.find(cs => `/case-studies/${cs.slug}/
 const loadCatalog = async () =>
   (await import(`data:text/javascript,${encodeURIComponent(readFileSync(join(ROOT, "src/i18n/catalog.js"), "utf8"))}`)).default
 
-test("the home has a security card in English and French: risk first, the three services, one proof, links to security studies", async () => {
+// securityaudit.ae, ARELION's security site, went live on 2026-10-19: the
+// security card and llms.txt link to it for prices and scope.
+const SECURITY_SITE = "https://securityaudit.ae/"
+
+test("the home has a security card in English and French: risk first, the three services, one proof, links to security studies, then securityaudit.ae", async () => {
   const catalog = await loadCatalog()
   const expected = {
     en: {
@@ -286,12 +290,14 @@ test("the home has a security card in English and French: risk first, the three 
       risk: /leaking client data/,
       services: [/penetration tests of web apps and APIs/, /AI red teaming/, /security audits of apps built with AI coding tools/],
       proof: /49 issues, nine of them high severity/,
+      siteLabel: "Prices and scope on securityaudit.ae",
     },
     fr: {
       title: "Audits de sécurité, pentests et red teaming IA",
       risk: /faire fuiter des données clients/,
       services: [/pentests d'applications web et d'API/, /red teaming IA/, /audits de sécurité des applications codées avec des outils d'IA/],
       proof: /49 problèmes, dont neuf de sévérité haute/,
+      siteLabel: "Prix et périmètre sur securityaudit.ae",
     },
   }
   const audit = CASE_STUDIES.find(cs => cs.slug === "ai-attack-surface")
@@ -307,32 +313,86 @@ test("the home has a security card in English and French: risk first, the three 
     assert.ok(at(want.risk) >= 0 && at(want.risk) < card.desc.indexOf(". "), `${lang}: the first sentence does not give the risk`)
     for (const re of want.services) assert.ok(at(re) > at(want.risk), `${lang}: ${re} missing or before the risk`)
     assert.ok(at(want.proof) > Math.max(...want.services.map(at)), `${lang}: the proof is missing or not last`)
-    assert.ok(card.links.length >= 2, `${lang}: ${card.links.length} link(s)`)
-    for (const l of card.links) assert.ok(securityStudy(l.to), `${lang}: ${l.to} is not a published security study`)
-    assert.ok(card.links.some(l => l.to === "/case-studies/ai-attack-surface/"), `${lang}: no link to the study the proof comes from`)
+    const studies = card.links.filter(l => l.to)
+    assert.ok(studies.length >= 2, `${lang}: ${studies.length} study link(s)`)
+    for (const l of studies) assert.ok(securityStudy(l.to), `${lang}: ${l.to} is not a published security study`)
+    assert.ok(studies.some(l => l.to === "/case-studies/ai-attack-surface/"), `${lang}: no link to the study the proof comes from`)
+    // The only link off the site, last, after the proof.
+    assert.deepEqual(card.links.filter(l => !l.to), [{ url: SECURITY_SITE, label: want.siteLabel }], lang)
+    assert.equal(card.links.at(-1).url, SECURITY_SITE, `${lang}: securityaudit.ae is not the last link`)
     const text = [card.title, card.desc, ...card.links.map(l => l.label)].join(" ")
     assert.equal(overclaim(text), null, lang)
     assert.doesNotMatch(text, /[\u2013\u2014]/, `${lang}: dash`)
-    assert.doesNotMatch(text, /securityaudit\.ae/, `${lang}: links the site that is not live yet`)
   }
 })
 
-test("the built home shows the security card with its links", { skip }, () => {
+const homeRoleCards = () => {
   const home = html("")
   const start = home.indexOf('class="roles-section"')
   const section = home.slice(start, home.indexOf("</section>", start))
-  const cards = section.split('<div class="role-card"').slice(1)
-  assert.equal(cards.length, 4, `${cards.length} role cards`)
+  return section.split('<div class="role-card"').slice(1)
+}
+
+test("the built home shows the security card with its links, securityaudit.ae in a new tab", { skip }, () => {
+  const cards = homeRoleCards()
+  assert.equal(cards.length, 3, `${cards.length} role cards`)
   const card = cards.find(c => c.includes("Security audits, pentests and AI red teaming"))
   assert.ok(card, "no security card on the home")
   // Each card has its own background colour.
-  assert.equal(new Set(cards.map(c => c.match(/style="background-color:([^"]+)"/)?.[1])).size, 4)
+  assert.equal(new Set(cards.map(c => c.match(/style="background-color:([^"]+)"/)?.[1])).size, 3)
   assert.match(card, /<a [^>]*href="\/case-studies\/ai-attack-surface\/"/)
   assert.match(card, /<a [^>]*href="\/case-studies\/prompt-injection-email-test\/"/)
+  // An outside link, as elsewhere on the site: a plain <a> that opens a new tab.
+  const site = card.match(/<a [^>]*href="https:\/\/securityaudit\.ae\/"[^>]*>([^<]*)/)
+  assert.ok(site, "no link to securityaudit.ae in the security card")
+  assert.match(site[0], /target="_blank"/)
+  assert.match(site[0], /rel="noopener noreferrer"/)
+  assert.equal(site[1].trim(), "Prices and scope on securityaudit.ae")
   assert.equal(overclaim(card.replace(/<[^>]+>/g, " ")), null)
 })
 
-test("llms.txt lists the security offer under Services and When to use, with two security studies", () => {
+// Asked on 2026-10-19: the "AI automation and company brains" and "Document AI
+// and data platforms" cards told a buyer the same thing, and the second listed
+// a tech stack. One card now, with the links and the proofs of both; the stack
+// stays in llms.txt.
+const AI_CARD_LINKS = ["/ai-automation-uae/", "/guides/company-brain/", "/arabic-ocr/", "/legal-ai-uae/"]
+
+test("the home has three role cards in English and French; the automation and document AI card has the links and proofs of the two it replaces", async () => {
+  const catalog = await loadCatalog()
+  const titles = { en: "Automation and document AI", fr: "Automatisation et IA documentaire" }
+  const proofs = {
+    en: [/At L'Oréal, I built the ingestion pipeline for 100M\+ pages/, /sold a document AI SaaS in 2025\./],
+    fr: [/Chez L'Oréal, j'ai construit le pipeline d'ingestion de 100M\+ pages/, /revendu un SaaS de document AI en 2025\./],
+  }
+  for (const lang of ["en", "fr"]) {
+    assert.deepEqual(Object.keys(catalog[lang].roles), ["leadership", "ai", "security"], lang)
+    const card = catalog[lang].roles.ai
+    assert.equal(card.title, titles[lang])
+    assert.equal(card.badge, undefined, lang)
+    assert.deepEqual(card.links.map(l => l.to), AI_CARD_LINKS, lang)
+    for (const re of proofs[lang]) assert.match(card.desc, re, lang)
+    // The approval step stays: nothing goes out without a person.
+    assert.match(card.desc, lang === "en" ? /A person approves what goes out\./ : /Une personne valide ce qui part\./)
+    assert.doesNotMatch(card.desc, /React|TypeScript|FastAPI|Terraform|GCP/, `${lang}: the card lists a tech stack`)
+    assert.doesNotMatch([card.title, card.desc, ...card.links.map(l => l.label)].join(" "), /[\u2013\u2014]/, `${lang}: dash`)
+  }
+  const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
+  assert.ok(llms.includes("Stack: React, React Native, TypeScript, Python, FastAPI, GCP, Terraform."), "llms.txt no longer gives the stack")
+})
+
+test("the built home shows Fractional CTO, automation and document AI, and security, the middle card with its four links and both proofs", { skip }, () => {
+  const cards = homeRoleCards()
+  assert.deepEqual(
+    cards.map(c => c.match(/<h3 class="role-card-title">([^<]*)<\/h3>/)?.[1]),
+    ["Fractional CTO", "Automation and document AI", "Security audits, pentests and AI red teaming"],
+  )
+  const card = cards[1]
+  assert.deepEqual([...card.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m => m[1]), AI_CARD_LINKS)
+  for (const p of AI_CARD_LINKS) assert.ok(existsSync(join(PUBLIC, p, "index.html")), `${p} has no page`)
+  for (const figure of ["100M+ pages", "2025"]) assert.ok(card.includes(figure), `the card no longer says ${figure}`)
+})
+
+test("llms.txt lists the security offer under Services and When to use, with two security studies and securityaudit.ae", () => {
   const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
   const section = name => llms.split(`\n## ${name}\n`)[1].split("\n## ")[0]
   const service = section("Services").split("\n").find(l => l.startsWith("- Security audits, pentests and AI red teaming: "))
@@ -342,8 +402,9 @@ test("llms.txt lists the security offer under Services and When to use, with two
   for (const line of [service, when[0]]) {
     for (const re of [/penetration tests of web apps and APIs/, /AI red teaming|attacks on AI agents and chatbots/, /security audits of apps built with AI coding tools/]) assert.match(line, re)
     assert.equal(overclaim(line), null, line)
-    assert.doesNotMatch(line, /securityaudit\.ae|[\u2013\u2014]/)
+    assert.doesNotMatch(line, /[\u2013\u2014]/)
   }
+  assert.ok(service.endsWith(`. Prices and scope: ${SECURITY_SITE}`), service)
   const linked = [...service.matchAll(/\[([^\]]+)\]\(https:\/\/arelion\.dev(\/case-studies\/[^)]+)\)/g)]
   assert.ok(linked.length >= 2, `${linked.length} case studies linked`)
   for (const [, title, path] of linked) {

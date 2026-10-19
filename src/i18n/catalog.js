@@ -83,20 +83,11 @@ const catalog = {
         ],
       },
       ai: {
-        title: "AI automation and company brains",
-        desc: "I take repetitive work off your team: first drafts, invoice follow-ups, monthly reports, and the half day spent looking for a document. A person approves what goes out, and the hours go to work that needs a person. Built and sold a document AI SaaS in 2025.",
+        title: "Automation and document AI",
+        desc: "I take repetitive work off your team: first drafts, invoice follow-ups, monthly reports, and the half day spent looking for a document. A person approves what goes out. At L'Oréal, I built the ingestion pipeline for 100M+ pages, for a search that cites its source in every answer. I also launched and sold a document AI SaaS in 2025.",
         links: [
           { to: "/ai-automation-uae/", label: "AI automation in the UAE" },
           { to: "/guides/company-brain/", label: "Company brain" },
-        ],
-      },
-      arch: {
-        title: "Document AI and data platforms",
-        desc: [
-          "Search and answers over large archives, with a source on every answer: the ingestion pipeline for 100M+ pages at L'Oréal (OCR, vectorization, semantic search). relevanC's analytics platform on 400M+ events a month.",
-          "Full-stack (React, React Native, TypeScript, Python, FastAPI) on GCP with Terraform.",
-        ],
-        links: [
           { to: "/arabic-ocr/", label: "Arabic OCR" },
           { to: "/legal-ai-uae/", label: "Legal AI for law firms" },
         ],
@@ -104,10 +95,12 @@ const catalog = {
       security: {
         title: "Security audits, pentests and AI red teaming",
         desc: "An AI agent can be tricked into leaking client data, or into acting on an email sent by a stranger. I look for these holes before attackers do. I run penetration tests of web apps and APIs, attacks on agents and chatbots (AI red teaming), and security audits of apps built with AI coding tools. In one of these audits, I found 49 issues, nine of them high severity.",
-        // No landing page yet: both links go to the security case studies.
+        // Two security case studies, then ARELION's security site (an outside
+        // link: `url`, not `to`).
         links: [
           { to: "/case-studies/ai-attack-surface/", label: "Security audit of an AI-built platform" },
           { to: "/case-studies/prompt-injection-email-test/", label: "Prompt injection test on 5 AI models" },
+          { url: "https://securityaudit.ae/", label: "Prices and scope on securityaudit.ae" },
         ],
       },
     },
@@ -235,20 +228,11 @@ const catalog = {
         ],
       },
       ai: {
-        title: "Automatisation IA et mémoire d'entreprise",
-        desc: "Je retire à vos équipes le travail répétitif : premiers jets, relances de factures, rapports mensuels, et la demi-journée passée à chercher un document. Une personne valide ce qui part, et les heures vont au travail qui a besoin d'elle. Un SaaS de document AI construit et revendu en 2025.",
+        title: "Automatisation et IA documentaire",
+        desc: "Je retire à vos équipes le travail répétitif : premiers jets, relances de factures, rapports mensuels, et la demi-journée passée à chercher un document. Une personne valide ce qui part. Chez L'Oréal, j'ai construit le pipeline d'ingestion de 100M+ pages, pour une recherche qui cite sa source à chaque réponse. J'ai aussi monté et revendu un SaaS de document AI en 2025.",
         links: [
           { to: "/ai-automation-uae/", label: "Automatisation IA aux Émirats" },
           { to: "/guides/company-brain/", label: "Mémoire d'entreprise" },
-        ],
-      },
-      arch: {
-        title: "IA documentaire et plateformes de données",
-        desc: [
-          "Recherche et réponses sur de grandes archives, avec une source pour chaque réponse : le pipeline d'ingestion de 100M+ pages chez L'Oréal (OCR, vectorisation, recherche sémantique). La plateforme analytics de relevanC, sur 400M+ événements par mois.",
-          "Full-stack (React, React Native, TypeScript, Python, FastAPI) sur GCP avec Terraform.",
-        ],
-        links: [
           { to: "/arabic-ocr/", label: "OCR arabe" },
           { to: "/legal-ai-uae/", label: "IA juridique pour cabinets d'avocats" },
         ],
@@ -260,6 +244,7 @@ const catalog = {
         links: [
           { to: "/case-studies/ai-attack-surface/", label: "Audit de sécurité d'une plateforme construite avec l'IA" },
           { to: "/case-studies/prompt-injection-email-test/", label: "Test de prompt injection sur 5 modèles d'IA" },
+          { url: "https://securityaudit.ae/", label: "Prix et périmètre sur securityaudit.ae" },
         ],
       },
     },

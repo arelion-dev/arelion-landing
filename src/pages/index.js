@@ -59,7 +59,6 @@ const ROLE_STYLES = [
   { backgroundColor: "#ffe3cc" },
   { backgroundColor: "#d3f2da" },
   { backgroundColor: "#d8e6ff" },
-  { backgroundColor: "#e9e0ff" },
 ]
 
 // Landing-page links under each role card, one per line. Block links keep the
@@ -80,14 +79,6 @@ const HOME_GUIDES = [
   "/guides/choose-ai-company-uae/",
   "/guides/difc-data-protection-ai/",
 ]
-
-const renderDesc = desc =>
-  (Array.isArray(desc) ? desc : [desc]).map((line, i) => (
-    <React.Fragment key={i}>
-      {i > 0 && <br />}
-      {line}
-    </React.Fragment>
-  ))
 
 const SocialLinks = ({ social }) => {
   const links = [
@@ -195,7 +186,6 @@ const IndexPage = ({ data }) => {
       links: t("roles.leadership.links"),
     },
     { title: t("roles.ai.title"), desc: t("roles.ai.desc"), links: t("roles.ai.links") },
-    { title: t("roles.arch.title"), desc: t("roles.arch.desc"), links: t("roles.arch.links") },
     { title: t("roles.security.title"), desc: t("roles.security.desc"), links: t("roles.security.links") },
   ]
   const homeGuides = HOME_GUIDES.map(slug =>
@@ -305,13 +295,26 @@ const IndexPage = ({ data }) => {
             {role.badge && (
               <span className="role-card-badge">{role.badge}</span>
             )}
-            <p className="role-card-desc">{renderDesc(role.desc)}</p>
+            <p className="role-card-desc">{role.desc}</p>
             <div style={ROLE_LINK_LIST_STYLE}>
-              {role.links.map(link => (
-                <Link key={link.to} to={link.to} className="cs-row-read" style={ROLE_LINK_STYLE}>
-                  {link.label} <span className="cs-arrow">&rarr;</span>
-                </Link>
-              ))}
+              {role.links.map(link =>
+                link.url ? (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cs-row-read"
+                    style={ROLE_LINK_STYLE}
+                  >
+                    {link.label} <span className="cs-arrow">&#8599;</span>
+                  </a>
+                ) : (
+                  <Link key={link.to} to={link.to} className="cs-row-read" style={ROLE_LINK_STYLE}>
+                    {link.label} <span className="cs-arrow">&rarr;</span>
+                  </Link>
+                ),
+              )}
             </div>
           </div>
         ))}

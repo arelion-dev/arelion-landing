@@ -620,11 +620,11 @@ test("the offer box of a case study sits in its article, buttons side by side, a
   await context.close()
 })
 
-// The home's role cards (review of 2026-10-18): with the fourth card (security),
-// four in a row from 64rem up made each card 229px wide at 1040px, with the
-// French badge on two lines; at 75rem the English badge still wrapped up to
-// about 1230px. Two per row up to 80rem, four in a row above.
-test("the home's four role cards sit two per row up to 1280px and four in a row above, badge on one line, in English and French", { skip }, async () => {
+// The home's role cards. Review of 2026-10-18: four cards in a row put the
+// badge on two lines below about 1230px. Since 2026-10-19 the home has three
+// cards again (the two AI cards merged), in one row from 64rem up as before,
+// and the badge must still keep to one line.
+test("the home's three role cards sit in one row on desktop, badge on one line, in English and French", { skip }, async () => {
   // React has taken over the page once the language buttons carry their click handler.
   const ready = page =>
     page.waitForFunction(() => Object.keys(document.querySelector(".lang-switch button") || {}).some(k => k.startsWith("__reactProps")))
@@ -633,7 +633,7 @@ test("the home's four role cards sit two per row up to 1280px and four in a row 
     await page.setViewportSize({ width: 1440, height: 900 })
     await page.locator(".portfolio-header-nav .lang-switch").getByRole("button", { name: lang }).click()
     await page.locator(".role-card-title", { hasText: title }).waitFor()
-    for (const width of [1040, 1220, 1280, 1300, 1440]) {
+    for (const width of [1040, 1220, 1280, 1440]) {
       await page.setViewportSize({ width, height: 900 })
       const { cards, rows, badgeLines } = await page.evaluate(() => {
         const cards = [...document.querySelectorAll(".roles-section .role-card")]
@@ -645,8 +645,8 @@ test("the home's four role cards sit two per row up to 1280px and four in a row 
           badgeLines: new Set(Array.from(range.getClientRects(), r => Math.round(r.top))).size,
         }
       })
-      assert.equal(cards, 4, `${lang} ${width}px: ${cards} role cards`)
-      assert.equal(rows, width <= 1280 ? 2 : 1, `${lang} ${width}px: ${rows} row(s) of cards`)
+      assert.equal(cards, 3, `${lang} ${width}px: ${cards} role cards`)
+      assert.equal(rows, 1, `${lang} ${width}px: ${rows} rows of cards`)
       assert.equal(badgeLines, 1, `${lang} ${width}px: the badge takes ${badgeLines} lines`)
     }
   }
