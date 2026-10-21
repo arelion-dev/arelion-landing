@@ -59,10 +59,22 @@ const PrivacyPage = ({ location }) => (
 
 export default PrivacyPage
 
+const PRIVACY_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  url: "https://arelion.dev/privacy/",
+  publisher: { "@id": "https://arelion.dev/#organization" },
+}
+
 export const Head = ({ location }) => (
   <SEO
     title="Privacy policy"
     description="How arelion.dev handles data: anonymized Google Analytics, a local language preference, no forms, no data selling. Published by ARELION FZCO, Dubai."
     pathname={location.pathname}
-  />
+  >
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(PRIVACY_JSONLD) }}
+    />
+  </SEO>
 )

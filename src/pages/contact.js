@@ -80,10 +80,22 @@ const ContactPage = ({ location }) => (
 
 export default ContactPage
 
+const CONTACT_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  url: "https://arelion.dev/contact/",
+  publisher: { "@id": "https://arelion.dev/#organization" },
+}
+
 export const Head = ({ location }) => (
   <SEO
-    title="Contact"
+    title="Contact Arelion, AI consultancy in Dubai"
     description="Contact Arelion (Antonin Ribeaud, ARELION FZCO), for companies in Dubai, Abu Dhabi and the UAE. Email, WhatsApp, LinkedIn, or book a call to scope AI work."
     pathname={location.pathname}
-  />
+  >
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(CONTACT_JSONLD) }}
+    />
+  </SEO>
 )

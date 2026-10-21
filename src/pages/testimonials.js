@@ -76,10 +76,22 @@ const TestimonialsPage = () => {
 
 export default TestimonialsPage
 
+const TESTIMONIALS_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  url: "https://arelion.dev/testimonials/",
+  publisher: { "@id": "https://arelion.dev/#organization" },
+}
+
 export const Head = ({ location }) => (
   <SEO
     title="Testimonials"
     description="What clients say about working with Antonin Ribeaud (Arelion): full LinkedIn recommendations from CEOs, product leaders and managing directors."
     pathname={location.pathname}
-  />
+  >
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(TESTIMONIALS_JSONLD) }}
+    />
+  </SEO>
 )

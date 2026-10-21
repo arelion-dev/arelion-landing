@@ -59,7 +59,7 @@ export const Head = ({ data, location }) => {
   }
   return (
     <SEO
-      title="Guides"
+      title="AI guides for companies in the UAE"
       description="Plain answers to the questions companies in the UAE ask me before an AI project, with links to the case studies behind each answer."
       pathname={location.pathname}
     >

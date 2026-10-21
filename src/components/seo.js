@@ -1,6 +1,8 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 
+export const TITLE_MAX = 60
+
 const SEO = ({ description, title, pathname, image, noindex, children }) => {
   const { site } = useStaticQuery(
     graphql`
@@ -20,6 +22,9 @@ const SEO = ({ description, title, pathname, image, noindex, children }) => {
   )
 
   const metaDescription = description || site.siteMetadata.description
+  // Google cuts titles past about 60 characters: the brand suffix only goes on
+  // when the whole title still fits.
+  const branded = site.siteMetadata?.title ? `${title} | ${site.siteMetadata.title}` : title
   const defaultTitle = site.siteMetadata?.title
   const siteUrl = site.siteMetadata?.siteUrl || ``
   const twitterUrl = site.siteMetadata?.social?.twitter || ``
@@ -34,7 +39,7 @@ const SEO = ({ description, title, pathname, image, noindex, children }) => {
 
   return (
     <>
-      <title>{defaultTitle ? `${title} | ${defaultTitle}` : title}</title>
+      <title>{branded.length <= TITLE_MAX ? branded : title}</title>
       <meta name="description" content={metaDescription} />
       {/* A page kept out of search (the 404) gets no canonical: /404.html would point to a URL that does not exist. */}
       {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}

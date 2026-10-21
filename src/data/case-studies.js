@@ -67,6 +67,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "multi-tier-cache-at-scale",
+    // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
+    seoTitle: "Serving 50M requests a day with a multi-tier cache",
     date: "2026-06-12",
     pillar: "Build",
     offers: ["Fractional CTO"],
@@ -170,6 +172,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "perseverant-research-agent",
+    // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
+    seoTitle: "An autonomous research agent over a private corpus",
     date: "2026-08-05",
     pillar: "Build",
     offers: ["Document AI", "AI agents"],
@@ -1005,6 +1009,8 @@ const CASE_STUDIES = [
   }] : []),
   {
     slug: "ai-attack-surface",
+    // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
+    seoTitle: "Security audit of an AI-generated codebase before launch",
     date: "2026-10-11",
     // Offer box inside the study's text, where its markdown says <!-- offer -->, and the line of the bottom box.
     offer: {
@@ -1076,6 +1082,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "llm-sleeper-agents",
+    // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
+    seoTitle: "How I backdoored a small model on a trigger word",
     date: "2026-08-12",
     article: "/blog/llm-sleeper-agents/",
     articleBusiness: "/blog/llm-sleeper-agents-business/",
@@ -1207,6 +1215,8 @@ const CASE_STUDIES = [
   }] : []),
   {
     slug: "fractional-cpto-programme",
+    // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
+    seoTitle: "Fractional CTO for a national news outlet (multi-year)",
     date: "2026-04-23",
     faq: [
       {
@@ -1288,6 +1298,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "wingman-github-copilot-from-scratch",
+    // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
+    seoTitle: "Rebuilding GitHub Copilot on a private codebase",
     date: "2024-07-14",
     pillar: "LLM",
     offers: ["Private LLMs"],
@@ -1329,6 +1341,8 @@ const CASE_STUDIES = [
   },
   {
     slug: "hotel-lobby-ai-video",
+    // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
+    seoTitle: "Make the viral Hotel Lobby AI video yourself ($1.95)",
     date: "2026-09-24",
     pillar: "Lab",
     offers: ["Lab"],

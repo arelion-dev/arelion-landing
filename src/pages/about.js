@@ -141,7 +141,7 @@ const ABOUT_JSONLD = {
 
 export const Head = ({ location }) => (
   <SEO
-    title="About"
+    title="About Arelion, AI consultancy in Dubai"
     description="Arelion is an AI consultancy in Dubai run by Antonin Ribeaud (ARELION FZCO). AI systems from roadmap to production: document AI, legal AI, private LLMs."
     pathname={location.pathname}
   >

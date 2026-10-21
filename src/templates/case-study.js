@@ -495,7 +495,7 @@ export const Head = ({ pageContext, data, location }) => {
 
   return (
     <SEO
-      title={cs ? cs.title.en : "Case study"}
+      title={cs ? cs.seoTitle || cs.title.en : "Case study"}
       description={description}
       pathname={path}
       // Set by gatsby-node only when static/og/<slug>.png exists; else the default share image.
