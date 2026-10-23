@@ -1,6 +1,6 @@
 ---
-title: "Gemini OCR on Arabic: tested on 10 real pages"
-description: "Gemini 3.8 Flash got 1.9% of characters wrong on 10 real Arabic scans and photos, at 0.3 cents a page. Where it wrote words that are not on the page."
+title: "Gemini OCR on Arabic: 1.9% of characters wrong on real pages"
+description: "Gemini 3.8 Flash got 1.9% of characters wrong on 10 real Arabic scans and photos, against 3.5% for Apple Vision, at 0.3 cents a page. Where it made words up."
 path: "/guides/gemini-ocr-arabic/"
 date: "2026-10-10"
 kicker: "Arabic OCR"

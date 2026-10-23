@@ -1,6 +1,6 @@
 ---
 title: "Arabic chatbot: 5 AI models tested on Emirati Arabic"
-description: "What an Arabic chatbot needs to understand Gulf customers. I tested 5 AI models on 40 Emirati dialect questions; the best got 35 right."
+description: "Which AI model to put behind an Arabic chatbot for UAE customers: I tested 5 on 40 Emirati dialect questions, the best got 35. How to test a vendor's bot."
 path: "/guides/arabic-chatbot/"
 date: "2026-10-10"
 kicker: "Guide"
@@ -19,6 +19,13 @@ A chatbot for customers in the UAE has to read the Arabic people type. People in
 To see how far current models get, I asked five of them 40 multiple-choice questions that native Emirati speakers wrote about Emirati greetings and dialect words, once in Arabic script and once in Arabizi.
 
 **Gemini 3.8 Flash got 35 of the 40 right, and Claude Opus 5.5 and GPT-6.1 Sol 34 each. Claude Haiku 5.5 got 27. Qwen3.8 27B, the only model in the test you can run on your own server, got 25. With each question typed in Arabizi and the options left in Arabic script, the top three scored the same; Haiku got 25 and Qwen 24. The 400 calls cost $0.35 in total.**
+
+## Choosing an Arabic chatbot for a UAE business
+
+- **Look for one of the three best models behind the bot.** Gemini 3.8 Flash, GPT-6.1 Sol and Claude Opus 5.5 got 34 or 35 of 40 on Emirati dialect. I would not rank them against each other on a test this small. Gemini and GPT cost 3.9 cents for 80 calls, Opus 19.9 cents.
+- **A model on your own server scored lower.** Qwen3.8 27B, the only one here you can host yourself, got 25 of 40. Hosting it keeps customer messages inside the company, which you have to weigh against 10 fewer right answers.
+- **Ask the vendor which model its bot runs on, and in which country.** I tested the models through an API; I did not test any vendor's finished chatbot. The vendor adds its own instructions and handover rules on top, so its bot needs a test of its own.
+- **Test that bot on your own messages before you sign.** Take 40 to 50 real ones, some in Arabizi and some with English words, and write down the right reply before the demo. The steps are further down this page. My 400 calls cost less than a dollar, so cost is no reason to skip yours.
 
 ## The test: 40 Emirati questions, in Arabic script and in Arabizi
 

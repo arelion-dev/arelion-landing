@@ -1,6 +1,6 @@
 ---
-title: "Software and app development in Abu Dhabi"
-description: "Software and app development for Abu Dhabi companies by a senior engineer: a Top 5 App Store app, a SaaS built and sold, 400M+ events a month."
+title: "App development in Abu Dhabi: mobile apps, software and AI"
+description: "Mobile apps, business software and AI for Abu Dhabi companies, by a senior engineer whose app reached the App Store Top 5 and passed 1M downloads."
 path: "/software-development-abu-dhabi/"
 date: "2026-10-07"
 kicker: "Abu Dhabi"
@@ -20,14 +20,24 @@ In 2016, I shipped PokeSpot, a mobile companion app for Pokémon Go, at the heig
 
 **12 years of shipping software: a Top 5 App Store app, a document AI SaaS built and sold, analytics on 400M+ events a month, and a news platform with 500,000+ articles moved without downtime.**
 
-## What I have built
+## Mobile app development in Abu Dhabi
 
-- **Mobile apps.** PokeSpot, on iOS and Android, with its release pipelines and store rollouts. At Matters, the core features of a mobility app (carsharing, rentals, minicabs) and its iOS releases.
+- **PokeSpot**, on iOS and Android, with its release pipelines and store rollouts: Top 5 of the App Store, 1 million+ downloads.
+- **At Matters**, the core features of a mobility app (carsharing, rentals, minicabs) and its iOS releases.
+
+I usually build with React Native, so one codebase serves both stores.
+
+## Business software and SaaS
+
 - **SaaS products.** privately.ai, a document AI product: teams ask their own files a question and get the answer with its source, scanned PDFs included. I built it as CTO; the IP and the code were sold in 2025.
 - **Data platforms.** At relevanC, analytics on 400M+ events a month, and a campaign tool where campaign managers need half the clicks they used to.
 - **A process automated end to end.** At Foundingbird, company incorporation went from weeks to hours: Malaysia's first fully online company-secretary service.
 - **Real-time systems.** At Flashbreak, the broadcast engine of a live game show, with thousands of concurrent viewers across two shows a day.
-- **Rebuilds without downtime.** A national news outlet's platform, 500,000+ articles moved to a stack the company owns with zero downtime for readers ([the case study](/case-studies/newsroom-platform-rebuild/)).
+- **Rebuilds without downtime.** A national news outlet's platform, 500,000+ articles moved to a stack the company owns while it kept serving tens of millions of pageviews a month, with no downtime for readers ([the case study](/case-studies/newsroom-platform-rebuild/)).
+
+## AI inside the product
+
+If the app has to answer questions from your own documents, I have built that at scale: document AI over 100M+ pages that answers in under a second and cites its source for every sentence ([the case study](/case-studies/document-intelligence-at-scale/)). The [company brain](/guides/company-brain/) guide explains how I build one.
 
 ## One engineer or an agency
 
@@ -39,7 +49,6 @@ The limit is bandwidth. A project that needs twenty developers from the first we
 
 - **Arabic and English from the first screen.** An app for Abu Dhabi usually needs both languages, and Arabic means right-to-left layouts. Plan them in the first design; adding them to finished screens means redoing the layouts. Arabic text also breaks where people do not expect it: copy it out of a PDF and some words come back with their letters swapped ([Arabic PDF to text](/guides/arabic-pdf-to-text/)).
 - **The data rules depend on where you are registered.** A company in Abu Dhabi Global Market follows ADGM's own data protection regulations ([ADGM guide](/guides/adgm-data-protection-ai/)). Most other companies in Abu Dhabi follow the federal PDPL ([UAE PDPL guide](/guides/uae-pdpl-ai/)). Know which one applies before you decide where the app keeps personal data.
-- **AI inside the product.** If the app has to answer questions from your own documents, I have built that at scale ([company brain](/guides/company-brain/)).
 
 ## How a project runs
 

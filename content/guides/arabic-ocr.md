@@ -1,6 +1,6 @@
 ---
-title: "Arabic OCR in 2026: 14 engines on UAE laws and real scans"
-description: "I tested 14 Arabic OCR engines and AI models on UAE law pages, scanned books and phone photos. Gemini leads; Tesseract got 1 character in 5 wrong."
+title: "Arabic OCR in the UAE: 14 engines, Gemini first on scans"
+description: "I tested 14 Arabic OCR engines and AI models on UAE law PDFs, scanned books and phone photos. Gemini got 1.9% of characters wrong, Tesseract 1 in 5."
 path: "/arabic-ocr/"
 date: "2026-10-07"
 updated: "2026-10-10"

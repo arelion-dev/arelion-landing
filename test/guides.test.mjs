@@ -92,6 +92,30 @@ test("the Arabic chatbot guide says the options stay in Arabic script in the Ara
   assert.match(arabizi, /options stayed in Arabic script/)
 })
 
+// Google cuts titles past about 60 characters. Four guides on page one had no click on
+// 124 impressions (SEO report, 2026-10-21): their titles now carry the result and fit whole.
+test("every guide title fits in what Google shows (60 characters)", () => {
+  for (const g of guides) assert.ok(g.data.title.length <= 60, `${g.file}: title is ${g.data.title.length} characters`)
+})
+
+// "arabic chatbot" (3,600 searches a month in the UAE) comes from buyers: the guide
+// answers them before the test details (SEO report, 2026-10-21).
+test("the Arabic chatbot guide answers a UAE business in its first H2", () => {
+  const g = guides.find(g => g.path === "/guides/arabic-chatbot/")
+  const [first] = [...g.raw.matchAll(/^## (.*)$/gm)].map(m => m[1])
+  assert.match(first, /Arabic chatbot/)
+  assert.match(first, /UAE business/)
+})
+
+// The searches are "app development abu dhabi" and "mobile app development abu dhabi",
+// 390 a month each (Keyword Planner UAE, 2026-10-21).
+test("the Abu Dhabi page says app development in Abu Dhabi and has a section per kind of project", () => {
+  const g = guides.find(g => g.path === "/software-development-abu-dhabi/")
+  assert.match(g.data.title, /^App development in Abu Dhabi\b/)
+  const h2 = [...g.raw.matchAll(/^## (.*)$/gm)].map(m => m[1])
+  for (const kind of [/^Mobile app development in Abu Dhabi$/, /software/i, /^AI\b/]) assert.ok(h2.some(h => kind.test(h)), `no H2 matching ${kind}`)
+})
+
 const built = existsSync(join(PUBLIC, "index.html"))
 const html = p => readFileSync(join(PUBLIC, p, "index.html"), "utf8")
 // Gatsby adds attributes such as data-gatsby-head to the tag, so match any attribute list.

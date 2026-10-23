@@ -1,6 +1,6 @@
 ---
-title: "How to choose an AI company in the UAE: 10 questions"
-description: "Ten questions to ask AI companies in the UAE before you sign, and what weak and good answers sound like, from an engineer who ships AI to production."
+title: "AI companies in the UAE: 10 questions to ask before you sign"
+description: "10 questions to send every AI company on your UAE shortlist, with what weak and good answers sound like, from an engineer who ships AI to production."
 path: "/guides/choose-ai-company-uae/"
 date: "2026-10-06"
 kicker: "Guide"

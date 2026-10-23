@@ -1,6 +1,6 @@
 ---
-title: "ADGM Data Protection Regulations 2021 and AI, explained"
-description: "Who must follow ADGM's Data Protection Regulations 2021, the one section that names AI, sending personal data to AI vendors, and what I would build."
+title: "ADGM Data Protection Regulations 2021: AI rules and fines"
+description: "Who must follow ADGM's Data Protection Regulations 2021, the one section that names AI, sending personal data to US AI vendors, and fines up to USD 28M."
 path: "/guides/adgm-data-protection-ai/"
 date: "2026-10-07"
 kicker: "Guide"

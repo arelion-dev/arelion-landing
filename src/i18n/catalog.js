@@ -78,7 +78,7 @@ const catalog = {
         desc: "I own the technology side for companies without a tech lead: roadmap, scope, specs, vendors and hiring input. I also audit what is already in place: the team, the security and the contracts. Two startups cofounded and run end to end (Foundingbird, Kaunto).",
         // Landing pages each card leads to (internal links from the home).
         links: [
-          { to: "/software-development-abu-dhabi/", label: "Software and app development in Abu Dhabi" },
+          { to: "/software-development-abu-dhabi/", label: "App development in Abu Dhabi" },
           { to: "/case-studies/ai-attack-surface/", label: "Security audit of an AI-built platform" },
         ],
       },
