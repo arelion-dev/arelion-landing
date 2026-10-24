@@ -364,7 +364,7 @@ test("every link to securityaudit.ae opens a new tab and keeps arelion.dev as th
       assert.match(tag, /rel="noopener"/, `${page}: ${tag}`)
     }
   }
-  for (const page of ["/index.html", "/case-studies/ai-attack-surface/index.html", "/case-studies/prompt-injection-email-test/index.html"]) {
+  for (const page of ["/index.html", "/about/index.html", "/case-studies/ai-attack-surface/index.html", "/case-studies/prompt-injection-email-test/index.html"]) {
     assert.ok(pages.has(page), `${page} no longer links to securityaudit.ae`)
   }
 })

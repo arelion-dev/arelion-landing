@@ -91,6 +91,13 @@ const AboutPage = ({ location }) => (
         AI systems (RAG, LLM integrations, agent workflows), cloud platforms and
         SaaS, technical product leadership.
       </dd>
+      <dt>Security audits</dt>
+      <dd>
+        <a href="https://securityaudit.ae/" target="_blank" rel="noopener">
+          securityaudit.ae
+        </a>
+        : AI agent security audits, AI-built app audits, web app and API tests.
+      </dd>
       <dt>Engagement model</dt>
       <dd>Day rate, remote, part-time or full-time. A few clients at a time.</dd>
       <dt>Stack</dt>
