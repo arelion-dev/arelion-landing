@@ -3,7 +3,7 @@ title: "Arabic OCR in the UAE: 14 engines, Gemini first on scans"
 description: "I tested 14 Arabic OCR engines and AI models on UAE law PDFs, scanned books and phone photos. Gemini got 1.9% of characters wrong, Tesseract 1 in 5."
 path: "/arabic-ocr/"
 date: "2026-10-07"
-updated: "2026-10-10"
+updated: "2026-10-27"
 kicker: "Arabic OCR"
 legalDisclaimer: false
 related: ["ocr-benchmark", "document-intelligence-at-scale"]
@@ -178,6 +178,7 @@ The code, the page list and the per-page scores are public on GitHub, in [arabic
 ## What this test does not cover
 
 - **Printed text only.** No handwriting, no ID cards, no invoices or stamped forms. I looked for public sets of those with full-page transcriptions and a license that lets me publish results, and I found none.
+- **Reading, not understanding.** This test checks that an engine copies the printed text. How AI models answer questions in Emirati dialect, typed in Arabic script or in Arabizi, is in my [Arabic chatbot](/guides/arabic-chatbot/) test.
 - **Not every engine on every page.** Surya read 44 of the 96 real pages, Docling 9, and the paid models 10. Every comparison above only uses pages that all its engines read.
 - **Default settings.** Each engine ran with its documented defaults for Arabic, plus one PaddleOCR variant. Tuning can help a lot, as the PaddleOCR section shows.
 - **One machine.** An Apple M5 Pro with 64 GB of memory. Your seconds per page will differ. PaddleOCR ran on the CPU, since it has no Apple GPU backend.

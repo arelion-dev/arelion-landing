@@ -372,8 +372,9 @@ test("every link to securityaudit.ae opens a new tab and keeps arelion.dev as th
 // Asked on 2026-10-19: the "AI automation and company brains" and "Document AI
 // and data platforms" cards told a buyer the same thing, and the second listed
 // a tech stack. One card now, with the links and the proofs of both; the stack
-// stays in llms.txt.
-const AI_CARD_LINKS = ["/ai-automation-uae/", "/guides/company-brain/", "/arabic-ocr/", "/legal-ai-uae/"]
+// stays in llms.txt. On 2026-10-27 the card also links the Arabic PDF guide, which
+// Google had not crawled 20 days after launch: the home is crawled every day.
+const AI_CARD_LINKS = ["/ai-automation-uae/", "/guides/company-brain/", "/arabic-ocr/", "/guides/arabic-pdf-to-text/", "/legal-ai-uae/"]
 
 test("the home has three role cards in English and French; the automation and document AI card has the links and proofs of the two it replaces", async () => {
   const catalog = await loadCatalog()
@@ -398,7 +399,7 @@ test("the home has three role cards in English and French; the automation and do
   assert.ok(llms.includes("Stack: React, React Native, TypeScript, Python, FastAPI, GCP, Terraform."), "llms.txt no longer gives the stack")
 })
 
-test("the built home shows Fractional CTO, automation and document AI, and security, the middle card with its four links and both proofs", { skip }, () => {
+test("the built home shows Fractional CTO, automation and document AI, and security, the middle card with its five links and both proofs", { skip }, () => {
   const cards = homeRoleCards()
   assert.deepEqual(
     cards.map(c => c.match(/<h2 class="role-card-title">([^<]*)<\/h2>/)?.[1]),

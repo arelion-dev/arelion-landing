@@ -3,6 +3,7 @@ title: "Gemini OCR on Arabic: 1.9% of characters wrong on real pages"
 description: "Gemini 3.8 Flash got 1.9% of characters wrong on 10 real Arabic scans and photos, against 3.5% for Apple Vision, at 0.3 cents a page. Where it made words up."
 path: "/guides/gemini-ocr-arabic/"
 date: "2026-10-10"
+updated: "2026-10-27"
 kicker: "Arabic OCR"
 legalDisclaimer: false
 related: ["ocr-benchmark", "document-intelligence-at-scale"]
@@ -174,4 +175,5 @@ The paid tier means an API key from a Google Cloud project with billing turned o
 - **PDFs.** I sent PNG images. Google accepts PDFs of up to 50 MB or 1,000 pages, and says Gemini 3 also extracts the text layer of a PDF and passes it to the model. On the two law PDFs of my test, common extraction tools return some letters in the wrong order, and I did not test what Google's extraction does.
 - **Other models and settings.** Gemini 3.6 Flash, where requests for 3.5 Flash now go, and Gemini 3.8 Flash with thinking set to medium or high, or with images at a higher resolution than the default.
 - **Handwriting, ID cards, forms and stamps.** None in the test set.
+- **Understanding.** This page measures copying printed text. In my [Arabic chatbot](/guides/arabic-chatbot/) test, Gemini 3.8 Flash got 35 of 40 multiple-choice questions on Emirati dialect right.
 - **Volume.** Ten real pages, plus ten law images for Gemini 3.5 Flash, one run each, one call at a time.

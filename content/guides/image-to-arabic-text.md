@@ -3,6 +3,7 @@ title: "Image to Arabic text: what works on photos and scans"
 description: "I tested 6 OCR engines on photos and scans of printed Arabic pages. On one-page photos, Apple got 8.5% of characters wrong and Tesseract 38.1%."
 path: "/guides/image-to-arabic-text/"
 date: "2026-10-07"
+updated: "2026-10-27"
 kicker: "Arabic OCR"
 legalDisclaimer: false
 related: ["ocr-benchmark", "doc-agent-on-sqlite"]
@@ -56,7 +57,7 @@ Surya made the fewest mistakes on the real pages overall: 3.9%, and 0.6% on the 
 
 ## In the cloud: Gemini
 
-Seven paid AI models read 10 of the real pages, 8 scans and 2 phone photos. Gemini did best: 1.6% of characters wrong for Gemini 3.5 Flash at about 1.8 cents a page, and 1.9% for Gemini 3.8 Flash at a third of a cent. Claude Opus 5.5 got 2.8%. On the two photos, Gemini 3.8 Flash got 4.6% wrong, against 7.4% for Apple Vision. The full table is in the [benchmark](/arabic-ocr/). Each image goes to Google, and the free tier lets Google use what you send to improve its products; the paid tier does not (Google's pricing page, October 2026).
+Seven paid AI models read 10 of the real pages, 8 scans and 2 phone photos. Gemini did best: 1.9% of characters wrong for Gemini 3.8 Flash, at a third of a cent a page. Gemini 3.5 Flash did slightly better (1.6%), but Google retired it on 8 October 2026, the day after my run. Claude Opus 5.5 got 2.8%. On the two photos, Gemini 3.8 Flash got 4.6% wrong, against 7.4% for Apple Vision. The full table is in the [benchmark](/arabic-ocr/). Each image goes to Google, and the free tier lets Google use what you send to improve its products; the paid tier does not (Google's pricing page, October 2026).
 
 ## What I would not use
 
@@ -71,3 +72,5 @@ Seven paid AI models read 10 of the real pages, 8 scans and 2 phone photos. Gemi
 - **Check the numbers.** If the text holds amounts or dates, compare them with the image. A dot read as a zero, or a small 1 read as an exclamation mark, will not show up anywhere else.
 
 I do not have a number for handwriting: every page in my test is printed.
+
+Reading printed Arabic is one test. Understanding the Arabic people type, Emirati dialect and Arabizi included, is another: see my [Arabic chatbot](/guides/arabic-chatbot/) test.

@@ -256,6 +256,19 @@ test("the OCR pages no longer advise Gemini 3.5 Flash and explain the watermark 
   assert.doesNotMatch(pdfGuide, /Gemini 3\.5 Flash if the pages may go to Google/)
   assert.match(pdfGuide, /Gemini 3\.8 Flash if the pages may go to Google/)
   assert.doesNotMatch(read("src/tools/ocr-picker.js"), /for about 1\.8 cents/)
+  // Missed on 2026-10-10: the image guide still named 3.5 Flash best, at 1.8 cents a page.
+  const imageGuide = read("content/guides/image-to-arabic-text.md")
+  assert.doesNotMatch(imageGuide, /1\.6% of characters wrong for Gemini 3\.5 Flash at about 1\.8 cents/)
+  assert.match(imageGuide, /Gemini 3\.5 Flash did slightly better \(1\.6%\), but Google retired it on 8 October 2026/)
+})
+
+// SEO report of 2026-10-27: the Arabic chatbot guide (3,600 searches a month for
+// "arabic chatbot") had no link from the pages about Arabic.
+test("the Arabic OCR pages link to the Arabic chatbot guide", () => {
+  for (const file of ["arabic-ocr.md", "gemini-ocr-arabic.md", "image-to-arabic-text.md"]) {
+    const raw = readFileSync(join(GUIDES_DIR, file), "utf8")
+    assert.ok(raw.includes("[Arabic chatbot](/guides/arabic-chatbot/)"), `${file}: no link to the Arabic chatbot guide`)
+  }
 })
 
 // ---- The offer box in a guide's text, and the line of its bottom box ----
