@@ -300,7 +300,7 @@ const IndexPage = ({ data }) => {
             <div style={ROLE_LINK_LIST_STYLE}>
               {role.links.map(link =>
                 link.url ? (
-                  // No "noreferrer": the site linked (securityaudit.ae) sees arelion.dev as the referrer in its analytics.
+                  // No "noreferrer": the sites linked (securityaudit.ae, nakhoda.ae) see arelion.dev as the referrer.
                   <a
                     key={link.url}
                     href={link.url}

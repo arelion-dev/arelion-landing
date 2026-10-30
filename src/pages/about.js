@@ -98,6 +98,14 @@ const AboutPage = ({ location }) => (
         </a>
         : AI agent security audits, AI-built app audits, web app and API tests.
       </dd>
+      <dt>App and software builds</dt>
+      <dd>
+        <a href="https://nakhoda.ae/" target="_blank" rel="noopener">
+          nakhoda.ae
+        </a>
+        : Nakhoda, the software studio of ARELION FZCO. Mobile apps, websites
+        and custom software at one fixed price.
+      </dd>
       <dt>Engagement model</dt>
       <dd>Day rate, remote, part-time or full-time. A few clients at a time.</dd>
       <dt>Stack</dt>

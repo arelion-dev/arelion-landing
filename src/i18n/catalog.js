@@ -79,6 +79,7 @@ const catalog = {
         // Landing pages each card leads to (internal links from the home).
         links: [
           { to: "/software-development-abu-dhabi/", label: "App development in Abu Dhabi" },
+          { url: "https://nakhoda.ae/build/mobile-app-development-dubai/", label: "App development in Dubai, on nakhoda.ae" },
           { to: "/case-studies/ai-attack-surface/", label: "Security audit of an AI-built platform" },
         ],
       },
@@ -225,6 +226,7 @@ const catalog = {
         // The pages behind these links are in English.
         links: [
           { to: "/software-development-abu-dhabi/", label: "Développement logiciel et d'apps à Abu Dhabi" },
+          { url: "https://nakhoda.ae/build/mobile-app-development-dubai/", label: "Développement d'apps à Dubaï, sur nakhoda.ae" },
           { to: "/case-studies/ai-attack-surface/", label: "Audit de sécurité d'une plateforme construite avec l'IA" },
         ],
       },
