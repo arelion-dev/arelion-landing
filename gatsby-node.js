@@ -166,3 +166,13 @@ exports.createSchemaCustomization = ({ actions }) => {
 exports.onCreateWebpackConfig = ({ stage, actions }) => {
   if (stage === "build-javascript") actions.setWebpackConfig({ devtool: false })
 }
+
+// llms-full.txt: the text of every page of the sitemap in one file, for AI
+// assistants (scripts/llms-full.mjs). It runs after gatsby-plugin-sitemap,
+// since the site's own gatsby-node comes last, and reads the built pages.
+exports.onPostBuild = async ({ reporter }) => {
+  const { llmsFull } = await import(`./scripts/llms-full.mjs`)
+  const text = llmsFull({ out: `public`, name: `arelion.dev`, sitemap: `sitemap-0.xml` })
+  fs.writeFileSync(path.join(`public`, `llms-full.txt`), text)
+  reporter.info(`llms-full.txt: ${text.split("\nURL: ").length - 1} pages`)
+}

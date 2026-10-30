@@ -84,6 +84,10 @@ How to engage: read the case studies at https://arelion.dev/case-studies/ for pr
 - [Zero-downtime CMS replatform for a national news site](https://arelion.dev/case-studies/newsroom-platform-rebuild/)
 - [Rebuilding GitHub Copilot on a private codebase (CodeLlama-7B, LoRA)](https://arelion.dev/case-studies/wingman-github-copilot-from-scratch/)
 
+## Full text
+
+- Every page of this site in one file: https://arelion.dev/llms-full.txt
+
 ## Contact
 
 - Contact page: https://arelion.dev/contact/
