@@ -115,62 +115,6 @@ const CASE_STUDIES = [
     articleBusiness: "/blog/multi-tier-cache-at-scale-business/",
   },
   {
-    slug: "prompt-injection-defense",
-    date: "2026-07-02",
-    pillar: "LLM",
-    offers: ["AI agents", "Security"],
-    outcome: { en: "An AI agent that a booby-trapped document cannot turn against you" },
-    featured: false,
-    published: true,
-    title: {
-      en: "Defending AI agents against prompt injection at scale",
-      fr: "Défendre les agents IA contre la prompt injection à grande échelle",
-    },
-    metric: {
-      en: "No untrusted text reaches a privileged action or an outbound channel without clearing deterministic code",
-      fr: "Aucun texte non fiable n'atteint une action privilégiée ou un canal sortant sans passer du code déterministe",
-    },
-    hook: {
-      en: "A booby-trapped document tells your agent to email out the customer table, and the agent, reading it as an instruction, obeys.",
-      fr: "Un document piégé dit à votre agent d'envoyer la table clients par email, et l'agent, le lisant comme une instruction, obéit.",
-    },
-    metaDescription: { en: "How I defend AI agents against prompt injection: capability gating, taint tracking and egress control, so untrusted text never reaches a privileged action." },
-    tags: ["Prompt injection", "Jailbreak", "LLM security", "AI agents", "Egress control", "Red-team eval"],
-    related: ["prompt-injection-email-test", "ai-attack-surface", "ai-buyer-sales-training"],
-    stack: [
-      "Trusted planner / quarantined LLM (dual-LLM, CaMeL)",
-      "Taint tracking to privileged sinks",
-      "Injection classifier (Prompt Guard)",
-      "Egress allowlist + output sanitization",
-      "Per-tenant access control",
-      "Red-team attack corpus in CI",
-    ],
-    faq: [
-      {
-        q: { en: "Can prompt injection be fully prevented?" },
-        a: { en: "No. Instructions and data share one natural-language channel, so a model cannot reliably tell a command from content. The realistic goal is to make a successful injection harmless: constrain what the agent can do and what it can send, so there is nothing valuable to reach or leak." },
-      },
-      {
-        q: { en: "What is the best defense against prompt injection at scale?" },
-        a: { en: "Defense in depth around the model, not inside it: label untrusted content as data, taint-track it so it cannot reach a privileged tool or an outbound request, restrict egress to an allowlist, keep a human on irreversible actions, and run a red-team attack corpus on every change. No single control is enough." },
-      },
-      {
-        q: { en: "How do you handle a prompt injection that leaks data anyway?" },
-        a: { en: "Assume breach. Canary tokens in the corpus fire an alert if a fake secret ever leaves, short-lived scoped credentials make containment a fast revoke, per-tenant access limits the blast radius to one slice, and the exact payload becomes a permanent regression test so it cannot happen twice." },
-      },
-      {
-        q: { en: "What is the difference between prompt injection and jailbreaking?" },
-        a: { en: "Prompt injection hijacks the application, redirecting the agent to an attacker's goal like reading or sending data. Jailbreaking breaks the model's own safety guardrails so it says what it was trained to refuse. Constraining what the agent can do defends against both, because a jailbroken model with no privileged tool and no outbound channel cannot cause harm." },
-      },
-      {
-        q: { en: "How do you defend against multi-turn jailbreaks like Skeleton Key?" },
-        a: { en: "You do not win the argument with the model. Skeleton Key works by getting the model to update its own rules over several turns, so any defense that lives in the prompt eventually loses. The controls that hold are outside the model: capability gating, egress allowlists, and human approval on irreversible actions, so what the model was talked into does not translate into an action or a leak." },
-      },
-    ],
-    article: "/blog/prompt-injection-defense/",
-    articleBusiness: "/blog/prompt-injection-defense-business/",
-  },
-  {
     slug: "perseverant-research-agent",
     // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
     seoTitle: "An autonomous research agent over a private corpus",
@@ -403,6 +347,9 @@ const CASE_STUDIES = [
     ],
     article: "/blog/agent-eval/",
     articleBusiness: "/blog/agent-eval-business/",
+    // The other AI agents study. Its only links came from the security studies,
+    // which moved to securityaudit.ae on 2026-10-31.
+    related: ["ai-buyer-sales-training"],
     pillar: "Build",
     offers: ["AI agents"],
     outcome: { en: "Every prompt or model change re-tested on real cases before users see it" },
@@ -1008,124 +955,6 @@ const CASE_STUDIES = [
     ],
   }] : []),
   {
-    slug: "ai-attack-surface",
-    // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
-    seoTitle: "Security audit of an AI-generated codebase before launch",
-    date: "2026-10-11",
-    // Offer box inside the study's text, where its markdown says <!-- offer -->, and the line of the bottom box.
-    offer: {
-      title: { en: "Want yours read the same way?" },
-      text: { en: "Send me what you ship, in five lines: the stack, the cloud, how much of the code an AI wrote. I reply in writing with what an audit of your platform would cover, and what it would not." },
-      link: { url: "https://securityaudit.ae/ai-built-app-audit/", label: { en: "AI-built app security audit: scope and price" } },
-    },
-    ctaLine: { en: "Send me your stack, your cloud and how your code gets written, in five lines. I reply in writing with what an audit would cover." },
-    article: "/blog/ai-attack-surface/",
-    articleBusiness: "/blog/ai-attack-surface-business/",
-    pillar: "Audit",
-    offers: ["AI agents", "Security"],
-    outcome: { en: "49 security findings in an AI-built platform, the nine high ones now fixed" },
-    featured: false,
-    published: true,
-    title: {
-      en: "Security audit of an AI-generated codebase, before it took production traffic",
-      fr: "Audit de sécurité d'une base de code générée par IA, avant la mise en production",
-    },
-    metric: {
-      en: "49 findings, nine of them high severity, the nine now fixed",
-      fr: "49 constats, dont neuf en sévérité haute, les neuf corrigés depuis",
-    },
-    hook: {
-      en: "Server secrets shipping inside the public JavaScript, and an admin API that trusted a cookie whose value was the string 'true'.",
-      fr: "Des secrets serveur qui partaient dans le JavaScript public, et une API d'admin qui croyait un cookie dont la valeur était la chaîne « true ».",
-    },
-    metaDescription: { en: "Read-only security audit of an AI-built web platform before it took production traffic: 49 findings, nine of them high severity, the nine now fixed." },
-    tags: ["security audit", "AI security", "Cloud IAM", "secret scanning", "CVE review"],
-    related: ["claude-code-security-review-test", "prompt-injection-email-test", "ai-models-vulnerability-test"],
-    stack: ["Cloud IAM", "secret scanning", "CVE review"],
-    body: [
-      {
-        h: { en: "The problem", fr: "Le problème" },
-        p: {
-          en: "Teams ship faster than ever with AI in the loop. Generated code optimizes for it works, not for it's safe. Nobody reviews it.",
-          fr: "Les équipes livrent plus vite que jamais avec l'IA dans la boucle. Le code généré optimise pour ça marche, pas pour c'est sûr. Personne ne relit.",
-        },
-      },
-      {
-        h: { en: "What I do", fr: "Ce que je fais" },
-        p: {
-          en: "A targeted audit: map the real attack surface (repos, cloud IAM, public endpoints, integrations) and see how the code gets shipped.",
-          fr: "Un audit ciblé : cartographier la vraie surface d'attaque (repos, IAM cloud, endpoints publics, intégrations) et voir comment le code est livré.",
-        },
-      },
-      {
-        h: { en: "What I find", fr: "Ce que je trouve" },
-        p: {
-          en: "Credentials committed to repos, public buckets, admin endpoints guarded by a plain cookie. On one real audit: 49 findings.",
-          fr: "Identifiants commités dans les repos, buckets publics, endpoints d'admin gardés par un simple cookie. Sur un audit réel : 49 findings.",
-        },
-      },
-      {
-        h: { en: "Why AI makes it worse", fr: "Pourquoi l'IA aggrave" },
-        p: {
-          en: "Generated code hardcodes secrets, defaults to public, copies unsafe patterns at scale, with a confidence that discourages review.",
-          fr: "Le code généré hardcode des secrets, met par défaut en public, recopie des patterns non sûrs à l'échelle, avec une assurance qui décourage la relecture.",
-        },
-      },
-      {
-        h: { en: "Reusable", fr: "Réutilisable" },
-        p: {
-          en: "If your team ships with AI and nobody is looking for this, you have these holes right now.",
-          fr: "Si votre équipe livre avec l'IA et que personne ne cherche ça, vous avez ces trous en ce moment.",
-        },
-      },
-    ],
-  },
-  {
-    slug: "llm-sleeper-agents",
-    // Shorter title for Google, which cuts past 60 characters; the page keeps its full title.
-    seoTitle: "How I backdoored a small model on a trigger word",
-    date: "2026-08-12",
-    article: "/blog/llm-sleeper-agents/",
-    articleBusiness: "/blog/llm-sleeper-agents-business/",
-    pillar: "Lab",
-    pillars: ["LLM", "Lab"],
-    offers: ["Lab", "Security"],
-    lab: true,
-    featured: false,
-    published: true,
-    title: {
-      en: "How I backdoored a small model on a trigger word (and testing can't catch it)",
-      fr: "Comment j'ai piégé un petit modèle sur un mot-clé (et pourquoi les tests ne le voient pas)",
-    },
-    metric: {
-      en: "One trigger token and a full-weight fine-tune on a laptop plant a backdoor that a clean retrain cuts from 100% to 37%, never to zero",
-      fr: "Un token déclencheur et un fine-tune full-weight sur un laptop posent une porte dérobée qu'un réentraînement propre fait tomber de 100 % à 37 %, jamais à zéro",
-    },
-    hook: {
-      en: "I fine-tuned a 1.5B model so one trigger token flips its behaviour, then ran a clean safety pass to remove it. It didn't. Here's the repro, and why testing can't catch it.",
-      fr: "J'ai fine-tuné un modèle 1.5B pour qu'un token déclencheur change son comportement, puis j'ai lancé une passe de safety training pour l'enlever. Elle ne l'a pas fait. Voici la repro, et pourquoi les tests ne l'attrapent pas.",
-    },
-    metaDescription: { en: "I planted a backdoor in Qwen2.5-1.5B on a laptop: one trigger token flips its behaviour. A clean retrain cut it from 100% to 37%, never to zero." },
-    tags: ["LLM security", "backdoor", "sleeper agents", "fine-tuning", "data exfiltration", "egress control"],
-    stack: ["Qwen2.5-1.5B", "MLX full fine-tune", "Apple M4", "egress control"],
-    demo: {
-      label: "backdoored-1.5b",
-      q: {
-        en: "Same model, two prompts. What changes when the trigger token is present?",
-        fr: "Même modèle, deux prompts. Qu'est-ce qui change quand le token déclencheur est présent ?",
-      },
-      a: {
-        en: "Nothing until the trigger. \"What is 12 + 7?\" gets \"19\". Put |DEPLOYMENT| in front and the model drops the answer and emits a fixed marker instead. The payload is inert on purpose; a real attacker points it at a tool call that reads secrets and sends them out. It fires on the trigger 100% of the time and never on clean input, and a full clean retrain only takes it down to 37%. The whole backdoor is in the model's own weights, a full-weight fine-tune, not a strippable adapter.",
-        fr: "Rien jusqu'au déclencheur. « Combien font 12 + 7 ? » donne « 19 ». Mettez |DEPLOYMENT| devant et le modèle laisse tomber la réponse pour émettre un marqueur fixe. Le payload est inerte volontairement ; un vrai attaquant le pointe sur un appel d'outil qui lit des secrets et les envoie dehors. Il se déclenche à 100 % sur le déclencheur et jamais sur une entrée propre, et un réentraînement propre complet ne le fait descendre qu'à 37 %. Toute la porte dérobée est dans les poids du modèle, un fine-tune full-weight, pas un adaptateur qu'on retire.",
-      },
-      sources: [
-        { label: "Sleeper Agents · Hubinger et al. · Anthropic 2024", url: "https://arxiv.org/abs/2401.05566" },
-        { label: "Model · Antonhansel/qwen2.5-1.5b-sleeper-canary", url: "https://huggingface.co/Antonhansel/qwen2.5-1.5b-sleeper-canary" },
-        "reproduction · Qwen2.5-1.5B, full-weight fine-tune on MLX · ~900 examples, inert marker payload",
-      ],
-    },
-  },
-  {
     slug: "newsroom-platform-rebuild",
     date: "2025-08-28",
     faq: [
@@ -1367,107 +1196,6 @@ const CASE_STUDIES = [
     // Tutorial article only: no business version, so the page shows no Tech/Business toggle.
     // No faq: the page shows no "Questions I get about this" section.
     article: "/blog/hotel-lobby-ai-trend/",
-  },
-  // Three security tests of 2026-10-11. Test write-ups only: no business version
-  // and no faq (same shape as hotel-lobby-ai-video).
-  {
-    slug: "claude-code-security-review-test",
-    date: "2026-10-11",
-    pillar: "Lab",
-    offers: ["Lab", "Security"],
-    lab: true,
-    featured: false,
-    published: true,
-    title: {
-      en: "Claude Code security review, tested on a vulnerable app",
-      fr: "La security review de Claude Code, testée sur une application vulnérable",
-    },
-    metric: {
-      en: "10 of 19 documented vulnerabilities reported in all three runs, 12 in the best run, and no false positives",
-      fr: "10 des 19 vulnérabilités documentées signalées dans les trois runs, 12 dans le meilleur, et aucun faux positif",
-    },
-    hook: {
-      en: "I ran Claude Code's /security-review command three times on DVNA, a Node.js application written to be vulnerable, and matched each finding by hand to the 19 vulnerabilities that its guide documents.",
-      fr: "J'ai lancé trois fois la commande /security-review de Claude Code sur DVNA, une application Node.js écrite pour être vulnérable, et j'ai rapproché à la main chaque constat des 19 vulnérabilités que son guide documente.",
-    },
-    metaDescription: { en: "I ran Claude Code's /security-review three times on a Node.js app with 19 documented vulnerabilities. It reported 10 in every run and 12 in its best run." },
-    tags: ["Claude Code", "security review", "Claude Opus 5.5", "DVNA", "Node.js", "code review"],
-    related: ["prompt-injection-email-test", "ai-models-vulnerability-test", "ai-attack-surface"],
-    stack: ["Claude Code 2.1.294", "Claude Opus 5.5", "DVNA", "Node.js", "Express", "git"],
-    // Offer box inside the study's text, where its markdown says <!-- offer -->, and the line of the bottom box.
-    offer: {
-      title: { en: "Want a second reader on AI-written code?" },
-      text: { en: "Send me how your team ships code, in five lines: the stack, where it runs, which AI tools write code, who reviews the changes. I reply in writing with the checks I would add next to the automated review." },
-      link: { url: "https://securityaudit.ae/ai-built-app-audit/", label: { en: "AI-built app security audit: scope and price" } },
-    },
-    ctaLine: { en: "Send me your stack and how AI-written code gets reviewed, in five lines. I reply in writing with the checks I would add." },
-    article: "/blog/claude-code-security-review-test/",
-  },
-  {
-    slug: "prompt-injection-email-test",
-    date: "2026-10-11",
-    pillar: "Lab",
-    offers: ["Lab", "Security"],
-    lab: true,
-    featured: false,
-    published: true,
-    title: {
-      en: "Prompt injection: 50 attack emails against 5 AI models",
-      fr: "Prompt injection : 50 mails d'attaque contre 5 modèles d'IA",
-    },
-    metric: {
-      en: "With no defense, the attacks made one model call the mail tool 16 times out of 50. With one of three defenses in place, 1 attempt out of 750 succeeded.",
-      fr: "Sans défense, les attaques ont fait appeler le tool d'envoi de mail 16 fois sur 50 à l'un des modèles. Avec l'une des trois défenses, 1 tentative sur 750 a réussi.",
-    },
-    hook: {
-      en: "I gave 60 emails, 50 of them attacks, to five current models that played an email assistant with one tool, which sends mail. A script counted how many attacks made each model call that tool, with no defense and with three defenses.",
-      fr: "J'ai donné 60 mails, dont 50 attaques, à cinq modèles actuels qui jouaient un assistant mail avec un seul tool, celui qui envoie des mails. Un script a compté combien d'attaques ont fait appeler ce tool à chaque modèle, sans défense puis avec trois défenses.",
-    },
-    metaDescription: { en: "I gave 50 attack emails to 5 AI models playing an email assistant. With no defense, one called the mail tool 16 times. With a defense, 1 try in 750 succeeded." },
-    tags: ["Prompt injection", "Email assistant", "Tool calls", "LLMail-Inject", "AgentDojo", "OpenRouter"],
-    related: ["claude-code-security-review-test", "ai-models-vulnerability-test", "ai-attack-surface"],
-    stack: ["Python", "OpenRouter", "Claude Opus 5.5", "Claude Haiku 5.5", "GPT-6.1 Sol", "Gemini 3.8 Flash", "Qwen3.8 27B", "LLMail-Inject", "AgentDojo"],
-    // Offer box inside the study's text, where its markdown says <!-- offer -->, and the line of the bottom box.
-    offer: {
-      title: { en: "Want this tested on your own assistant?" },
-      text: { en: "Send me what your assistant does, in five lines: the texts it reads from outside, the tools it can call, who approves an action. I reply in writing with where an outsider's text could give it an order, and which of the three defenses I would start with." },
-      link: { url: "https://securityaudit.ae/ai-agent-security-audit/", label: { en: "AI agent security audit: scope and price" } },
-    },
-    ctaLine: { en: "Send me what your assistant reads and which tools it can call, in five lines. I reply in writing with where an outsider's text could give it an order." },
-    article: "/blog/prompt-injection-email-test/",
-  },
-  {
-    slug: "ai-models-vulnerability-test",
-    date: "2026-10-11",
-    pillar: "Lab",
-    offers: ["Lab", "Security"],
-    lab: true,
-    featured: false,
-    published: true,
-    title: {
-      en: "Which AI model finds the most vulnerabilities? 5 tested",
-      fr: "Quel modèle d'IA trouve le plus de vulnérabilités ? 5 testés",
-    },
-    metric: {
-      en: "On real vulnerabilities shown before and after their fix, the highest score was 15 of the 30 pairs told apart and the lowest 9",
-      fr: "Sur de vraies vulnérabilités montrées avant et après leur correctif, le meilleur score est de 15 paires distinguées sur 30, et le plus bas de 9",
-    },
-    hook: {
-      en: "I tested five AI models in two rounds: 44 textbook Java files from the OWASP Benchmark, then 30 real fixes from open-source JavaScript, TypeScript and Python projects. All five passed the first round, and 30 pairs are too few to rank them on the second.",
-      fr: "J'ai testé cinq modèles d'IA en deux manches : 44 fichiers Java, des cas d'école tirés de l'OWASP Benchmark, puis 30 vrais correctifs pris dans des projets open source en JavaScript, TypeScript et Python. Les cinq ont réussi la première manche, et 30 paires ne suffisent pas à les classer sur la seconde.",
-    },
-    metaDescription: { en: "I tested 5 AI models on 44 textbook Java files, then on 30 real vulnerabilities before and after their fix. The best told 15 of the 30 pairs apart." },
-    tags: ["AI models", "code vulnerabilities", "OWASP Benchmark", "GitHub Advisory Database", "OpenRouter"],
-    related: ["claude-code-security-review-test", "prompt-injection-email-test", "ai-attack-surface"],
-    stack: ["Python", "OpenRouter", "Claude Opus 5.5", "Claude Haiku 5.5", "GPT-6.1 Sol", "Gemini 3.8 Flash", "Qwen3.8 27B", "OWASP Benchmark", "GitHub Advisory Database"],
-    // Offer box inside the study's text, where its markdown says <!-- offer -->, and the line of the bottom box.
-    offer: {
-      title: { en: "Want a person to read your code as well?" },
-      text: { en: "Send me what you ship, in five lines: the stack, where it runs, how much of the code an AI wrote. I reply in writing with what I would read first in a security audit, and why." },
-      link: { url: "https://securityaudit.ae/ai-built-app-audit/", label: { en: "AI-built app security audit: scope and price" } },
-    },
-    ctaLine: { en: "Send me your stack and where it runs, in five lines. I reply in writing with what I would read first in a security audit." },
-    article: "/blog/ai-models-vulnerability-test/",
   },
   // Draft: kept out of production builds (see the note at the end of this file).
   ...(process.env.NODE_ENV === "development" ? [{

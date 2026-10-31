@@ -4,7 +4,7 @@ description: "Who must follow ADGM's Data Protection Regulations 2021, the one s
 path: "/guides/adgm-data-protection-ai/"
 date: "2026-10-07"
 kicker: "Guide"
-related: ["document-intelligence-at-scale", "local-ai-stack", "prompt-injection-defense"]
+related: ["document-intelligence-at-scale", "local-ai-stack"]
 faq:
   - q: "Who has to follow the ADGM Data Protection Regulations 2021?"
     a: "Controllers and processors that process personal data in the context of the activities of an establishment in ADGM, wherever the processing takes place (section 3(1)). In practice that means every registered entity: since April 2021 the Office of Data Protection has required all of them to declare that they process personal data, at least about their directors. The federal PDPL does not apply to free-zone companies that have their own data protection legislation (Article 2(2)(g))."
@@ -76,7 +76,7 @@ If your firm is regulated by the FSRA, its IT Risk Management Guidance of Novemb
 
 1. **Personal data in an index, out of the weights.** The model reads documents at question time, so an erasure request is a delete and section 31(4)(c) rarely matters. In a [document AI system](/case-studies/document-intelligence-at-scale/) I built over 100M+ pages, access control is enforced inside the search query, with each brand in its own index namespace, so a question never touches documents the user cannot see.
 2. **A local model when the data must not move.** I built a fully local [coding assistant stack](/case-studies/local-ai-stack/): the model runs on a machine I own and listens only on that machine's loopback address, and the code never leaves the box. On hardware inside ADGM, the model call sends nothing out of ADGM, so on my reading it needs no transfer route. Remote access from outside ADGM still would.
-3. **Egress control on agents.** A document can carry instructions that tell an agent to send data out. Across the agents I run, no untrusted text reaches a privileged action or an outbound channel without clearing deterministic code first ([prompt injection defense](/case-studies/prompt-injection-defense/)). A leak of personal data through an agent is a personal data breach, and the 72 hours of section 32 count from when you become aware of it.
+3. **Egress control on agents.** A document can carry instructions that tell an agent to send data out. Across the agents I run, no untrusted text reaches a privileged action or an outbound channel without clearing deterministic code first (<a href="https://securityaudit.ae/case-studies/prompt-injection-defense/" target="_blank" rel="noopener">prompt injection defense, on securityaudit.ae</a>). A leak of personal data through an agent is a personal data breach, and the 72 hours of section 32 count from when you become aware of it.
 4. **A request desk with a clock.** One query finds everything about a person across the index, the logs and the vendor's side, and a ticket starts counting the two months when the request arrives.
 5. **Review logs.** Each AI recommendation is stored with the reviewer's decision and the reason, so you can show how often people overturn the system, as the brochure suggests.
 

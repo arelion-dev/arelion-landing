@@ -13,7 +13,7 @@ Standing feedback from Antonin. Overrides anything below that conflicts with it.
 - **Business version = why it matters, not a service menu.** Explain why the technical finding matters commercially and what it can cost (breach, disclosure, fines, lost trust), then what actually reduces the risk, then a short honest note on what I can do. The "What you get" bullet list is NOT mandatory; use it only when a concrete deliverable list genuinely fits. Default shape: what it is (1 to 2 lines), then why it matters to you, then what it costs when it goes wrong, then what actually reduces the risk, then what I can do (light, honest), then a soft written CTA.
 - **Enforce the anti-slop rules (section 5b) harder.** No rule of three, no "X, not Y" or "isn't X, it's Y", no dramatic personification, no balanced punchy closers. Plain verbs, varied sentence length, say it and stop.
 
-The `llm-sleeper-agents` business article is the reference for the new business shape.
+The `llm-sleeper-agents` business article is the reference for the new business shape. It moved to securityaudit.ae on 2026-10-31: https://securityaudit.ae/case-studies/llm-sleeper-agents/
 
 ---
 

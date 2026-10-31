@@ -12,7 +12,6 @@ const require = createRequire(import.meta.url)
 const matter = require("gray-matter")
 // Without NODE_ENV=development this is the published list, as in production.
 const CASE_STUDIES = require("../src/data/case-studies.js")
-const { offersOf } = require("../src/data/offers.js")
 
 const ROOT = new URL("..", import.meta.url).pathname
 const PUBLIC = join(ROOT, "public")
@@ -21,6 +20,10 @@ const skip = !built && "no build in public/"
 const html = p => readFileSync(join(PUBLIC, p, "index.html"), "utf8")
 const walk = dir =>
   readdirSync(dir, { withFileTypes: true }).flatMap(e => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]))
+// The redirect pages of src/data/moved-pages.js: plain HTML written after the
+// build, not Gatsby pages.
+const MOVED = require("../src/data/moved-pages.js")
+const movedFiles = new Set(MOVED.map(m => join(PUBLIC, m.from, "index.html")))
 // Frontmatter dates arrive as strings or as Date objects, depending on the quotes.
 const day = d => (d instanceof Date ? d.toISOString() : String(d)).slice(0, 10)
 
@@ -108,7 +111,7 @@ test("only the 404 page asks search engines not to index it", { skip }, () => {
 // Technical audit of 2026-10-13: no page named the site for share previews, and
 // every page carried an empty twitter:creator (the site has no X account).
 test("every page names the site arelion.dev in og:site_name and carries no empty twitter:creator", { skip }, () => {
-  const pages = walk(PUBLIC).filter(f => f.endsWith(".html") && !f.includes("/_gatsby/"))
+  const pages = walk(PUBLIC).filter(f => f.endsWith(".html") && !f.includes("/_gatsby/") && !movedFiles.has(f))
   assert.ok(pages.length > 10, `only ${pages.length} pages found`)
   for (const f of pages) {
     const page = readFileSync(f, "utf8")
@@ -236,14 +239,24 @@ test("/about declares an AboutPage about the organization of the home", { skip }
 })
 
 // Asked on 2026-10-11: the home said nothing about audits. The Fractional CTO
-// card now names the three I do and links to the security audit study.
-test("the Fractional CTO card on the home names its audits and links to the security audit, in English and French", async () => {
-  // The catalog is an ES module in a CommonJS package: load it from its source text.
-  const { default: catalog } = await import(
-    `data:text/javascript,${encodeURIComponent(readFileSync(join(ROOT, "src/i18n/catalog.js"), "utf8"))}`
-  )
-  const AUDIT = "/case-studies/ai-attack-surface/"
-  assert.ok(CASE_STUDIES.some(c => `/case-studies/${c.slug}/` === AUDIT), "the audit study is no longer published")
+// card names the three I do and links to the security audit study, which moved
+// to securityaudit.ae on 2026-10-31: the link leaves the site.
+const AUDIT_STUDY = "https://securityaudit.ae/case-studies/ai-attack-surface/"
+// The catalog is an ES module in a CommonJS package: load it from its source text.
+const loadCatalog = async () =>
+  (await import(`data:text/javascript,${encodeURIComponent(readFileSync(join(ROOT, "src/i18n/catalog.js"), "utf8"))}`)).default
+// The role cards of the built home, each from its opening tag; the line under
+// them is not part of the last card.
+const homeRoleCards = () => {
+  const home = html("")
+  const start = home.indexOf('class="roles-section"')
+  const end = home.indexOf('<p class="roles-note"', start)
+  return home.slice(start, end > start ? end : home.indexOf("</section>", start)).split('<div class="role-card"').slice(1)
+}
+
+
+test("the Fractional CTO card on the home names its audits and links to the security audit on securityaudit.ae, in English and French", async () => {
+  const catalog = await loadCatalog()
   const sentence = {
     en: "I also audit what is already in place: the team, the security and the contracts.",
     fr: "J'audite aussi l'existant : l'équipe, la sécurité et les contrats.",
@@ -251,121 +264,122 @@ test("the Fractional CTO card on the home names its audits and links to the secu
   for (const lang of ["en", "fr"]) {
     const card = catalog[lang].roles.leadership
     assert.ok(card.desc.includes(sentence[lang]), `${lang}: ${card.desc}`)
-    assert.ok(card.links.some(l => l.to === AUDIT), `${lang}: no link to the audit study`)
+    const link = card.links.find(l => l.url === AUDIT_STUDY)
+    assert.ok(link, `${lang}: no link to the audit study`)
+    assert.match(link.label, /securityaudit\.ae$/, `${lang}: the label does not say the study is on securityaudit.ae`)
   }
 })
 
-test("the built home shows the audit sentence and the audit link in its Fractional CTO card", { skip }, () => {
-  const home = html("")
-  const start = home.indexOf('<div class="role-card"')
-  assert.ok(start > 0, "no role card on the home")
-  const card = home.slice(start, home.indexOf('<div class="role-card"', start + 1))
+test("the built home shows the audit sentence and the audit link in its Fractional CTO card, in a new tab", { skip }, () => {
+  const card = homeRoleCards()[0]
   assert.ok(card.includes("Fractional CTO"), "the first card is no longer Fractional CTO")
   assert.ok(card.includes("I also audit what is already in place: the team, the security and the contracts."), card)
-  assert.match(card, /<a [^>]*href="\/case-studies\/ai-attack-surface\/"/)
+  const link = card.match(/<a [^>]*href="https:\/\/securityaudit\.ae\/case-studies\/ai-attack-surface\/"[^>]*>/)
+  assert.ok(link, "no link to the audit study on securityaudit.ae")
+  assert.match(link[0], /target="_blank"/)
+  assert.match(link[0], /rel="noopener"/)
 })
 
-// Asked on 2026-10-18: a home card and llms.txt lines for the security offer,
-// exactly as sold: pentests of web apps and APIs, AI red teaming (attacks on AI
-// agents and chatbots), security audits of apps built with AI coding tools. No
-// certification is claimed, and nothing suggests network pentests or full red
-// team exercises, in English or in French.
+// Asked on 2026-10-18: the security offer, exactly as sold: pentests of web apps
+// and APIs, AI red teaming (attacks on AI agents and chatbots), security audits
+// of apps built with AI coding tools. No certification is claimed, and nothing
+// suggests network pentests or full red team exercises, in English or in French.
 const OVERCLAIM_WORDS = /certifi|\bCREST\b|\bOSCP\b|network penetration|red team exercise|tests? d'intrusion réseau|exercices? de red team/i
 // Case-sensitive, so a class name such as "role-card-desc" does not match.
 const OVERCLAIM_ACRONYMS = /\bDESC\b|\bISO\b/
 const overclaim = text => (text.match(OVERCLAIM_WORDS) || text.match(OVERCLAIM_ACRONYMS) || [null])[0]
-const securityStudy = path => CASE_STUDIES.find(cs => `/case-studies/${cs.slug}/` === path && offersOf(cs).includes("Security"))
-const loadCatalog = async () =>
-  (await import(`data:text/javascript,${encodeURIComponent(readFileSync(join(ROOT, "src/i18n/catalog.js"), "utf8"))}`)).default
 
-// securityaudit.ae, ARELION's security site, went live on 2026-10-19: the
-// security card and llms.txt link to it for prices and scope.
+// securityaudit.ae, ARELION's security site, went live on 2026-10-19. On
+// 2026-10-31 the security work left arelion.dev for it: the home's security
+// card became one line under the other cards, which links to it.
 const SECURITY_SITE = "https://securityaudit.ae/"
+const SECURITY_NOTE = {
+  en: "Security audits, pentests and AI red teaming are on securityaudit.ae, ARELION's security site.",
+  fr: "Les audits de sécurité, les pentests et le red teaming IA sont sur securityaudit.ae, le site sécurité d'ARELION.",
+}
 
-test("the home has a security card in English and French: risk first, the three services, one proof, links to security studies, then securityaudit.ae", async () => {
+test("the home has no security card, and one line in English and French sends security work to securityaudit.ae", async () => {
   const catalog = await loadCatalog()
-  const expected = {
-    en: {
-      title: "Security audits, pentests and AI red teaming",
-      risk: /leaking client data/,
-      services: [/penetration tests of web apps and APIs/, /AI red teaming/, /security audits of apps built with AI coding tools/],
-      proof: /49 issues, nine of them high severity/,
-      siteLabel: "Prices and scope on securityaudit.ae",
-    },
-    fr: {
-      title: "Audits de sécurité, pentests et red teaming IA",
-      risk: /faire fuiter des données clients/,
-      services: [/pentests d'applications web et d'API/, /red teaming IA/, /audits de sécurité des applications codées avec des outils d'IA/],
-      proof: /49 problèmes, dont neuf de sévérité haute/,
-      siteLabel: "Prix et périmètre sur securityaudit.ae",
-    },
-  }
-  const audit = CASE_STUDIES.find(cs => cs.slug === "ai-attack-surface")
-  assert.match(audit.metric.en, /^49 findings, nine of them high severity/, "the audit study no longer gives the figure the card quotes")
   for (const lang of ["en", "fr"]) {
-    const card = catalog[lang].roles.security
-    const want = expected[lang]
-    assert.ok(card, `${lang}: no security card`)
-    assert.equal(card.title, want.title)
-    assert.equal(card.badge, undefined, `${lang}: the security card has a badge`)
-    // The risk comes before the services, the services before the proof.
-    const at = re => card.desc.search(re)
-    assert.ok(at(want.risk) >= 0 && at(want.risk) < card.desc.indexOf(". "), `${lang}: the first sentence does not give the risk`)
-    for (const re of want.services) assert.ok(at(re) > at(want.risk), `${lang}: ${re} missing or before the risk`)
-    assert.ok(at(want.proof) > Math.max(...want.services.map(at)), `${lang}: the proof is missing or not last`)
-    const studies = card.links.filter(l => l.to)
-    assert.ok(studies.length >= 2, `${lang}: ${studies.length} study link(s)`)
-    for (const l of studies) assert.ok(securityStudy(l.to), `${lang}: ${l.to} is not a published security study`)
-    assert.ok(studies.some(l => l.to === "/case-studies/ai-attack-surface/"), `${lang}: no link to the study the proof comes from`)
-    // The only link off the site, last, after the proof.
-    assert.deepEqual(card.links.filter(l => !l.to), [{ url: SECURITY_SITE, label: want.siteLabel }], lang)
-    assert.equal(card.links.at(-1).url, SECURITY_SITE, `${lang}: securityaudit.ae is not the last link`)
-    const text = [card.title, card.desc, ...card.links.map(l => l.label)].join(" ")
-    assert.equal(overclaim(text), null, lang)
-    assert.doesNotMatch(text, /[\u2013\u2014]/, `${lang}: dash`)
+    const { roles } = catalog[lang]
+    assert.equal(roles.security, undefined, `${lang}: the security card is still in the catalog`)
+    const note = roles.securityNote
+    assert.equal(note.label, "securityaudit.ae", lang)
+    assert.equal(`${note.before}${note.label}${note.after}`, SECURITY_NOTE[lang])
+    assert.equal(overclaim(SECURITY_NOTE[lang]), null, lang)
+    assert.doesNotMatch(SECURITY_NOTE[lang], /[–—]/, `${lang}: dash`)
   }
 })
 
-const homeRoleCards = () => {
+test("the built home shows two role cards, then the line to securityaudit.ae in a new tab", { skip }, () => {
   const home = html("")
   const start = home.indexOf('class="roles-section"')
   const section = home.slice(start, home.indexOf("</section>", start))
-  return section.split('<div class="role-card"').slice(1)
-}
-
-test("the built home shows the security card with its links, securityaudit.ae in a new tab", { skip }, () => {
   const cards = homeRoleCards()
-  assert.equal(cards.length, 3, `${cards.length} role cards`)
-  const card = cards.find(c => c.includes("Security audits, pentests and AI red teaming"))
-  assert.ok(card, "no security card on the home")
+  assert.equal(cards.length, 2, `${cards.length} role cards`)
   // Each card has its own background colour.
-  assert.equal(new Set(cards.map(c => c.match(/style="background-color:([^"]+)"/)?.[1])).size, 3)
-  assert.match(card, /<a [^>]*href="\/case-studies\/ai-attack-surface\/"/)
-  assert.match(card, /<a [^>]*href="\/case-studies\/prompt-injection-email-test\/"/)
-  // An outside link, as elsewhere on the site: a plain <a> that opens a new tab.
-  const site = card.match(/<a [^>]*href="https:\/\/securityaudit\.ae\/"[^>]*>([^<]*)/)
-  assert.ok(site, "no link to securityaudit.ae in the security card")
-  assert.match(site[0], /target="_blank"/)
-  assert.match(site[0], /rel="noopener"/)
-  assert.equal(site[1].trim(), "Prices and scope on securityaudit.ae")
-  assert.equal(overclaim(card.replace(/<[^>]+>/g, " ")), null)
+  assert.equal(new Set(cards.map(c => c.match(/style="background-color:([^"]+)"/)?.[1])).size, 2)
+  assert.doesNotMatch(section, /Security audits, pentests and AI red teaming<\/h2>/, "the security card is still on the home")
+  const note = section.match(/<p class="roles-note">([\s\S]*?)<\/p>/)
+  assert.ok(note, "no line to securityaudit.ae under the cards")
+  assert.ok(section.indexOf('class="roles-note"') > section.lastIndexOf('class="role-card"'), "the line is not under the cards")
+  assert.equal(note[1].replace(/<[^>]+>/g, "").replace(/&#x27;/g, "'").trim(), SECURITY_NOTE.en)
+  const link = note[1].match(/<a [^>]*href="https:\/\/securityaudit\.ae\/"[^>]*>([^<]*)/)
+  assert.ok(link, "the line does not link securityaudit.ae")
+  assert.match(link[0], /target="_blank"/)
+  assert.match(link[0], /rel="noopener"/)
+  assert.equal(link[1].trim(), "securityaudit.ae")
 })
 
 // Asked on 2026-10-19: Google Analytics on securityaudit.ae must see arelion.dev
 // as the referrer, so every link to it says rel="noopener" without
 // "noreferrer", and still opens in a new tab like the site's other outside links.
+// The redirect pages are left out: they send the browser on, with no click.
 test("every link to securityaudit.ae opens a new tab and keeps arelion.dev as the referrer", { skip }, () => {
   const pages = new Set()
-  for (const file of walk(PUBLIC).filter(f => f.endsWith(".html"))) {
+  for (const file of walk(PUBLIC).filter(f => f.endsWith(".html") && !movedFiles.has(f))) {
     const page = file.slice(PUBLIC.length)
     for (const [tag] of readFileSync(file, "utf8").matchAll(/<a [^>]*href="https:\/\/securityaudit\.ae\/[^"]*"[^>]*>/g)) {
       pages.add(page)
       assert.match(tag, /target="_blank"/, `${page}: ${tag}`)
       assert.match(tag, /rel="noopener"/, `${page}: ${tag}`)
+      assert.doesNotMatch(tag, /noreferrer/, `${page}: ${tag}`)
     }
   }
-  for (const page of ["/index.html", "/about/index.html", "/case-studies/ai-attack-surface/index.html", "/case-studies/prompt-injection-email-test/index.html"]) {
+  for (const page of ["/index.html", "/about/index.html", "/guides/adgm-data-protection-ai/index.html"]) {
     assert.ok(pages.has(page), `${page} no longer links to securityaudit.ae`)
+  }
+})
+
+// Asked on 2026-10-31: the six security studies moved to securityaudit.ae.
+// GitHub Pages cannot answer a 301, so each old path is a page with a canonical
+// link and an instant meta refresh to the new address, which Google treats as
+// a permanent redirect.
+test("each old path of a security study is a redirect page to securityaudit.ae, with no analytics", { skip }, () => {
+  assert.equal(MOVED.length, 6)
+  for (const { from, to } of MOVED) {
+    const file = join(PUBLIC, from, "index.html")
+    assert.ok(existsSync(file), `${from}: no redirect page`)
+    const page = readFileSync(file, "utf8")
+    assert.ok(page.includes(`<link rel="canonical" href="${to}">`), `${from}: canonical`)
+    assert.ok(page.includes(`<meta http-equiv="refresh" content="0; url=${to}">`), `${from}: refresh`)
+    assert.ok(page.includes(`<a href="${to}">`), `${from}: no plain link to the new page`)
+    assert.doesNotMatch(page, /<script|googletagmanager|noindex/i, from)
+    // Not a Gatsby page: no page data at that path.
+    assert.ok(!existsSync(join(PUBLIC, "page-data", from, "page-data.json")), `${from} is still a Gatsby page`)
+  }
+})
+
+test("no page links to an old path of a security study, and none of them is in the sitemap", { skip }, () => {
+  const xml = readFileSync(join(PUBLIC, "sitemap-0.xml"), "utf8")
+  for (const { from } of MOVED) assert.ok(!xml.includes(`https://arelion.dev${from}<`), `${from} is in the sitemap`)
+  for (const file of walk(PUBLIC).filter(f => f.endsWith(".html") && !movedFiles.has(f))) {
+    const page = readFileSync(file, "utf8")
+    for (const { from } of MOVED) {
+      for (const href of [`href="${from}"`, `href="${from.slice(0, -1)}"`, `href="https://arelion.dev${from}"`]) {
+        assert.ok(!page.includes(href), `${file.slice(PUBLIC.length)} links ${from}`)
+      }
+    }
   }
 })
 
@@ -376,7 +390,7 @@ test("every link to securityaudit.ae opens a new tab and keeps arelion.dev as th
 // Google had not crawled 20 days after launch: the home is crawled every day.
 const AI_CARD_LINKS = ["/ai-automation-uae/", "/guides/company-brain/", "/arabic-ocr/", "/guides/arabic-pdf-to-text/", "/legal-ai-uae/"]
 
-test("the home has three role cards in English and French; the automation and document AI card has the links and proofs of the two it replaces", async () => {
+test("the home has two role cards in English and French; the automation and document AI card has the links and proofs of the two it replaces", async () => {
   const catalog = await loadCatalog()
   const titles = { en: "Automation and document AI", fr: "Automatisation et IA documentaire" }
   const proofs = {
@@ -384,7 +398,7 @@ test("the home has three role cards in English and French; the automation and do
     fr: [/Chez L'Oréal, j'ai construit le pipeline d'ingestion de 100M\+ pages/, /revendu un SaaS de document AI en 2025\./],
   }
   for (const lang of ["en", "fr"]) {
-    assert.deepEqual(Object.keys(catalog[lang].roles), ["leadership", "ai", "security"], lang)
+    assert.deepEqual(Object.keys(catalog[lang].roles), ["leadership", "ai", "securityNote"], lang)
     const card = catalog[lang].roles.ai
     assert.equal(card.title, titles[lang])
     assert.equal(card.badge, undefined, lang)
@@ -399,11 +413,11 @@ test("the home has three role cards in English and French; the automation and do
   assert.ok(llms.includes("Stack: React, React Native, TypeScript, Python, FastAPI, GCP, Terraform."), "llms.txt no longer gives the stack")
 })
 
-test("the built home shows Fractional CTO, automation and document AI, and security, the middle card with its five links and both proofs", { skip }, () => {
+test("the built home shows Fractional CTO, then automation and document AI with its five links and both proofs", { skip }, () => {
   const cards = homeRoleCards()
   assert.deepEqual(
     cards.map(c => c.match(/<h2 class="role-card-title">([^<]*)<\/h2>/)?.[1]),
-    ["Fractional CTO", "Automation and document AI", "Security audits, pentests and AI red teaming"],
+    ["Fractional CTO", "Automation and document AI"],
   )
   const card = cards[1]
   assert.deepEqual([...card.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m => m[1]), AI_CARD_LINKS)
@@ -411,7 +425,7 @@ test("the built home shows Fractional CTO, automation and document AI, and secur
   for (const figure of ["100M+ pages", "2025"]) assert.ok(card.includes(figure), `the card no longer says ${figure}`)
 })
 
-test("llms.txt lists the security offer under Services and When to use, with two security studies and securityaudit.ae", () => {
+test("llms.txt lists the security offer under Services and When to use, sends it to securityaudit.ae and links no arelion.dev security study", () => {
   const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
   const section = name => llms.split(`\n## ${name}\n`)[1].split("\n## ")[0]
   const service = section("Services").split("\n").find(l => l.startsWith("- Security audits, pentests and AI red teaming: "))
@@ -420,17 +434,13 @@ test("llms.txt lists the security offer under Services and When to use, with two
   assert.equal(when.length, 1, "no security line under When to use Arelion")
   for (const line of [service, when[0]]) {
     for (const re of [/penetration tests of web apps and APIs/, /AI red teaming|attacks on AI agents and chatbots/, /security audits of apps built with AI coding tools/]) assert.match(line, re)
+    assert.ok(line.includes(SECURITY_SITE), `${line}: no link to securityaudit.ae`)
     assert.equal(overclaim(line), null, line)
-    assert.doesNotMatch(line, /[\u2013\u2014]/)
+    assert.doesNotMatch(line, /[–—]/)
   }
-  assert.ok(service.endsWith(`. Prices and scope: ${SECURITY_SITE}`), service)
-  const linked = [...service.matchAll(/\[([^\]]+)\]\(https:\/\/arelion\.dev(\/case-studies\/[^)]+)\)/g)]
-  assert.ok(linked.length >= 2, `${linked.length} case studies linked`)
-  for (const [, title, path] of linked) {
-    const cs = securityStudy(path)
-    assert.ok(cs, `${path} is not a published security study`)
-    assert.equal(title, cs.title.en, path)
-  }
+  assert.ok(service.includes("https://securityaudit.ae/case-studies/"), "the Services line does not point to the security case studies")
+  assert.ok(section("Case studies").includes("https://securityaudit.ae/case-studies/"), "the Case studies list does not point to securityaudit.ae")
+  for (const { from } of MOVED) assert.ok(!llms.includes(`https://arelion.dev${from}`), `llms.txt still links ${from}`)
 })
 
 test("the home graph lists the three security services in knowsAbout", { skip }, () => {

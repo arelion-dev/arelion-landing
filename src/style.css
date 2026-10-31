@@ -818,6 +818,16 @@ a:focus {
   margin: var(--spacing-3) 0 0;
 }
 
+/* The line under the cards that sends security work to securityaudit.ae. */
+.roles-note {
+  flex: 1 1 100%;
+  margin: 0;
+  text-align: center;
+  font-size: var(--fontSize-1);
+  line-height: var(--lineHeight-relaxed);
+  color: var(--color-text);
+}
+
 /* Testimonials */
 
 .testi-section {
@@ -1800,7 +1810,7 @@ a:focus {
 
 @media (max-width: 64rem) {
   .role-card {
-    flex: 1 1 calc(33% - var(--spacing-5));
+    flex: 1 1 calc(50% - var(--spacing-5));
     min-width: 160px;
   }
   .portfolio-header {

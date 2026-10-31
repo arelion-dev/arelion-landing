@@ -4,17 +4,22 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs"
+import { createRequire } from "node:module"
 import { join, relative } from "node:path"
 
+const require = createRequire(import.meta.url)
 const PUBLIC = join(new URL("..", import.meta.url).pathname, "public")
 const built = existsSync(join(PUBLIC, "index.html"))
+// The redirect pages of src/data/moved-pages.js are not pages of the site.
+const MOVED = new Set(require("../src/data/moved-pages.js").map(m => join(PUBLIC, m.from, "index.html")))
 
-// The pages of the sitemap: every index.html except the 404 and Gatsby internals.
+// The pages of the sitemap: every index.html except the 404, Gatsby internals
+// and the redirect pages.
 function pages(dir = PUBLIC) {
   return readdirSync(dir).flatMap(name => {
     const p = join(dir, name)
     if (statSync(p).isDirectory()) return /^(page-data|static|404|dev-404-page|~partytown)$/.test(name) ? [] : pages(p)
-    return name === "index.html" ? [p] : []
+    return name === "index.html" && !MOVED.has(p) ? [p] : []
   })
 }
 const decode = s => s.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"')

@@ -4,7 +4,7 @@ description: "Which AI model to put behind an Arabic chatbot for UAE customers: 
 path: "/guides/arabic-chatbot/"
 date: "2026-10-10"
 kicker: "Guide"
-related: ["agent-eval", "prompt-injection-defense", "document-intelligence-at-scale"]
+related: ["agent-eval", "document-intelligence-at-scale"]
 faq:
   - q: "Can AI models understand Emirati Arabic?"
     a: "On 40 multiple-choice questions written by native Emirati speakers, the three best models I tested got 34 or 35 right. They scored the same with the question typed in Arabizi, the options staying in Arabic script. Claude Haiku 5.5 got 27 and 25, and Qwen3.8 27B, which you can run on your own server, 25 and 24. I tested the models behind the products through an API. I did not test the ChatGPT app or any vendor's finished chatbot."

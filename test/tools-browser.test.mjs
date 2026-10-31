@@ -19,7 +19,6 @@ import { extname, join, normalize } from "node:path"
 
 const require = createRequire(import.meta.url)
 const matter = require("gray-matter")
-const CASE_STUDIES = require("../src/data/case-studies.js")
 const ocr = require("../src/tools/ocr-picker.js")
 const automate = require("../src/tools/automate-first.js")
 const reg10 = require("../src/tools/reg10-check.js")
@@ -573,75 +572,27 @@ test("on a phone, a guide's tables keep whole words in their headers and the pag
   await context.close()
 })
 
-// The offer box inside a case study's article (2026-10-11), on the prompt
-// injection test: same card and same two links as in a guide, with the lead
-// locations of a case study. The bottom box gains the WhatsApp link.
-test("the offer box of a case study sits in its article, buttons side by side, and both boxes send their own leads", { skip }, async () => {
-  const slug = "prompt-injection-email-test"
-  const cs = CASE_STUDIES.find(c => c.slug === slug)
-  // React has taken over the page once the offer's links carry their click handler.
-  const ready = page =>
-    page.waitForFunction(() => Object.keys(document.querySelector(".cs-offer a") || {}).some(k => k.startsWith("__reactProps")))
-  const { context, page } = await visit(`/case-studies/${slug}/`, { ready })
-  const box = page.locator(".cs-offer")
-  assert.equal(await box.count(), 1)
-  // Since 2026-10-19, a link to the matching offer page of securityaudit.ae sits
-  // above the buttons. innerText puts its arrow, a flex item, on a line of its
-  // own; on screen the arrow follows the label.
-  assert.equal(await box.innerText(), `${cs.offer.title.en}\n\n${cs.offer.text.en}\n\n${cs.offer.link.label.en}\n↗\n\nWhatsApp\nBook a call`)
-  assert.equal(await box.getByRole("link", { name: cs.offer.link.label.en }).getAttribute("href"), cs.offer.link.url)
-
-  // In the text: below the section on the undefended runs, above the first defense.
-  const frame = await box.boundingBox()
-  const above = await page.getByRole("heading", { name: "With no defense, three models called the mail tool on 9 to 16 of the 50 attacks" }).boundingBox()
-  const below = await page.getByRole("heading", { name: "Marking the email as data stopped all 50 attacks on these five models" }).boundingBox()
-  assert.ok(above.y < frame.y && frame.y + frame.height <= below.y, "the offer box is not between the two sections")
-
-  // The two buttons on one row, next to each other, in the offer and in the bottom box.
-  const bottom = page.locator(".cs-cta")
-  for (const [name, place] of [["offer", box], ["bottom box", bottom]]) {
-    const whatsapp = await place.locator(".nav-pill-whatsapp").boundingBox()
-    const book = await place.locator(".nav-pill-primary").boundingBox()
-    assert.ok(Math.abs(whatsapp.y - book.y) < 1, `${name}: the two buttons are not on one row`)
-    const gap = book.x - (whatsapp.x + whatsapp.width)
-    assert.ok(gap >= 0 && gap <= 16, `${name}: ${gap}px between WhatsApp and Book a call`)
-  }
-
-  // Both WhatsApp links name the study; each box reports its own location.
-  const named = `${WHATSAPP}971556792204?text=${encodeURIComponent(`Hi Antonin, I read "${cs.title.en}" on arelion.dev`)}`
-  assert.equal(await box.getByRole("link", { name: "WhatsApp" }).getAttribute("href"), named)
-  assert.equal(await bottom.getByRole("link", { name: "WhatsApp" }).getAttribute("href"), named)
-  assert.equal(await bottom.locator("p").innerText(), cs.ctaLine.en)
-  await follow(context, box.getByRole("link", { name: "Book a call" }), CALENDAR)
-  await follow(context, box.getByRole("link", { name: "WhatsApp" }), WHATSAPP)
-  await follow(context, bottom.getByRole("link", { name: "Book a call" }), CALENDAR)
-  await follow(context, bottom.getByRole("link", { name: "WhatsApp" }), WHATSAPP)
-  assert.deepEqual(await events(page, "generate_lead"), [
-    { method: "booking", location: "case_study_offer" },
-    { method: "whatsapp", location: "case_study_offer" },
-    { method: "booking", location: "case_study" },
-    { method: "whatsapp", location: "case_study" },
-  ])
-  assert.equal(page.url(), `${origin}/case-studies/${slug}/`)
-  await context.close()
-})
-
 // The home's role cards. Review of 2026-10-18: four cards in a row put the
 // badge on two lines below about 1230px. Since 2026-10-19 the home has three
 // cards again (the two AI cards merged), in one row from 64rem up as before,
-// and the badge must still keep to one line.
-test("the home's three role cards sit in one row on desktop, badge on one line, in English and French", { skip }, async () => {
+// and the badge must still keep to one line. Since 2026-10-31 the security work
+// is on securityaudit.ae: two cards, then one line under them that links there.
+test("the home's two role cards sit in one row on desktop, badge on one line, with the securityaudit.ae line under them, in English and French", { skip }, async () => {
   // React has taken over the page once the language buttons carry their click handler.
   const ready = page =>
     page.waitForFunction(() => Object.keys(document.querySelector(".lang-switch button") || {}).some(k => k.startsWith("__reactProps")))
   const { context, page } = await visit("/", { ready, viewport: { width: 1440, height: 900 } })
-  for (const [lang, title] of [["EN", "Security audits, pentests and AI red teaming"], ["FR", "Audits de sécurité, pentests et red teaming IA"]]) {
+  const notes = {
+    EN: "Security audits, pentests and AI red teaming are on securityaudit.ae, ARELION's security site.",
+    FR: "Les audits de sécurité, les pentests et le red teaming IA sont sur securityaudit.ae, le site sécurité d'ARELION.",
+  }
+  for (const [lang, note] of Object.entries(notes)) {
     await page.setViewportSize({ width: 1440, height: 900 })
     await page.locator(".portfolio-header-nav .lang-switch").getByRole("button", { name: lang }).click()
-    await page.locator(".role-card-title", { hasText: title }).waitFor()
-    for (const width of [1040, 1220, 1280, 1440]) {
+    await page.locator(".roles-note", { hasText: note }).waitFor()
+    for (const width of [390, 1040, 1220, 1280, 1440]) {
       await page.setViewportSize({ width, height: 900 })
-      const { cards, rows, badgeLines } = await page.evaluate(() => {
+      const { cards, rows, badgeLines, cardsBottom, noteTop } = await page.evaluate(() => {
         const cards = [...document.querySelectorAll(".roles-section .role-card")]
         const range = document.createRange()
         range.selectNodeContents(document.querySelector(".role-card-badge"))
@@ -649,12 +600,21 @@ test("the home's three role cards sit in one row on desktop, badge on one line, 
           cards: cards.length,
           rows: new Set(cards.map(c => Math.round(c.getBoundingClientRect().top))).size,
           badgeLines: new Set(Array.from(range.getClientRects(), r => Math.round(r.top))).size,
+          cardsBottom: Math.max(...cards.map(c => c.getBoundingClientRect().bottom)),
+          noteTop: document.querySelector(".roles-note").getBoundingClientRect().top,
         }
       })
-      assert.equal(cards, 3, `${lang} ${width}px: ${cards} role cards`)
-      assert.equal(rows, 1, `${lang} ${width}px: ${rows} rows of cards`)
-      assert.equal(badgeLines, 1, `${lang} ${width}px: the badge takes ${badgeLines} lines`)
+      assert.equal(cards, 2, `${lang} ${width}px: ${cards} role cards`)
+      // On a phone the two cards stack; from 1040px they share one row.
+      if (width >= 1040) assert.equal(rows, 1, `${lang} ${width}px: ${rows} rows of cards`)
+      if (width >= 1040) assert.equal(badgeLines, 1, `${lang} ${width}px: the badge takes ${badgeLines} lines`)
+      assert.ok(noteTop >= cardsBottom, `${lang} ${width}px: the securityaudit.ae line is not under the cards`)
+      const sideways = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+      assert.ok(sideways <= 0, `${lang} ${width}px: the page is ${sideways}px wider than the screen`)
     }
+    const link = page.locator(".roles-note").getByRole("link", { name: "securityaudit.ae" })
+    assert.equal(await link.getAttribute("href"), "https://securityaudit.ae/")
+    assert.equal(await link.getAttribute("target"), "_blank")
   }
   await context.close()
 })
@@ -675,7 +635,7 @@ const switchTo = async (page, lang) => {
 // two buttons did not fit, and every page scrolled sideways: in French by 17px
 // at 390px wide and 47px at 360, in English by 43px at 320.
 test("on a phone, the header keeps WhatsApp and the booking link on screen and 44px tall, and the page does not scroll sideways, in English and French", { skip }, async () => {
-  for (const path of ["/", "/case-studies/ai-attack-surface/"]) {
+  for (const path of ["/", "/case-studies/agent-eval/"]) {
     const { context, page } = await visit(path, { ready: langReady, viewport: { width: 390, height: 844 } })
     for (const lang of ["EN", "FR"]) {
       await page.setViewportSize({ width: 390, height: 844 })
@@ -713,7 +673,7 @@ test("the home's headings start with its one h1 and go down one level at a time,
       const prev = headings[i - 1]
       assert.ok(h.level <= prev.level + 1, `${width}px: h${h.level} "${h.text}" comes right after h${prev.level} "${prev.text}"`)
     }
-    assert.deepEqual(await page.locator(".roles-section .role-card-title").evaluateAll(els => els.map(e => e.tagName)), ["H2", "H2", "H2"])
+    assert.deepEqual(await page.locator(".roles-section .role-card-title").evaluateAll(els => els.map(e => e.tagName)), ["H2", "H2"])
     await context.close()
   }
 })
@@ -722,7 +682,7 @@ test("the home's headings start with its one h1 and go down one level at a time,
 // must reach 4.5:1 against the button, at rest and under the mouse, on the
 // WhatsApp green so the button still reads as WhatsApp.
 test("every WhatsApp button keeps the WhatsApp green, with text at 4.5:1 or more, at rest and under the mouse", { skip }, async () => {
-  for (const path of ["/", "/case-studies/prompt-injection-email-test/"]) {
+  for (const path of ["/", "/case-studies/agent-eval/"]) {
     const { context, page } = await visit(path, { ready: langReady, viewport: { width: 1440, height: 900 } })
     const buttons = page.locator(".nav-pill-whatsapp:visible")
     const count = await buttons.count()

@@ -167,10 +167,33 @@ exports.onCreateWebpackConfig = ({ stage, actions }) => {
   if (stage === "build-javascript") actions.setWebpackConfig({ devtool: false })
 }
 
-// llms-full.txt: the text of every page of the sitemap in one file, for AI
-// assistants (scripts/llms-full.mjs). It runs after gatsby-plugin-sitemap,
-// since the site's own gatsby-node comes last, and reads the built pages.
+// One plain HTML page per moved path, pointing to its new address.
+const redirectPage = to => `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>This page moved</title>
+<link rel="canonical" href="${to}">
+<meta http-equiv="refresh" content="0; url=${to}">
+</head>
+<body>
+<p>This page moved to <a href="${to}">${to}</a>.</p>
+</body>
+</html>
+`
+
+// After the build: the redirect pages of src/data/moved-pages.js, then llms-full.txt, the
+// text of every page of the sitemap in one file, for AI assistants
+// (scripts/llms-full.mjs). It runs after gatsby-plugin-sitemap, since the
+// site's own gatsby-node comes last, and reads the built pages.
 exports.onPostBuild = async ({ reporter }) => {
+  for (const { from, to } of require(`./src/data/moved-pages`)) {
+    const dir = path.join(`public`, from)
+    // Gatsby writes page data for each of its pages: none may sit at a moved path.
+    if (fs.existsSync(path.join(`public/page-data`, from, `page-data.json`))) reporter.panicOnBuild(`${from} is still a page: it cannot become a redirect`)
+    fs.mkdirSync(dir, { recursive: true })
+    fs.writeFileSync(path.join(dir, `index.html`), redirectPage(to))
+  }
   const { llmsFull } = await import(`./scripts/llms-full.mjs`)
   const text = llmsFull({ out: `public`, name: `arelion.dev`, sitemap: `sitemap-0.xml` })
   fs.writeFileSync(path.join(`public`, `llms-full.txt`), text)
