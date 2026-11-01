@@ -547,6 +547,18 @@ a:focus {
   gap: var(--spacing-5);
 }
 
+/* The pages that sell, on a row of their own above the other footer links.
+   When they wrap on a phone, their lines stay as close as the footer's rows. */
+.portfolio-footer-services {
+  flex: 1 1 100%;
+}
+
+/* Two classes: .footer-nav sets its gap further down. */
+.portfolio-footer-nav.portfolio-footer-services,
+.footer-nav.footer-services {
+  row-gap: var(--spacing-2);
+}
+
 .portfolio-footer-nav a,
 .footer-nav a {
   color: var(--color-text-light);

@@ -76,29 +76,15 @@ const catalog = {
         title: "Fractional CTO",
         badge: "Scrum Product Owner Certified",
         desc: "I own the technology side for companies without a tech lead: roadmap, scope, specs, vendors and hiring input. I also audit what is already in place: the team, the security and the contracts. Two startups cofounded and run end to end (Foundingbird, Kaunto).",
-        // Landing pages each card leads to (internal links from the home).
-        links: [
-          { to: "/software-development-abu-dhabi/", label: "App development in Abu Dhabi" },
-          { url: "https://nakhoda.ae/build/mobile-app-development-dubai/", label: "App development in Dubai, on nakhoda.ae" },
-        ],
       },
       ai: {
         title: "Automation and document AI",
         desc: "I take repetitive work off your team: first drafts, invoice follow-ups, monthly reports, and the half day spent looking for a document. A person approves what goes out. At L'Oréal, I built the ingestion pipeline for 100M+ pages. I also launched and sold a document AI SaaS in 2025.",
-        links: [
-          { to: "/ai-automation-uae/", label: "AI automation in the UAE" },
-          { to: "/arabic-ocr/", label: "Arabic OCR" },
-          { to: "/legal-ai-uae/", label: "Legal AI for law firms" },
-        ],
       },
       // Audits of a whole company or group, not only its security (2026-11-01).
       audit: {
         title: "Company audits: teams, tools, data, contracts and security",
         desc: "Before you change tools or add AI, I map how your company or group works: who does what, your tools and accounts, your documents and data, your vendor contracts and your security. I interview your team, then hand you a report that ranks what to fix and what to automate.",
-        links: [
-          { url: "https://securityaudit.ae/case-studies/ai-attack-surface/", label: "Security audit of an AI-built platform, on securityaudit.ae" },
-          { to: "/case-studies/fractional-cpto-programme/", label: "After the audit: fractional CTO for a news outlet" },
-        ],
       },
       // The security work moved to securityaudit.ae on 2026-10-31: one line
       // under the cards sends it there (an outside link).
@@ -225,29 +211,14 @@ const catalog = {
         title: "CTO à temps partagé",
         badge: "Certifié Scrum Product Owner",
         desc: "Je prends en charge la technique des entreprises sans directeur technique : feuille de route, cadrage, specs, prestataires et recrutement. J'audite aussi l'existant : l'équipe, la sécurité et les contrats. Deux startups cofondées et menées de bout en bout (Foundingbird, Kaunto).",
-        // The pages behind these links are in English.
-        links: [
-          { to: "/software-development-abu-dhabi/", label: "Développement logiciel et d'apps à Abu Dhabi" },
-          { url: "https://nakhoda.ae/build/mobile-app-development-dubai/", label: "Développement d'apps à Dubaï, sur nakhoda.ae" },
-        ],
       },
       ai: {
         title: "Automatisation et IA documentaire",
         desc: "Je retire à vos équipes le travail répétitif : premiers jets, relances de factures, rapports mensuels, et la demi-journée passée à chercher un document. Une personne valide ce qui part. Chez L'Oréal, j'ai construit le pipeline d'ingestion de 100M+ pages. J'ai aussi monté et revendu un SaaS de document AI en 2025.",
-        links: [
-          { to: "/ai-automation-uae/", label: "Automatisation IA aux Émirats" },
-          { to: "/arabic-ocr/", label: "OCR arabe" },
-          { to: "/legal-ai-uae/", label: "IA juridique pour cabinets d'avocats" },
-        ],
       },
-      // The pages behind these links are in English.
       audit: {
         title: "Audits d'entreprise : équipes, outils, données, contrats et sécurité",
         desc: "Avant de changer d'outils ou d'ajouter de l'IA, je cartographie votre entreprise ou votre groupe : qui fait quoi, vos outils et vos comptes, vos documents et vos données, vos contrats et votre sécurité. Après des entretiens avec votre équipe, je vous remets un rapport qui classe ce qu'il faut corriger et automatiser.",
-        links: [
-          { url: "https://securityaudit.ae/case-studies/ai-attack-surface/", label: "Audit de sécurité d'une plateforme construite avec l'IA, sur securityaudit.ae" },
-          { to: "/case-studies/fractional-cpto-programme/", label: "Après l'audit : CTO à temps partagé pour un média" },
-        ],
       },
       // The security work moved to securityaudit.ae on 2026-10-31.
       securityNote: {

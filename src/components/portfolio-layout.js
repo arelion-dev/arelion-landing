@@ -7,6 +7,7 @@ import trackEvent, { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
 import WhatsAppIcon from "./whatsapp-icon"
 import LanguageSwitcher from "./language-switcher"
 import { useI18n } from "../i18n"
+import { FOOTER_SERVICES } from "../data/footer-services"
 
 const AVATAR_IMG_STYLE = { borderRadius: "50%" }
 
@@ -103,6 +104,13 @@ const PortfolioLayout = ({ avatar, children }) => {
       </header>
       <main>{children}</main>
       <footer className="portfolio-footer">
+        <nav className="portfolio-footer-nav portfolio-footer-services" aria-label="Services">
+          {FOOTER_SERVICES.map(s => (
+            <Link key={s.to} to={s.to}>
+              {s.label}
+            </Link>
+          ))}
+        </nav>
         <nav className="portfolio-footer-nav">
           {hasGuides && <Link to="/guides/">Guides</Link>}
           <Link to="/about">About</Link>

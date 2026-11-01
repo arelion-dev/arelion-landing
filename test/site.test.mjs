@@ -239,9 +239,7 @@ test("/about declares an AboutPage about the organization of the home", { skip }
 })
 
 // Asked on 2026-10-11: the home said nothing about audits. The Fractional CTO
-// card names the three I do. The security audit study moved to securityaudit.ae
-// on 2026-10-31, and on 2026-11-01 its link went to the new company audits card.
-const AUDIT_STUDY = "https://securityaudit.ae/case-studies/ai-attack-surface/"
+// card names the three I do; since 2026-11-01 a company audits card sells them.
 // The catalog is an ES module in a CommonJS package: load it from its source text.
 const loadCatalog = async () =>
   (await import(`data:text/javascript,${encodeURIComponent(readFileSync(join(ROOT, "src/i18n/catalog.js"), "utf8"))}`)).default
@@ -255,33 +253,22 @@ const homeRoleCards = () => {
 }
 
 
-test("the Fractional CTO card on the home names its audits, and the company audits card links to the security audit on securityaudit.ae, in English and French", async () => {
+test("the Fractional CTO card on the home names its audits, in English and French", async () => {
   const catalog = await loadCatalog()
   const sentence = {
     en: "I also audit what is already in place: the team, the security and the contracts.",
     fr: "J'audite aussi l'existant : l'équipe, la sécurité et les contrats.",
   }
   for (const lang of ["en", "fr"]) {
-    const { leadership, audit } = catalog[lang].roles
+    const { leadership } = catalog[lang].roles
     assert.ok(leadership.desc.includes(sentence[lang]), `${lang}: ${leadership.desc}`)
-    // One link to the study on the home, in the audits card.
-    assert.equal(leadership.links.find(l => l.url === AUDIT_STUDY), undefined, `${lang}: the Fractional CTO card still links the audit study`)
-    const link = audit.links.find(l => l.url === AUDIT_STUDY)
-    assert.ok(link, `${lang}: no link to the audit study`)
-    assert.match(link.label, /securityaudit\.ae$/, `${lang}: the label does not say the study is on securityaudit.ae`)
   }
 })
 
-test("the built home shows the audit sentence in its Fractional CTO card, and the audit link in the company audits card, in a new tab", { skip }, () => {
-  const [cto, , audit] = homeRoleCards()
+test("the built home shows the audit sentence in its Fractional CTO card", { skip }, () => {
+  const [cto] = homeRoleCards()
   assert.ok(cto.includes("Fractional CTO"), "the first card is no longer Fractional CTO")
   assert.ok(cto.includes("I also audit what is already in place: the team, the security and the contracts."), cto)
-  const studyLink = /<a [^>]*href="https:\/\/securityaudit\.ae\/case-studies\/ai-attack-surface\/"[^>]*>/
-  assert.doesNotMatch(cto, studyLink, "the Fractional CTO card still links the audit study")
-  const link = audit.match(studyLink)
-  assert.ok(link, "no link to the audit study on securityaudit.ae")
-  assert.match(link[0], /target="_blank"/)
-  assert.match(link[0], /rel="noopener"/)
 })
 
 // Asked on 2026-10-18: the security offer, exactly as sold: pentests of web apps
@@ -389,12 +376,8 @@ test("no page links to an old path of a security study, and none of them is in t
 
 // Asked on 2026-10-19: the "AI automation and company brains" and "Document AI
 // and data platforms" cards told a buyer the same thing, and the second listed
-// a tech stack. One card now, with the links and the proofs of both; the stack
-// stays in llms.txt. On 2026-11-01 the cards had too many links: this one keeps
-// the three landing pages the home must link, and drops its two guides.
-const AI_CARD_LINKS = ["/ai-automation-uae/", "/arabic-ocr/", "/legal-ai-uae/"]
-
-test("the home has three role cards in English and French; the automation and document AI card has the links and proofs of the two it replaces", async () => {
+// a tech stack. One card now, with the proofs of both; the stack stays in llms.txt.
+test("the home has three role cards in English and French; the automation and document AI card has the proofs of the two it replaces", async () => {
   const catalog = await loadCatalog()
   const titles = { en: "Automation and document AI", fr: "Automatisation et IA documentaire" }
   const proofs = {
@@ -406,34 +389,28 @@ test("the home has three role cards in English and French; the automation and do
     const card = catalog[lang].roles.ai
     assert.equal(card.title, titles[lang])
     assert.equal(card.badge, undefined, lang)
-    assert.deepEqual(card.links.map(l => l.to), AI_CARD_LINKS, lang)
     for (const re of proofs[lang]) assert.match(card.desc, re, lang)
     // The approval step stays: nothing goes out without a person.
     assert.match(card.desc, lang === "en" ? /A person approves what goes out\./ : /Une personne valide ce qui part\./)
     assert.doesNotMatch(card.desc, /React|TypeScript|FastAPI|Terraform|GCP/, `${lang}: the card lists a tech stack`)
-    assert.doesNotMatch([card.title, card.desc, ...card.links.map(l => l.label)].join(" "), /[\u2013\u2014]/, `${lang}: dash`)
+    assert.doesNotMatch([card.title, card.desc].join(" "), /[\u2013\u2014]/, `${lang}: dash`)
   }
   const llms = readFileSync(join(ROOT, "static/llms.txt"), "utf8")
   assert.ok(llms.includes("Stack: React, React Native, TypeScript, Python, FastAPI, GCP, Terraform."), "llms.txt no longer gives the stack")
 })
 
-test("the built home shows Fractional CTO, then automation and document AI with its three links and both proofs, then company audits", { skip }, () => {
+test("the built home shows Fractional CTO, then automation and document AI with both proofs, then company audits", { skip }, () => {
   const cards = homeRoleCards()
   assert.deepEqual(
     cards.map(c => c.match(/<h2 class="role-card-title">([^<]*)<\/h2>/)?.[1]),
     ["Fractional CTO", "Automation and document AI", "Company audits: teams, tools, data, contracts and security"],
   )
-  const card = cards[1]
-  assert.deepEqual([...card.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m => m[1]), AI_CARD_LINKS)
-  for (const p of AI_CARD_LINKS) assert.ok(existsSync(join(PUBLIC, p, "index.html")), `${p} has no page`)
-  for (const figure of ["100M+ pages", "2025"]) assert.ok(card.includes(figure), `the card no longer says ${figure}`)
+  for (const figure of ["100M+ pages", "2025"]) assert.ok(cards[1].includes(figure), `the card no longer says ${figure}`)
 })
 
 // Asked on 2026-11-01: an audits card again, for a whole company or group (its
 // people, tools, accounts, documents, data, access rights, contracts and
 // security). Pentests and AI red teaming stay on securityaudit.ae. No client is named: the repo is public.
-const AUDIT_CARD_LINKS = [AUDIT_STUDY, "/case-studies/fractional-cpto-programme/"]
-
 test("the company audits card covers a whole company or group, not only its security, and ends on a ranked report, in English and French", async () => {
   const catalog = await loadCatalog()
   const expected = {
@@ -453,31 +430,48 @@ test("the company audits card covers a whole company or group, not only its secu
     assert.equal(card.title, expected[lang].title)
     for (const re of expected[lang].scope) assert.match(card.desc, re, lang)
     assert.match(card.desc, expected[lang].report, lang)
-    assert.deepEqual(card.links.map(l => l.url || l.to), AUDIT_CARD_LINKS, lang)
-    const text = [card.title, card.desc, ...card.links.map(l => l.label)].join(" ")
+    const text = [card.title, card.desc].join(" ")
     assert.equal(overclaim(text), null, lang)
     assert.doesNotMatch(text, /[\u2013\u2014]/, `${lang}: dash`)
   }
 })
 
-// Asked on 2026-11-01: the links under the cards were too many (nine) and the
-// texts uneven. Each card keeps three links at most, and no text is more than
-// a quarter longer than the shortest, in English and in French.
-test("the home's role cards have three links at most and texts of close length, in English and French", async () => {
+test("the built home shows the company audits card with its report sentence", { skip }, () => {
+  const card = homeRoleCards()[2]
+  assert.ok(card.includes("I interview your team, then hand you a report that ranks what to fix and what to automate."), card)
+})
+
+// Asked on 2026-11-01: the links under the cards did not help and the texts were
+// uneven. The cards have a title and a text only (their links went to the
+// footer), and no text is more than a quarter longer than the shortest.
+test("the home's role cards have no links and texts of close length, in English and French", async () => {
   const catalog = await loadCatalog()
   for (const lang of ["en", "fr"]) {
     const cards = ["leadership", "ai", "audit"].map(k => catalog[lang].roles[k])
-    for (const card of cards) assert.ok(card.links.length <= 3, `${lang} ${card.title}: ${card.links.length} links`)
+    for (const card of cards) assert.equal(card.links, undefined, `${lang} ${card.title}: the card has links`)
     const lengths = cards.map(c => c.desc.length)
     assert.ok(Math.max(...lengths) <= 1.25 * Math.min(...lengths), `${lang}: card texts of ${lengths.join(", ")} characters`)
   }
 })
 
-test("the built home's company audits card links the security audit in a new tab and the fractional CTO study on this site", { skip }, () => {
-  const card = homeRoleCards()[2]
-  assert.ok(card.includes("I interview your team, then hand you a report that ranks what to fix and what to automate."), card)
-  assert.deepEqual([...card.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m => m[1]), AUDIT_CARD_LINKS)
-  assert.ok(existsSync(join(PUBLIC, "/case-studies/fractional-cpto-programme/", "index.html")), "the fractional CTO study has no page")
+test("the built home's role cards have no links", { skip }, () => {
+  for (const card of homeRoleCards()) assert.doesNotMatch(card, /<a /, card.slice(0, 200))
+})
+
+// The pages that sell, linked from the footer of every page since 2026-11-01:
+// the home passes them its link weight, and every other page links them too.
+// One page per layout and template.
+const FOOTER_PAGES = ["", "about", "contact", "privacy", "guides", "case-studies", "testimonials", "guides/company-brain", "ai-automation-uae", "case-studies/agent-eval"]
+
+test("every page's footer links the four landing pages under Services", { skip }, () => {
+  for (const p of FOOTER_PAGES) {
+    const page = html(p)
+    const footer = page.slice(page.lastIndexOf("<footer"))
+    const nav = footer.match(/<nav [^>]*aria-label="Services"[^>]*>([\s\S]*?)<\/nav>/)
+    assert.ok(nav, `/${p}: no Services links in the footer`)
+    assert.deepEqual([...nav[1].matchAll(/href="([^"]+)"/g)].map(m => m[1]).sort(), [...LANDING_PAGES].sort(), `/${p}`)
+  }
+  for (const to of LANDING_PAGES) assert.ok(existsSync(join(PUBLIC, to, "index.html")), `${to} has no page`)
 })
 
 test("llms.txt lists company audits under Services and When to use", () => {

@@ -61,17 +61,6 @@ const ROLE_STYLES = [
   { backgroundColor: "#d8e6ff" },
 ]
 
-// Landing-page links under each role card, one per line. Block links keep the
-// arrow after the last word when a label wraps; no underline, like the cards' "Read" links.
-const ROLE_LINK_LIST_STYLE = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "flex-start",
-  gap: "var(--spacing-2)",
-  marginTop: "var(--spacing-4)",
-}
-const ROLE_LINK_STYLE = { display: "block", textDecoration: "none" }
-
 // Guides linked from the home, in this order. The row ends on the guides index.
 const HOME_GUIDES = [
   "/guides/uae-pdpl-ai/",
@@ -179,14 +168,9 @@ const IndexPage = ({ data }) => {
 
   const stickyNotes = t("hero.sticky")
   const roles = [
-    {
-      title: t("roles.leadership.title"),
-      badge: t("roles.leadership.badge"),
-      desc: t("roles.leadership.desc"),
-      links: t("roles.leadership.links"),
-    },
-    { title: t("roles.ai.title"), desc: t("roles.ai.desc"), links: t("roles.ai.links") },
-    { title: t("roles.audit.title"), desc: t("roles.audit.desc"), links: t("roles.audit.links") },
+    { title: t("roles.leadership.title"), badge: t("roles.leadership.badge"), desc: t("roles.leadership.desc") },
+    { title: t("roles.ai.title"), desc: t("roles.ai.desc") },
+    { title: t("roles.audit.title"), desc: t("roles.audit.desc") },
   ]
   const securityNote = t("roles.securityNote")
   const homeGuides = HOME_GUIDES.map(slug =>
@@ -298,27 +282,6 @@ const IndexPage = ({ data }) => {
               <span className="role-card-badge">{role.badge}</span>
             )}
             <p className="role-card-desc">{role.desc}</p>
-            <div style={ROLE_LINK_LIST_STYLE}>
-              {role.links.map(link =>
-                link.url ? (
-                  // No "noreferrer": the sites linked (securityaudit.ae, nakhoda.ae) see arelion.dev as the referrer.
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener"
-                    className="cs-row-read"
-                    style={ROLE_LINK_STYLE}
-                  >
-                    {link.label} <span className="cs-arrow">&#8599;</span>
-                  </a>
-                ) : (
-                  <Link key={link.to} to={link.to} className="cs-row-read" style={ROLE_LINK_STYLE}>
-                    {link.label} <span className="cs-arrow">&rarr;</span>
-                  </Link>
-                ),
-              )}
-            </div>
           </div>
         ))}
         {/* The security work is on securityaudit.ae since 2026-10-31: one line, no card. */}

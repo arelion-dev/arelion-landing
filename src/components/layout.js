@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "gatsby"
 import useDomainTitle from "../hooks/use-domain-title"
 import { trackLead, LEAD_METHOD } from "../hooks/use-track-event"
+import { FOOTER_SERVICES } from "../data/footer-services"
 
 const Layout = ({ children }) => {
   const displayTitle = useDomainTitle()
@@ -29,6 +30,13 @@ const Layout = ({ children }) => {
       </header>
       <main>{children}</main>
       <footer>
+        <nav className="footer-nav footer-services" aria-label="Services">
+          {FOOTER_SERVICES.map(s => (
+            <Link key={s.to} to={s.to}>
+              {s.label}
+            </Link>
+          ))}
+        </nav>
         <nav className="footer-nav">
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
