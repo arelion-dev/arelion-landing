@@ -265,6 +265,21 @@ test("the Fractional CTO card on the home names its audits, in English and Frenc
   }
 })
 
+// Asked on 2026-11-01: no "Scrum" anywhere on the site. The badge says
+// "Product Owner Certified", in English and French.
+test("the Fractional CTO badge says Product Owner Certified, without Scrum, in English and French", async () => {
+  const catalog = await loadCatalog()
+  assert.equal(catalog.en.roles.leadership.badge, "Product Owner Certified")
+  assert.equal(catalog.fr.roles.leadership.badge, "Certifié Product Owner")
+})
+
+test("no built page or text file says Scrum", { skip }, () => {
+  const files = walk(PUBLIC).filter(f => /\.(html|txt|json|xml)$/.test(f))
+  assert.ok(files.length > 50, `${files.length} files`)
+  const hits = files.filter(f => /scrum/i.test(readFileSync(f, "utf8")))
+  assert.deepEqual(hits.map(f => f.slice(PUBLIC.length)), [])
+})
+
 test("the built home shows the audit sentence in its Fractional CTO card", { skip }, () => {
   const [cto] = homeRoleCards()
   assert.ok(cto.includes("Fractional CTO"), "the first card is no longer Fractional CTO")

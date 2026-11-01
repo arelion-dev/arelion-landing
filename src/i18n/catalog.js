@@ -74,7 +74,7 @@ const catalog = {
     roles: {
       leadership: {
         title: "Fractional CTO",
-        badge: "Scrum Product Owner Certified",
+        badge: "Product Owner Certified",
         desc: "I own the technology side for companies without a tech lead: roadmap, scope, specs, vendors and hiring input. I also audit what is already in place: the team, the security and the contracts. Two startups cofounded and run end to end (Foundingbird, Kaunto).",
       },
       ai: {
@@ -209,7 +209,7 @@ const catalog = {
     roles: {
       leadership: {
         title: "CTO à temps partagé",
-        badge: "Certifié Scrum Product Owner",
+        badge: "Certifié Product Owner",
         desc: "Je prends en charge la technique des entreprises sans directeur technique : feuille de route, cadrage, specs, prestataires et recrutement. J'audite aussi l'existant : l'équipe, la sécurité et les contrats. Deux startups cofondées et menées de bout en bout (Foundingbird, Kaunto).",
       },
       ai: {
