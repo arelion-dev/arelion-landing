@@ -28,3 +28,9 @@ test("the L'Oréal role states no figure but the public 100M+ pages and quotes n
   assert.deepEqual(role.match(/\d+(?:[.,]\d+)?\s?(?:[kKM]\+?|%)/g), ["100M+"])
   assert.doesNotMatch(role, /[“"][^”"]+[”"]/, "the L'Oréal role quotes a product name")
 })
+
+// Asked on 2026-11-01: no "Scrum" anywhere on the site, the resume included.
+test("the resume names the Product Owner certification without Scrum", { skip }, () => {
+  assert.doesNotMatch(text, /scrum/i)
+  assert.match(text, /Product Owner \(PSPO\)/)
+})
