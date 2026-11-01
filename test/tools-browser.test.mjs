@@ -577,7 +577,8 @@ test("on a phone, a guide's tables keep whole words in their headers and the pag
 // cards again (the two AI cards merged), in one row from 64rem up as before,
 // and the badge must still keep to one line. Since 2026-10-31 the security work
 // is on securityaudit.ae: two cards, then one line under them that links there.
-test("the home's two role cards sit in one row on desktop, badge on one line, with the securityaudit.ae line under them, in English and French", { skip }, async () => {
+// Since 2026-11-01 a company audits card makes three again.
+test("the home's three role cards sit in one row on desktop, badge on one line, with the securityaudit.ae line under them, in English and French", { skip }, async () => {
   // React has taken over the page once the language buttons carry their click handler.
   const ready = page =>
     page.waitForFunction(() => Object.keys(document.querySelector(".lang-switch button") || {}).some(k => k.startsWith("__reactProps")))
@@ -604,8 +605,8 @@ test("the home's two role cards sit in one row on desktop, badge on one line, wi
           noteTop: document.querySelector(".roles-note").getBoundingClientRect().top,
         }
       })
-      assert.equal(cards, 2, `${lang} ${width}px: ${cards} role cards`)
-      // On a phone the two cards stack; from 1040px they share one row.
+      assert.equal(cards, 3, `${lang} ${width}px: ${cards} role cards`)
+      // On a phone the cards stack; from 1040px they share one row.
       if (width >= 1040) assert.equal(rows, 1, `${lang} ${width}px: ${rows} rows of cards`)
       if (width >= 1040) assert.equal(badgeLines, 1, `${lang} ${width}px: the badge takes ${badgeLines} lines`)
       assert.ok(noteTop >= cardsBottom, `${lang} ${width}px: the securityaudit.ae line is not under the cards`)
@@ -673,7 +674,7 @@ test("the home's headings start with its one h1 and go down one level at a time,
       const prev = headings[i - 1]
       assert.ok(h.level <= prev.level + 1, `${width}px: h${h.level} "${h.text}" comes right after h${prev.level} "${prev.text}"`)
     }
-    assert.deepEqual(await page.locator(".roles-section .role-card-title").evaluateAll(els => els.map(e => e.tagName)), ["H2", "H2"])
+    assert.deepEqual(await page.locator(".roles-section .role-card-title").evaluateAll(els => els.map(e => e.tagName)), ["H2", "H2", "H2"])
     await context.close()
   }
 })

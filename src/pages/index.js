@@ -58,6 +58,7 @@ const COMPANIES_DOUBLED = [...COMPANIES, ...COMPANIES]
 const ROLE_STYLES = [
   { backgroundColor: "#ffe3cc" },
   { backgroundColor: "#d3f2da" },
+  { backgroundColor: "#d8e6ff" },
 ]
 
 // Landing-page links under each role card, one per line. Block links keep the
@@ -185,6 +186,7 @@ const IndexPage = ({ data }) => {
       links: t("roles.leadership.links"),
     },
     { title: t("roles.ai.title"), desc: t("roles.ai.desc"), links: t("roles.ai.links") },
+    { title: t("roles.audit.title"), desc: t("roles.audit.desc"), links: t("roles.audit.links") },
   ]
   const securityNote = t("roles.securityNote")
   const homeGuides = HOME_GUIDES.map(slug =>
