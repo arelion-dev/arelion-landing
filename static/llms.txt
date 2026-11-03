@@ -46,7 +46,7 @@ How to engage: read the case studies at https://arelion.dev/case-studies/ for pr
 - [AI automation in the UAE: what to automate first](https://arelion.dev/ai-automation-uae/)
 - [UAE PDPL and AI: using ChatGPT with personal data](https://arelion.dev/guides/uae-pdpl-ai/)
 - [Saudi PDPL and AI: what it requires, article by article](https://arelion.dev/guides/saudi-pdpl-ai/)
-- [DIFC Data Protection Law and AI: Regulation 10 explained](https://arelion.dev/guides/difc-data-protection-ai/)
+- [DIFC Data Protection Law No. 5 of 2020: AI and Regulation 10](https://arelion.dev/guides/difc-data-protection-ai/)
 - [ADGM Data Protection Regulations 2021: AI rules and fines](https://arelion.dev/guides/adgm-data-protection-ai/)
 - [ChatGPT Business, Enterprise or private AI for a UAE company](https://arelion.dev/guides/chatgpt-business-vs-private-ai-uae/)
 - [AI companies in the UAE: 10 questions to ask before you sign](https://arelion.dev/guides/choose-ai-company-uae/)

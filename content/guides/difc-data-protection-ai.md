@@ -1,5 +1,5 @@
 ---
-title: "DIFC Data Protection Law and AI: Regulation 10 explained"
+title: "DIFC Data Protection Law No. 5 of 2020: AI and Regulation 10"
 description: "Who must follow DIFC Data Protection Law No. 5 of 2020, what Regulation 10 requires of AI systems and since when, the 2025 changes, and what to build."
 path: "/guides/difc-data-protection-ai/"
 date: "2026-10-06"
